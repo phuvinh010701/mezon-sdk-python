@@ -1,0 +1,18 @@
+---
+description: comments rule
+alwaysApply: true
+---
+- Ensure every function or class includes a PEP 257 compliant docstring.
+- Example:   
+  """
+  <Short summary of the function or class.>
+
+  Args:
+      <param1> (<type>): <description>
+      <param2> (<type>): <description>
+
+  Returns:
+      <type>: <description>
+  """
+
+- No need to write implement summary

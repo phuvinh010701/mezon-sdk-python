@@ -1,0 +1,26 @@
+[project]
+name = "mezon-sdk"
+version = "0.1.0"
+description = "Mezon Python SDK - A Python implementation of the Mezon TypeScript SDK"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic>=2.12.3",
+    "aiohttp>=3.9.0",
+    "websockets>=12.0",
+    "protobuf>=4.25.0",
+    "pyjwt>=2.8.0",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.1",
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/phuvinh010701/mezon-sdk-python"
+Issues = "https://github.com/phuvinh010701/mezon-sdk-python/issues"
