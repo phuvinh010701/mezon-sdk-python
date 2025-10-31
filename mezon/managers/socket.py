@@ -1,8 +1,14 @@
-from typing import Any, List, Optional
-from mezon.api.mezon_api import MezonApi
+from typing import Any, List, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # Import MezonClient for type hinting and avoid circular imports
+    from mezon.client import MezonClient
+
+from mezon.api import MezonApi
+from mezon.socket import WebSocketAdapterPb, Socket
 from mezon.managers.event import EventManager
-from mezon.messages.queue import MessageQueue
-from mezon.messages.db import MessageDB
+from mezon.messages import MessageQueue, MessageDB
+
 from mezon.models import (
     ApiMessageAttachment,
     ApiMessageMention,
@@ -11,8 +17,6 @@ from mezon.models import (
     EphemeralMessageData,
 )
 from mezon.session import Session
-from mezon.socket.default_socket import Socket
-from mezon.socket.websocket_adapter import WebSocketAdapterPb
 
 
 class SocketManager:
@@ -24,7 +28,7 @@ class SocketManager:
         api_client: MezonApi,
         event_manager: EventManager,
         message_queue: MessageQueue,
-        mezon_client,
+        mezon_client: "MezonClient",
         message_db: MessageDB,
     ):
         self.host = host
@@ -35,7 +39,7 @@ class SocketManager:
         self.message_queue = message_queue
         self.mezon_client = mezon_client
         self.message_db = message_db
-        self.adapter = WebSocketAdapterPb(event_manager=event_manager)
+        self.adapter = WebSocketAdapterPb()
         self.socket = Socket(
             host=host, port=port, use_ssl=use_ssl, event_manager=event_manager
         )
@@ -89,3 +93,7 @@ class SocketManager:
             code=code,
             topic_id=topic_id,
         )
+
+    async def disconnect(self) -> None:
+        """Close the socket connection and cleanup resources."""
+        await self.socket.close()
