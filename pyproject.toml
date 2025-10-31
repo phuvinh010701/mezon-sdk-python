@@ -1,6 +1,6 @@
 [project]
 name = "mezon-sdk"
-version = "0.1.0"
+version = "1.1.0"
 description = "Mezon Python SDK - A Python implementation of the Mezon TypeScript SDK"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -11,15 +11,61 @@ dependencies = [
     "protobuf>=4.25.0",
     "pyjwt>=2.8.0",
 ]
-license = "MIT"
-license-files = ["LICEN[CS]E*"]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 
 [dependency-groups]
 dev = [
     "ruff>=0.14.1",
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
+    "python-semantic-release>=9.0.0",
 ]
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+branch = "master"
+upload_to_pypi = false
+upload_to_release = true
+build_command = ""
+commit_message = "chore(release): {version} [skip ci]"
+commit_parser = "angular"
+logging_use_named_masks = false
+major_on_zero = true
+tag_format = "v{version}"
+
+[tool.semantic_release.remote]
+name = "origin"
+type = "github"
+ignore_token_for_push = false
+
+[tool.semantic_release.branches.master]
+match = "master"
+prerelease = false
+
+[tool.semantic_release.changelog]
+template_dir = "templates"
+changelog_file = "CHANGELOG.md"
+exclude_commit_patterns = []
+
+[tool.semantic_release.changelog.environment]
+block_start_string = "{%"
+block_end_string = "%}"
+variable_start_string = "{{"
+variable_end_string = "}}"
+comment_start_string = "{#"
+comment_end_string = "#}"
+trim_blocks = false
+lstrip_blocks = false
+newline_sequence = "\n"
+keep_trailing_newline = false
+extensions = []
+autoescape = true
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "style", "refactor", "test"]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]
 
 [project.urls]
 Homepage = "https://github.com/phuvinh010701/mezon-sdk-python"
