@@ -20,6 +20,8 @@ dev = [
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
     "python-semantic-release>=9.0.0",
+    "fastapi>=0.120.3",
+    "uvicorn>=0.38.0",
 ]
 
 [tool.semantic_release]
@@ -66,6 +68,11 @@ autoescape = true
 allowed_tags = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "style", "refactor", "test"]
 minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
+
+[tool.ruff]
+exclude = [
+    "mezon/protobuf",
+]
 
 [project.urls]
 Homepage = "https://github.com/phuvinh010701/mezon-sdk-python"

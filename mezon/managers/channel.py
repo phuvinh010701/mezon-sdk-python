@@ -1,12 +1,12 @@
 from typing import Optional, Dict
 
-from mezon.api.mezon_api import MezonApi
-from mezon.managers.session import SessionManager
-from mezon.managers.socket import SocketManager
+import mezon.api as api
+from .socket import SocketManager
+from .session import SessionManager
 from mezon.constants import ChannelType
 
 
-class ChanelManager:
+class ChannelManager:
     """
     Manager for channel operations.
 
@@ -16,7 +16,7 @@ class ChanelManager:
 
     def __init__(
         self,
-        api_client: MezonApi,
+        api_client: api.MezonApi,
         socket_manager: SocketManager,
         session_manager: SessionManager,
     ):

@@ -1,6 +1,8 @@
 import asyncio
-import traceback
 from typing import Callable, Dict, List
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class EventManager:
@@ -61,12 +63,21 @@ class EventManager:
         for handler in self.event_handlers[event_name]:
             try:
                 if asyncio.iscoroutinefunction(handler):
-                    await handler(*args, **kwargs)
+                    task = asyncio.create_task(handler(*args, **kwargs))
+                    task.add_done_callback(
+                        lambda t: self._handle_task_exception(t, event_name)
+                    )
                 else:
                     handler(*args, **kwargs)
             except Exception as e:
-                traceback.print_exc()
-                print(f"Error in event handler for '{event_name}': {e}")
+                logger.error(f"Error in event handler for '{event_name}': {e}")
+
+    def _handle_task_exception(self, task: asyncio.Task, event_name: str) -> None:
+        """Handle exceptions from background event handler tasks."""
+        try:
+            task.result()
+        except Exception as e:
+            logger.error(f"Error in async event handler for '{event_name}': {e}")
 
     def has_listeners(self, event_name: str) -> bool:
         """

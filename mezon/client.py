@@ -17,7 +17,7 @@ limitations under the License.
 from typing import Optional, List, Any, Callable
 
 from mezon.api.utils import parse_url_components
-from mezon.managers.chanel import ChanelManager
+from mezon.managers.channel import ChannelManager
 from mezon.managers.event import EventManager
 from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
@@ -118,7 +118,7 @@ class MezonClient:
         self.session_manager = SessionManager(
             api_client=self.api_client, session=sock_session
         )
-        self.chanel_manager = ChanelManager(
+        self.chanel_manager = ChannelManager(
             api_client=self.api_client,
             socket_manager=self.socket_manager,
             session_manager=self.session_manager,

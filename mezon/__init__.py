@@ -39,8 +39,15 @@ from .constants import (
 )
 from .api import MezonApi
 
+# Managers imports
+from .managers import ChannelManager, SessionManager, SocketManager
+
 # Import client
 from .client import MezonClient
+
+# Socket imports
+from .socket import WebSocketAdapter, WebSocketAdapterPb, Socket
+
 
 __all__ = [
     # Version
@@ -70,4 +77,11 @@ __all__ = [
     "ChannelType",
     "ChannelStreamMode",
     "TypeMessage",
+    # Socket
+    "WebSocketAdapter",
+    "WebSocketAdapterPb",
+    "Socket",
+    "ChannelManager",
+    "SessionManager",
+    "SocketManager",
 ]
