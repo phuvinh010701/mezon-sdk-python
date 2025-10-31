@@ -11,8 +11,8 @@ dependencies = [
     "protobuf>=4.25.0",
     "pyjwt>=2.8.0",
 ]
-license = "MIT"
-license-files = ["LICEN[CS]E*"]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 
 [dependency-groups]
 dev = [
@@ -25,14 +25,19 @@ dev = [
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
 branch = "master"
-upload_to_pypi = true
+upload_to_pypi = false
 upload_to_release = true
-build_command = "uv build"
+build_command = ""
 commit_message = "chore(release): {version} [skip ci]"
 commit_parser = "angular"
 logging_use_named_masks = false
 major_on_zero = true
 tag_format = "v{version}"
+
+[tool.semantic_release.remote]
+name = "origin"
+type = "github"
+ignore_token_for_push = false
 
 [tool.semantic_release.branches.master]
 match = "master"
