@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.3.0 (2025-11-01)
+
+### Chores
+
+- Remove fastapi_example.py as it is no longer needed
+  ([`0644e17`](https://github.com/phuvinh010701/mezon-sdk-python/commit/0644e17da678310548c52443f158dde35ef6d55b))
+
+### Features
+
+- Enhance Mezon SDK with caching and database support
+  ([`134a5fa`](https://github.com/phuvinh010701/mezon-sdk-python/commit/134a5fa9d97812d3c5bc93cc438ea893036fdf9c))
+
+
 ## v1.2.0 (2025-10-31)
 
 ### Features
