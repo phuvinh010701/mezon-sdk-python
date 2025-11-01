@@ -40,13 +40,22 @@ from .constants import (
 from .api import MezonApi
 
 # Managers imports
-from .managers import ChannelManager, SessionManager, SocketManager
+from .managers import (
+    ChannelManager,
+    SessionManager,
+    SocketManager,
+    CacheManager,
+    Collection,
+)
 
 # Import client
 from .client import MezonClient
 
 # Socket imports
 from .socket import WebSocketAdapter, WebSocketAdapterPb, Socket
+
+# Utils imports
+from .utils import setup_logger, get_logger, disable_logging, enable_logging
 
 
 __all__ = [
@@ -84,4 +93,11 @@ __all__ = [
     "ChannelManager",
     "SessionManager",
     "SocketManager",
+    "CacheManager",
+    "Collection",
+    # Utils
+    "setup_logger",
+    "get_logger",
+    "disable_logging",
+    "enable_logging",
 ]

@@ -38,19 +38,20 @@ class MezonApi:
         "list_clans_descs": "/v2/clandesc",
         "list_channel_descs": "/v2/channeldesc",
         "create_channel_desc": "/v2/channeldesc",
+        "get_channel_detail": "/v2/channeldesc/{channel_id}",
     }
 
-    def __init__(self, bot_id: str, api_key: str, base_url: str, timeout_ms: int):
+    def __init__(self, client_id: str, api_key: str, base_url: str, timeout_ms: int):
         """
         Initialize Mezon API client.
 
         Args:
-            bot_id: Bot ID for authentication
+            client_id: Bot ID for authentication
             api_key: API key for authentication
             base_url: Base URL for API
             timeout_ms: Timeout in milliseconds
         """
-        self.bot_id = bot_id
+        self.client_id = client_id
         self.api_key = api_key
         self.base_url = base_url
         self.timeout_ms = timeout_ms
@@ -242,6 +243,19 @@ class MezonApi:
             url_path=self.ENDPOINTS["create_channel_desc"],
             query_params={},
             body=body,
+            headers=headers,
+        )
+        return ApiChannelDescription.model_validate(response)
+
+    async def get_channel_detail(
+        self, token: str, channel_id: str
+    ) -> ApiChannelDescription:
+        headers = build_headers(bearer_token=token)
+        response = await self.call_api(
+            method="GET",
+            url_path=self.ENDPOINTS["get_channel_detail"].format(channel_id=channel_id),
+            query_params={},
+            body=None,
             headers=headers,
         )
         return ApiChannelDescription.model_validate(response)

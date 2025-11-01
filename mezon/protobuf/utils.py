@@ -9,3 +9,5 @@ def parse_protobuf(message: bytes) -> realtime_pb2.Envelope:
 def encode_protobuf(envelope: realtime_pb2.Envelope) -> bytes:
     """Encode envelope to bytes."""
     return envelope.SerializeToString()
+
+NEOF_NAME = "message"  # from Envelope.WhichOneof signature
