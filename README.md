@@ -8,13 +8,13 @@ A Python implementation of the Mezon SDK with 1:1 logic mapping to the TypeScrip
 
 ## Features
 
-- =€ **Async/Await Native** - Built from the ground up with `asyncio` for high-performance concurrent operations
+- =ï¿½ **Async/Await Native** - Built from the ground up with `asyncio` for high-performance concurrent operations
 - = **Real-time WebSocket** - Full support for real-time messaging and events via WebSocket with automatic reconnection
-- =æ **Type-Safe** - Comprehensive type hints and Pydantic models for better IDE support and fewer runtime errors
-- <¯ **Event-Driven** - Elegant event handler system for building reactive applications
+- =ï¿½ **Type-Safe** - Comprehensive type hints and Pydantic models for better IDE support and fewer runtime errors
+- <ï¿½ **Event-Driven** - Elegant event handler system for building reactive applications
 - = **Protocol Buffers** - Efficient binary serialization for optimal performance
-- =á **Production Ready** - Proper error handling, logging, and graceful shutdown mechanisms
-- >é **Framework Integration** - Works seamlessly with FastAPI, Flask, Django, and other Python frameworks
+- =ï¿½ **Production Ready** - Proper error handling, logging, and graceful shutdown mechanisms
+- >ï¿½ **Framework Integration** - Works seamlessly with FastAPI, Flask, Django, and other Python frameworks
 
 ## Installation
 
@@ -36,6 +36,19 @@ poetry add mezon-sdk
 uv pip install mezon-sdk
 ```
 
+## Dependencies
+
+The SDK has minimal dependencies for a lightweight installation:
+
+- **pydantic** (>=2.12.3) - Data validation and settings management
+- **aiohttp** (>=3.9.0) - Async HTTP client/server
+- **websockets** (>=12.0) - WebSocket protocol implementation
+- **protobuf** (>=4.25.0) - Protocol Buffers for efficient serialization
+- **pyjwt** (>=2.8.0) - JSON Web Token implementation
+- **aiosqlite** (>=0.20.0) - Async SQLite database interface for message caching
+
+All dependencies are automatically installed when you install the SDK.
+
 ## Quick Start
 
 ### Basic Bot Example
@@ -48,7 +61,7 @@ import asyncio
 
 # Initialize the client
 client = MezonClient(
-    bot_id="YOUR_BOT_ID",
+    client_id="YOUR_BOT_ID",
     api_key="YOUR_API_KEY"
 )
 
@@ -88,7 +101,7 @@ from mezon import MezonClient, Events
 from mezon.protobuf.rtapi import realtime_pb2
 import json
 
-client = MezonClient(bot_id="YOUR_BOT_ID", api_key="YOUR_API_KEY")
+client = MezonClient(client_id="YOUR_BOT_ID", api_key="YOUR_API_KEY")
 
 async def handle_channel_message(message: realtime_pb2.ChannelMessageSend):
     message_content = json.loads(message.content)
@@ -100,7 +113,7 @@ async def handle_channel_message(message: realtime_pb2.ChannelMessageSend):
             channel_id=message.channel_id,
             mode=message.mode,
             is_public=message.is_public,
-            msg="Pong! <Ó"
+            msg="Pong! <ï¿½"
         )
 
 client.on(Events.CHANNEL_MESSAGE, handle_channel_message)
@@ -266,7 +279,7 @@ client.on(Events.GIVE_COFFEE, sync_handler)
 
 ```python
 client = MezonClient(
-    bot_id: str,              # Your bot ID
+    client_id: str,              # Your bot ID
     api_key: str,             # Your API key
     host: str = "gw.mezon.ai",  # API host (optional)
     port: str = "443",        # API port (optional)
@@ -293,6 +306,81 @@ from mezon.models import (
     ApiClanDesc,           # Clan information
 )
 ```
+
+## Message Caching
+
+The SDK includes built-in message caching using async SQLite (`aiosqlite`) for better performance and offline message access.
+
+### How It Works
+
+Messages are automatically cached to a local SQLite database when received. This provides:
+
+- **Faster Message Retrieval**: Cached messages load instantly without API calls
+- **Offline Access**: Access previously received messages even when offline
+- **Non-blocking Operations**: All database operations are async and don't block the event loop
+- **Automatic Management**: Cache is handled automatically by the SDK
+
+### Database Location
+
+By default, messages are cached in:
+```
+./mezon-cache/mezon-messages-cache.db
+```
+
+### Custom Cache Location
+
+```python
+from mezon.messages.db import MessageDB
+
+# Initialize with custom path
+message_db = MessageDB(db_path="./custom-path/messages.db")
+
+client = MezonClient(
+    client_id="YOUR_BOT_ID",
+    api_key="YOUR_API_KEY",
+    # Pass custom message_db to client if needed
+)
+```
+
+### Working with Cached Messages
+
+```python
+from mezon.messages.db import MessageDB
+
+async def get_cached_messages():
+    async with MessageDB() as db:
+        # Get messages from a specific channel
+        messages = await db.get_messages_by_channel(
+            channel_id="channel_123",
+            limit=50,
+            offset=0
+        )
+
+        # Get a specific message
+        message = await db.get_message_by_id(
+            message_id="msg_456",
+            channel_id="channel_123"
+        )
+
+        # Get message count
+        count = await db.get_message_count(channel_id="channel_123")
+        total_count = await db.get_message_count()  # All messages
+
+        # Clear channel messages
+        deleted = await db.clear_channel_messages("channel_123")
+
+        # Delete specific message
+        success = await db.delete_message("msg_456", "channel_123")
+```
+
+### Performance Benefits
+
+The async SQLite implementation using `aiosqlite` provides:
+
+- **Non-blocking I/O**: Database operations don't block the event loop
+- **Concurrent Operations**: Multiple database operations can run concurrently
+- **Better Scalability**: Handles high message volumes without performance degradation
+- **Lazy Connection**: Database connection is only established when needed
 
 ## Advanced Usage
 
@@ -324,7 +412,7 @@ async def shutdown(client):
     print("Shutdown complete")
 
 async def main():
-    client = MezonClient(bot_id="...", api_key="...")
+    client = MezonClient(client_id="...", api_key="...")
     await client.login()
 
     # Handle shutdown signals
@@ -385,7 +473,7 @@ If you experience connection timeouts:
 ```python
 # Increase timeout
 client = MezonClient(
-    bot_id="...",
+    client_id="...",
     api_key="...",
     timeout=15000  # 15 seconds
 )
@@ -415,10 +503,10 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Links
 
-- =æ [PyPI Package](https://pypi.org/project/mezon-sdk/)
+- =ï¿½ [PyPI Package](https://pypi.org/project/mezon-sdk/)
 - = [GitHub Repository](https://github.com/phuvinh010701/mezon-sdk-python)
 - = [Issue Tracker](https://github.com/phuvinh010701/mezon-sdk-python/issues)
-- =Ö [Changelog](CHANGELOG.md)
+- =ï¿½ [Changelog](CHANGELOG.md)
 
 ## Support
 
@@ -435,4 +523,5 @@ If you encounter any issues or have questions:
 
 ---
 
-**Made with Python = | Powered by Mezon =€**
+**Made with Python =
+ | Powered by Mezon =ï¿½**

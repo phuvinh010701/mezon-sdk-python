@@ -16,15 +16,14 @@ limitations under the License.
 
 import asyncio
 from typing import Dict, Optional, Any, List
-import logging
-import json
 
-from mezon.constants import InternalEventsSocket
 from mezon.protobuf.rtapi import realtime_pb2
+from mezon.utils.logger import get_logger
 from mezon.protobuf.utils import parse_protobuf
 
 from .promise_executor import PromiseExecutor
 from .websocket_adapter import WebSocketAdapterPb
+from .message_builder import ChannelMessageBuilder, EphemeralMessageBuilder
 from mezon.managers.event import EventManager
 from ..session import Session
 from ..models import (
@@ -32,10 +31,9 @@ from ..models import (
     ApiMessageMention,
     ApiMessageAttachment,
     ApiMessageRef,
-    EphemeralMessageData,
 )
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class Socket:
@@ -302,172 +300,12 @@ class Socket:
             envelope: The protobuf envelope to parse
         """
 
-        if envelope.HasField("channel_message"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CHANNEL_MESSAGE.value, envelope.channel_message
-            )
-        elif envelope.HasField("message_reaction_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.MESSAGE_REACTION_EVENT.value,
-                envelope.message_reaction_event,
-            )
-        elif envelope.HasField("user_channel_removed_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.USER_CHANNEL_REMOVED_EVENT.value,
-                envelope.user_channel_removed_event,
-            )
-        elif envelope.HasField("user_clan_removed_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.USER_CLAN_REMOVED_EVENT.value,
-                envelope.user_clan_removed_event,
-            )
-        elif envelope.HasField("user_channel_added_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.USER_CHANNEL_ADDED_EVENT.value,
-                envelope.user_channel_added_event,
-            )
-        elif envelope.HasField("channel_created_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CHANNEL_CREATED_EVENT.value,
-                envelope.channel_created_event,
-            )
-        elif envelope.HasField("channel_deleted_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CHANNEL_DELETED_EVENT.value,
-                envelope.channel_deleted_event,
-            )
-        elif envelope.HasField("channel_updated_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CHANNEL_UPDATED_EVENT.value,
-                envelope.channel_updated_event,
-            )
-        elif envelope.HasField("role_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.ROLE_EVENT.value, envelope.role_event
-            )
-        elif envelope.HasField("give_coffee_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.GIVE_COFFEE_EVENT.value, envelope.give_coffee_event
-            )
-        elif envelope.HasField("role_assign_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.ROLE_ASSIGN_EVENT.value, envelope.role_assign_event
-            )
-        elif envelope.HasField("add_clan_user_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.ADD_CLAN_USER_EVENT.value,
-                envelope.add_clan_user_event,
-            )
-        elif envelope.HasField("token_sent_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.TOKEN_SEND.value, envelope.token_sent_event
-            )
-        elif envelope.HasField("clan_event_created"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CLAN_EVENT_CREATED.value,
-                envelope.clan_event_created,
-            )
-        elif envelope.HasField("message_button_clicked"):
-            await self.event_manager.emit(
-                InternalEventsSocket.MESSAGE_BUTTON_CLICKED.value,
-                envelope.message_button_clicked,
-            )
-        elif envelope.HasField("streaming_joined_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.STREAMING_JOINED_EVENT.value,
-                envelope.streaming_joined_event,
-            )
-        elif envelope.HasField("streaming_leaved_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.STREAMING_LEAVED_EVENT.value,
-                envelope.streaming_leaved_event,
-            )
-        elif envelope.HasField("dropdown_box_selected"):
-            await self.event_manager.emit(
-                InternalEventsSocket.DROPDOWN_BOX_SELECTED.value,
-                envelope.dropdown_box_selected,
-            )
-        elif envelope.HasField("webrtc_signaling_fwd"):
-            await self.event_manager.emit(
-                InternalEventsSocket.WEBRTC_SIGNALING_FWD.value,
-                envelope.webrtc_signaling_fwd,
-            )
-        elif envelope.HasField("voice_started_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.VOICE_STARTED_EVENT.value,
-                envelope.voice_started_event,
-            )
-        elif envelope.HasField("voice_ended_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.VOICE_ENDED_EVENT.value, envelope.voice_ended_event
-            )
-        elif envelope.HasField("voice_joined_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.VOICE_JOINED_EVENT.value,
-                envelope.voice_joined_event,
-            )
-        elif envelope.HasField("voice_leaved_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.VOICE_LEAVED_EVENT.value,
-                envelope.voice_leaved_event,
-            )
-        elif envelope.HasField("notifications"):
-            await self.event_manager.emit(
-                InternalEventsSocket.NOTIFICATIONS.value, envelope.notifications
-            )
-        elif envelope.HasField("quick_menu_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.QUICK_MENU.value, envelope.quick_menu_event
-            )
-        elif envelope.HasField("message_typing_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.MESSAGE_TYPING_EVENT.value,
-                envelope.message_typing_event,
-            )
-        elif envelope.HasField("channel_presence_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CHANNEL_PRESENCE_EVENT.value,
-                envelope.channel_presence_event,
-            )
-        elif envelope.HasField("last_pin_message_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.LAST_PIN_MESSAGE_EVENT.value,
-                envelope.last_pin_message_event,
-            )
-        elif envelope.HasField("custom_status_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CUSTOM_STATUS_EVENT.value,
-                envelope.custom_status_event,
-            )
-        elif envelope.HasField("user_profile_updated_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.USER_PROFILE_UPDATED_EVENT.value,
-                envelope.user_profile_updated_event,
-            )
-        elif envelope.HasField("clan_updated_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CLAN_UPDATED_EVENT.value,
-                envelope.clan_updated_event,
-            )
-        elif envelope.HasField("clan_profile_updated_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.CLAN_PROFILE_UPDATED_EVENT.value,
-                envelope.clan_profile_updated_event,
-            )
-        elif envelope.HasField("stream_data"):
-            await self.event_manager.emit(
-                InternalEventsSocket.STREAM_DATA.value, envelope.stream_data
-            )
-        elif envelope.HasField("stream_presence_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.STREAM_PRESENCE_EVENT.value,
-                envelope.stream_presence_event,
-            )
-        elif envelope.HasField("status_presence_event"):
-            await self.event_manager.emit(
-                InternalEventsSocket.STATUS_PRESENCE_EVENT.value,
-                envelope.status_presence_event,
-            )
+        field_name = envelope.WhichOneof("message")
+        if field_name:
+            payload = envelope.__getattribute__(field_name)
+            logger.debug(f"Field name: {field_name}")
+            logger.debug(f"Payload: {payload}")
+            await self.event_manager.emit(field_name, payload)
 
     async def join_clan_chat(self, clan_id: str) -> realtime_pb2.ClanJoin:
         """
@@ -555,83 +393,59 @@ class Socket:
         Raises:
             Exception: If sending fails
         """
-
-        # TODO: Improve code quality
-
-        content = {"t": content}
-        content_str = json.dumps(content) if isinstance(content, dict) else str(content)
-
-        channel_message_send = realtime_pb2.ChannelMessageSend(
+        channel_message_send = ChannelMessageBuilder.build(
             clan_id=clan_id,
             channel_id=channel_id,
             mode=mode,
             is_public=is_public,
-            content=content_str,
+            content=content,
+            mentions=mentions,
+            attachments=attachments,
+            references=references,
+            anonymous_message=anonymous_message,
+            mention_everyone=mention_everyone,
+            avatar=avatar,
+            code=code,
+            topic_id=topic_id,
         )
-
-        if mentions:
-            for mention in mentions:
-                msg_mention = channel_message_send.mentions.add()
-                if mention.user_id:
-                    msg_mention.user_id = mention.user_id
-                if mention.username:
-                    msg_mention.username = mention.username
-                if mention.role_id:
-                    msg_mention.role_id = mention.role_id
-                if mention.s is not None:
-                    msg_mention.s = mention.s
-                if mention.e is not None:
-                    msg_mention.e = mention.e
-
-        if attachments:
-            for attachment in attachments:
-                msg_attachment = channel_message_send.attachments.add()
-                if attachment.filename:
-                    msg_attachment.filename = attachment.filename
-                if attachment.url:
-                    msg_attachment.url = attachment.url
-                if attachment.filetype:
-                    msg_attachment.filetype = attachment.filetype
-                if attachment.size is not None:
-                    msg_attachment.size = attachment.size
-                if attachment.width is not None:
-                    msg_attachment.width = attachment.width
-                if attachment.height is not None:
-                    msg_attachment.height = attachment.height
-
-        if references:
-            for ref in references:
-                msg_ref = channel_message_send.references.add()
-                msg_ref.message_ref_id = ref.message_ref_id
-                msg_ref.message_sender_id = ref.message_sender_id
-                if ref.message_sender_username:
-                    msg_ref.message_sender_username = ref.message_sender_username
-                if ref.content:
-                    msg_ref.content = ref.content
-                if ref.has_attachment is not None:
-                    msg_ref.has_attachment = ref.has_attachment
-
-        if anonymous_message is not None:
-            channel_message_send.anonymous_message = anonymous_message
-
-        if mention_everyone is not None:
-            channel_message_send.mention_everyone = mention_everyone
-
-        if avatar:
-            channel_message_send.avatar = avatar
-
-        if code is not None:
-            channel_message_send.code = code
-
-        if topic_id:
-            channel_message_send.topic_id = topic_id
 
         envelope = realtime_pb2.Envelope()
         envelope.channel_message_send.CopyFrom(channel_message_send)
-
         await self._send_with_cid(envelope)
 
     async def write_ephemeral_message(
-        self, message: EphemeralMessageData
+        self,
+        receiver_id: str,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        content: Any,
+        mentions: Optional[List[ApiMessageMention]] = None,
+        attachments: Optional[List[ApiMessageAttachment]] = None,
+        references: Optional[List[ApiMessageRef]] = None,
+        anonymous_message: Optional[bool] = None,
+        mention_everyone: Optional[bool] = None,
+        avatar: Optional[str] = None,
+        code: Optional[int] = None,
+        topic_id: Optional[str] = None,
     ) -> ChannelMessageAck:
-        raise NotImplementedError("Not implemented yet")
+        ephemeral_message_send = EphemeralMessageBuilder.build(
+            receiver_id=receiver_id,
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            content=content,
+            mentions=mentions,
+            attachments=attachments,
+            references=references,
+            anonymous_message=anonymous_message,
+            mention_everyone=mention_everyone,
+            avatar=avatar,
+            code=code,
+            topic_id=topic_id,
+        )
+        envelope = realtime_pb2.Envelope()
+        envelope.ephemeral_message_send.CopyFrom(ephemeral_message_send)
+        await self._send_with_cid(envelope)
