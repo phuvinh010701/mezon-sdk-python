@@ -180,6 +180,10 @@ class Socket:
                     if self.event_manager:
                         await self._emit_event_from_envelope(envelope)
 
+    async def reconnect(self) -> None:
+        # TODO: Implement reconnect logic
+        pass
+
     async def _start_listen(self) -> None:
         """Start the heartbeat ping-pong task."""
         if self._heartbeat_task is None or self._heartbeat_task.done():
