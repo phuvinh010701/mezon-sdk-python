@@ -14,10 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import json
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
 from mezon.protobuf.api import api_pb2
-
+from mezon.protobuf.rtapi import realtime_pb2
+from google.protobuf import json_format
 
 # API Models
 
@@ -105,6 +107,7 @@ class ApiChannelDescription(BaseModel):
     channel_label: Optional[str] = None
     channel_private: Optional[int] = None
     clan_id: Optional[str] = None
+    clan_name: Optional[str] = None
     count_mess_unread: Optional[int] = None
     create_time_seconds: Optional[int] = None
     creator_id: Optional[str] = None
@@ -123,6 +126,14 @@ class ApiChannelDescription(BaseModel):
     user_id: Optional[List[str]] = None
     user_ids: Optional[List[str]] = None
     usernames: Optional[List[str]] = None
+
+    @classmethod
+    def from_protobuf(
+        cls,
+        message: realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent,
+    ) -> "ApiChannelDescription":
+        json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
+        return cls.model_validate_json(json_data)
 
 
 class ApiChannelDescList(BaseModel):
@@ -656,7 +667,6 @@ class ChannelMessageRaw(BaseModel):
         Returns:
             ChannelMessageRaw instance
         """
-        import json
 
         def safe_json_parse(value: Optional[str], default):
             """Safely parse JSON string, return default on error or None"""

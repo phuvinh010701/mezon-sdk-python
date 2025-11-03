@@ -21,6 +21,7 @@ import logging
 from mezon import ApiChannelDescription, CacheManager, ChannelType, Events
 from mezon.api.utils import parse_url_components
 from mezon.protobuf.api import api_pb2
+from mezon.protobuf.rtapi import realtime_pb2
 from mezon.managers.channel import ChannelManager
 from mezon.managers.event import EventManager
 from mezon.managers.session import SessionManager
@@ -342,6 +343,28 @@ class MezonClient:
 
         return None
 
+    async def _update_cache_channel(
+        self,
+        message: realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent,
+    ) -> None:
+        clan = self.clans.get(message.clan_id)
+        if not clan:
+            return
+
+        channel = TextChannel(
+            ApiChannelDescription.from_protobuf(message),
+            clan,
+            self.socket_manager,
+            self.message_queue,
+            self.message_db,
+        )
+        self.channels.set(message.channel_id, channel)
+        clan.channels.set(message.channel_id, channel)
+        await self.socket_manager.get_socket().join_chat(
+            channel.clan.id, channel.id, channel.channel_type, channel.is_private
+        )
+        return channel
+
     def on_channel_message(
         self, handler: Callable[[api_pb2.ChannelMessage], None]
     ) -> None:
@@ -354,3 +377,21 @@ class MezonClient:
                 handler(message)
 
         self.event_manager.on(Events.CHANNEL_MESSAGE, wrapper)
+
+    def on_channel_created(
+        self,
+        handler: Callable[
+            [realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent], None
+        ],
+    ) -> None:
+        async def wrapper(
+            message: realtime_pb2.ChannelCreatedEvent
+            | realtime_pb2.ChannelUpdatedEvent,
+        ) -> None:
+            await self._update_cache_channel(message)
+            if asyncio.iscoroutinefunction(handler):
+                await handler(message)
+            else:
+                handler(message)
+
+        self.event_manager.on(Events.CHANNEL_CREATED, wrapper)
