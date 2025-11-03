@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.4.0 (2025-11-03)
+
+### Features
+
+- Implement on channel created event
+  ([`9f06182`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9f06182136f7f3a4cbcac90cb8bdfe4792519e33))
+
+
 ## v1.3.0 (2025-11-01)
 
 ### Chores

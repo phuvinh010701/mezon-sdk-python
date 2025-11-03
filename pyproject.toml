@@ -1,6 +1,6 @@
 [project]
 name = "mezon-sdk"
-version = "1.3.0"
+version = "1.4.0"
 description = "Mezon Python SDK - A Python implementation of the Mezon TypeScript SDK"
 readme = "README.md"
 requires-python = ">=3.10"
