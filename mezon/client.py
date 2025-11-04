@@ -166,6 +166,21 @@ class MezonClient:
                 self.chanel_manager.init_all_dm_channels(sock_session.token),
             )
 
+    async def _invoke_handler(self, handler: Callable, *args, **kwargs) -> None:
+        """
+        Invoke a handler function, automatically handling both sync and async callables.
+
+        Args:
+            handler: The handler function to invoke
+            *args: Positional arguments to pass to the handler
+            **kwargs: Keyword arguments to pass to the handler
+        """
+        logger.debug(f"Invoking handler {handler} with args {args} and kwargs {kwargs}")
+        if asyncio.iscoroutinefunction(handler):
+            await handler(*args, **kwargs)
+        else:
+            handler(*args, **kwargs)
+
     async def login(self) -> None:
         session = await self.get_session()
         await self.initialize_managers(session)
@@ -371,27 +386,108 @@ class MezonClient:
         async def wrapper(message: api_pb2.ChannelMessage) -> None:
             await self._init_channel_message_cache(message)
             await self._init_user_clan_cache(message)
-            if asyncio.iscoroutinefunction(handler):
-                await handler(message)
-            else:
-                handler(message)
+            await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.CHANNEL_MESSAGE, wrapper)
 
     def on_channel_created(
         self,
-        handler: Callable[
-            [realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent], None
-        ],
+        handler: Callable[[realtime_pb2.ChannelCreatedEvent], None],
     ) -> None:
-        async def wrapper(
-            message: realtime_pb2.ChannelCreatedEvent
-            | realtime_pb2.ChannelUpdatedEvent,
-        ) -> None:
+        async def wrapper(message: realtime_pb2.ChannelCreatedEvent) -> None:
             await self._update_cache_channel(message)
-            if asyncio.iscoroutinefunction(handler):
-                await handler(message)
-            else:
-                handler(message)
+            await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.CHANNEL_CREATED, wrapper)
+
+    def on_channel_updated(
+        self, handler: Callable[[realtime_pb2.ChannelUpdatedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.ChannelUpdatedEvent) -> None:
+            if (
+                message.channel_type == ChannelType.CHANNEL_TYPE_THREAD
+                and message.status == 1
+            ):
+                await self.socket_manager.get_socket().join_chat(
+                    message.clan_id, message.channel_id, message.channel_type, False
+                )
+            await self._update_cache_channel(message)
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.CHANNEL_UPDATED, wrapper)
+
+    def on_channel_deleted(
+        self, handler: Callable[[realtime_pb2.ChannelDeletedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.ChannelDeletedEvent) -> None:
+            clan = self.clans.get(message.clan_id)
+            if not clan:
+                logger.debug(f"Clan {message.clan_id} not found!")
+                return
+
+            self.channels.delete(message.channel_id)
+            clan.channels.delete(message.channel_id)
+
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.CHANNEL_DELETED, wrapper)
+
+    def on_message_reaction(
+        self, handler: Callable[[api_pb2.MessageReaction], None]
+    ) -> None:
+        async def wrapper(message: api_pb2.MessageReaction) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.MESSAGE_REACTION, wrapper)
+
+    def on_channel_user_removed(
+        self, handler: Callable[[realtime_pb2.UserChannelRemoved], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.UserChannelRemoved) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.USER_CHANNEL_REMOVED, wrapper)
+
+    def on_user_clan_removed(
+        self, handler: Callable[[realtime_pb2.UserClanRemoved], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.UserClanRemoved) -> None:
+            clan = self.clans.get(message.clan_id)
+            if not clan:
+                logger.debug(f"Clan {message.clan_id} not found!")
+                return
+
+            for user_id in message.user_ids:
+                clan.users.delete(user_id)
+
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.USER_CLAN_REMOVED, wrapper)
+
+    def on_user_channel_added(
+        self, handler: Callable[[realtime_pb2.UserChannelAdded], None]
+    ) -> None:
+        """
+        Register a handler for when a user is added to a channel.
+
+        Args:
+            handler: The callback function to handle the event.
+                     Can be either sync or async.
+        """
+
+        async def wrapper(message: realtime_pb2.UserChannelAdded) -> None:
+            socket = self.socket_manager.get_socket()
+            if message.users:
+                for user in message.users:
+                    if user.user_id == self.client_id:
+                        await socket.join_chat(
+                            clan_id=message.clan_id,
+                            channel_id=message.channel_desc.channel_id,
+                            channel_type=message.channel_desc.type.value,
+                            is_public=not message.channel_desc.channel_private,
+                        )
+                        break
+
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.USER_CHANNEL_ADDED, wrapper)
