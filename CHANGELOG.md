@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.4.1 (2025-11-04)
+
+### Bug Fixes
+
+- Fix: enhance event handling with unified handler invocation
+  ([`f1a9b22`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f1a9b22d0fe192fa6b6e2f0d87dd8aec53da7932))
+
+
 ## v1.4.0 (2025-11-03)
 
 ### Features
