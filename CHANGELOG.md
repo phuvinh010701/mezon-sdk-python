@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.5.0 (2025-11-04)
+
+### Bug Fixes
+
+- Enhance event handling with unified handler invocation
+  ([`ae2cf2b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ae2cf2b874cc7e48a59f788d8e7145735844e059))
+
+### Features
+
+- Integrate MMN and ZK clients, add token sending functionality
+  ([`9b26309`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9b2630903ce5fdd7fd58a3969006b7806680c400))
+
+
 ## v1.4.1 (2025-11-04)
 
 ### Bug Fixes
