@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Callable
+from typing import Callable, Literal
 import logging
 
 from mezon import ApiChannelDescription, CacheManager, ChannelType, Events
@@ -28,13 +28,30 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.messages.queue import MessageQueue
-from mezon.models import ApiCreateChannelDescRequest, ChannelMessageRaw, UserInitData
+from mezon.models import (
+    ApiCreateChannelDescRequest,
+    ApiSentTokenRequest,
+    ChannelMessageRaw,
+    UserInitData,
+)
 from mezon.structures.clan import Clan
 from mezon.structures.message import Message
 from mezon.structures.text_channel import TextChannel
 from mezon.structures.user import User
 from mezon.utils import is_valid_user_id
 from mezon.utils.logger import get_logger, setup_logger
+from mmn import (
+    EphemeralKeyPair,
+    MmnClient,
+    MmnClientConfig,
+    ZkClient,
+    ZkClientConfig,
+    ZkProof,
+    AddTxResponse,
+    ExtraInfo,
+    SendTransactionRequest,
+    TransferType,
+)
 
 from .api import MezonApi
 from .session import Session
@@ -152,11 +169,19 @@ class MezonClient:
         )
 
         if self.mmn_api_url:
-            # TODO: Implement MMN API
-            pass
+            self.mmn_client = MmnClient(
+                MmnClientConfig(
+                    base_url=self.mmn_api_url,
+                    timeout=self.timeout_ms,
+                )
+            )
         if self.zk_api_url:
-            # TODO: Implement ZK API
-            pass
+            self.zk_client = ZkClient(
+                ZkClientConfig(
+                    endpoint=self.zk_api_url,
+                    timeout=self.timeout_ms,
+                )
+            )
 
         await self.socket_manager.connect(sock_session)
 
@@ -184,6 +209,74 @@ class MezonClient:
     async def login(self) -> None:
         session = await self.get_session()
         await self.initialize_managers(session)
+
+        if session.user_id:
+            self.key_gen = self.get_ephemeral_key_pair()
+            self.address = self.get_address_from_user_id(self.client_id)
+            self.zk_proof = await self.get_zk_proof()
+
+    def get_ephemeral_key_pair(self) -> EphemeralKeyPair:
+        if self.mmn_client:
+            return self.mmn_client.generate_ephemeral_key_pair()
+        raise ValueError("MMN client not initialized!")
+
+    def get_address_from_user_id(self, user_id: str) -> str:
+        if self.mmn_client:
+            return self.mmn_client.get_address_from_user_id(user_id)
+        raise ValueError("MMN client not initialized!")
+
+    async def get_zk_proof(self) -> ZkProof:
+        if self.zk_client:
+            return await self.zk_client.get_zk_proofs(
+                user_id=self.client_id,
+                jwt=self.session_manager.get_session().token,
+                address=self.address,
+                ephemeral_public_key=self.key_gen.public_key,
+            )
+        raise ValueError("ZK client not initialized!")
+
+    async def get_current_nonce(
+        self, user_id: str, tag: Literal["latest", "pending"] = "latest"
+    ) -> int:
+        if self.mmn_client:
+            return await self.mmn_client.get_current_nonce(
+                user_id=user_id,
+                tag=tag,
+            )
+        raise ValueError("MMN client not initialized!")
+
+    async def send_token(self, token_event: ApiSentTokenRequest) -> AddTxResponse:
+        if not self.mmn_client:
+            raise ValueError("MMN client not initialized")
+
+        sender_id = self.client_id
+        receiver_id = token_event.receiver_id
+
+        nonce_response = await self.get_current_nonce(sender_id, "pending")
+
+        extra_info = ExtraInfo(
+            type=TransferType.TRANSFER_TOKEN.value,
+            UserSenderId=sender_id,
+            UserSenderUsername="",
+            UserReceiverId=receiver_id,
+        )
+        tx_request = SendTransactionRequest(
+            sender=sender_id,
+            recipient=receiver_id,
+            amount=self.mmn_client.scale_amount_to_decimals(token_event.amount),
+            nonce=nonce_response.nonce + 1,
+            text_data=token_event.note,
+            extra_info=extra_info,
+            public_key=self.key_gen.public_key,
+            private_key=self.key_gen.private_key,
+            zk_proof=self.zk_proof.proof,
+            zk_pub=self.zk_proof.public_input,
+        )
+
+        logger.debug(f"Sending transaction: {tx_request}")
+
+        result = await self.mmn_client.send_transaction(tx_request)
+        return result
 
     def on(self, event_name: str, handler: Callable) -> None:
         """

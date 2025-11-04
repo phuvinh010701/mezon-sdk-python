@@ -3,7 +3,7 @@ name = "mezon-sdk"
 version = "1.4.1"
 description = "Mezon Python SDK - A Python implementation of the Mezon TypeScript SDK"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
     "pydantic>=2.12.3",
     "aiohttp>=3.9.0",
@@ -11,6 +11,7 @@ dependencies = [
     "protobuf>=4.25.0",
     "pyjwt>=2.8.0",
     "aiosqlite>=0.20.0",
+    "mmn-sdk>=0.1.0",
 ]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
