@@ -254,6 +254,18 @@ class ApiRegisterStreamingChannelRequest(BaseModel):
     channel_id: Optional[str] = None
 
 
+class ApiSentTokenRequest(BaseModel):
+    """Request to send tokens to another user"""
+
+    receiver_id: str
+    amount: int
+    sender_id: Optional[str] = None
+    sender_name: Optional[str] = None
+    note: Optional[str] = None
+    extra_attribute: Optional[str] = None
+    mmn_extra_info: Optional[Dict[str, Any]] = None
+
+
 # Client Models
 
 
