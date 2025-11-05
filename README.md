@@ -54,36 +54,42 @@ All dependencies are automatically installed when you install the SDK.
 ### Basic Bot Example
 
 ```python
-from mezon import MezonClient, Events
-from mezon.protobuf.rtapi import realtime_pb2
-import json
 import asyncio
+import json
+import logging
+from mezon import MezonClient
+from mezon.protobuf.api import api_pb2
 
-# Initialize the client
+# Initialize the client with logging
 client = MezonClient(
     client_id="YOUR_BOT_ID",
-    api_key="YOUR_API_KEY"
+    api_key="YOUR_API_KEY",
+    enable_logging=True,
+    log_level=logging.INFO,
 )
 
 # Handle incoming messages
-async def handle_message(message: realtime_pb2.ChannelMessageSend):
-    content = json.loads(message.content).get("t")
+async def handle_message(message: api_pb2.ChannelMessage):
+    # Ignore messages from the bot itself
+    if message.sender_id == client.client_id:
+        return
 
+    # Parse message content
+    message_content = json.loads(message.content)
+    content = message_content.get("t")
+
+    # Respond to !hello command
     if content.startswith("!hello"):
-        await client.send_message(
-            clan_id=message.clan_id,
-            channel_id=message.channel_id,
-            mode=message.mode,
-            is_public=message.is_public,
-            msg="Hello! I'm a Mezon bot =K"
-        )
+        channel = await client.channels.fetch(message.channel_id)
+        await channel.send(content="Hello! I'm a Mezon bot 👋")
 
-# Register event handlers
-client.on(Events.CHANNEL_MESSAGE, handle_message)
+# Register event handler using the convenient method
+client.on_channel_message(handle_message)
 
 # Run the bot
 async def main():
     await client.login()
+    print("Bot is running...")
     # Keep the bot running
     await asyncio.Event().wait()
 
@@ -95,28 +101,61 @@ if __name__ == "__main__":
 
 ```python
 from contextlib import asynccontextmanager
+import logging
+import json
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from mezon import MezonClient, Events
+from mezon import MezonClient
+from mezon.models import ApiSentTokenRequest
+from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
-import json
 
-client = MezonClient(client_id="YOUR_BOT_ID", api_key="YOUR_API_KEY")
+# Initialize client with logging
+client = MezonClient(
+    client_id="YOUR_BOT_ID",
+    api_key="YOUR_API_KEY",
+    enable_logging=True,
+    log_level=logging.INFO,
+)
 
-async def handle_channel_message(message: realtime_pb2.ChannelMessageSend):
+# Handle incoming messages
+async def handle_channel_message(message: api_pb2.ChannelMessage):
+    # Ignore bot's own messages
+    if message.sender_id == client.client_id:
+        return
+
     message_content = json.loads(message.content)
     content = message_content.get("t")
 
     if content.startswith("!ping"):
-        await client.send_message(
-            clan_id=message.clan_id,
-            channel_id=message.channel_id,
-            mode=message.mode,
-            is_public=message.is_public,
-            msg="Pong! <�"
+        channel = await client.channels.fetch(message.channel_id)
+        await channel.send(content="Pong! 🏓")
+
+    elif content.startswith("!tip"):
+        # Send tokens to user
+        await client.send_token(
+            ApiSentTokenRequest(
+                receiver_id=message.sender_id,
+                amount=10,
+                note="Thanks for using the bot!",
+            )
         )
 
-client.on(Events.CHANNEL_MESSAGE, handle_channel_message)
+# Handle channel events
+async def handle_channel_created(message: realtime_pb2.ChannelCreatedEvent):
+    print(f"New channel created: {message.channel_id}")
+
+async def handle_channel_updated(message: realtime_pb2.ChannelUpdatedEvent):
+    print(f"Channel updated: {message.channel_id}")
+
+async def handle_user_joined(message: realtime_pb2.UserChannelAdded):
+    print(f"User {message.user_id} joined channel {message.channel_id}")
+
+# Register event handlers using convenient methods
+client.on_channel_message(handle_channel_message)
+client.on_channel_created(handle_channel_created)
+client.on_channel_updated(handle_channel_updated)
+client.on_user_channel_added(handle_user_joined)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -138,6 +177,13 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/health")
 async def health():
     return JSONResponse(content={"status": "healthy"})
+
+@app.get("/clan/{clan_id}/voice-users")
+async def get_voice_users(clan_id: str):
+    """Get users in voice channels for a specific clan"""
+    clan = await client.clans.get(clan_id)
+    voice_users = await clan.list_channel_voice_users()
+    return JSONResponse(content=voice_users)
 
 # Run with: uvicorn main:app --reload
 ```
@@ -245,6 +291,30 @@ Events.VOICE_LEAVED_EVENT       # User left voice
 ### Sending Messages
 
 ```python
+# Method 1: Using channel objects (recommended)
+channel = await client.channels.fetch("channel_id")
+await channel.send(content="Your message here")
+
+# Send with mentions and attachments
+from mezon.models import ApiMessageMention, ApiMessageAttachment
+
+await channel.send(
+    content="Hello @user!",
+    mentions=[ApiMessageMention(user_id="user_id")],
+    attachments=[ApiMessageAttachment(url="https://example.com/image.png")]
+)
+
+# Reply to a message
+message = await channel.messages.get("message_id")
+await message.reply(content="This is a reply")
+
+# Send ephemeral message (only visible to specific user)
+await channel.send_ephemeral(
+    receiver_id="user_id",
+    content="This message is only visible to you"
+)
+
+# Method 2: Using client.send_message (legacy)
 await client.send_message(
     clan_id="clan_id",
     channel_id="channel_id",
@@ -255,18 +325,72 @@ await client.send_message(
     attachments=None,  # Optional: List[ApiMessageAttachment]
     ref=None,  # Optional: List[ApiMessageRef] for replies
 )
+
+# Send tokens to users
+from mezon.models import ApiSentTokenRequest
+
+await client.send_token(
+    ApiSentTokenRequest(
+        receiver_id="user_id",
+        amount=100,
+        note="Thanks for your help!",
+    )
+)
 ```
 
 ### Event Handlers
 
+The SDK provides convenient methods for common events:
+
 ```python
-# Async handler (recommended)
-async def async_handler(data):
+from mezon.protobuf.api import api_pb2
+from mezon.protobuf.rtapi import realtime_pb2
+
+# Message events - using convenient methods (recommended)
+async def on_message(message: api_pb2.ChannelMessage):
+    print(f"Message from {message.sender_id}: {message.content}")
+
+client.on_channel_message(on_message)
+
+# Channel events
+async def on_channel_created(event: realtime_pb2.ChannelCreatedEvent):
+    print(f"New channel: {event.channel_id}")
+
+async def on_channel_updated(event: realtime_pb2.ChannelUpdatedEvent):
+    print(f"Channel updated: {event.channel_id}")
+
+async def on_channel_deleted(event: realtime_pb2.ChannelDeletedEvent):
+    print(f"Channel deleted: {event.channel_id}")
+
+client.on_channel_created(on_channel_created)
+client.on_channel_updated(on_channel_updated)
+client.on_channel_deleted(on_channel_deleted)
+
+# User events
+async def on_user_joined(event: realtime_pb2.UserChannelAdded):
+    print(f"User {event.user_id} joined channel {event.channel_id}")
+
+async def on_user_left(event: realtime_pb2.UserChannelRemoved):
+    print(f"User {event.user_id} left channel {event.channel_id}")
+
+client.on_user_channel_added(on_user_joined)
+client.on_user_channel_removed(on_user_left)
+
+# Clan events
+async def on_user_clan_added(event: realtime_pb2.AddClanUserEvent):
+    print(f"User joined clan: {event.clan_id}")
+
+client.on_add_clan_user(on_user_clan_added)
+
+# Generic event handler (for any event)
+from mezon import Events
+
+async def generic_handler(data):
     await some_async_operation()
 
-client.on(Events.CHANNEL_MESSAGE, async_handler)
+client.on(Events.VOICE_STARTED_EVENT, generic_handler)
 
-# Sync handler (also supported)
+# Sync handlers are also supported
 def sync_handler(data):
     print(f"Received: {data}")
 
@@ -290,9 +414,96 @@ client = MezonClient(
 
 #### Methods
 
+**Authentication & Connection:**
 - `async login()` - Authenticate and connect to Mezon
-- `async send_message(...)` - Send a message to a channel
-- `on(event_name, handler)` - Register an event handler
+- `async close_socket()` - Close WebSocket connection
+
+**Messaging:**
+- `async send_message(...)` - Send a message to a channel (legacy)
+- `async send_token(request: ApiSentTokenRequest)` - Send tokens to a user
+
+**Friends:**
+- `async get_list_friends(limit, state, cursor)` - Get list of friends
+- `async accept_friend(user_id: str)` - Accept a friend request
+- `async add_friend(username: str, user_id: str)` - Add a friend
+
+**Event Handlers (Convenient Methods):**
+- `on_channel_message(handler)` - Handle channel messages
+- `on_channel_created(handler)` - Handle channel creation
+- `on_channel_updated(handler)` - Handle channel updates
+- `on_channel_deleted(handler)` - Handle channel deletion
+- `on_user_channel_added(handler)` - Handle user joining channel
+- `on_user_channel_removed(handler)` - Handle user leaving channel
+- `on_add_clan_user(handler)` - Handle user joining clan
+- `on_clan_event_created(handler)` - Handle clan event creation
+- `on_message_button_clicked(handler)` - Handle message button clicks
+- `on_notification(handler)` - Handle notifications
+- `on(event_name, handler)` - Register generic event handler
+
+**Managers:**
+- `client.channels` - Channel manager for accessing channels
+- `client.clans` - Clan manager for accessing clans
+
+### Clan
+
+Access clan objects through the client:
+
+```python
+clan = await client.clans.get("clan_id")
+```
+
+**Clan Methods:**
+- `async load_channels()` - Load all channels in the clan
+- `async list_channel_voice_users(channel_id, channel_type, limit, state, cursor)` - List users in voice channels
+- `async update_role(role_id: str, request: dict)` - Update a role
+- `async list_roles(limit, state, cursor)` - List all roles in the clan
+
+**Clan Properties:**
+- `clan.id` - Clan ID
+- `clan.name` - Clan name
+- `clan.channels` - Channel manager for clan channels
+- `clan.users` - User manager for clan users
+
+**Example:**
+
+```python
+# Get clan and list voice users
+clan = await client.clans.get("clan_id")
+voice_users = await clan.list_channel_voice_users()
+print(f"Users in voice: {voice_users}")
+
+# List roles
+roles = await clan.list_roles()
+print(f"Clan roles: {roles}")
+
+# Update a role
+await clan.update_role(
+    role_id="role_id",
+    request={"title": "New Role Name", "permissions": ["SEND_MESSAGE"]}
+)
+```
+
+### Channel
+
+Access channels through the client or clan:
+
+```python
+# From client
+channel = await client.channels.fetch("channel_id")
+
+# From clan
+clan = await client.clans.get("clan_id")
+await clan.load_channels()
+channel = await clan.channels.get("channel_id")
+```
+
+**Channel Methods:**
+- `async send(content, mentions, attachments)` - Send a message
+- `async send_ephemeral(receiver_id, content)` - Send ephemeral message
+- `channel.messages.get(message_id)` - Get a message object
+
+**Message Methods:**
+- `async reply(content, mentions, attachments)` - Reply to a message
 
 ### Models
 
@@ -301,6 +512,7 @@ from mezon.models import (
     ApiMessageMention,      # Message mention
     ApiMessageAttachment,   # Message attachment
     ApiMessageRef,          # Message reference (reply)
+    ApiSentTokenRequest,    # Token sending request
     ChannelMessageAck,      # Message acknowledgment
     ApiChannelDescription,  # Channel information
     ApiClanDesc,           # Clan information

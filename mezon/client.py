@@ -15,7 +15,8 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Callable, Literal
+import json
+from typing import Any, Callable, Literal
 import logging
 
 from mezon import ApiChannelDescription, CacheManager, ChannelType, Events
@@ -584,3 +585,230 @@ class MezonClient:
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.USER_CHANNEL_ADDED, wrapper)
+
+    def on_give_coffee(
+        self, handler: Callable[[api_pb2.GiveCoffeeEvent], None]
+    ) -> None:
+        async def wrapper(message: api_pb2.GiveCoffeeEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.GIVE_COFFEE, wrapper)
+
+    def on_role_event(
+        self, handler: Callable[[realtime_pb2.RoleEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.RoleEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.ROLE_EVENT, wrapper)
+
+    def on_role_assign(
+        self, handler: Callable[[realtime_pb2.RoleAssignedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.RoleAssignedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.ROLE_ASSIGN, wrapper)
+
+    def on_notification(
+        self, handler: Callable[[realtime_pb2.Notifications], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.Notifications) -> None:
+            notifications = message.notifications if message.notifications else []
+
+            for notification in notifications:
+                try:
+                    content = json.loads(notification.content) if notification.content else {}
+
+                    if notification.code == -2:
+                        session = self.session_manager.get_session()
+                        if session and session.token:
+                            username = content.get("username", "")
+                            sender_id = notification.sender_id
+
+                            if hasattr(self.api_client, "request_friend"):
+                                try:
+                                    await self.api_client.request_friend(
+                                        session.token, username, sender_id
+                                    )
+                                except Exception as err:
+                                    logger.warning(f"Failed to request friend: {err}")
+                except json.JSONDecodeError:
+                    logger.warning(f"Failed to parse notification content: {noti.content}")
+                except Exception as err:
+                    logger.warning(f"Error processing notification: {err}")
+
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.NOTIFICATIONS, wrapper)
+
+    def on_add_clan_user(
+        self, handler: Callable[[realtime_pb2.AddClanUserEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.AddClanUserEvent) -> None:
+            if message.user and message.user.user_id == self.client_id:
+                socket = self.socket_manager.get_socket()
+                await socket.join_clan_chat(message.clan_id)
+
+                clan = self.clans.get(message.clan_id)
+                if not clan:
+                    clan_obj = Clan(
+                        clan_id=message.clan_id,
+                        clan_name="unknown",
+                        welcome_channel_id="",
+                        client=self,
+                        api_client=self.api_client,
+                        socket_manager=self.socket_manager,
+                        session_token=self.session_manager.get_session().token,
+                        message_queue=self.message_queue,
+                        message_db=self.message_db,
+                    )
+                    await clan_obj.load_channels()
+                    self.clans.set(message.clan_id, clan_obj)
+            else:
+                user_init_data = UserInitData(
+                    id=message.user.user_id if message.user else "",
+                    username=message.user.username if message.user else "",
+                    clan_nick="",
+                    clan_avatar="",
+                    avatar=message.user.avatar if message.user else "",
+                    display_name=message.user.display_name if message.user else "",
+                    dm_channel_id="",
+                )
+
+                clan = self.clans.get(message.clan_id)
+                if clan and message.user:
+                    user = User(
+                        user_init_data=user_init_data,
+                        clan=clan,
+                        message_queue=self.message_queue,
+                        socket_manager=self.socket_manager,
+                        channel_manager=self.chanel_manager,
+                    )
+                    clan.users.set(message.user.user_id, user)
+
+                clan_dm = self.clans.get("0")
+                if clan_dm and message.user:
+                    user = User(
+                        user_init_data=user_init_data,
+                        clan=clan_dm,
+                        message_queue=self.message_queue,
+                        socket_manager=self.socket_manager,
+                        channel_manager=self.chanel_manager,
+                    )
+                    clan_dm.users.set(message.user.user_id, user)
+
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.ADD_CLAN_USER, wrapper)
+
+    def on_clan_event_created(
+        self, handler: Callable[[api_pb2.CreateEventRequest], None]
+    ) -> None:
+        async def wrapper(message: api_pb2.CreateEventRequest) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.CLAN_EVENT_CREATED, wrapper)
+
+    def on_message_button_clicked(
+        self, handler: Callable[[realtime_pb2.MessageButtonClicked], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.MessageButtonClicked) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.MESSAGE_BUTTON_CLICKED, wrapper)
+
+    def on_streaming_joined_event(
+        self, handler: Callable[[realtime_pb2.StreamingJoinedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.StreamingJoinedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.STREAMING_JOINED_EVENT, wrapper)
+
+    def on_streaming_leaved_event(
+        self, handler: Callable[[realtime_pb2.StreamingLeavedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.StreamingLeavedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.STREAMING_LEAVED_EVENT, wrapper)
+
+    def on_dropdown_box_selected(
+        self, handler: Callable[[realtime_pb2.DropdownBoxSelected], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.DropdownBoxSelected) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.DROPDOWN_BOX_SELECTED, wrapper)
+
+    def on_webrtc_signaling_fwd(
+        self, handler: Callable[[realtime_pb2.WebrtcSignalingFwd], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.WebrtcSignalingFwd) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.WEBRTC_SIGNALING_FWD, wrapper)
+
+    def on_voice_started_event(
+        self, handler: Callable[[realtime_pb2.VoiceStartedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceStartedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_STARTED_EVENT, wrapper)
+
+    def on_voice_ended_event(
+        self, handler: Callable[[realtime_pb2.VoiceEndedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceEndedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_ENDED_EVENT, wrapper)
+
+    def on_voice_joined_event(
+        self, handler: Callable[[realtime_pb2.VoiceJoinedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceJoinedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_JOINED_EVENT, wrapper)
+
+    def on_voice_leaved_event(
+        self, handler: Callable[[realtime_pb2.VoiceLeavedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceLeavedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_LEAVED_EVENT, wrapper)
+
+    def on_quick_menu_event(
+        self, handler: Callable[[realtime_pb2.QuickMenuDataEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.QuickMenuDataEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.QUICK_MENU, wrapper)
+
+    async def close_socket(self) -> None:
+        await self.socket_manager.get_socket().close()
+        self.event_manager = EventManager()
+
+    async def get_list_friends(
+        self,
+        limit: int = None,
+        state: str = None,
+        cursor: str = None,
+    ) -> Any:
+        session = self.session_manager.get_session()
+        return await self.api_client.get_list_friends(
+            session.token, limit, state, cursor
+        )
+
+    async def accept_friend(self, user_id: str, username: str) -> Any:
+        session = self.session_manager.get_session()
+        return await self.api_client.request_friend(session.token, username, user_id)
+
+    async def add_friend(self, username: str) -> Any:
+        session = self.session_manager.get_session()
+        return await self.api_client.request_friend(session.token, username)
