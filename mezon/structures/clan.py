@@ -17,6 +17,7 @@ limitations under the License.
 from typing import Optional, Any, TYPE_CHECKING
 
 from mezon.api import MezonApi
+from mezon.constants.enum import ChannelType
 from mezon.managers.cache import CacheManager
 from mezon.messages.db import MessageDB
 from mezon.messages.queue import MessageQueue
@@ -122,3 +123,94 @@ class Clan:
     def __repr__(self) -> str:
         """String representation of the clan."""
         return f"<Clan id={self.id} name={self.name}>"
+
+    async def load_channels(self) -> None:
+        if self._channels_loaded:
+            return
+
+        channels = await self.api_client.list_channel_descs(
+            token=self.session_token,
+            channel_type=ChannelType.CHANNEL_TYPE_CHANNEL,
+            clan_id=self.id,
+        )
+
+        valid_channels = [
+            c for c in (channels.channeldesc if channels and channels.channeldesc else [])
+            if c.channel_id
+        ]
+
+        for channel in valid_channels:
+            channel_obj = TextChannel(
+                init_channel_data=channel,
+                clan=self,
+                socket_manager=self.socket_manager,
+                message_queue=self.message_queue,
+                message_db=self.message_db,
+            )
+            self.channels.set(channel.channel_id, channel_obj)
+            self.client.channels.set(channel.channel_id, channel_obj)
+
+        self._channels_loaded = True
+
+    async def list_channel_voice_users(
+        self,
+        channel_id: str = "",
+        channel_type: int = None,
+        limit: int = 500,
+        state: int = None,
+        cursor: str = None,
+    ) -> Any:
+        if channel_type is None:
+            channel_type = ChannelType.CHANNEL_TYPE_GMEET_VOICE
+
+        if limit <= 0 or limit > 500:
+            logger.error("0 < limit <= 500")
+            raise ValueError("0 < limit <= 500")
+
+        response = await self.api_client.list_channel_voice_users(
+            token=self.session_token,
+            clan_id=self.id,
+            channel_id=channel_id,
+            channel_type=channel_type,
+            limit=limit,
+            state=state,
+            cursor=cursor,
+        )
+
+        result = {"voice_channel_users": []}
+
+        if not response or not response.get("voice_channel_users"):
+            return result
+
+        for user in response.get("voice_channel_users", []):
+            result["voice_channel_users"].append(
+                {
+                    "id": user.get("id"),
+                    "channel_id": user.get("channel_id"),
+                    "user_id": user.get("user_id"),
+                    "participant": user.get("participant"),
+                }
+            )
+
+        return result
+
+    async def update_role(self, role_id: str, request: dict) -> bool:
+        return await self.api_client.update_role(
+            token=self.session_token,
+            role_id=role_id,
+            request=request,
+        )
+
+    async def list_roles(
+        self,
+        limit: str = None,
+        state: str = None,
+        cursor: str = None,
+    ) -> Any:
+        return await self.api_client.list_roles(
+            token=self.session_token,
+            clan_id=self.id,
+            limit=limit,
+            state=state,
+            cursor=cursor,
+        )
