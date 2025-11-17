@@ -2,6 +2,23 @@
 
 <!-- version list -->
 
+## v1.5.2 (2025-11-17)
+
+### Bug Fixes
+
+- Add rate limiting to WebSocket adapter and include aiolimiter dependency
+  ([`30769bf`](https://github.com/phuvinh010701/mezon-sdk-python/commit/30769bfdac567d193641fdc17a6b0a4d06fba7ec))
+
+- Enhance message handling with new update and reaction features, and improve rate limiting in
+  message queue
+  ([`aef2e96`](https://github.com/phuvinh010701/mezon-sdk-python/commit/aef2e96b9615e4f1e456a3b359cba2827909f34f))
+
+### Chores
+
+- Update README.md
+  ([`b504a40`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b504a4002481af539f366e69575eaf6696fcc1d5))
+
+
 ## v1.5.1 (2025-11-05)
 
 ### Bug Fixes
