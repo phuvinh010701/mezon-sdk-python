@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, List, Any, Dict, TYPE_CHECKING
+from typing import Optional, List, Any, TYPE_CHECKING
 import json
+from mezon import ChannelMessageAck
 from mezon.models import (
     ApiMessageAttachment,
     ApiMessageMention,
@@ -140,8 +141,7 @@ class Message:
         content: ChannelMessageContent,
         mentions: Optional[List[ApiMessageMention]] = None,
         attachments: Optional[List[ApiMessageAttachment]] = None,
-        topic_id: Optional[str] = None,
-    ) -> Any:
+    ) -> ChannelMessageAck:
         """
         Update (edit) this message.
 
@@ -155,7 +155,7 @@ class Message:
             Update acknowledgement
         """
 
-        async def update_operation():
+        async def update_operation() -> ChannelMessageAck:
             data_update = {
                 "clan_id": self.channel.clan.id,
                 "channel_id": self.channel.id,
@@ -165,24 +165,31 @@ class Message:
                 "content": content,
                 "mentions": mentions,
                 "attachments": attachments,
-                "topic_id": topic_id or self.topic_id,
+                "topic_id": self.topic_id,
+                "is_update_msg_topic": self.topic_id is not None,
             }
 
             return await self.socket_manager.update_chat_message(**data_update)
 
         return await self.message_queue.enqueue(update_operation)
 
-    async def react(self, data_react_message: Dict[str, Any]) -> Any:
+    async def react(
+        self,
+        emoji_id: str,
+        emoji: str,
+        count: int,
+        id: Optional[str] = "",
+        action_delete: bool = False,
+    ) -> Any:
         """
         Add or remove a reaction to this message.
 
         Args:
-            data_react_message: Reaction data containing:
-                - id: Reaction ID (optional)
-                - emoji_id: Emoji ID
-                - emoji: Emoji string
-                - count: Reaction count
-                - action_delete: Whether to remove the reaction (optional, default: False)
+            emoji_id: Emoji ID
+            emoji: Emoji string
+            count: Reaction count
+            id: Reaction ID (optional)
+            action_delete: Whether to remove the reaction (optional, default: False)
 
         Returns:
             Reaction acknowledgement
@@ -190,17 +197,17 @@ class Message:
 
         async def react_operation():
             data_react = {
-                "id": data_react_message.get("id", ""),
+                "id": id,
                 "clan_id": self.channel.clan.id,
                 "channel_id": self.channel.id,
                 "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
                 "is_public": not self.channel.is_private,
                 "message_id": self.id,
-                "emoji_id": data_react_message["emoji_id"],
-                "emoji": data_react_message["emoji"],
-                "count": data_react_message["count"],
+                "emoji_id": emoji_id,
+                "emoji": emoji,
+                "count": count,
                 "message_sender_id": self.sender_id,
-                "action_delete": data_react_message.get("action_delete", False),
+                "action_delete": action_delete,
             }
 
             return await self.socket_manager.write_message_reaction(**data_react)

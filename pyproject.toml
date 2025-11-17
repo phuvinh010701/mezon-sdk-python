@@ -12,6 +12,7 @@ dependencies = [
     "pyjwt>=2.8.0",
     "aiosqlite>=0.20.0",
     "mmn-sdk>=0.1.0",
+    "aiolimiter>=1.2.1",
 ]
 license = "Apache-2.0"
 license-files = ["LICENSE"]

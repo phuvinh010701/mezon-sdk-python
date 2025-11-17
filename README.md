@@ -8,13 +8,13 @@ A Python implementation of the Mezon SDK with 1:1 logic mapping to the TypeScrip
 
 ## Features
 
-- =� **Async/Await Native** - Built from the ground up with `asyncio` for high-performance concurrent operations
-- = **Real-time WebSocket** - Full support for real-time messaging and events via WebSocket with automatic reconnection
-- =� **Type-Safe** - Comprehensive type hints and Pydantic models for better IDE support and fewer runtime errors
-- <� **Event-Driven** - Elegant event handler system for building reactive applications
-- = **Protocol Buffers** - Efficient binary serialization for optimal performance
-- =� **Production Ready** - Proper error handling, logging, and graceful shutdown mechanisms
-- >� **Framework Integration** - Works seamlessly with FastAPI, Flask, Django, and other Python frameworks
+- **Async/Await Native** - Built from the ground up with `asyncio` for high-performance concurrent operations
+- **Real-time WebSocket** - Full support for real-time messaging and events via WebSocket with automatic reconnection
+- **Type-Safe** - Comprehensive type hints and Pydantic models for better IDE support and fewer runtime errors
+- **Event-Driven** - Elegant event handler system for building reactive applications
+- **Protocol Buffers** - Efficient binary serialization for optimal performance
+- **Production Ready** - Proper error handling, logging, and graceful shutdown mechanisms
+- **Framework Integration** - Works seamlessly with FastAPI, Flask, Django, and other Python frameworks
 
 ## Installation
 
@@ -58,6 +58,7 @@ import asyncio
 import json
 import logging
 from mezon import MezonClient
+from mezon.models import ChannelMessageContent, ApiSentTokenRequest
 from mezon.protobuf.api import api_pb2
 
 # Initialize the client with logging
@@ -81,7 +82,31 @@ async def handle_message(message: api_pb2.ChannelMessage):
     # Respond to !hello command
     if content.startswith("!hello"):
         channel = await client.channels.fetch(message.channel_id)
-        await channel.send(content="Hello! I'm a Mezon bot 👋")
+
+        # Send ephemeral message (only visible to the user)
+        await channel.send_ephemeral(
+            receiver_id=message.sender_id,
+            content=ChannelMessageContent(text="Hello! This message is only for you!")
+        )
+
+        # Send a regular message
+        sent_message = await channel.send(
+            content=ChannelMessageContent(t="Hello! I'm a Mezon bot 👋")
+        )
+
+        # Update the message
+        await channel.messages.get(sent_message.message_id).update(
+            content=ChannelMessageContent(t="Hello! I'm a Mezon bot 👋 (edited)")
+        )
+
+        # Send tokens to the user
+        await client.send_token(
+            ApiSentTokenRequest(
+                receiver_id=message.sender_id,
+                amount=10,
+                note="Thanks for saying hello!",
+            )
+        )
 
 # Register event handler using the convenient method
 client.on_channel_message(handle_message)
@@ -106,7 +131,7 @@ import json
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from mezon import MezonClient
-from mezon.models import ApiSentTokenRequest
+from mezon.models import ApiSentTokenRequest, ChannelMessageContent
 from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
 
@@ -127,35 +152,56 @@ async def handle_channel_message(message: api_pb2.ChannelMessage):
     message_content = json.loads(message.content)
     content = message_content.get("t")
 
-    if content.startswith("!ping"):
+    if content.startswith("!hello"):
         channel = await client.channels.fetch(message.channel_id)
-        await channel.send(content="Pong! 🏓")
 
-    elif content.startswith("!tip"):
-        # Send tokens to user
+        # Send ephemeral message
+        await channel.send_ephemeral(
+            receiver_id=message.sender_id,
+            content=ChannelMessageContent(text="Hello! This is private!")
+        )
+
+        # Send and update message
+        sent_message = await channel.send(
+            content=ChannelMessageContent(t="Hello, world!")
+        )
+
+        await channel.messages.get(sent_message.message_id).update(
+            content=ChannelMessageContent(t="Hello, world! (edited)")
+        )
+
+        # Send tokens
         await client.send_token(
             ApiSentTokenRequest(
                 receiver_id=message.sender_id,
                 amount=10,
-                note="Thanks for using the bot!",
+                note="Thanks for saying hello!",
             )
         )
 
 # Handle channel events
 async def handle_channel_created(message: realtime_pb2.ChannelCreatedEvent):
-    print(f"New channel created: {message.channel_id}")
+    print(f"Channel created: {message.channel_id}")
 
 async def handle_channel_updated(message: realtime_pb2.ChannelUpdatedEvent):
     print(f"Channel updated: {message.channel_id}")
 
-async def handle_user_joined(message: realtime_pb2.UserChannelAdded):
+async def handle_channel_deleted(message: realtime_pb2.ChannelDeletedEvent):
+    print(f"Channel deleted: {message.channel_id}")
+
+async def handle_user_channel_added(message: realtime_pb2.UserChannelAdded):
     print(f"User {message.user_id} joined channel {message.channel_id}")
 
-# Register event handlers using convenient methods
+async def handle_user_clan_added(message: realtime_pb2.AddClanUserEvent):
+    print(f"User joined clan: {message.clan_id}")
+
+# Register event handlers
 client.on_channel_message(handle_channel_message)
 client.on_channel_created(handle_channel_created)
 client.on_channel_updated(handle_channel_updated)
-client.on_user_channel_added(handle_user_joined)
+client.on_channel_deleted(handle_channel_deleted)
+client.on_user_channel_added(handle_user_channel_added)
+client.on_add_clan_user(handle_user_clan_added)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -183,7 +229,7 @@ async def get_voice_users(clan_id: str):
     """Get users in voice channels for a specific clan"""
     clan = await client.clans.get(clan_id)
     voice_users = await clan.list_channel_voice_users()
-    return JSONResponse(content=voice_users)
+    return JSONResponse(content={"voice_users": voice_users})
 
 # Run with: uvicorn main:app --reload
 ```
@@ -715,10 +761,10 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Links
 
-- =� [PyPI Package](https://pypi.org/project/mezon-sdk/)
-- = [GitHub Repository](https://github.com/phuvinh010701/mezon-sdk-python)
-- = [Issue Tracker](https://github.com/phuvinh010701/mezon-sdk-python/issues)
-- =� [Changelog](CHANGELOG.md)
+- [PyPI Package](https://pypi.org/project/mezon-sdk/)
+- [GitHub Repository](https://github.com/phuvinh010701/mezon-sdk-python)
+- [Issue Tracker](https://github.com/phuvinh010701/mezon-sdk-python/issues)
+- [Changelog](CHANGELOG.md)
 
 ## Support
 
@@ -731,7 +777,6 @@ If you encounter any issues or have questions:
 ## Acknowledgments
 
 - Based on the [Mezon TypeScript SDK](https://github.com/mezon/mezon-ts)
-- Built with d by the community
 
 ---
 

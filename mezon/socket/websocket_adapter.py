@@ -21,10 +21,15 @@ import websockets
 from websockets.asyncio.client import ClientConnection
 from urllib.parse import quote
 
+from aiolimiter import AsyncLimiter
 from websockets.protocol import State
 from mezon.protobuf.rtapi import realtime_pb2
 import logging
 from mezon.protobuf.utils import encode_protobuf
+from mezon.constants.rate_limit import (
+    WEBSOCKET_PB_RATE_LIMIT,
+    WEBSOCKET_PB_RATE_LIMIT_PERIOD,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -89,8 +94,18 @@ class WebSocketAdapterPb(WebSocketAdapter):
 
     def __init__(
         self,
+        rate_limit: float = WEBSOCKET_PB_RATE_LIMIT,
+        rate_limit_period: float = WEBSOCKET_PB_RATE_LIMIT_PERIOD,
     ):
+        """
+        Initialize WebSocket adapter with rate limiting.
+
+        Args:
+            rate_limit: Maximum number of messages per period (default: 10)
+            rate_limit_period: Time period in seconds (default: 1.0)
+        """
         super().__init__()
+        self._rate_limiter = AsyncLimiter(rate_limit, rate_limit_period)
 
     async def connect(
         self, scheme: str, host: str, port: str, create_status: bool, token: str
@@ -119,13 +134,26 @@ class WebSocketAdapterPb(WebSocketAdapter):
         return message.SerializeToString()
 
     async def send(self, message: Any) -> None:
+        """
+        Send message through WebSocket with rate limiting.
+
+        This method applies rate limiting to all outgoing messages to prevent
+        hitting API rate limits on the server side.
+
+        Args:
+            message: Message to send (Envelope or bytes)
+
+        Raises:
+            ValueError: If message type is invalid
+        """
         if self._socket:
-            if isinstance(message, realtime_pb2.Envelope):
-                await self._socket.send(encode_protobuf(message))
-            elif isinstance(message, bytes):
-                await self._socket.send(message)
-            else:
-                raise ValueError(f"Invalid message type: {type(message)}")
+            async with self._rate_limiter:
+                if isinstance(message, realtime_pb2.Envelope):
+                    await self._socket.send(encode_protobuf(message))
+                elif isinstance(message, bytes):
+                    await self._socket.send(message)
+                else:
+                    raise ValueError(f"Invalid message type: {type(message)}")
 
     async def close(self) -> None:
         """Close WebSocket connection."""

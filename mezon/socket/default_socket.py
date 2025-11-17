@@ -15,15 +15,23 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Dict, Optional, Any, List
+from typing import Dict, Optional, Any, List, TypeVar, Type
 
 from mezon.protobuf.rtapi import realtime_pb2
 from mezon.utils.logger import get_logger
 from mezon.protobuf.utils import parse_protobuf
+from google.protobuf import json_format
+from pydantic import BaseModel
+import google.protobuf.message
 
 from .promise_executor import PromiseExecutor
 from .websocket_adapter import WebSocketAdapterPb
-from .message_builder import ChannelMessageBuilder, EphemeralMessageBuilder
+from .message_builder import (
+    ChannelMessageBuilder,
+    ChannelMessageUpdateBuilder,
+    EphemeralMessageBuilder,
+    MessageReactionBuilder,
+)
 from mezon.managers.event import EventManager
 from ..session import Session
 from ..models import (
@@ -31,9 +39,13 @@ from ..models import (
     ApiMessageMention,
     ApiMessageAttachment,
     ApiMessageRef,
+    ApiMessageReaction,
+    ChannelMessageContent,
 )
 
 logger = get_logger(__name__)
+
+T = TypeVar("T", bound=BaseModel)
 
 
 class Socket:
@@ -238,7 +250,7 @@ class Socket:
 
     async def _send_with_cid(
         self, message: realtime_pb2.Envelope, timeout_ms: int = None
-    ) -> Any:
+    ) -> Optional[realtime_pb2.Envelope]:
         """
         Send message with command ID and wait for response.
         Matches TypeScript implementation pattern.
@@ -306,6 +318,59 @@ class Socket:
             logger.debug(f"Field name: {field_name}")
             logger.debug(f"Payload: {payload}")
             await self.event_manager.emit(field_name, payload)
+
+    async def _send_envelope_with_field(
+        self,
+        field_name: str,
+        message: google.protobuf.message.Message,
+        timeout_ms: Optional[int] = None,
+    ) -> Optional[realtime_pb2.Envelope]:
+        """
+        Generic method to send an envelope with a specific field set.
+
+        Args:
+            field_name: Name of the field to set in the envelope
+            message: Protobuf message to attach to the envelope
+            timeout_ms: Optional timeout in milliseconds
+
+        Returns:
+            Response envelope from server
+        """
+        envelope = realtime_pb2.Envelope()
+        getattr(envelope, field_name).CopyFrom(message)
+        return await self._send_with_cid(envelope, timeout_ms)
+
+    def _handle_response(
+        self,
+        response: Optional[realtime_pb2.Envelope],
+        field_name: str,
+        model_class: Type[T],
+        error_message: str,
+    ) -> T:
+        """
+        Generic method to handle protobuf response and convert to Pydantic model.
+
+        Args:
+            response: Envelope response from server
+            field_name: Expected field name in the response
+            model_class: Pydantic model class to validate against
+            error_message: Error message to raise if validation fails
+
+        Returns:
+            Validated Pydantic model instance
+
+        Raises:
+            Exception: If response doesn't contain expected field
+        """
+        if response and response.HasField(field_name):
+            payload = getattr(response, field_name)
+            payload_dict = json_format.MessageToDict(
+                payload, preserving_proto_field_name=True
+            )
+            return model_class.model_validate(payload_dict)
+
+        logger.debug(f"Response: {response}")
+        raise Exception(error_message)
 
     async def join_clan_chat(self, clan_id: str) -> realtime_pb2.ClanJoin:
         """
@@ -409,9 +474,131 @@ class Socket:
             topic_id=topic_id,
         )
 
-        envelope = realtime_pb2.Envelope()
-        envelope.channel_message_send.CopyFrom(channel_message_send)
-        await self._send_with_cid(envelope)
+        response = await self._send_envelope_with_field(
+            "channel_message_send", channel_message_send
+        )
+        return self._handle_response(
+            response,
+            "channel_message_ack",
+            ChannelMessageAck,
+            "Server did not return a channel_message_send acknowledgement.",
+        )
+
+    async def update_chat_message(
+        self,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        content: ChannelMessageContent,
+        mentions: Optional[List[ApiMessageMention]] = None,
+        attachments: Optional[List[ApiMessageAttachment]] = None,
+        hide_editted: bool = False,
+        topic_id: Optional[str] = None,
+        is_update_msg_topic: Optional[bool] = None,
+    ) -> ChannelMessageAck:
+        """
+        Update a previously sent channel message.
+
+        Args:
+            clan_id: Clan ID
+            channel_id: Channel ID where the message exists
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: Identifier of the message to update
+            content: Updated message content
+            mentions: Updated mentions list
+            attachments: Updated attachments list
+            hide_editted: Whether to suppress the edited indicator
+            topic_id: Topic ID for threaded messages
+            is_update_msg_topic: Whether to update the topic metadata
+
+        Returns:
+            ChannelMessageAck acknowledging the update
+        """
+
+        channel_message_update = ChannelMessageUpdateBuilder.build(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            content=content,
+            mentions=mentions,
+            attachments=attachments,
+            hide_editted=hide_editted,
+            topic_id=topic_id,
+            is_update_msg_topic=is_update_msg_topic,
+        )
+
+        response = await self._send_envelope_with_field(
+            "channel_message_update", channel_message_update
+        )
+        return self._handle_response(
+            response,
+            "channel_message_ack",
+            ChannelMessageAck,
+            "Server did not return a channel_message_update acknowledgement.",
+        )
+
+    async def write_message_reaction(
+        self,
+        id: str,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        emoji_id: str,
+        emoji: str,
+        count: int,
+        message_sender_id: str,
+        action_delete: bool = False,
+    ) -> ApiMessageReaction:
+        """
+        Send a reaction event for a channel message.
+
+        Args:
+            id: Identifier of the reaction payload
+            clan_id: Clan ID containing the channel
+            channel_id: Channel ID containing the message
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: Message identifier to react to
+            emoji_id: Emoji identifier
+            emoji: Emoji short name
+            count: Emoji count
+            message_sender_id: Original message sender identifier
+            action_delete: Whether to remove the reaction
+
+        Returns:
+            ApiMessageReaction acknowledgement from the server.
+        """
+
+        message_reaction = MessageReactionBuilder.build(
+            id=id,
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            emoji_id=emoji_id,
+            emoji=emoji,
+            count=count,
+            message_sender_id=message_sender_id,
+            action_delete=action_delete,
+        )
+
+        response = await self._send_envelope_with_field(
+            "message_reaction_event", message_reaction
+        )
+        return self._handle_response(
+            response,
+            "message_reaction_event",
+            ApiMessageReaction,
+            "Server did not return a message_reaction_event acknowledgement.",
+        )
 
     async def write_ephemeral_message(
         self,
@@ -446,6 +633,13 @@ class Socket:
             code=code,
             topic_id=topic_id,
         )
-        envelope = realtime_pb2.Envelope()
-        envelope.ephemeral_message_send.CopyFrom(ephemeral_message_send)
-        await self._send_with_cid(envelope)
+
+        response = await self._send_envelope_with_field(
+            "ephemeral_message_send", ephemeral_message_send
+        )
+        return self._handle_response(
+            response,
+            "channel_message",
+            ChannelMessageAck,
+            "Server did not return an ephemeral_message_send acknowledgement.",
+        )

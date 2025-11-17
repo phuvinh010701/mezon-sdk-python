@@ -77,7 +77,7 @@ class EventManager:
         try:
             task.result()
         except Exception as e:
-            logger.error(f"Error in async event handler for '{event_name}': {e}")
+            logger.exception(f"Error in async event handler for '{event_name}': {e}")
 
     def has_listeners(self, event_name: str) -> bool:
         """

@@ -15,37 +15,42 @@ limitations under the License.
 """
 
 import asyncio
-import time
-from typing import Callable, TypeVar, Awaitable, List, Tuple
+from typing import Callable, TypeVar, Awaitable, Tuple
+from aiolimiter import AsyncLimiter
 from mezon.utils.logger import get_logger
+from mezon.constants.rate_limit import (
+    WEBSOCKET_PB_RATE_LIMIT,
+    WEBSOCKET_PB_RATE_LIMIT_PERIOD,
+)
 
 logger = get_logger(__name__)
 
 T = TypeVar("T")
 
-MAX_PER_SECOND = 80
-
 
 class MessageQueue:
     """
-    An async throttle queue using a sliding window rate limiter.
-
-    This queue ensures operations are rate-limited using a sliding window
-    approach, allowing up to max_per_second operations within any 1-second window.
+    An async throttle queue using aiolimiter for rate limiting.
     """
 
-    def __init__(self, max_per_second: int = MAX_PER_SECOND):
+    def __init__(
+        self,
+        max_per_second: int = WEBSOCKET_PB_RATE_LIMIT,
+        rate_limit_period: float = WEBSOCKET_PB_RATE_LIMIT_PERIOD,
+    ):
         """
         Initialize the message queue.
 
         Args:
-            max_per_second: Maximum number of operations per second (default: 80)
+            max_per_second: Maximum number of operations per second (default: WEBSOCKET_PB_RATE_LIMIT)
+            rate_limit_period: Time period in seconds (default: WEBSOCKET_PB_RATE_LIMIT_PERIOD)
         """
-        self._timestamps: List[float] = []
-        self._queue: List[Tuple[Callable[[], Awaitable[T]], asyncio.Future]] = []
-        self._max_per_second = max_per_second
-        self._is_running = False
-        self._loop_task: asyncio.Task | None = None
+        self._limiter = AsyncLimiter(max_per_second, rate_limit_period)
+        self._queue: asyncio.Queue[
+            Tuple[Callable[[], Awaitable[T]], asyncio.Future]
+        ] = asyncio.Queue()
+        self._worker_task: asyncio.Task | None = None
+        self._shutdown = False
 
     def enqueue(self, task: Callable[[], Awaitable[T]]) -> asyncio.Future[T]:
         """
@@ -57,40 +62,27 @@ class MessageQueue:
         Returns:
             A Future that will contain the result of the operation
         """
-        future: asyncio.Future[T] = asyncio.Future()
-        self._queue.append((task, future))
+        if self._shutdown:
+            raise RuntimeError("Cannot enqueue to a shutdown queue")
 
-        if not self._is_running:
-            self._start()
+        future: asyncio.Future[T] = asyncio.Future()
+        self._queue.put_nowait((task, future))
+
+        if self._worker_task is None:
+            self._worker_task = asyncio.create_task(self._worker())
 
         return future
 
-    def _start(self) -> None:
-        """Start the processing loop."""
-        if self._is_running:
-            return
-
-        self._is_running = True
-        self._loop_task = asyncio.create_task(self._loop())
-
-    async def _loop(self) -> None:
+    async def _worker(self) -> None:
         """
-        Main processing loop using sliding window rate limiting.
-
-        Continuously processes queued tasks while respecting the rate limit.
+        Worker loop that processes queue items with rate limiting.
+        Blocks indefinitely until items are available or shutdown is called.
         """
         try:
-            while True:
-                self._cleanup_timestamps()
+            while not self._shutdown:
+                task, future = await self._queue.get()
 
-                if (
-                    len(self._queue) > 0
-                    and len(self._timestamps) < self._max_per_second
-                ):
-                    task, future = self._queue.pop(0)
-
-                    self._timestamps.append(time.time())
-
+                async with self._limiter:
                     try:
                         result = await task()
                         if not future.done():
@@ -99,46 +91,32 @@ class MessageQueue:
                         logger.error(f"Error executing queued operation: {e}")
                         if not future.done():
                             future.set_exception(e)
+                    finally:
+                        self._queue.task_done()
 
-                await asyncio.sleep(0.01)
-
-                if len(self._queue) == 0 and len(self._timestamps) == 0:
-                    await asyncio.sleep(0.1)
-                    if len(self._queue) == 0:
-                        break
-
+        except Exception as e:
+            logger.error(f"Worker loop error: {e}")
         finally:
-            self._is_running = False
-
-    def _cleanup_timestamps(self) -> None:
-        """
-        Remove timestamps older than 1 second.
-
-        This implements the sliding window by keeping only timestamps
-        from the last second.
-        """
-        now = time.time()
-        self._timestamps = [t for t in self._timestamps if now - t < 1.0]
+            logger.debug("Worker shut down")
 
     @property
     def size(self) -> int:
         """Get the current queue size."""
-        return len(self._queue)
+        return self._queue.qsize()
 
     def is_empty(self) -> bool:
         """Check if the queue is empty."""
-        return len(self._queue) == 0
+        return self._queue.empty()
 
     @property
-    def current_rate(self) -> int:
+    def current_rate(self) -> float:
         """
-        Get the current number of operations in the last second.
+        Get the current available capacity from the rate limiter.
 
         Returns:
-            Number of operations executed in the last 1 second
+            Current available capacity (operations that can be executed immediately)
         """
-        self._cleanup_timestamps()
-        return len(self._timestamps)
+        return self._limiter.max_rate - self._limiter._level
 
     async def wait_for_completion(self) -> None:
         """
@@ -147,5 +125,29 @@ class MessageQueue:
         This method will block until the queue is empty and all tasks
         have finished executing.
         """
-        while len(self._queue) > 0 or self._is_running:
-            await asyncio.sleep(0.01)
+        await self._queue.join()
+
+    async def shutdown(self) -> None:
+        """
+        Gracefully shutdown the worker.
+
+        Waits for all pending tasks to complete, then stops the worker.
+        """
+        if self._shutdown:
+            return
+
+        await self.wait_for_completion()
+
+        self._shutdown = True
+
+        if self._worker_task and not self._worker_task.done():
+            try:
+                self._queue.put_nowait((lambda: None, asyncio.Future()))
+            except asyncio.QueueFull:
+                pass
+
+            try:
+                await asyncio.wait_for(self._worker_task, timeout=1.0)
+            except asyncio.TimeoutError:
+                logger.warning("Worker did not shutdown gracefully, cancelling")
+                self._worker_task.cancel()
