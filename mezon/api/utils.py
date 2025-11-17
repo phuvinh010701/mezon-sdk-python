@@ -1,7 +1,7 @@
 from typing import Any, Optional, Dict
 import base64
 import json
-from urllib.parse import quote, urlparse
+from urllib.parse import urlparse
 from pydantic import BaseModel
 
 
@@ -73,12 +73,14 @@ def parse_url_components(url: str) -> Dict[str, Any]:
 
 def build_params(params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """
-    Build parameters for API requests.
+    Build parameters for API requests, filtering out None values.
 
     Args:
         params (Optional[Dict[str, Any]]): Parameters dictionary
 
     Returns:
-        Dict[str, Any]: Parameters dictionary
+        Dict[str, Any]: Parameters dictionary with None values filtered out
     """
-    return quote(json.dumps(params or {}))
+    if not params:
+        return {}
+    return {k: v for k, v in params.items() if v is not None}

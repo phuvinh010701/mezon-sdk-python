@@ -216,3 +216,5 @@ __marimo__/
 .streamlit/secrets.toml
 
 .DS_Store
+# Mezon cache
+/mezon-cache

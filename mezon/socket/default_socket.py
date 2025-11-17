@@ -16,28 +16,24 @@ limitations under the License.
 
 import asyncio
 from typing import Dict, Optional, Any, List
-from dataclasses import dataclass
-
 
 from mezon.protobuf.rtapi import realtime_pb2
+from mezon.utils.logger import get_logger
+from mezon.protobuf.utils import parse_protobuf
 
-from .websocket_adapter import WebSocketAdapter, WebSocketAdapterPb
+from .promise_executor import PromiseExecutor
+from .websocket_adapter import WebSocketAdapterPb
+from .message_builder import ChannelMessageBuilder, EphemeralMessageBuilder
+from mezon.managers.event import EventManager
 from ..session import Session
 from ..models import (
     ChannelMessageAck,
     ApiMessageMention,
     ApiMessageAttachment,
     ApiMessageRef,
-    EphemeralMessageData,
 )
-import json
 
-
-@dataclass
-class PromiseExecutor:
-    event: asyncio.Event
-    result: Optional[Any] = None
-    error: Optional[Any] = None
+logger = get_logger(__name__)
 
 
 class Socket:
@@ -54,9 +50,9 @@ class Socket:
         host: str,
         port: str,
         use_ssl: bool = False,
-        adapter: Optional[WebSocketAdapter] = None,
+        adapter: Optional[WebSocketAdapterPb] = None,
         send_timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS,
-        event_manager=None,
+        event_manager: Optional[EventManager] = None,
     ):
         """
         Initialize Socket.
@@ -73,22 +69,19 @@ class Socket:
         self.port = port
         self.use_ssl = use_ssl
         self.websocket_scheme = "wss://" if use_ssl else "ws://"
-        self.adapter = adapter or WebSocketAdapterPb(event_manager=event_manager)
         self.send_timeout_ms = send_timeout_ms
-        self.event_manager = event_manager
+        self.event_manager = event_manager or EventManager()
 
-        # Promise executors for RPC calls
         self.cids: Dict[str, PromiseExecutor] = {}
         self.next_cid = 1
 
-        # Session and events
+        self.adapter = adapter or WebSocketAdapterPb()
+
         self.session: Optional[Session] = None
 
-        # Heartbeat
         self._heartbeat_timeout_ms = self.DEFAULT_HEARTBEAT_TIMEOUT_MS
         self._heartbeat_task: Optional[asyncio.Task] = None
 
-        # Event handlers
         self.ondisconnect: Optional[callable] = None
         self.onerror: Optional[callable] = None
         self.onheartbeattimeout: Optional[callable] = None
@@ -161,32 +154,158 @@ class Socket:
                 ),
                 timeout=connect_timeout_ms / 1000,
             )
+            await self._start_listen()
 
             return session
         except asyncio.TimeoutError:
             raise TimeoutError("The socket timed out when trying to connect.")
 
-    async def _send_with_cid(self, message: realtime_pb2.Envelope) -> Any:
+    async def _listen(self) -> None:
+        """Listen for incoming protobuf messages."""
+        async for message in self.adapter._socket:
+            if isinstance(message, bytes):
+                envelope = parse_protobuf(message)
+                logger.debug(f"Received envelope: {envelope}")
+
+                if envelope.cid:
+                    executor = self.cids.get(envelope.cid)
+                    if executor:
+                        if envelope.HasField("error"):
+                            executor.reject(envelope.error)
+                        else:
+                            executor.resolve(envelope)
+                    else:
+                        logger.debug(f"No executor found for cid: {envelope.cid}")
+                else:
+                    if self.event_manager:
+                        await self._emit_event_from_envelope(envelope)
+
+    async def _start_listen(self) -> None:
+        """Start the heartbeat ping-pong task."""
+        if self._heartbeat_task is None or self._heartbeat_task.done():
+            self._heartbeat_task = asyncio.create_task(self._ping_pong())
+        asyncio.create_task(self._listen())
+
+    def _cleanup_cid(self, cid: str, executor: PromiseExecutor) -> None:
+        """
+        Cleanup executor and remove from tracking dict.
+
+        Args:
+            cid: Command ID to cleanup
+            executor: The executor to cleanup
+        """
+        if cid in self.cids:
+            del self.cids[cid]
+        executor.cancel()
+
+    async def _ping_pong(self) -> None:
+        """
+        Heartbeat ping-pong implementation.
+        Sends periodic ping messages to keep connection alive and detect timeouts.
+        """
+        while True:
+            await asyncio.sleep(self._heartbeat_timeout_ms / 1000)
+
+            if not self.adapter.is_open():
+                logger.debug("Adapter closed, stopping heartbeat")
+                return
+
+            try:
+                envelope = realtime_pb2.Envelope()
+                envelope.ping.CopyFrom(realtime_pb2.Ping())
+
+                await self._send_with_cid(envelope, self._heartbeat_timeout_ms)
+                logger.debug("Heartbeat ping sent successfully")
+
+            except Exception:
+                if self.adapter.is_open():
+                    logger.error("Server unreachable from heartbeat")
+
+                    if self.onheartbeattimeout:
+                        try:
+                            if asyncio.iscoroutinefunction(self.onheartbeattimeout):
+                                await self.onheartbeattimeout()
+                            else:
+                                self.onheartbeattimeout()
+                        except Exception as callback_error:
+                            logger.error(
+                                f"Error in heartbeat timeout callback: {callback_error}"
+                            )
+
+                    await self.adapter.close()
+
+                return
+
+    async def _send_with_cid(
+        self, message: realtime_pb2.Envelope, timeout_ms: int = None
+    ) -> Any:
         """
         Send message with command ID and wait for response.
+        Matches TypeScript implementation pattern.
 
         Args:
             message: Message to send (will have cid added)
+            timeout_ms: Timeout in milliseconds (defaults to self.send_timeout_ms)
 
         Returns:
-            Response from server
+            Response from server (or None on timeout)
 
         Raises:
-            TimeoutError: If response times out
-            Exception: If server returns error
+            Exception: If server returns error or socket is not connected
         """
-        message.cid = self.generate_cid()
-        # future = asyncio.Future()
-        # self.cids[message.cid] = future
-        await self.adapter.send(message)
-        # result = await future
-        # del self.cids[message.cid]
-        # return result
+        if not self.adapter.is_open():
+            raise Exception("Socket connection has not been established yet.")
+
+        loop = asyncio.get_event_loop()
+        cid = self.generate_cid()
+        message.cid = cid
+
+        executor = PromiseExecutor(loop)
+        self.cids[cid] = executor
+
+        timeout_ms = timeout_ms or self.send_timeout_ms
+
+        def on_timeout():
+            """Called when timeout occurs"""
+            logger.warning(
+                f"Timeout waiting for response with cid: {cid} (waited {timeout_ms}ms)"
+            )
+            self._cleanup_cid(cid, executor)
+
+        executor.set_timeout(timeout_ms / 1000, on_timeout)
+
+        try:
+            await self.adapter.send(message)
+            result = await executor.future
+
+            logger.debug(f"Received response for cid: {cid}")
+            return result
+
+        except asyncio.CancelledError:
+            logger.debug(f"Request with cid {cid} was cancelled")
+            return None
+
+        except Exception as e:
+            logger.error(f"Error with message cid {cid}: {e}")
+            raise
+
+        finally:
+            self._cleanup_cid(cid, executor)
+
+    async def _emit_event_from_envelope(self, envelope: realtime_pb2.Envelope) -> None:
+        """
+        Parse the envelope and emit the appropriate event.
+
+        Args:
+            envelope: The protobuf envelope to parse
+        """
+
+        field_name = envelope.WhichOneof("message")
+        if field_name:
+            payload = envelope.__getattribute__(field_name)
+            logger.debug(f"Field name: {field_name}")
+            logger.debug(f"Payload: {payload}")
+            await self.event_manager.emit(field_name, payload)
 
     async def join_clan_chat(self, clan_id: str) -> realtime_pb2.ClanJoin:
         """
@@ -274,83 +393,59 @@ class Socket:
         Raises:
             Exception: If sending fails
         """
-
-        # TODO: Improve code quality
-
-        content = {"t": content}
-        content_str = json.dumps(content) if isinstance(content, dict) else str(content)
-
-        channel_message_send = realtime_pb2.ChannelMessageSend(
+        channel_message_send = ChannelMessageBuilder.build(
             clan_id=clan_id,
             channel_id=channel_id,
             mode=mode,
             is_public=is_public,
-            content=content_str,
+            content=content,
+            mentions=mentions,
+            attachments=attachments,
+            references=references,
+            anonymous_message=anonymous_message,
+            mention_everyone=mention_everyone,
+            avatar=avatar,
+            code=code,
+            topic_id=topic_id,
         )
-
-        if mentions:
-            for mention in mentions:
-                msg_mention = channel_message_send.mentions.add()
-                if mention.user_id:
-                    msg_mention.user_id = mention.user_id
-                if mention.username:
-                    msg_mention.username = mention.username
-                if mention.role_id:
-                    msg_mention.role_id = mention.role_id
-                if mention.s is not None:
-                    msg_mention.s = mention.s
-                if mention.e is not None:
-                    msg_mention.e = mention.e
-
-        if attachments:
-            for attachment in attachments:
-                msg_attachment = channel_message_send.attachments.add()
-                if attachment.filename:
-                    msg_attachment.filename = attachment.filename
-                if attachment.url:
-                    msg_attachment.url = attachment.url
-                if attachment.filetype:
-                    msg_attachment.filetype = attachment.filetype
-                if attachment.size is not None:
-                    msg_attachment.size = attachment.size
-                if attachment.width is not None:
-                    msg_attachment.width = attachment.width
-                if attachment.height is not None:
-                    msg_attachment.height = attachment.height
-
-        if references:
-            for ref in references:
-                msg_ref = channel_message_send.references.add()
-                msg_ref.message_ref_id = ref.message_ref_id
-                msg_ref.message_sender_id = ref.message_sender_id
-                if ref.message_sender_username:
-                    msg_ref.message_sender_username = ref.message_sender_username
-                if ref.content:
-                    msg_ref.content = ref.content
-                if ref.has_attachment is not None:
-                    msg_ref.has_attachment = ref.has_attachment
-
-        if anonymous_message is not None:
-            channel_message_send.anonymous_message = anonymous_message
-
-        if mention_everyone is not None:
-            channel_message_send.mention_everyone = mention_everyone
-
-        if avatar:
-            channel_message_send.avatar = avatar
-
-        if code is not None:
-            channel_message_send.code = code
-
-        if topic_id:
-            channel_message_send.topic_id = topic_id
 
         envelope = realtime_pb2.Envelope()
         envelope.channel_message_send.CopyFrom(channel_message_send)
-
         await self._send_with_cid(envelope)
 
     async def write_ephemeral_message(
-        self, message: EphemeralMessageData
+        self,
+        receiver_id: str,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        content: Any,
+        mentions: Optional[List[ApiMessageMention]] = None,
+        attachments: Optional[List[ApiMessageAttachment]] = None,
+        references: Optional[List[ApiMessageRef]] = None,
+        anonymous_message: Optional[bool] = None,
+        mention_everyone: Optional[bool] = None,
+        avatar: Optional[str] = None,
+        code: Optional[int] = None,
+        topic_id: Optional[str] = None,
     ) -> ChannelMessageAck:
-        raise NotImplementedError("Not implemented yet")
+        ephemeral_message_send = EphemeralMessageBuilder.build(
+            receiver_id=receiver_id,
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            content=content,
+            mentions=mentions,
+            attachments=attachments,
+            references=references,
+            anonymous_message=anonymous_message,
+            mention_everyone=mention_everyone,
+            avatar=avatar,
+            code=code,
+            topic_id=topic_id,
+        )
+        envelope = realtime_pb2.Envelope()
+        envelope.ephemeral_message_send.CopyFrom(ephemeral_message_send)
+        await self._send_with_cid(envelope)

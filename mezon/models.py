@@ -14,9 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import json
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
-
+from mezon.protobuf.api import api_pb2
+from mezon.protobuf.rtapi import realtime_pb2
+from google.protobuf import json_format
 
 # API Models
 
@@ -104,6 +107,7 @@ class ApiChannelDescription(BaseModel):
     channel_label: Optional[str] = None
     channel_private: Optional[int] = None
     clan_id: Optional[str] = None
+    clan_name: Optional[str] = None
     count_mess_unread: Optional[int] = None
     create_time_seconds: Optional[int] = None
     creator_id: Optional[str] = None
@@ -122,6 +126,14 @@ class ApiChannelDescription(BaseModel):
     user_id: Optional[List[str]] = None
     user_ids: Optional[List[str]] = None
     usernames: Optional[List[str]] = None
+
+    @classmethod
+    def from_protobuf(
+        cls,
+        message: realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent,
+    ) -> "ApiChannelDescription":
+        json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
+        return cls.model_validate_json(json_data)
 
 
 class ApiChannelDescList(BaseModel):
@@ -240,6 +252,18 @@ class ApiRegisterStreamingChannelRequest(BaseModel):
 
     clan_id: Optional[str] = None
     channel_id: Optional[str] = None
+
+
+class ApiSentTokenRequest(BaseModel):
+    """Request to send tokens to another user"""
+
+    receiver_id: str
+    amount: int
+    sender_id: Optional[str] = None
+    sender_name: Optional[str] = None
+    note: Optional[str] = None
+    extra_attribute: Optional[str] = None
+    mmn_extra_info: Optional[Dict[str, Any]] = None
 
 
 # Client Models
@@ -624,3 +648,134 @@ class Rpc(BaseModel):
 
     id: str
     payload: Any
+
+
+class ChannelMessageRaw(BaseModel):
+    """Raw channel message data from protobuf"""
+
+    id: str = Field(alias="message_id")
+    clan_id: str
+    channel_id: str
+    sender_id: str
+    content: Dict[str, Any] = Field(default_factory=dict)
+    reactions: List[ApiMessageReaction] = Field(default_factory=list)
+    mentions: List[ApiMessageMention] = Field(default_factory=list)
+    attachments: List[ApiMessageAttachment] = Field(default_factory=list)
+    references: List[ApiMessageRef] = Field(default_factory=list)
+    create_time_seconds: Optional[int] = None
+    topic_id: Optional[str] = None
+
+    class Config:
+        populate_by_name = True
+
+    @classmethod
+    def from_protobuf(cls, message: api_pb2.ChannelMessage) -> "ChannelMessageRaw":
+        """
+        Create a ChannelMessageRaw from a protobuf ChannelMessage.
+
+        Args:
+            message: Protobuf ChannelMessage object
+
+        Returns:
+            ChannelMessageRaw instance
+        """
+
+        def safe_json_parse(value: Optional[str], default):
+            """Safely parse JSON string, return default on error or None"""
+            if not value:
+                return default
+            try:
+                return json.loads(value)
+            except (json.JSONDecodeError, TypeError):
+                return default
+
+        return cls(
+            message_id=message.message_id,
+            clan_id=message.clan_id,
+            channel_id=message.channel_id,
+            sender_id=message.sender_id,
+            content=safe_json_parse(getattr(message, "content", None), {}),
+            reactions=safe_json_parse(getattr(message, "reactions", None), []),
+            mentions=safe_json_parse(getattr(message, "mentions", None), []),
+            attachments=safe_json_parse(getattr(message, "attachments", None), []),
+            references=safe_json_parse(getattr(message, "references", None), []),
+            create_time_seconds=getattr(message, "create_time_seconds", None),
+            topic_id=getattr(message, "topic_id", None),
+        )
+
+    def to_message_dict(self) -> Dict[str, Any]:
+        """
+        Convert to Message initialization dictionary.
+
+        Returns:
+            Dictionary suitable for Message class initialization
+        """
+        return self.model_dump(by_alias=False)
+
+    def to_db_dict(self) -> Dict[str, Any]:
+        """
+        Convert to database storage dictionary.
+
+        Returns:
+            Dictionary suitable for MessageDB.save_message()
+        """
+        return {
+            "message_id": self.id,
+            "clan_id": self.clan_id,
+            "channel_id": self.channel_id,
+            "sender_id": self.sender_id,
+            "content": self.content,
+            "reactions": [r.model_dump() for r in self.reactions],
+            "mentions": [m.model_dump() for m in self.mentions],
+            "attachments": [a.model_dump() for a in self.attachments],
+            "references": [r.model_dump() for r in self.references],
+            "create_time_seconds": self.create_time_seconds,
+        }
+
+
+class UserInitData(BaseModel):
+    """User initialization data from protobuf message"""
+
+    id: str = Field(alias="sender_id")
+    username: str = Field(default="")
+    clan_nick: str = Field(default="")
+    clan_avatar: str = Field(default="")
+    avatar: str = Field(default="")
+    display_name: str = Field(default="")
+    dm_channel_id: str = Field(default="", alias="dmChannelId")
+
+    class Config:
+        populate_by_name = True
+
+    @classmethod
+    def from_protobuf(
+        cls, message: api_pb2.ChannelMessage, dm_channel_id: str = ""
+    ) -> "UserInitData":
+        """
+        Create UserInitData from a protobuf ChannelMessage.
+
+        Args:
+            message: Protobuf ChannelMessage object
+            dm_channel_id: DM channel ID for this user (optional)
+
+        Returns:
+            UserInitData instance
+        """
+        return cls(
+            sender_id=message.sender_id,
+            username=getattr(message, "username", ""),
+            clan_nick=getattr(message, "clan_nick", ""),
+            clan_avatar=getattr(message, "clan_avatar", ""),
+            avatar=getattr(message, "avatar", ""),
+            display_name=getattr(message, "display_name", ""),
+            dmChannelId=dm_channel_id,
+        )
+
+    def to_user_dict(self) -> Dict[str, Any]:
+        """
+        Convert to User class initialization dictionary.
+
+        Returns:
+            Dictionary suitable for User class initialization
+        """
+        return self.model_dump(by_alias=True)

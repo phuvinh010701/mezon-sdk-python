@@ -433,9 +433,7 @@ class Envelope(google.protobuf.message.Message):
         """category event"""
 
     @property
-    def handle_participant_meet_state_event(
-        self,
-    ) -> global___HandleParticipantMeetStateEvent:
+    def handle_participant_meet_state_event(self) -> global___HandleParticipantMeetStateEvent:
         """handle join/leave channel voice"""
 
     @property
@@ -565,8 +563,7 @@ class Envelope(google.protobuf.message.Message):
         canvas_event: global___ChannelCanvas | None = ...,
         unpin_message_event: global___UnpinMessageEvent | None = ...,
         category_event: global___CategoryEvent | None = ...,
-        handle_participant_meet_state_event: global___HandleParticipantMeetStateEvent
-        | None = ...,
+        handle_participant_meet_state_event: global___HandleParticipantMeetStateEvent | None = ...,
         delete_account_event: global___DeleteAccountEvent | None = ...,
         ephemeral_message_send: global___EphemeralMessageSend | None = ...,
         block_friend: global___BlockFriend | None = ...,
@@ -580,469 +577,9 @@ class Envelope(google.protobuf.message.Message):
         add_friend: global___AddFriend | None = ...,
         ban_user_event: global___BannedUserEvent | None = ...,
     ) -> None: ...
-    def HasField(
-        self,
-        field_name: typing.Literal[
-            "add_clan_user_event",
-            b"add_clan_user_event",
-            "add_friend",
-            b"add_friend",
-            "ban_user_event",
-            b"ban_user_event",
-            "block_friend",
-            b"block_friend",
-            "canvas_event",
-            b"canvas_event",
-            "category_event",
-            b"category_event",
-            "channel",
-            b"channel",
-            "channel_app_event",
-            b"channel_app_event",
-            "channel_created_event",
-            b"channel_created_event",
-            "channel_deleted_event",
-            b"channel_deleted_event",
-            "channel_join",
-            b"channel_join",
-            "channel_leave",
-            b"channel_leave",
-            "channel_message",
-            b"channel_message",
-            "channel_message_ack",
-            b"channel_message_ack",
-            "channel_message_remove",
-            b"channel_message_remove",
-            "channel_message_send",
-            b"channel_message_send",
-            "channel_message_update",
-            b"channel_message_update",
-            "channel_presence_event",
-            b"channel_presence_event",
-            "channel_updated_event",
-            b"channel_updated_event",
-            "check_name_existed_event",
-            b"check_name_existed_event",
-            "clan_deleted_event",
-            b"clan_deleted_event",
-            "clan_event_created",
-            b"clan_event_created",
-            "clan_join",
-            b"clan_join",
-            "clan_profile_updated_event",
-            b"clan_profile_updated_event",
-            "clan_updated_event",
-            b"clan_updated_event",
-            "custom_status_event",
-            b"custom_status_event",
-            "delete_account_event",
-            b"delete_account_event",
-            "dropdown_box_selected",
-            b"dropdown_box_selected",
-            "ephemeral_message_send",
-            b"ephemeral_message_send",
-            "error",
-            b"error",
-            "event_emoji",
-            b"event_emoji",
-            "follow_event",
-            b"follow_event",
-            "give_coffee_event",
-            b"give_coffee_event",
-            "handle_participant_meet_state_event",
-            b"handle_participant_meet_state_event",
-            "incoming_call_push",
-            b"incoming_call_push",
-            "join_channel_app_data",
-            b"join_channel_app_data",
-            "last_pin_message_event",
-            b"last_pin_message_event",
-            "last_seen_message_event",
-            b"last_seen_message_event",
-            "list_activity",
-            b"list_activity",
-            "list_data_socket",
-            b"list_data_socket",
-            "mark_as_read",
-            b"mark_as_read",
-            "meet_participant_event",
-            b"meet_participant_event",
-            "message",
-            b"message",
-            "message_button_clicked",
-            b"message_button_clicked",
-            "message_reaction_event",
-            b"message_reaction_event",
-            "message_typing_event",
-            b"message_typing_event",
-            "noti_user_channel",
-            b"noti_user_channel",
-            "notifications",
-            b"notifications",
-            "permission_changed_event",
-            b"permission_changed_event",
-            "permission_set_event",
-            b"permission_set_event",
-            "ping",
-            b"ping",
-            "pong",
-            b"pong",
-            "quick_menu_event",
-            b"quick_menu_event",
-            "remove_friend",
-            b"remove_friend",
-            "role_assign_event",
-            b"role_assign_event",
-            "role_event",
-            b"role_event",
-            "rpc",
-            b"rpc",
-            "sd_topic_event",
-            b"sd_topic_event",
-            "status",
-            b"status",
-            "status_follow",
-            b"status_follow",
-            "status_presence_event",
-            b"status_presence_event",
-            "status_unfollow",
-            b"status_unfollow",
-            "status_update",
-            b"status_update",
-            "sticker_create_event",
-            b"sticker_create_event",
-            "sticker_delete_event",
-            b"sticker_delete_event",
-            "sticker_update_event",
-            b"sticker_update_event",
-            "stream_data",
-            b"stream_data",
-            "stream_presence_event",
-            b"stream_presence_event",
-            "streaming_ended_event",
-            b"streaming_ended_event",
-            "streaming_joined_event",
-            b"streaming_joined_event",
-            "streaming_leaved_event",
-            b"streaming_leaved_event",
-            "streaming_started_event",
-            b"streaming_started_event",
-            "token_sent_event",
-            b"token_sent_event",
-            "transfer_ownership_event",
-            b"transfer_ownership_event",
-            "un_block_friend",
-            b"un_block_friend",
-            "unmute_event",
-            b"unmute_event",
-            "unpin_message_event",
-            b"unpin_message_event",
-            "user_channel_added_event",
-            b"user_channel_added_event",
-            "user_channel_removed_event",
-            b"user_channel_removed_event",
-            "user_clan_removed_event",
-            b"user_clan_removed_event",
-            "user_profile_updated_event",
-            b"user_profile_updated_event",
-            "user_status_event",
-            b"user_status_event",
-            "voice_ended_event",
-            b"voice_ended_event",
-            "voice_joined_event",
-            b"voice_joined_event",
-            "voice_leaved_event",
-            b"voice_leaved_event",
-            "voice_reaction_send",
-            b"voice_reaction_send",
-            "voice_started_event",
-            b"voice_started_event",
-            "webhook_event",
-            b"webhook_event",
-            "webrtc_signaling_fwd",
-            b"webrtc_signaling_fwd",
-        ],
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "add_clan_user_event",
-            b"add_clan_user_event",
-            "add_friend",
-            b"add_friend",
-            "ban_user_event",
-            b"ban_user_event",
-            "block_friend",
-            b"block_friend",
-            "canvas_event",
-            b"canvas_event",
-            "category_event",
-            b"category_event",
-            "channel",
-            b"channel",
-            "channel_app_event",
-            b"channel_app_event",
-            "channel_created_event",
-            b"channel_created_event",
-            "channel_deleted_event",
-            b"channel_deleted_event",
-            "channel_join",
-            b"channel_join",
-            "channel_leave",
-            b"channel_leave",
-            "channel_message",
-            b"channel_message",
-            "channel_message_ack",
-            b"channel_message_ack",
-            "channel_message_remove",
-            b"channel_message_remove",
-            "channel_message_send",
-            b"channel_message_send",
-            "channel_message_update",
-            b"channel_message_update",
-            "channel_presence_event",
-            b"channel_presence_event",
-            "channel_updated_event",
-            b"channel_updated_event",
-            "check_name_existed_event",
-            b"check_name_existed_event",
-            "cid",
-            b"cid",
-            "clan_deleted_event",
-            b"clan_deleted_event",
-            "clan_event_created",
-            b"clan_event_created",
-            "clan_join",
-            b"clan_join",
-            "clan_profile_updated_event",
-            b"clan_profile_updated_event",
-            "clan_updated_event",
-            b"clan_updated_event",
-            "custom_status_event",
-            b"custom_status_event",
-            "delete_account_event",
-            b"delete_account_event",
-            "dropdown_box_selected",
-            b"dropdown_box_selected",
-            "ephemeral_message_send",
-            b"ephemeral_message_send",
-            "error",
-            b"error",
-            "event_emoji",
-            b"event_emoji",
-            "follow_event",
-            b"follow_event",
-            "give_coffee_event",
-            b"give_coffee_event",
-            "handle_participant_meet_state_event",
-            b"handle_participant_meet_state_event",
-            "incoming_call_push",
-            b"incoming_call_push",
-            "join_channel_app_data",
-            b"join_channel_app_data",
-            "last_pin_message_event",
-            b"last_pin_message_event",
-            "last_seen_message_event",
-            b"last_seen_message_event",
-            "list_activity",
-            b"list_activity",
-            "list_data_socket",
-            b"list_data_socket",
-            "mark_as_read",
-            b"mark_as_read",
-            "meet_participant_event",
-            b"meet_participant_event",
-            "message",
-            b"message",
-            "message_button_clicked",
-            b"message_button_clicked",
-            "message_reaction_event",
-            b"message_reaction_event",
-            "message_typing_event",
-            b"message_typing_event",
-            "noti_user_channel",
-            b"noti_user_channel",
-            "notifications",
-            b"notifications",
-            "permission_changed_event",
-            b"permission_changed_event",
-            "permission_set_event",
-            b"permission_set_event",
-            "ping",
-            b"ping",
-            "pong",
-            b"pong",
-            "quick_menu_event",
-            b"quick_menu_event",
-            "remove_friend",
-            b"remove_friend",
-            "role_assign_event",
-            b"role_assign_event",
-            "role_event",
-            b"role_event",
-            "rpc",
-            b"rpc",
-            "sd_topic_event",
-            b"sd_topic_event",
-            "status",
-            b"status",
-            "status_follow",
-            b"status_follow",
-            "status_presence_event",
-            b"status_presence_event",
-            "status_unfollow",
-            b"status_unfollow",
-            "status_update",
-            b"status_update",
-            "sticker_create_event",
-            b"sticker_create_event",
-            "sticker_delete_event",
-            b"sticker_delete_event",
-            "sticker_update_event",
-            b"sticker_update_event",
-            "stream_data",
-            b"stream_data",
-            "stream_presence_event",
-            b"stream_presence_event",
-            "streaming_ended_event",
-            b"streaming_ended_event",
-            "streaming_joined_event",
-            b"streaming_joined_event",
-            "streaming_leaved_event",
-            b"streaming_leaved_event",
-            "streaming_started_event",
-            b"streaming_started_event",
-            "token_sent_event",
-            b"token_sent_event",
-            "transfer_ownership_event",
-            b"transfer_ownership_event",
-            "un_block_friend",
-            b"un_block_friend",
-            "unmute_event",
-            b"unmute_event",
-            "unpin_message_event",
-            b"unpin_message_event",
-            "user_channel_added_event",
-            b"user_channel_added_event",
-            "user_channel_removed_event",
-            b"user_channel_removed_event",
-            "user_clan_removed_event",
-            b"user_clan_removed_event",
-            "user_profile_updated_event",
-            b"user_profile_updated_event",
-            "user_status_event",
-            b"user_status_event",
-            "voice_ended_event",
-            b"voice_ended_event",
-            "voice_joined_event",
-            b"voice_joined_event",
-            "voice_leaved_event",
-            b"voice_leaved_event",
-            "voice_reaction_send",
-            b"voice_reaction_send",
-            "voice_started_event",
-            b"voice_started_event",
-            "webhook_event",
-            b"webhook_event",
-            "webrtc_signaling_fwd",
-            b"webrtc_signaling_fwd",
-        ],
-    ) -> None: ...
-    def WhichOneof(
-        self, oneof_group: typing.Literal["message", b"message"]
-    ) -> (
-        typing.Literal[
-            "channel",
-            "clan_join",
-            "channel_join",
-            "channel_leave",
-            "channel_message",
-            "channel_message_ack",
-            "channel_message_send",
-            "channel_message_update",
-            "channel_message_remove",
-            "channel_presence_event",
-            "error",
-            "notifications",
-            "rpc",
-            "status",
-            "status_follow",
-            "status_presence_event",
-            "status_unfollow",
-            "status_update",
-            "stream_data",
-            "stream_presence_event",
-            "ping",
-            "pong",
-            "message_typing_event",
-            "last_seen_message_event",
-            "message_reaction_event",
-            "voice_joined_event",
-            "voice_leaved_event",
-            "voice_started_event",
-            "voice_ended_event",
-            "channel_created_event",
-            "channel_deleted_event",
-            "channel_updated_event",
-            "last_pin_message_event",
-            "custom_status_event",
-            "user_channel_added_event",
-            "user_channel_removed_event",
-            "user_clan_removed_event",
-            "clan_updated_event",
-            "clan_profile_updated_event",
-            "check_name_existed_event",
-            "user_profile_updated_event",
-            "add_clan_user_event",
-            "clan_event_created",
-            "role_assign_event",
-            "clan_deleted_event",
-            "give_coffee_event",
-            "sticker_create_event",
-            "sticker_update_event",
-            "sticker_delete_event",
-            "role_event",
-            "event_emoji",
-            "streaming_joined_event",
-            "streaming_leaved_event",
-            "streaming_started_event",
-            "streaming_ended_event",
-            "permission_set_event",
-            "permission_changed_event",
-            "token_sent_event",
-            "message_button_clicked",
-            "unmute_event",
-            "webrtc_signaling_fwd",
-            "list_activity",
-            "dropdown_box_selected",
-            "incoming_call_push",
-            "sd_topic_event",
-            "follow_event",
-            "channel_app_event",
-            "user_status_event",
-            "remove_friend",
-            "webhook_event",
-            "noti_user_channel",
-            "join_channel_app_data",
-            "canvas_event",
-            "unpin_message_event",
-            "category_event",
-            "handle_participant_meet_state_event",
-            "delete_account_event",
-            "ephemeral_message_send",
-            "block_friend",
-            "voice_reaction_send",
-            "mark_as_read",
-            "list_data_socket",
-            "quick_menu_event",
-            "un_block_friend",
-            "meet_participant_event",
-            "transfer_ownership_event",
-            "add_friend",
-            "ban_user_event",
-        ]
-        | None
-    ): ...
+    def HasField(self, field_name: typing.Literal["add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing.Literal["message", b"message"]) -> typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event"] | None: ...
 
 global___Envelope = Envelope
 
@@ -1066,11 +603,7 @@ class BannedUserEvent(google.protobuf.message.Message):
     action: builtins.int
     banner_id: builtins.str
     @property
-    def user_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
-        builtins.str
-    ]: ...
+    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     def __init__(
         self,
         *,
@@ -1078,12 +611,7 @@ class BannedUserEvent(google.protobuf.message.Message):
         action: builtins.int = ...,
         banner_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "action", b"action", "banner_id", b"banner_id", "user_ids", b"user_ids"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["action", b"action", "banner_id", b"banner_id", "user_ids", b"user_ids"]) -> None: ...
 
 global___BannedUserEvent = BannedUserEvent
 
@@ -1127,27 +655,7 @@ class ChannelCanvas(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         status: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "content",
-            b"content",
-            "creator_id",
-            b"creator_id",
-            "editor_id",
-            b"editor_id",
-            "id",
-            b"id",
-            "is_default",
-            b"is_default",
-            "status",
-            b"status",
-            "title",
-            b"title",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "content", b"content", "creator_id", b"creator_id", "editor_id", b"editor_id", "id", b"id", "is_default", b"is_default", "status", b"status", "title", b"title"]) -> None: ...
 
 global___ChannelCanvas = ChannelCanvas
 
@@ -1171,19 +679,7 @@ class IncomingCallPush(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         caller_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "caller_id",
-            b"caller_id",
-            "channel_id",
-            b"channel_id",
-            "json_data",
-            b"json_data",
-            "receiver_id",
-            b"receiver_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "json_data", b"json_data", "receiver_id", b"receiver_id"]) -> None: ...
 
 global___IncomingCallPush = IncomingCallPush
 
@@ -1210,21 +706,7 @@ class WebrtcSignalingFwd(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         caller_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "caller_id",
-            b"caller_id",
-            "channel_id",
-            b"channel_id",
-            "data_type",
-            b"data_type",
-            "json_data",
-            b"json_data",
-            "receiver_id",
-            b"receiver_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "data_type", b"data_type", "json_data", b"json_data", "receiver_id", b"receiver_id"]) -> None: ...
 
 global___WebrtcSignalingFwd = WebrtcSignalingFwd
 
@@ -1251,21 +733,7 @@ class SFUSignalingFwd(google.protobuf.message.Message):
         json_data: builtins.str = ...,
         user_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "data_type",
-            b"data_type",
-            "json_data",
-            b"json_data",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "data_type", b"data_type", "json_data", b"json_data", "user_id", b"user_id"]) -> None: ...
 
 global___SFUSignalingFwd = SFUSignalingFwd
 
@@ -1291,15 +759,8 @@ class AddClanUserEvent(google.protobuf.message.Message):
         user: global___UserProfileRedis | None = ...,
         invitor: builtins.str = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["user", b"user"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id", b"clan_id", "invitor", b"invitor", "user", b"user"
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["user", b"user"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "invitor", b"invitor", "user", b"user"]) -> None: ...
 
 global___AddClanUserEvent = AddClanUserEvent
 
@@ -1318,15 +779,11 @@ class RoleAssignedEvent(google.protobuf.message.Message):
     role_id: builtins.str
     """Role ID"""
     @property
-    def user_ids_assigned(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def user_ids_assigned(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """UserIds Assigned"""
 
     @property
-    def user_ids_removed(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def user_ids_removed(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """UserIds Removed"""
 
     def __init__(
@@ -1337,19 +794,7 @@ class RoleAssignedEvent(google.protobuf.message.Message):
         user_ids_assigned: collections.abc.Iterable[builtins.str] | None = ...,
         user_ids_removed: collections.abc.Iterable[builtins.str] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "ClanId",
-            b"ClanId",
-            "role_id",
-            b"role_id",
-            "user_ids_assigned",
-            b"user_ids_assigned",
-            "user_ids_removed",
-            b"user_ids_removed",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["ClanId", b"ClanId", "role_id", b"role_id", "user_ids_assigned", b"user_ids_assigned", "user_ids_removed", b"user_ids_removed"]) -> None: ...
 
 global___RoleAssignedEvent = RoleAssignedEvent
 
@@ -1371,12 +816,7 @@ class PermissionRoleChannel(google.protobuf.message.Message):
         permission_id: builtins.str = ...,
         active: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "active", b"active", "permission_id", b"permission_id"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["active", b"active", "permission_id", b"permission_id"]) -> None: ...
 
 global___PermissionRoleChannel = PermissionRoleChannel
 
@@ -1422,27 +862,7 @@ class HashtagDm(google.protobuf.message.Message):
         channel_private: builtins.int = ...,
         parent_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "channel_label",
-            b"channel_label",
-            "channel_private",
-            b"channel_private",
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "meeting_code",
-            b"meeting_code",
-            "parent_id",
-            b"parent_id",
-            "type",
-            b"type",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]) -> None: ...
 
 global___HashtagDm = HashtagDm
 
@@ -1496,35 +916,8 @@ class ChannelDescription(google.protobuf.message.Message):
         parent_id: builtins.str = ...,
         last_sent_message: api.api_pb2.ChannelMessageHeader | None = ...,
     ) -> None: ...
-    def HasField(
-        self,
-        field_name: typing.Literal[
-            "last_sent_message", b"last_sent_message", "type", b"type"
-        ],
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "channel_label",
-            b"channel_label",
-            "channel_private",
-            b"channel_private",
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "last_sent_message",
-            b"last_sent_message",
-            "meeting_code",
-            b"meeting_code",
-            "parent_id",
-            b"parent_id",
-            "type",
-            b"type",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["last_sent_message", b"last_sent_message", "type", b"type"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]) -> None: ...
 
 global___ChannelDescription = ChannelDescription
 
@@ -1567,27 +960,7 @@ class ClanEmoji(google.protobuf.message.Message):
         logo: builtins.str = ...,
         clan_name: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category",
-            b"category",
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "creator_id",
-            b"creator_id",
-            "id",
-            b"id",
-            "logo",
-            b"logo",
-            "shortname",
-            b"shortname",
-            "src",
-            b"src",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "id", b"id", "logo", b"logo", "shortname", b"shortname", "src", b"src"]) -> None: ...
 
 global___ClanEmoji = ClanEmoji
 
@@ -1612,11 +985,7 @@ class Channel(google.protobuf.message.Message):
     category_name: builtins.str
     """The category name"""
     @property
-    def presences(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """The users currently in the channel."""
 
     @property
@@ -1633,26 +1002,8 @@ class Channel(google.protobuf.message.Message):
         clan_logo: builtins.str = ...,
         category_name: builtins.str = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["self", b"self"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category_name",
-            b"category_name",
-            "chanel_label",
-            b"chanel_label",
-            "clan_logo",
-            b"clan_logo",
-            "id",
-            b"id",
-            "presences",
-            b"presences",
-            "self",
-            b"self",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["self", b"self"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "chanel_label", b"chanel_label", "clan_logo", b"clan_logo", "id", b"id", "presences", b"presences", "self", b"self"]) -> None: ...
 
 global___Channel = Channel
 
@@ -1700,19 +1051,7 @@ class ChannelJoin(google.protobuf.message.Message):
         channel_type: builtins.int = ...,
         is_public: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "channel_type",
-            b"channel_type",
-            "clan_id",
-            b"clan_id",
-            "is_public",
-            b"is_public",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]) -> None: ...
 
 global___ChannelJoin = ChannelJoin
 
@@ -1742,19 +1081,7 @@ class ChannelLeave(google.protobuf.message.Message):
         channel_type: builtins.int = ...,
         is_public: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "channel_type",
-            b"channel_type",
-            "clan_id",
-            b"clan_id",
-            "is_public",
-            b"is_public",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]) -> None: ...
 
 global___ChannelLeave = ChannelLeave
 
@@ -1812,42 +1139,8 @@ class ChannelMessageAck(google.protobuf.message.Message):
         clan_logo: builtins.str = ...,
         category_name: builtins.str = ...,
     ) -> None: ...
-    def HasField(
-        self,
-        field_name: typing.Literal[
-            "code",
-            b"code",
-            "create_time",
-            b"create_time",
-            "persistent",
-            b"persistent",
-            "update_time",
-            b"update_time",
-        ],
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category_name",
-            b"category_name",
-            "channel_id",
-            b"channel_id",
-            "clan_logo",
-            b"clan_logo",
-            "code",
-            b"code",
-            "create_time",
-            b"create_time",
-            "message_id",
-            b"message_id",
-            "persistent",
-            b"persistent",
-            "update_time",
-            b"update_time",
-            "username",
-            b"username",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["code", b"code", "create_time", b"create_time", "persistent", b"persistent", "update_time", b"update_time"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "code", b"code", "create_time", b"create_time", "message_id", b"message_id", "persistent", b"persistent", "update_time", b"update_time", "username", b"username"]) -> None: ...
 
 global___ChannelMessageAck = ChannelMessageAck
 
@@ -1866,15 +1159,8 @@ class EphemeralMessageSend(google.protobuf.message.Message):
         message: global___ChannelMessageSend | None = ...,
         receiver_id: builtins.str = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["message", b"message"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "message", b"message", "receiver_id", b"receiver_id"
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["message", b"message"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["message", b"message", "receiver_id", b"receiver_id"]) -> None: ...
 
 global___EphemeralMessageSend = EphemeralMessageSend
 
@@ -1893,13 +1179,8 @@ class QuickMenuDataEvent(google.protobuf.message.Message):
         menu_name: builtins.str = ...,
         message: global___ChannelMessageSend | None = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["message", b"message"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal["menu_name", b"menu_name", "message", b"message"],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["message", b"message"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["menu_name", b"menu_name", "message", b"message"]) -> None: ...
 
 global___QuickMenuDataEvent = QuickMenuDataEvent
 
@@ -1918,9 +1199,7 @@ class VoiceReactionSend(google.protobuf.message.Message):
     media_type: builtins.int
     """type"""
     @property
-    def emojis(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def emojis(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """list emoji"""
 
     def __init__(
@@ -1931,19 +1210,7 @@ class VoiceReactionSend(google.protobuf.message.Message):
         sender_id: builtins.str = ...,
         media_type: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "emojis",
-            b"emojis",
-            "media_type",
-            b"media_type",
-            "sender_id",
-            b"sender_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "emojis", b"emojis", "media_type", b"media_type", "sender_id", b"sender_id"]) -> None: ...
 
 global___VoiceReactionSend = VoiceReactionSend
 
@@ -1967,17 +1234,7 @@ class MarkAsRead(google.protobuf.message.Message):
         category_id: builtins.str = ...,
         clan_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category_id",
-            b"category_id",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
 
 global___MarkAsRead = MarkAsRead
 
@@ -2021,27 +1278,15 @@ class ChannelMessageSend(google.protobuf.message.Message):
     topic_id: builtins.str
     """"""
     @property
-    def mentions(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.MessageMention
-    ]:
+    def mentions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageMention]:
         """Message mention"""
 
     @property
-    def attachments(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.MessageAttachment
-    ]:
+    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageAttachment]:
         """Message attachment"""
 
     @property
-    def references(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.MessageRef
-    ]:
+    def references(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageRef]:
         """Message reference"""
 
     def __init__(
@@ -2051,8 +1296,7 @@ class ChannelMessageSend(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         content: builtins.str = ...,
         mentions: collections.abc.Iterable[api.api_pb2.MessageMention] | None = ...,
-        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment]
-        | None = ...,
+        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment] | None = ...,
         references: collections.abc.Iterable[api.api_pb2.MessageRef] | None = ...,
         mode: builtins.int = ...,
         anonymous_message: builtins.bool = ...,
@@ -2062,37 +1306,7 @@ class ChannelMessageSend(google.protobuf.message.Message):
         code: builtins.int = ...,
         topic_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "anonymous_message",
-            b"anonymous_message",
-            "attachments",
-            b"attachments",
-            "avatar",
-            b"avatar",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "code",
-            b"code",
-            "content",
-            b"content",
-            "is_public",
-            b"is_public",
-            "mention_everyone",
-            b"mention_everyone",
-            "mentions",
-            b"mentions",
-            "mode",
-            b"mode",
-            "references",
-            b"references",
-            "topic_id",
-            b"topic_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["anonymous_message", b"anonymous_message", "attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "code", b"code", "content", b"content", "is_public", b"is_public", "mention_everyone", b"mention_everyone", "mentions", b"mentions", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]) -> None: ...
 
 global___ChannelMessageSend = ChannelMessageSend
 
@@ -2135,19 +1349,11 @@ class ChannelMessageUpdate(google.protobuf.message.Message):
     old_mentions: builtins.str
     """old mentions"""
     @property
-    def mentions(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.MessageMention
-    ]:
+    def mentions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageMention]:
         """The mentions"""
 
     @property
-    def attachments(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.MessageAttachment
-    ]:
+    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageAttachment]:
         """Message attachment"""
 
     def __init__(
@@ -2158,8 +1364,7 @@ class ChannelMessageUpdate(google.protobuf.message.Message):
         message_id: builtins.str = ...,
         content: builtins.str = ...,
         mentions: collections.abc.Iterable[api.api_pb2.MessageMention] | None = ...,
-        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment]
-        | None = ...,
+        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment] | None = ...,
         mode: builtins.int = ...,
         is_public: builtins.bool = ...,
         hide_editted: builtins.bool = ...,
@@ -2167,35 +1372,7 @@ class ChannelMessageUpdate(google.protobuf.message.Message):
         is_update_msg_topic: builtins.bool = ...,
         old_mentions: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "attachments",
-            b"attachments",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "content",
-            b"content",
-            "hide_editted",
-            b"hide_editted",
-            "is_public",
-            b"is_public",
-            "is_update_msg_topic",
-            b"is_update_msg_topic",
-            "mentions",
-            b"mentions",
-            "message_id",
-            b"message_id",
-            "mode",
-            b"mode",
-            "old_mentions",
-            b"old_mentions",
-            "topic_id",
-            b"topic_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "hide_editted", b"hide_editted", "is_public", b"is_public", "is_update_msg_topic", b"is_update_msg_topic", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "old_mentions", b"old_mentions", "topic_id", b"topic_id"]) -> None: ...
 
 global___ChannelMessageUpdate = ChannelMessageUpdate
 
@@ -2245,29 +1422,7 @@ class ChannelMessageRemove(google.protobuf.message.Message):
         mentions: builtins.str = ...,
         references: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "has_attachment",
-            b"has_attachment",
-            "is_public",
-            b"is_public",
-            "mentions",
-            b"mentions",
-            "message_id",
-            b"message_id",
-            "mode",
-            b"mode",
-            "references",
-            b"references",
-            "topic_id",
-            b"topic_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "has_attachment", b"has_attachment", "is_public", b"is_public", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]) -> None: ...
 
 global___ChannelMessageRemove = ChannelMessageRemove
 
@@ -2292,19 +1447,11 @@ class ChannelPresenceEvent(google.protobuf.message.Message):
     mode: builtins.int
     """The mode"""
     @property
-    def joins(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """Presences joining the channel as part of this event, if any."""
 
     @property
-    def leaves(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """Presences leaving the channel as part of this event, if any."""
 
     def __init__(
@@ -2317,23 +1464,7 @@ class ChannelPresenceEvent(google.protobuf.message.Message):
         category_name: builtins.str = ...,
         mode: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category_name",
-            b"category_name",
-            "channel_id",
-            b"channel_id",
-            "clan_logo",
-            b"clan_logo",
-            "joins",
-            b"joins",
-            "leaves",
-            b"leaves",
-            "mode",
-            b"mode",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "joins", b"joins", "leaves", b"leaves", "mode", b"mode"]) -> None: ...
 
 global___ChannelPresenceEvent = ChannelPresenceEvent
 
@@ -2347,12 +1478,7 @@ class Error(google.protobuf.message.Message):
         ValueType = typing.NewType("ValueType", builtins.int)
         V: typing_extensions.TypeAlias = ValueType
 
-    class _CodeEnumTypeWrapper(
-        google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[
-            Error._Code.ValueType
-        ],
-        builtins.type,
-    ):
+    class _CodeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Error._Code.ValueType], builtins.type):
         DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
         RUNTIME_EXCEPTION: Error._Code.ValueType  # 0
         """An unexpected result from the server."""
@@ -2405,9 +1531,7 @@ class Error(google.protobuf.message.Message):
             key: builtins.str = ...,
             value: builtins.str = ...,
         ) -> None: ...
-        def ClearField(
-            self, field_name: typing.Literal["key", b"key", "value", b"value"]
-        ) -> None: ...
+        def ClearField(self, field_name: typing.Literal["key", b"key", "value", b"value"]) -> None: ...
 
     CODE_FIELD_NUMBER: builtins.int
     MESSAGE_FIELD_NUMBER: builtins.int
@@ -2417,9 +1541,7 @@ class Error(google.protobuf.message.Message):
     message: builtins.str
     """A message in English to help developers debug the response."""
     @property
-    def context(
-        self,
-    ) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    def context(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
         """Additional error details which may be different for each response."""
 
     def __init__(
@@ -2429,12 +1551,7 @@ class Error(google.protobuf.message.Message):
         message: builtins.str = ...,
         context: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "code", b"code", "context", b"context", "message", b"message"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["code", b"code", "context", b"context", "message", b"message"]) -> None: ...
 
 global___Error = Error
 
@@ -2446,11 +1563,7 @@ class Notifications(google.protobuf.message.Message):
 
     NOTIFICATIONS_FIELD_NUMBER: builtins.int
     @property
-    def notifications(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.Notification
-    ]:
+    def notifications(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.Notification]:
         """Collection of notifications."""
 
     def __init__(
@@ -2458,9 +1571,7 @@ class Notifications(google.protobuf.message.Message):
         *,
         notifications: collections.abc.Iterable[api.api_pb2.Notification] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self, field_name: typing.Literal["notifications", b"notifications"]
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["notifications", b"notifications"]) -> None: ...
 
 global___Notifications = Notifications
 
@@ -2488,19 +1599,7 @@ class AddFriend(google.protobuf.message.Message):
         display_name: builtins.str = ...,
         avatar: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "avatar",
-            b"avatar",
-            "display_name",
-            b"display_name",
-            "user_id",
-            b"user_id",
-            "username",
-            b"username",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["avatar", b"avatar", "display_name", b"display_name", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
 global___AddFriend = AddFriend
 
@@ -2568,23 +1667,7 @@ class UnblockFriend(google.protobuf.message.Message):
         status: builtins.str = ...,
         user_status: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "avatar",
-            b"avatar",
-            "display_name",
-            b"display_name",
-            "status",
-            b"status",
-            "user_id",
-            b"user_id",
-            "user_status",
-            b"user_status",
-            "username",
-            b"username",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["avatar", b"avatar", "display_name", b"display_name", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]) -> None: ...
 
 global___UnblockFriend = UnblockFriend
 
@@ -2620,11 +1703,7 @@ class Status(google.protobuf.message.Message):
 
     PRESENCES_FIELD_NUMBER: builtins.int
     @property
-    def presences(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """User statuses."""
 
     def __init__(
@@ -2632,9 +1711,7 @@ class Status(google.protobuf.message.Message):
         *,
         presences: collections.abc.Iterable[global___UserPresence] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self, field_name: typing.Literal["presences", b"presences"]
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["presences", b"presences"]) -> None: ...
 
 global___Status = Status
 
@@ -2647,15 +1724,11 @@ class StatusFollow(google.protobuf.message.Message):
     USER_IDS_FIELD_NUMBER: builtins.int
     USERNAMES_FIELD_NUMBER: builtins.int
     @property
-    def user_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """User IDs to follow."""
 
     @property
-    def usernames(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """Usernames to follow."""
 
     def __init__(
@@ -2664,10 +1737,7 @@ class StatusFollow(google.protobuf.message.Message):
         user_ids: collections.abc.Iterable[builtins.str] | None = ...,
         usernames: collections.abc.Iterable[builtins.str] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal["user_ids", b"user_ids", "usernames", b"usernames"],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["user_ids", b"user_ids", "usernames", b"usernames"]) -> None: ...
 
 global___StatusFollow = StatusFollow
 
@@ -2680,19 +1750,11 @@ class StatusPresenceEvent(google.protobuf.message.Message):
     JOINS_FIELD_NUMBER: builtins.int
     LEAVES_FIELD_NUMBER: builtins.int
     @property
-    def joins(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """New statuses for the user."""
 
     @property
-    def leaves(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """Previous statuses for the user."""
 
     def __init__(
@@ -2701,9 +1763,7 @@ class StatusPresenceEvent(google.protobuf.message.Message):
         joins: collections.abc.Iterable[global___UserPresence] | None = ...,
         leaves: collections.abc.Iterable[global___UserPresence] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self, field_name: typing.Literal["joins", b"joins", "leaves", b"leaves"]
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["joins", b"joins", "leaves", b"leaves"]) -> None: ...
 
 global___StatusPresenceEvent = StatusPresenceEvent
 
@@ -2773,39 +1833,7 @@ class LastPinMessageEvent(google.protobuf.message.Message):
         message_attachment: builtins.str = ...,
         message_created_time: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "is_public",
-            b"is_public",
-            "message_attachment",
-            b"message_attachment",
-            "message_content",
-            b"message_content",
-            "message_created_time",
-            b"message_created_time",
-            "message_id",
-            b"message_id",
-            "message_sender_avatar",
-            b"message_sender_avatar",
-            "message_sender_id",
-            b"message_sender_id",
-            "message_sender_username",
-            b"message_sender_username",
-            "mode",
-            b"mode",
-            "operation",
-            b"operation",
-            "timestamp_seconds",
-            b"timestamp_seconds",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "message_attachment", b"message_attachment", "message_content", b"message_content", "message_created_time", b"message_created_time", "message_id", b"message_id", "message_sender_avatar", b"message_sender_avatar", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "mode", b"mode", "operation", b"operation", "timestamp_seconds", b"timestamp_seconds", "user_id", b"user_id"]) -> None: ...
 
 global___LastPinMessageEvent = LastPinMessageEvent
 
@@ -2843,23 +1871,7 @@ class LastSeenMessageEvent(google.protobuf.message.Message):
         timestamp_seconds: builtins.int = ...,
         badge_count: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "badge_count",
-            b"badge_count",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "message_id",
-            b"message_id",
-            "mode",
-            b"mode",
-            "timestamp_seconds",
-            b"timestamp_seconds",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["badge_count", b"badge_count", "channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id", "mode", b"mode", "timestamp_seconds", b"timestamp_seconds"]) -> None: ...
 
 global___LastSeenMessageEvent = LastSeenMessageEvent
 
@@ -2905,27 +1917,7 @@ class MessageTypingEvent(google.protobuf.message.Message):
         sender_display_name: builtins.str = ...,
         topic_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "is_public",
-            b"is_public",
-            "mode",
-            b"mode",
-            "sender_display_name",
-            b"sender_display_name",
-            "sender_id",
-            b"sender_id",
-            "sender_username",
-            b"sender_username",
-            "topic_id",
-            b"topic_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "mode", b"mode", "sender_display_name", b"sender_display_name", "sender_id", b"sender_id", "sender_username", b"sender_username", "topic_id", b"topic_id"]) -> None: ...
 
 global___MessageTypingEvent = MessageTypingEvent
 
@@ -2955,19 +1947,7 @@ class VoiceLeavedEvent(google.protobuf.message.Message):
         voice_channel_id: builtins.str = ...,
         voice_user_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id",
-            b"clan_id",
-            "id",
-            b"id",
-            "voice_channel_id",
-            b"voice_channel_id",
-            "voice_user_id",
-            b"voice_user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id", "voice_user_id", b"voice_user_id"]) -> None: ...
 
 global___VoiceLeavedEvent = VoiceLeavedEvent
 
@@ -3013,27 +1993,7 @@ class VoiceJoinedEvent(google.protobuf.message.Message):
         voice_channel_id: builtins.str = ...,
         last_screenshot: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "id",
-            b"id",
-            "last_screenshot",
-            b"last_screenshot",
-            "participant",
-            b"participant",
-            "user_id",
-            b"user_id",
-            "voice_channel_id",
-            b"voice_channel_id",
-            "voice_channel_label",
-            b"voice_channel_label",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "last_screenshot", b"last_screenshot", "participant", b"participant", "user_id", b"user_id", "voice_channel_id", b"voice_channel_id", "voice_channel_label", b"voice_channel_label"]) -> None: ...
 
 global___VoiceJoinedEvent = VoiceJoinedEvent
 
@@ -3059,12 +2019,7 @@ class VoiceStartedEvent(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         voice_channel_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]) -> None: ...
 
 global___VoiceStartedEvent = VoiceStartedEvent
 
@@ -3090,12 +2045,7 @@ class VoiceEndedEvent(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         voice_channel_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]) -> None: ...
 
 global___VoiceEndedEvent = VoiceEndedEvent
 
@@ -3125,19 +2075,7 @@ class StreamingLeavedEvent(google.protobuf.message.Message):
         streaming_channel_id: builtins.str = ...,
         streaming_user_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id",
-            b"clan_id",
-            "id",
-            b"id",
-            "streaming_channel_id",
-            b"streaming_channel_id",
-            "streaming_user_id",
-            b"streaming_user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "streaming_channel_id", b"streaming_channel_id", "streaming_user_id", b"streaming_user_id"]) -> None: ...
 
 global___StreamingLeavedEvent = StreamingLeavedEvent
 
@@ -3179,25 +2117,7 @@ class StreamingJoinedEvent(google.protobuf.message.Message):
         streaming_channel_label: builtins.str = ...,
         streaming_channel_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "id",
-            b"id",
-            "participant",
-            b"participant",
-            "streaming_channel_id",
-            b"streaming_channel_id",
-            "streaming_channel_label",
-            b"streaming_channel_label",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "participant", b"participant", "streaming_channel_id", b"streaming_channel_id", "streaming_channel_label", b"streaming_channel_label", "user_id", b"user_id"]) -> None: ...
 
 global___StreamingJoinedEvent = StreamingJoinedEvent
 
@@ -3227,19 +2147,7 @@ class StreamingStartedEvent(google.protobuf.message.Message):
         streaming_url: builtins.str = ...,
         is_streaming: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "is_streaming",
-            b"is_streaming",
-            "streaming_url",
-            b"streaming_url",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_streaming", b"is_streaming", "streaming_url", b"streaming_url"]) -> None: ...
 
 global___StreamingStartedEvent = StreamingStartedEvent
 
@@ -3261,10 +2169,7 @@ class StreamingEndedEvent(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         channel_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
 
 global___StreamingEndedEvent = StreamingEndedEvent
 
@@ -3322,36 +2227,8 @@ class ChannelCreatedEvent(google.protobuf.message.Message):
         app_id: builtins.str = ...,
         clan_name: builtins.str = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["channel_type", b"channel_type"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "app_id",
-            b"app_id",
-            "category_id",
-            b"category_id",
-            "channel_id",
-            b"channel_id",
-            "channel_label",
-            b"channel_label",
-            "channel_private",
-            b"channel_private",
-            "channel_type",
-            b"channel_type",
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "creator_id",
-            b"creator_id",
-            "parent_id",
-            b"parent_id",
-            "status",
-            b"status",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["channel_type", b"channel_type"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "parent_id", b"parent_id", "status", b"status"]) -> None: ...
 
 global___ChannelCreatedEvent = ChannelCreatedEvent
 
@@ -3383,21 +2260,7 @@ class CategoryEvent(google.protobuf.message.Message):
         id: builtins.str = ...,
         status: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category_name",
-            b"category_name",
-            "clan_id",
-            b"clan_id",
-            "creator_id",
-            b"creator_id",
-            "id",
-            b"id",
-            "status",
-            b"status",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "clan_id", b"clan_id", "creator_id", b"creator_id", "id", b"id", "status", b"status"]) -> None: ...
 
 global___CategoryEvent = CategoryEvent
 
@@ -3417,29 +2280,13 @@ class RoleEvent(google.protobuf.message.Message):
     @property
     def role(self) -> api.api_pb2.Role: ...
     @property
-    def user_add_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
-        builtins.str
-    ]: ...
+    def user_add_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     @property
-    def user_remove_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
-        builtins.str
-    ]: ...
+    def user_remove_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     @property
-    def active_permission_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
-        builtins.str
-    ]: ...
+    def active_permission_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     @property
-    def remove_permission_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
-        builtins.str
-    ]: ...
+    def remove_permission_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     def __init__(
         self,
         *,
@@ -3451,28 +2298,8 @@ class RoleEvent(google.protobuf.message.Message):
         active_permission_ids: collections.abc.Iterable[builtins.str] | None = ...,
         remove_permission_ids: collections.abc.Iterable[builtins.str] | None = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["role", b"role"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "active_permission_ids",
-            b"active_permission_ids",
-            "remove_permission_ids",
-            b"remove_permission_ids",
-            "role",
-            b"role",
-            "status",
-            b"status",
-            "user_add_ids",
-            b"user_add_ids",
-            "user_id",
-            b"user_id",
-            "user_remove_ids",
-            b"user_remove_ids",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["role", b"role"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["active_permission_ids", b"active_permission_ids", "remove_permission_ids", b"remove_permission_ids", "role", b"role", "status", b"status", "user_add_ids", b"user_add_ids", "user_id", b"user_id", "user_remove_ids", b"user_remove_ids"]) -> None: ...
 
 global___RoleEvent = RoleEvent
 
@@ -3504,21 +2331,7 @@ class ChannelDeletedEvent(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         deletor: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category_id",
-            b"category_id",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "deletor",
-            b"deletor",
-            "parent_id",
-            b"parent_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "deletor", b"deletor", "parent_id", b"parent_id"]) -> None: ...
 
 global___ChannelDeletedEvent = ChannelDeletedEvent
 
@@ -3538,9 +2351,7 @@ class ClanDeletedEvent(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         deletor: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self, field_name: typing.Literal["clan_id", b"clan_id", "deletor", b"deletor"]
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "deletor", b"deletor"]) -> None: ...
 
 global___ClanDeletedEvent = ClanDeletedEvent
 
@@ -3584,27 +2395,7 @@ class StickerCreateEvent(google.protobuf.message.Message):
         logo: builtins.str = ...,
         clan_name: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category",
-            b"category",
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "creator_id",
-            b"creator_id",
-            "logo",
-            b"logo",
-            "shortname",
-            b"shortname",
-            "source",
-            b"source",
-            "sticker_id",
-            b"sticker_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "logo", b"logo", "shortname", b"shortname", "source", b"source", "sticker_id", b"sticker_id"]) -> None: ...
 
 global___StickerCreateEvent = StickerCreateEvent
 
@@ -3628,17 +2419,7 @@ class StickerUpdateEvent(google.protobuf.message.Message):
         sticker_id: builtins.str = ...,
         user_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "shortname",
-            b"shortname",
-            "sticker_id",
-            b"sticker_id",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["shortname", b"shortname", "sticker_id", b"sticker_id", "user_id", b"user_id"]) -> None: ...
 
 global___StickerUpdateEvent = StickerUpdateEvent
 
@@ -3658,10 +2439,7 @@ class StickerDeleteEvent(google.protobuf.message.Message):
         sticker_id: builtins.str = ...,
         user_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal["sticker_id", b"sticker_id", "user_id", b"user_id"],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["sticker_id", b"sticker_id", "user_id", b"user_id"]) -> None: ...
 
 global___StickerDeleteEvent = StickerDeleteEvent
 
@@ -3728,15 +2506,11 @@ class ChannelUpdatedEvent(google.protobuf.message.Message):
         """channel type"""
 
     @property
-    def user_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """The users to add."""
 
     @property
-    def role_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def role_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """This is the role that needs to be added to the channel"""
 
     def __init__(
@@ -3763,54 +2537,8 @@ class ChannelUpdatedEvent(google.protobuf.message.Message):
         role_ids: collections.abc.Iterable[builtins.str] | None = ...,
         channel_avatar: builtins.str = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["channel_type", b"channel_type"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "active",
-            b"active",
-            "age_restricted",
-            b"age_restricted",
-            "app_id",
-            b"app_id",
-            "category_id",
-            b"category_id",
-            "channel_avatar",
-            b"channel_avatar",
-            "channel_id",
-            b"channel_id",
-            "channel_label",
-            b"channel_label",
-            "channel_private",
-            b"channel_private",
-            "channel_type",
-            b"channel_type",
-            "clan_id",
-            b"clan_id",
-            "count_mess_unread",
-            b"count_mess_unread",
-            "creator_id",
-            b"creator_id",
-            "e2ee",
-            b"e2ee",
-            "is_error",
-            b"is_error",
-            "meeting_code",
-            b"meeting_code",
-            "parent_id",
-            b"parent_id",
-            "role_ids",
-            b"role_ids",
-            "status",
-            b"status",
-            "topic",
-            b"topic",
-            "user_ids",
-            b"user_ids",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["channel_type", b"channel_type"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "count_mess_unread", b"count_mess_unread", "creator_id", b"creator_id", "e2ee", b"e2ee", "is_error", b"is_error", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "role_ids", b"role_ids", "status", b"status", "topic", b"topic", "user_ids", b"user_ids"]) -> None: ...
 
 global___ChannelUpdatedEvent = ChannelUpdatedEvent
 
@@ -3822,9 +2550,7 @@ class StatusUnfollow(google.protobuf.message.Message):
 
     USER_IDS_FIELD_NUMBER: builtins.int
     @property
-    def user_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """Users to unfollow."""
 
     def __init__(
@@ -3832,9 +2558,7 @@ class StatusUnfollow(google.protobuf.message.Message):
         *,
         user_ids: collections.abc.Iterable[builtins.str] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self, field_name: typing.Literal["user_ids", b"user_ids"]
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["user_ids", b"user_ids"]) -> None: ...
 
 global___StatusUnfollow = StatusUnfollow
 
@@ -3854,9 +2578,7 @@ class StatusUpdate(google.protobuf.message.Message):
         *,
         status: google.protobuf.wrappers_pb2.StringValue | None = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["status", b"status"]
-    ) -> builtins.bool: ...
+    def HasField(self, field_name: typing.Literal["status", b"status"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["status", b"status"]) -> None: ...
 
 global___StatusUpdate = StatusUpdate
@@ -3887,19 +2609,7 @@ class Stream(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         label: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "label",
-            b"label",
-            "mode",
-            b"mode",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "label", b"label", "mode", b"mode"]) -> None: ...
 
 global___Stream = Stream
 
@@ -3933,22 +2643,8 @@ class StreamData(google.protobuf.message.Message):
         data: builtins.str = ...,
         reliable: builtins.bool = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["sender", b"sender", "stream", b"stream"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "data",
-            b"data",
-            "reliable",
-            b"reliable",
-            "sender",
-            b"sender",
-            "stream",
-            b"stream",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["sender", b"sender", "stream", b"stream"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["data", b"data", "reliable", b"reliable", "sender", b"sender", "stream", b"stream"]) -> None: ...
 
 global___StreamData = StreamData
 
@@ -3966,19 +2662,11 @@ class StreamPresenceEvent(google.protobuf.message.Message):
         """The stream this event relates to."""
 
     @property
-    def joins(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """Presences joining the stream as part of this event, if any."""
 
     @property
-    def leaves(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserPresence
-    ]:
+    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
         """Presences leaving the stream as part of this event, if any."""
 
     def __init__(
@@ -3988,15 +2676,8 @@ class StreamPresenceEvent(google.protobuf.message.Message):
         joins: collections.abc.Iterable[global___UserPresence] | None = ...,
         leaves: collections.abc.Iterable[global___UserPresence] | None = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["stream", b"stream"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "joins", b"joins", "leaves", b"leaves", "stream", b"stream"
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["stream", b"stream"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["joins", b"joins", "leaves", b"leaves", "stream", b"stream"]) -> None: ...
 
 global___StreamPresenceEvent = StreamPresenceEvent
 
@@ -4036,26 +2717,8 @@ class UserPresence(google.protobuf.message.Message):
         is_mobile: builtins.bool = ...,
         user_status: builtins.str = ...,
     ) -> None: ...
-    def HasField(
-        self, field_name: typing.Literal["status", b"status"]
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "is_mobile",
-            b"is_mobile",
-            "session_id",
-            b"session_id",
-            "status",
-            b"status",
-            "user_id",
-            b"user_id",
-            "user_status",
-            b"user_status",
-            "username",
-            b"username",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["status", b"status"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["is_mobile", b"is_mobile", "session_id", b"session_id", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]) -> None: ...
 
 global___UserPresence = UserPresence
 
@@ -4093,23 +2756,7 @@ class CustomStatusEvent(google.protobuf.message.Message):
         time_reset: builtins.int = ...,
         no_clear: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id",
-            b"clan_id",
-            "no_clear",
-            b"no_clear",
-            "status",
-            b"status",
-            "time_reset",
-            b"time_reset",
-            "user_id",
-            b"user_id",
-            "username",
-            b"username",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "no_clear", b"no_clear", "status", b"status", "time_reset", b"time_reset", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
 global___CustomStatusEvent = CustomStatusEvent
 
@@ -4139,11 +2786,7 @@ class UserChannelAdded(google.protobuf.message.Message):
         """the channel id"""
 
     @property
-    def users(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___UserProfileRedis
-    ]:
+    def users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserProfileRedis]:
         """the user"""
 
     @property
@@ -4161,31 +2804,8 @@ class UserChannelAdded(google.protobuf.message.Message):
         create_time_second: builtins.int = ...,
         active: builtins.int = ...,
     ) -> None: ...
-    def HasField(
-        self,
-        field_name: typing.Literal[
-            "caller", b"caller", "channel_desc", b"channel_desc"
-        ],
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "active",
-            b"active",
-            "caller",
-            b"caller",
-            "channel_desc",
-            b"channel_desc",
-            "clan_id",
-            b"clan_id",
-            "create_time_second",
-            b"create_time_second",
-            "status",
-            b"status",
-            "users",
-            b"users",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["caller", b"caller", "channel_desc", b"channel_desc"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["active", b"active", "caller", b"caller", "channel_desc", b"channel_desc", "clan_id", b"clan_id", "create_time_second", b"create_time_second", "status", b"status", "users", b"users"]) -> None: ...
 
 global___UserChannelAdded = UserChannelAdded
 
@@ -4207,17 +2827,11 @@ class UserChannelRemoved(google.protobuf.message.Message):
     clan_id: builtins.str
     """the clan_id"""
     @property
-    def user_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """the user"""
 
     @property
-    def badge_counts(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
-        builtins.int
-    ]: ...
+    def badge_counts(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.int]: ...
     def __init__(
         self,
         *,
@@ -4227,21 +2841,7 @@ class UserChannelRemoved(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         badge_counts: collections.abc.Iterable[builtins.int] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "badge_counts",
-            b"badge_counts",
-            "channel_id",
-            b"channel_id",
-            "channel_type",
-            b"channel_type",
-            "clan_id",
-            b"clan_id",
-            "user_ids",
-            b"user_ids",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["badge_counts", b"badge_counts", "channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "user_ids", b"user_ids"]) -> None: ...
 
 global___UserChannelRemoved = UserChannelRemoved
 
@@ -4256,9 +2856,7 @@ class UserClanRemoved(google.protobuf.message.Message):
     clan_id: builtins.str
     """the clan id"""
     @property
-    def user_ids(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """the user"""
 
     def __init__(
@@ -4267,9 +2865,7 @@ class UserClanRemoved(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         user_ids: collections.abc.Iterable[builtins.str] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self, field_name: typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]) -> None: ...
 
 global___UserClanRemoved = UserClanRemoved
 
@@ -4331,35 +2927,7 @@ class ClanUpdatedEvent(google.protobuf.message.Message):
         about: builtins.str = ...,
         description: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "about",
-            b"about",
-            "banner",
-            b"banner",
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "community_banner",
-            b"community_banner",
-            "description",
-            b"description",
-            "is_community",
-            b"is_community",
-            "is_onboarding",
-            b"is_onboarding",
-            "logo",
-            b"logo",
-            "onboarding_banner",
-            b"onboarding_banner",
-            "status",
-            b"status",
-            "welcome_channel_id",
-            b"welcome_channel_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]) -> None: ...
 
 global___ClanUpdatedEvent = ClanUpdatedEvent
 
@@ -4389,19 +2957,7 @@ class ClanProfileUpdatedEvent(google.protobuf.message.Message):
         clan_avatar: builtins.str = ...,
         clan_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_avatar",
-            b"clan_avatar",
-            "clan_id",
-            b"clan_id",
-            "clan_nick",
-            b"clan_nick",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "user_id", b"user_id"]) -> None: ...
 
 global___ClanProfileUpdatedEvent = ClanProfileUpdatedEvent
 
@@ -4443,25 +2999,7 @@ class UserProfileUpdatedEvent(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         encrypt_private_key: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "about_me",
-            b"about_me",
-            "avatar",
-            b"avatar",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "display_name",
-            b"display_name",
-            "encrypt_private_key",
-            b"encrypt_private_key",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["about_me", b"about_me", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "encrypt_private_key", b"encrypt_private_key", "user_id", b"user_id"]) -> None: ...
 
 global___UserProfileUpdatedEvent = UserProfileUpdatedEvent
 
@@ -4522,17 +3060,11 @@ class UserProfileRedis(google.protobuf.message.Message):
     voip_token: builtins.str
     """for call DM iOS"""
     @property
-    def fcm_tokens(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        global___FCMTokens
-    ]:
+    def fcm_tokens(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___FCMTokens]:
         """FCM token"""
 
     @property
-    def joined_clans(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    def joined_clans(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
         """clans"""
 
     def __init__(
@@ -4557,47 +3089,7 @@ class UserProfileRedis(google.protobuf.message.Message):
         is_bot: builtins.bool = ...,
         voip_token: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "about_me",
-            b"about_me",
-            "app_token",
-            b"app_token",
-            "app_url",
-            b"app_url",
-            "avatar",
-            b"avatar",
-            "create_time_second",
-            b"create_time_second",
-            "display_name",
-            b"display_name",
-            "fcm_tokens",
-            b"fcm_tokens",
-            "is_bot",
-            b"is_bot",
-            "is_disabled",
-            b"is_disabled",
-            "joined_clans",
-            b"joined_clans",
-            "mezon_id",
-            b"mezon_id",
-            "online",
-            b"online",
-            "pubkey",
-            b"pubkey",
-            "status",
-            b"status",
-            "user_id",
-            b"user_id",
-            "user_status",
-            b"user_status",
-            "username",
-            b"username",
-            "voip_token",
-            b"voip_token",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["about_me", b"about_me", "app_token", b"app_token", "app_url", b"app_url", "avatar", b"avatar", "create_time_second", b"create_time_second", "display_name", b"display_name", "fcm_tokens", b"fcm_tokens", "is_bot", b"is_bot", "is_disabled", b"is_disabled", "joined_clans", b"joined_clans", "mezon_id", b"mezon_id", "online", b"online", "pubkey", b"pubkey", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username", "voip_token", b"voip_token"]) -> None: ...
 
 global___UserProfileRedis = UserProfileRedis
 
@@ -4621,12 +3113,7 @@ class FCMTokens(google.protobuf.message.Message):
         token_id: builtins.str = ...,
         platform: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "device_id", b"device_id", "platform", b"platform", "token_id", b"token_id"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["device_id", b"device_id", "platform", b"platform", "token_id", b"token_id"]) -> None: ...
 
 global___FCMTokens = FCMTokens
 
@@ -4654,19 +3141,7 @@ class CheckNameExistedEvent(google.protobuf.message.Message):
         exist: builtins.bool = ...,
         type: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "condition_id",
-            b"condition_id",
-            "exist",
-            b"exist",
-            "name",
-            b"name",
-            "type",
-            b"type",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["condition_id", b"condition_id", "exist", b"exist", "name", b"name", "type", b"type"]) -> None: ...
 
 global___CheckNameExistedEvent = CheckNameExistedEvent
 
@@ -4700,21 +3175,7 @@ class NotificationChannelCategorySetting(google.protobuf.message.Message):
         channel_category_title: builtins.str = ...,
         action: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "action",
-            b"action",
-            "channel_category_label",
-            b"channel_category_label",
-            "channel_category_title",
-            b"channel_category_title",
-            "id",
-            b"id",
-            "notification_setting_type",
-            b"notification_setting_type",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["action", b"action", "channel_category_label", b"channel_category_label", "channel_category_title", b"channel_category_title", "id", b"id", "notification_setting_type", b"notification_setting_type"]) -> None: ...
 
 global___NotificationChannelCategorySetting = NotificationChannelCategorySetting
 
@@ -4756,31 +3217,7 @@ class EventEmoji(google.protobuf.message.Message):
         clan_name: builtins.str = ...,
         is_for_sale: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "action",
-            b"action",
-            "category",
-            b"category",
-            "clan_id",
-            b"clan_id",
-            "clan_name",
-            b"clan_name",
-            "id",
-            b"id",
-            "is_for_sale",
-            b"is_for_sale",
-            "logo",
-            b"logo",
-            "short_name",
-            b"short_name",
-            "source",
-            b"source",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["action", b"action", "category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "short_name", b"short_name", "source", b"source", "user_id", b"user_id"]) -> None: ...
 
 global___EventEmoji = EventEmoji
 
@@ -4798,11 +3235,7 @@ class PermissionSetEvent(google.protobuf.message.Message):
     user_id: builtins.str
     channel_id: builtins.str
     @property
-    def permission_updates(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.PermissionUpdate
-    ]: ...
+    def permission_updates(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
     def __init__(
         self,
         *,
@@ -4810,24 +3243,9 @@ class PermissionSetEvent(google.protobuf.message.Message):
         role_id: builtins.str = ...,
         user_id: builtins.str = ...,
         channel_id: builtins.str = ...,
-        permission_updates: collections.abc.Iterable[api.api_pb2.PermissionUpdate]
-        | None = ...,
+        permission_updates: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "caller",
-            b"caller",
-            "channel_id",
-            b"channel_id",
-            "permission_updates",
-            b"permission_updates",
-            "role_id",
-            b"role_id",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["caller", b"caller", "channel_id", b"channel_id", "permission_updates", b"permission_updates", "role_id", b"role_id", "user_id", b"user_id"]) -> None: ...
 
 global___PermissionSetEvent = PermissionSetEvent
 
@@ -4843,50 +3261,21 @@ class PermissionChangedEvent(google.protobuf.message.Message):
     user_id: builtins.str
     channel_id: builtins.str
     @property
-    def add_permissions(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.PermissionUpdate
-    ]: ...
+    def add_permissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
     @property
-    def remove_permissions(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.PermissionUpdate
-    ]: ...
+    def remove_permissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
     @property
-    def default_permissions(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.PermissionUpdate
-    ]: ...
+    def default_permissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
     def __init__(
         self,
         *,
         user_id: builtins.str = ...,
         channel_id: builtins.str = ...,
-        add_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate]
-        | None = ...,
-        remove_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate]
-        | None = ...,
-        default_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate]
-        | None = ...,
+        add_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
+        remove_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
+        default_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "add_permissions",
-            b"add_permissions",
-            "channel_id",
-            b"channel_id",
-            "default_permissions",
-            b"default_permissions",
-            "remove_permissions",
-            b"remove_permissions",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["add_permissions", b"add_permissions", "channel_id", b"channel_id", "default_permissions", b"default_permissions", "remove_permissions", b"remove_permissions", "user_id", b"user_id"]) -> None: ...
 
 global___PermissionChangedEvent = PermissionChangedEvent
 
@@ -4916,23 +3305,7 @@ class MessageButtonClicked(google.protobuf.message.Message):
         user_id: builtins.str = ...,
         extra_data: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "button_id",
-            b"button_id",
-            "channel_id",
-            b"channel_id",
-            "extra_data",
-            b"extra_data",
-            "message_id",
-            b"message_id",
-            "sender_id",
-            b"sender_id",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["button_id", b"button_id", "channel_id", b"channel_id", "extra_data", b"extra_data", "message_id", b"message_id", "sender_id", b"sender_id", "user_id", b"user_id"]) -> None: ...
 
 global___MessageButtonClicked = MessageButtonClicked
 
@@ -4956,17 +3329,7 @@ class UnmuteEvent(google.protobuf.message.Message):
         category_id: builtins.str = ...,
         clan_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "category_id",
-            b"category_id",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
 
 global___UnmuteEvent = UnmuteEvent
 
@@ -4976,11 +3339,7 @@ class ListActivity(google.protobuf.message.Message):
 
     ACTS_FIELD_NUMBER: builtins.int
     @property
-    def acts(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[
-        api.api_pb2.UserActivity
-    ]: ...
+    def acts(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.UserActivity]: ...
     def __init__(
         self,
         *,
@@ -5006,11 +3365,7 @@ class DropdownBoxSelected(google.protobuf.message.Message):
     sender_id: builtins.str
     user_id: builtins.str
     @property
-    def values(
-        self,
-    ) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[
-        builtins.str
-    ]: ...
+    def values(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     def __init__(
         self,
         *,
@@ -5021,23 +3376,7 @@ class DropdownBoxSelected(google.protobuf.message.Message):
         user_id: builtins.str = ...,
         values: collections.abc.Iterable[builtins.str] | None = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "message_id",
-            b"message_id",
-            "selectbox_id",
-            b"selectbox_id",
-            "sender_id",
-            b"sender_id",
-            "user_id",
-            b"user_id",
-            "values",
-            b"values",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "selectbox_id", b"selectbox_id", "sender_id", b"sender_id", "user_id", b"user_id", "values", b"values"]) -> None: ...
 
 global___DropdownBoxSelected = DropdownBoxSelected
 
@@ -5072,31 +3411,8 @@ class SdTopicEvent(google.protobuf.message.Message):
         last_sent_message: api.api_pb2.ChannelMessageHeader | None = ...,
         message: api.api_pb2.ChannelMessage | None = ...,
     ) -> None: ...
-    def HasField(
-        self,
-        field_name: typing.Literal[
-            "last_sent_message", b"last_sent_message", "message", b"message"
-        ],
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "id",
-            b"id",
-            "last_sent_message",
-            b"last_sent_message",
-            "message",
-            b"message",
-            "message_id",
-            b"message_id",
-            "user_id",
-            b"user_id",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["last_sent_message", b"last_sent_message", "message", b"message"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "last_sent_message", b"last_sent_message", "message", b"message", "message_id", b"message_id", "user_id", b"user_id"]) -> None: ...
 
 global___SdTopicEvent = SdTopicEvent
 
@@ -5123,21 +3439,7 @@ class ChannelAppEvent(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         action: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "action",
-            b"action",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "user_id",
-            b"user_id",
-            "username",
-            b"username",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
 global___ChannelAppEvent = ChannelAppEvent
 
@@ -5155,12 +3457,7 @@ class UserStatusEvent(google.protobuf.message.Message):
         user_id: builtins.str = ...,
         custom_status: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "custom_status", b"custom_status", "user_id", b"user_id"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["custom_status", b"custom_status", "user_id", b"user_id"]) -> None: ...
 
 global___UserStatusEvent = UserStatusEvent
 
@@ -5181,12 +3478,7 @@ class JoinChannelAppData(google.protobuf.message.Message):
         username: builtins.str = ...,
         hash: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "hash", b"hash", "user_id", b"user_id", "username", b"username"
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["hash", b"hash", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
 global___JoinChannelAppData = JoinChannelAppData
 
@@ -5210,19 +3502,7 @@ class UnpinMessageEvent(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         clan_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "id",
-            b"id",
-            "message_id",
-            b"message_id",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "message_id", b"message_id"]) -> None: ...
 
 global___UnpinMessageEvent = UnpinMessageEvent
 
@@ -5254,21 +3534,7 @@ class HandleParticipantMeetStateEvent(google.protobuf.message.Message):
         state: builtins.int = ...,
         room_name: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "display_name",
-            b"display_name",
-            "room_name",
-            b"room_name",
-            "state",
-            b"state",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "room_name", b"room_name", "state", b"state"]) -> None: ...
 
 global___HandleParticipantMeetStateEvent = HandleParticipantMeetStateEvent
 
@@ -5388,9 +3654,7 @@ class ListDataSocket(google.protobuf.message.Message):
     @property
     def channel_user_list(self) -> api.api_pb2.ChannelUserList: ...
     @property
-    def list_channel_attachment_req(
-        self,
-    ) -> api.api_pb2.ListChannelAttachmentRequest: ...
+    def list_channel_attachment_req(self) -> api.api_pb2.ListChannelAttachmentRequest: ...
     @property
     def channel_attachment_list(self) -> api.api_pb2.ChannelAttachmentList: ...
     @property
@@ -5420,9 +3684,7 @@ class ListDataSocket(google.protobuf.message.Message):
     @property
     def notification_message(self) -> api.api_pb2.NotifiReactMessage: ...
     @property
-    def noti_channel_cat_setting_list(
-        self,
-    ) -> api.api_pb2.NotificationChannelCategorySettingList: ...
+    def noti_channel_cat_setting_list(self) -> api.api_pb2.NotificationChannelCategorySettingList: ...
     @property
     def list_notification_req(self) -> api.api_pb2.ListNotificationsRequest: ...
     @property
@@ -5458,17 +3720,11 @@ class ListDataSocket(google.protobuf.message.Message):
     @property
     def user_permission_req(self) -> api.api_pb2.UserPermissionInChannelListRequest: ...
     @property
-    def user_permission_list(
-        self,
-    ) -> api.api_pb2.UserPermissionInChannelListResponse: ...
+    def user_permission_list(self) -> api.api_pb2.UserPermissionInChannelListResponse: ...
     @property
-    def permission_role_req(
-        self,
-    ) -> api.api_pb2.PermissionRoleChannelListEventRequest: ...
+    def permission_role_req(self) -> api.api_pb2.PermissionRoleChannelListEventRequest: ...
     @property
-    def permission_role_list(
-        self,
-    ) -> api.api_pb2.PermissionRoleChannelListEventResponse: ...
+    def permission_role_list(self) -> api.api_pb2.PermissionRoleChannelListEventResponse: ...
     @property
     def emoji_list(self) -> api.api_pb2.EmojiListedResponse: ...
     @property
@@ -5496,13 +3752,9 @@ class ListDataSocket(google.protobuf.message.Message):
     @property
     def stream_user_list(self) -> api.api_pb2.StreamingChannelUserList: ...
     @property
-    def list_unread_msg_indicator_req(
-        self,
-    ) -> api.api_pb2.ListClanUnreadMsgIndicatorRequest: ...
+    def list_unread_msg_indicator_req(self) -> api.api_pb2.ListClanUnreadMsgIndicatorRequest: ...
     @property
-    def unread_msg_indicator(
-        self,
-    ) -> api.api_pb2.ListClanUnreadMsgIndicatorResponse: ...
+    def unread_msg_indicator(self) -> api.api_pb2.ListClanUnreadMsgIndicatorResponse: ...
     def __init__(
         self,
         *,
@@ -5521,8 +3773,7 @@ class ListDataSocket(google.protobuf.message.Message):
         list_channel_users_req: api.api_pb2.ListChannelUsersRequest | None = ...,
         voice_user_list: api.api_pb2.VoiceChannelUserList | None = ...,
         channel_user_list: api.api_pb2.ChannelUserList | None = ...,
-        list_channel_attachment_req: api.api_pb2.ListChannelAttachmentRequest
-        | None = ...,
+        list_channel_attachment_req: api.api_pb2.ListChannelAttachmentRequest | None = ...,
         channel_attachment_list: api.api_pb2.ChannelAttachmentList | None = ...,
         hashtag_dm_req: api.api_pb2.HashtagDmListRequest | None = ...,
         hashtag_dm_list: api.api_pb2.HashtagDmList | None = ...,
@@ -5537,8 +3788,7 @@ class ListDataSocket(google.protobuf.message.Message):
         notification_clan: api.api_pb2.NotificationClan | None = ...,
         notification_setting: api.api_pb2.NotificationSetting | None = ...,
         notification_message: api.api_pb2.NotifiReactMessage | None = ...,
-        noti_channel_cat_setting_list: api.api_pb2.NotificationChannelCategorySettingList
-        | None = ...,
+        noti_channel_cat_setting_list: api.api_pb2.NotificationChannelCategorySettingList | None = ...,
         list_notification_req: api.api_pb2.ListNotificationsRequest | None = ...,
         notification_list: api.api_pb2.NotificationList | None = ...,
         sticker_list: api.api_pb2.StickerListedResponse | None = ...,
@@ -5555,14 +3805,10 @@ class ListDataSocket(google.protobuf.message.Message):
         role_list: api.api_pb2.RoleList | None = ...,
         role_list_event_req: api.api_pb2.RoleListEventRequest | None = ...,
         role_event_list: api.api_pb2.RoleListEventResponse | None = ...,
-        user_permission_req: api.api_pb2.UserPermissionInChannelListRequest
-        | None = ...,
-        user_permission_list: api.api_pb2.UserPermissionInChannelListResponse
-        | None = ...,
-        permission_role_req: api.api_pb2.PermissionRoleChannelListEventRequest
-        | None = ...,
-        permission_role_list: api.api_pb2.PermissionRoleChannelListEventResponse
-        | None = ...,
+        user_permission_req: api.api_pb2.UserPermissionInChannelListRequest | None = ...,
+        user_permission_list: api.api_pb2.UserPermissionInChannelListResponse | None = ...,
+        permission_role_req: api.api_pb2.PermissionRoleChannelListEventRequest | None = ...,
+        permission_role_list: api.api_pb2.PermissionRoleChannelListEventResponse | None = ...,
         emoji_list: api.api_pb2.EmojiListedResponse | None = ...,
         list_friend_req: api.api_pb2.ListFriendsRequest | None = ...,
         friend_list: api.api_pb2.FriendList | None = ...,
@@ -5576,283 +3822,11 @@ class ListDataSocket(google.protobuf.message.Message):
         list_category_req: api.api_pb2.CategoryDesc | None = ...,
         category_list: api.api_pb2.CategoryDescList | None = ...,
         stream_user_list: api.api_pb2.StreamingChannelUserList | None = ...,
-        list_unread_msg_indicator_req: api.api_pb2.ListClanUnreadMsgIndicatorRequest
-        | None = ...,
-        unread_msg_indicator: api.api_pb2.ListClanUnreadMsgIndicatorResponse
-        | None = ...,
+        list_unread_msg_indicator_req: api.api_pb2.ListClanUnreadMsgIndicatorRequest | None = ...,
+        unread_msg_indicator: api.api_pb2.ListClanUnreadMsgIndicatorResponse | None = ...,
     ) -> None: ...
-    def HasField(
-        self,
-        field_name: typing.Literal[
-            "category_list",
-            b"category_list",
-            "channel_apps_list",
-            b"channel_apps_list",
-            "channel_attachment_list",
-            b"channel_attachment_list",
-            "channel_desc",
-            b"channel_desc",
-            "channel_desc_list",
-            b"channel_desc_list",
-            "channel_message_list",
-            b"channel_message_list",
-            "channel_setting_list",
-            b"channel_setting_list",
-            "channel_setting_req",
-            b"channel_setting_req",
-            "channel_user_list",
-            b"channel_user_list",
-            "channel_users_uc_list",
-            b"channel_users_uc_list",
-            "clan_desc_list",
-            b"clan_desc_list",
-            "clan_user_list",
-            b"clan_user_list",
-            "clan_webhook_list",
-            b"clan_webhook_list",
-            "clan_webhook_req",
-            b"clan_webhook_req",
-            "emoji_list",
-            b"emoji_list",
-            "emoji_recent_list",
-            b"emoji_recent_list",
-            "event_list",
-            b"event_list",
-            "favorite_channel_list",
-            b"favorite_channel_list",
-            "favorite_channel_req",
-            b"favorite_channel_req",
-            "friend_list",
-            b"friend_list",
-            "hashtag_dm_list",
-            b"hashtag_dm_list",
-            "hashtag_dm_req",
-            b"hashtag_dm_req",
-            "list_apps_req",
-            b"list_apps_req",
-            "list_category_req",
-            b"list_category_req",
-            "list_channel_attachment_req",
-            b"list_channel_attachment_req",
-            "list_channel_detail_req",
-            b"list_channel_detail_req",
-            "list_channel_message_req",
-            b"list_channel_message_req",
-            "list_channel_req",
-            b"list_channel_req",
-            "list_channel_users_req",
-            b"list_channel_users_req",
-            "list_channel_users_uc_req",
-            b"list_channel_users_uc_req",
-            "list_clan_req",
-            b"list_clan_req",
-            "list_clan_user_req",
-            b"list_clan_user_req",
-            "list_event_req",
-            b"list_event_req",
-            "list_friend_req",
-            b"list_friend_req",
-            "list_notification_req",
-            b"list_notification_req",
-            "list_thread_req",
-            b"list_thread_req",
-            "list_unread_msg_indicator_req",
-            b"list_unread_msg_indicator_req",
-            "noti_channel_cat_setting_list",
-            b"noti_channel_cat_setting_list",
-            "notificaion_user_channel",
-            b"notificaion_user_channel",
-            "notification_category",
-            b"notification_category",
-            "notification_channel",
-            b"notification_channel",
-            "notification_clan",
-            b"notification_clan",
-            "notification_list",
-            b"notification_list",
-            "notification_message",
-            b"notification_message",
-            "notification_setting",
-            b"notification_setting",
-            "permission_list",
-            b"permission_list",
-            "permission_list_req",
-            b"permission_list_req",
-            "permission_role_list",
-            b"permission_role_list",
-            "permission_role_req",
-            b"permission_role_req",
-            "permission_user_req",
-            b"permission_user_req",
-            "role_event_list",
-            b"role_event_list",
-            "role_list",
-            b"role_list",
-            "role_list_event_req",
-            b"role_list_event_req",
-            "role_user_list",
-            b"role_user_list",
-            "role_user_req",
-            b"role_user_req",
-            "search_thread_req",
-            b"search_thread_req",
-            "sticker_list",
-            b"sticker_list",
-            "stream_user_list",
-            b"stream_user_list",
-            "unread_msg_indicator",
-            b"unread_msg_indicator",
-            "user_activity_list",
-            b"user_activity_list",
-            "user_permission_list",
-            b"user_permission_list",
-            "user_permission_req",
-            b"user_permission_req",
-            "voice_user_list",
-            b"voice_user_list",
-            "webhook_list",
-            b"webhook_list",
-            "webhook_list_req",
-            b"webhook_list_req",
-        ],
-    ) -> builtins.bool: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "api_name",
-            b"api_name",
-            "category_list",
-            b"category_list",
-            "channel_apps_list",
-            b"channel_apps_list",
-            "channel_attachment_list",
-            b"channel_attachment_list",
-            "channel_desc",
-            b"channel_desc",
-            "channel_desc_list",
-            b"channel_desc_list",
-            "channel_message_list",
-            b"channel_message_list",
-            "channel_setting_list",
-            b"channel_setting_list",
-            "channel_setting_req",
-            b"channel_setting_req",
-            "channel_user_list",
-            b"channel_user_list",
-            "channel_users_uc_list",
-            b"channel_users_uc_list",
-            "clan_desc_list",
-            b"clan_desc_list",
-            "clan_user_list",
-            b"clan_user_list",
-            "clan_webhook_list",
-            b"clan_webhook_list",
-            "clan_webhook_req",
-            b"clan_webhook_req",
-            "emoji_list",
-            b"emoji_list",
-            "emoji_recent_list",
-            b"emoji_recent_list",
-            "event_list",
-            b"event_list",
-            "favorite_channel_list",
-            b"favorite_channel_list",
-            "favorite_channel_req",
-            b"favorite_channel_req",
-            "friend_list",
-            b"friend_list",
-            "hashtag_dm_list",
-            b"hashtag_dm_list",
-            "hashtag_dm_req",
-            b"hashtag_dm_req",
-            "list_apps_req",
-            b"list_apps_req",
-            "list_category_req",
-            b"list_category_req",
-            "list_channel_attachment_req",
-            b"list_channel_attachment_req",
-            "list_channel_detail_req",
-            b"list_channel_detail_req",
-            "list_channel_message_req",
-            b"list_channel_message_req",
-            "list_channel_req",
-            b"list_channel_req",
-            "list_channel_users_req",
-            b"list_channel_users_req",
-            "list_channel_users_uc_req",
-            b"list_channel_users_uc_req",
-            "list_clan_req",
-            b"list_clan_req",
-            "list_clan_user_req",
-            b"list_clan_user_req",
-            "list_event_req",
-            b"list_event_req",
-            "list_friend_req",
-            b"list_friend_req",
-            "list_notification_req",
-            b"list_notification_req",
-            "list_thread_req",
-            b"list_thread_req",
-            "list_unread_msg_indicator_req",
-            b"list_unread_msg_indicator_req",
-            "noti_channel_cat_setting_list",
-            b"noti_channel_cat_setting_list",
-            "notificaion_user_channel",
-            b"notificaion_user_channel",
-            "notification_category",
-            b"notification_category",
-            "notification_channel",
-            b"notification_channel",
-            "notification_clan",
-            b"notification_clan",
-            "notification_list",
-            b"notification_list",
-            "notification_message",
-            b"notification_message",
-            "notification_setting",
-            b"notification_setting",
-            "permission_list",
-            b"permission_list",
-            "permission_list_req",
-            b"permission_list_req",
-            "permission_role_list",
-            b"permission_role_list",
-            "permission_role_req",
-            b"permission_role_req",
-            "permission_user_req",
-            b"permission_user_req",
-            "role_event_list",
-            b"role_event_list",
-            "role_list",
-            b"role_list",
-            "role_list_event_req",
-            b"role_list_event_req",
-            "role_user_list",
-            b"role_user_list",
-            "role_user_req",
-            b"role_user_req",
-            "search_thread_req",
-            b"search_thread_req",
-            "sticker_list",
-            b"sticker_list",
-            "stream_user_list",
-            b"stream_user_list",
-            "unread_msg_indicator",
-            b"unread_msg_indicator",
-            "user_activity_list",
-            b"user_activity_list",
-            "user_permission_list",
-            b"user_permission_list",
-            "user_permission_req",
-            b"user_permission_req",
-            "voice_user_list",
-            b"voice_user_list",
-            "webhook_list",
-            b"webhook_list",
-            "webhook_list_req",
-            b"webhook_list_req",
-        ],
-    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "hashtag_dm_list", b"hashtag_dm_list", "hashtag_dm_req", b"hashtag_dm_req", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["api_name", b"api_name", "category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "hashtag_dm_list", b"hashtag_dm_list", "hashtag_dm_req", b"hashtag_dm_req", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]) -> None: ...
 
 global___ListDataSocket = ListDataSocket
 
@@ -5879,21 +3853,7 @@ class MeetParticipantEvent(google.protobuf.message.Message):
         clan_id: builtins.str = ...,
         action: builtins.int = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "action",
-            b"action",
-            "channel_id",
-            b"channel_id",
-            "clan_id",
-            b"clan_id",
-            "room_name",
-            b"room_name",
-            "username",
-            b"username",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]) -> None: ...
 
 global___MeetParticipantEvent = MeetParticipantEvent
 
@@ -5914,16 +3874,6 @@ class TransferOwnershipEvent(google.protobuf.message.Message):
         prev_owner: builtins.str = ...,
         curr_owner: builtins.str = ...,
     ) -> None: ...
-    def ClearField(
-        self,
-        field_name: typing.Literal[
-            "clan_id",
-            b"clan_id",
-            "curr_owner",
-            b"curr_owner",
-            "prev_owner",
-            b"prev_owner",
-        ],
-    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "curr_owner", b"curr_owner", "prev_owner", b"prev_owner"]) -> None: ...
 
 global___TransferOwnershipEvent = TransferOwnershipEvent

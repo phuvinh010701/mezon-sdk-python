@@ -1,15 +1,18 @@
 [project]
 name = "mezon-sdk"
-version = "1.1.0"
+version = "1.5.1"
 description = "Mezon Python SDK - A Python implementation of the Mezon TypeScript SDK"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
     "pydantic>=2.12.3",
     "aiohttp>=3.9.0",
     "websockets>=12.0",
     "protobuf>=4.25.0",
     "pyjwt>=2.8.0",
+    "aiosqlite>=0.20.0",
+    "mmn-sdk>=0.1.0",
+    "aiolimiter>=1.2.1",
 ]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
@@ -66,6 +69,11 @@ autoescape = true
 allowed_tags = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "style", "refactor", "test"]
 minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
+
+[tool.ruff]
+exclude = [
+    "mezon/protobuf",
+]
 
 [project.urls]
 Homepage = "https://github.com/phuvinh010701/mezon-sdk-python"

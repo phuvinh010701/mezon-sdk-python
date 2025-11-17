@@ -38,19 +38,25 @@ class MezonApi:
         "list_clans_descs": "/v2/clandesc",
         "list_channel_descs": "/v2/channeldesc",
         "create_channel_desc": "/v2/channeldesc",
+        "get_channel_detail": "/v2/channeldesc/{channel_id}",
+        "request_friend": "/v2/friend",
+        "get_list_friends": "/v2/friend",
+        "list_channel_voice_users": "/v2/channelvoice",
+        "update_role": "/v2/roles/{role_id}",
+        "list_roles": "/v2/roles",
     }
 
-    def __init__(self, bot_id: str, api_key: str, base_url: str, timeout_ms: int):
+    def __init__(self, client_id: str, api_key: str, base_url: str, timeout_ms: int):
         """
         Initialize Mezon API client.
 
         Args:
-            bot_id: Bot ID for authentication
+            client_id: Bot ID for authentication
             api_key: API key for authentication
             base_url: Base URL for API
             timeout_ms: Timeout in milliseconds
         """
-        self.bot_id = bot_id
+        self.client_id = client_id
         self.api_key = api_key
         self.base_url = base_url
         self.timeout_ms = timeout_ms
@@ -245,3 +251,129 @@ class MezonApi:
             headers=headers,
         )
         return ApiChannelDescription.model_validate(response)
+
+    async def get_channel_detail(
+        self, token: str, channel_id: str
+    ) -> ApiChannelDescription:
+        headers = build_headers(bearer_token=token)
+        response = await self.call_api(
+            method="GET",
+            url_path=self.ENDPOINTS["get_channel_detail"].format(channel_id=channel_id),
+            query_params={},
+            body=None,
+            headers=headers,
+        )
+        return ApiChannelDescription.model_validate(response)
+
+    async def request_friend(
+        self,
+        token: str,
+        usernames: str,
+        ids: Optional[str] = None,
+    ) -> Any:
+        headers = build_headers(bearer_token=token)
+        params = build_params(params={"usernames": usernames, "ids": ids})
+
+        response = await self.call_api(
+            method="POST",
+            url_path=self.ENDPOINTS["request_friend"],
+            query_params=params,
+            body=None,
+            headers=headers,
+        )
+        return response
+
+    async def get_list_friends(
+        self,
+        token: str,
+        limit: Optional[int] = None,
+        state: Optional[str] = None,
+        cursor: Optional[str] = None,
+    ) -> Any:
+        headers = build_headers(bearer_token=token)
+        params = build_params(params={"limit": limit, "state": state, "cursor": cursor})
+
+        response = await self.call_api(
+            method="GET",
+            url_path=self.ENDPOINTS["get_list_friends"],
+            query_params=params,
+            body=None,
+            headers=headers,
+        )
+        return response
+
+    async def list_channel_voice_users(
+        self,
+        token: str,
+        clan_id: str,
+        channel_id: str = "",
+        channel_type: int = 4,
+        limit: int = 500,
+        state: Optional[int] = None,
+        cursor: Optional[str] = None,
+    ) -> Any:
+        headers = build_headers(bearer_token=token)
+        params = build_params(
+            params={
+                "clan_id": clan_id,
+                "channel_id": channel_id,
+                "channel_type": channel_type,
+                "limit": limit,
+                "state": state,
+                "cursor": cursor,
+            }
+        )
+
+        response = await self.call_api(
+            method="GET",
+            url_path=self.ENDPOINTS["list_channel_voice_users"],
+            query_params=params,
+            body=None,
+            headers=headers,
+        )
+        return response
+
+    async def update_role(
+        self,
+        token: str,
+        role_id: str,
+        request: Dict[str, Any],
+    ) -> bool:
+        headers = build_headers(bearer_token=token)
+        body = build_body(body=request)
+
+        response = await self.call_api(
+            method="PUT",
+            url_path=self.ENDPOINTS["update_role"].format(role_id=role_id),
+            query_params={},
+            body=body,
+            headers=headers,
+        )
+        return response
+
+    async def list_roles(
+        self,
+        token: str,
+        clan_id: str,
+        limit: Optional[str] = None,
+        state: Optional[str] = None,
+        cursor: Optional[str] = None,
+    ) -> Any:
+        headers = build_headers(bearer_token=token)
+        params = build_params(
+            params={
+                "clan_id": clan_id,
+                "limit": limit,
+                "state": state,
+                "cursor": cursor,
+            }
+        )
+
+        response = await self.call_api(
+            method="GET",
+            url_path=self.ENDPOINTS["list_roles"],
+            query_params=params,
+            body=None,
+            headers=headers,
+        )
+        return response
