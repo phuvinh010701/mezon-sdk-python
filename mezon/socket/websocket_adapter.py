@@ -26,7 +26,10 @@ from websockets.protocol import State
 from mezon.protobuf.rtapi import realtime_pb2
 import logging
 from mezon.protobuf.utils import encode_protobuf
-from mezon.constants.rate_limit import WEBSOCKET_PB_RATE_LIMIT, WEBSOCKET_PB_RATE_LIMIT_PERIOD
+from mezon.constants.rate_limit import (
+    WEBSOCKET_PB_RATE_LIMIT,
+    WEBSOCKET_PB_RATE_LIMIT_PERIOD,
+)
 
 logger = logging.getLogger(__name__)
 

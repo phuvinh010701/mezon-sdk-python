@@ -20,6 +20,7 @@ from mezon.models import (
     ApiMessageAttachment,
     ApiMessageMention,
     ApiMessageRef,
+    ChannelMessageAck,
     ChannelMessageContent,
 )
 from mezon.managers.cache import CacheManager
@@ -99,7 +100,7 @@ class TextChannel:
         anonymous_message: Optional[bool] = None,
         topic_id: Optional[str] = None,
         code: Optional[int] = None,
-    ) -> Any:
+    ) -> ChannelMessageAck:
         """
         Send a message to this channel.
 
@@ -116,7 +117,7 @@ class TextChannel:
             The message acknowledgement
         """
 
-        async def send_operation():
+        async def send_operation() -> ChannelMessageAck:
             data_send = {
                 "clan_id": self.clan.id,
                 "channel_id": self.id,

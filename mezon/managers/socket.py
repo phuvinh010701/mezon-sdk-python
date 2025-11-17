@@ -14,6 +14,7 @@ from mezon.models import (
     ApiClanDesc,
     ApiMessageAttachment,
     ApiMessageMention,
+    ApiMessageReaction,
     ApiMessageRef,
     ChannelMessageAck,
 )
@@ -161,6 +162,102 @@ class SocketManager:
             avatar=avatar,
             code=code,
             topic_id=topic_id,
+        )
+
+    async def update_chat_message(
+        self,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        content: Any,
+        mentions: Optional[List[ApiMessageMention]] = None,
+        attachments: Optional[List[ApiMessageAttachment]] = None,
+        hide_editted: bool = False,
+        topic_id: Optional[str] = None,
+        is_update_msg_topic: Optional[bool] = None,
+    ) -> ChannelMessageAck:
+        """
+        Update (edit) an existing channel message.
+
+        Args:
+            clan_id: Clan ID that owns the channel
+            channel_id: Channel ID containing the message
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: Identifier of the message to update
+            content: Updated message content
+            mentions: Updated mentions list
+            attachments: Updated attachments list
+            hide_editted: Whether to hide the edited indicator
+            topic_id: Topic identifier for the message
+            is_update_msg_topic: Whether to change topic metadata
+
+        Returns:
+            ChannelMessageAck acknowledging the edit
+        """
+
+        return await self.socket.update_chat_message(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            content=content,
+            mentions=mentions,
+            attachments=attachments,
+            hide_editted=hide_editted,
+            topic_id=topic_id,
+            is_update_msg_topic=is_update_msg_topic,
+        )
+
+    async def write_message_reaction(
+        self,
+        id: str,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        emoji_id: str,
+        emoji: str,
+        count: int,
+        message_sender_id: str,
+        action_delete: bool = False,
+    ) -> ApiMessageReaction:
+        """
+        Add or remove a reaction on a channel message.
+
+        Args:
+            id: Identifier of the reaction payload (optional)
+            clan_id: Clan ID that owns the channel
+            channel_id: Channel ID containing the message
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: Identifier of the target message
+            emoji_id: Emoji identifier
+            emoji: Emoji short name
+            count: Emoji count
+            message_sender_id: Identifier of the original message sender
+            action_delete: Whether to remove the reaction
+
+        Returns:
+            ApiMessageReaction acknowledgement from the server.
+        """
+
+        return await self.socket.write_message_reaction(
+            id=id,
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            emoji_id=emoji_id,
+            emoji=emoji,
+            count=count,
+            message_sender_id=message_sender_id,
+            action_delete=action_delete,
         )
 
     async def disconnect(self) -> None:
