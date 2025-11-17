@@ -594,9 +594,7 @@ class MezonClient:
 
         self.event_manager.on(Events.GIVE_COFFEE, wrapper)
 
-    def on_role_event(
-        self, handler: Callable[[realtime_pb2.RoleEvent], None]
-    ) -> None:
+    def on_role_event(self, handler: Callable[[realtime_pb2.RoleEvent], None]) -> None:
         async def wrapper(message: realtime_pb2.RoleEvent) -> None:
             await self._invoke_handler(handler, message)
 
@@ -618,7 +616,9 @@ class MezonClient:
 
             for notification in notifications:
                 try:
-                    content = json.loads(notification.content) if notification.content else {}
+                    content = (
+                        json.loads(notification.content) if notification.content else {}
+                    )
 
                     if notification.code == -2:
                         session = self.session_manager.get_session()
@@ -634,7 +634,9 @@ class MezonClient:
                                 except Exception as err:
                                     logger.warning(f"Failed to request friend: {err}")
                 except json.JSONDecodeError:
-                    logger.warning(f"Failed to parse notification content: {noti.content}")
+                    logger.warning(
+                        f"Failed to parse notification content: {notification.content}"
+                    )
                 except Exception as err:
                     logger.warning(f"Error processing notification: {err}")
 

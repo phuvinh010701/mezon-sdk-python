@@ -15,6 +15,7 @@ limitations under the License.
 """
 
 import json
+from enum import Enum
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
 from mezon.protobuf.api import api_pb2
@@ -280,17 +281,189 @@ class ClanDesc(BaseModel):
     status: Optional[int] = None
 
 
-class ChannelMessageContent(BaseModel):
-    """Channel message content"""
+class StartEndIndex(BaseModel):
+    """
+    Start and end indexes for inline content metadata.
+    """
 
-    clan_id: str
-    channel_id: str
-    mode: int
-    is_public: bool
-    msg: Any
-    mentions: Optional[List[ApiMessageMention]] = Field(default_factory=list)
-    attachments: Optional[List[ApiMessageAttachment]] = Field(default_factory=list)
-    ref: Optional[List[ApiMessageRef]] = Field(default_factory=list)
+    start: Optional[int] = Field(default=None, alias="s")
+    end: Optional[int] = Field(default=None, alias="e")
+
+    class Config:
+        populate_by_name = True
+
+
+class HashtagOnMessage(StartEndIndex):
+    """
+    Hashtag metadata embedded in a message.
+    """
+
+    channel_id: Optional[str] = Field(default=None, alias="channelid")
+
+    class Config:
+        populate_by_name = True
+
+
+class EmojiOnMessage(StartEndIndex):
+    """
+    Emoji metadata embedded in a message.
+    """
+
+    emoji_id: Optional[str] = Field(default=None, alias="emojiid")
+
+    class Config:
+        populate_by_name = True
+
+
+class LinkOnMessage(StartEndIndex):
+    """
+    Link metadata embedded in a message.
+    """
+
+    pass
+
+
+class EMarkdownType(str, Enum):
+    """
+    Markdown segment types supported by channel messages.
+    """
+
+    TRIPLE = "t"
+    SINGLE = "s"
+    PRE = "pre"
+    CODE = "c"
+    BOLD = "b"
+    LINK = "lk"
+    VOICE_LINK = "vk"
+    LINK_YOUTUBE = "lk_yt"
+
+
+class MarkdownOnMessage(StartEndIndex):
+    """
+    Markdown metadata embedded in a message.
+    """
+
+    type: Optional[EMarkdownType] = None
+
+
+class LinkVoiceRoomOnMessage(StartEndIndex):
+    """
+    Voice room link metadata embedded in a message.
+    """
+
+    pass
+
+
+class InteractiveMessageField(BaseModel):
+    """
+    Field for interactive/embedded message sections.
+    """
+
+    name: str
+    value: str
+    inline: Optional[bool] = None
+    options: Optional[List[Any]] = None
+    inputs: Optional[Dict[str, Any]] = None
+    max_options: Optional[int] = Field(default=None, alias="max_options")
+
+
+class InteractiveMessageAuthor(BaseModel):
+    """
+    Author metadata for interactive messages.
+    """
+
+    name: str
+    icon_url: Optional[str] = None
+    url: Optional[str] = None
+
+
+class InteractiveMessageMedia(BaseModel):
+    """
+    Media resource attached to an interactive message.
+    """
+
+    url: Optional[str] = None
+    width: Optional[str] = None
+    height: Optional[str] = None
+
+
+class InteractiveMessageFooter(BaseModel):
+    """
+    Footer metadata for interactive messages.
+    """
+
+    text: Optional[str] = None
+    icon_url: Optional[str] = None
+
+
+class InteractiveMessageProps(BaseModel):
+    """
+    Embed-style payload attached to a message.
+    """
+
+    color: Optional[str] = None
+    title: Optional[str] = None
+    url: Optional[str] = None
+    author: Optional[InteractiveMessageAuthor] = None
+    description: Optional[str] = None
+    thumbnail: Optional[InteractiveMessageMedia] = None
+    fields: Optional[List[InteractiveMessageField]] = None
+    image: Optional[InteractiveMessageMedia] = None
+    timestamp: Optional[str] = None
+    footer: Optional[InteractiveMessageFooter] = None
+
+
+class MessageComponentType(str, Enum):
+    """
+    Supported interactive component types.
+
+    TODO: Confirm the exact backend enum values for component types.
+    """
+
+    BUTTON = "button"
+    SELECT = "select"
+    INPUT = "input"
+
+
+class MessageComponent(BaseModel):
+    """
+    Generic interactive component descriptor.
+
+    TODO: Expand the schema for select/input specific attributes.
+    """
+
+    type: Optional[MessageComponentType] = None
+    component_id: str = Field(alias="id")
+    component: Dict[str, Any] = Field(default_factory=dict)
+
+
+class MessageActionRow(BaseModel):
+    """
+    Group of interactive components displayed on a single row.
+    """
+
+    components: List[MessageComponent]
+
+
+class ChannelMessageContent(BaseModel):
+    """
+    Structured payload describing a channel message body.
+    """
+
+    text: Optional[str] = Field(default=None, alias="t")
+    content_thread: Optional[str] = Field(default=None, alias="contentThread")
+    hashtags: Optional[List[HashtagOnMessage]] = Field(default=None, alias="hg")
+    emojis: Optional[List[EmojiOnMessage]] = Field(default=None, alias="ej")
+    links: Optional[List[LinkOnMessage]] = Field(default=None, alias="lk")
+    markdown: Optional[List[MarkdownOnMessage]] = Field(default=None, alias="mk")
+    voice_links: Optional[List[LinkVoiceRoomOnMessage]] = Field(
+        default=None, alias="vk"
+    )
+    embed: Optional[List[InteractiveMessageProps]] = None
+    components: Optional[List[MessageActionRow]] = None
+
+    class Config:
+        populate_by_name = True
 
 
 class MessagePayLoad(BaseModel):
@@ -619,13 +792,13 @@ class ChannelMessageAck(BaseModel):
     """Channel message acknowledgement"""
 
     channel_id: str
-    mode: int
+    mode: Optional[int] = None
     message_id: str
-    code: int
+    code: Optional[int] = 0
     username: str
     create_time: str
     update_time: str
-    persistence: bool
+    persistence: Optional[bool] = None
     clan_id: Optional[str] = None
     channel_label: Optional[str] = None
 

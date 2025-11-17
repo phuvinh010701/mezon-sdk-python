@@ -17,11 +17,14 @@ limitations under the License.
 import json
 from typing import Any, List, Optional
 
+
 from mezon.protobuf.rtapi import realtime_pb2
+from mezon.protobuf.api import api_pb2
 from mezon.models import (
     ApiMessageMention,
     ApiMessageAttachment,
     ApiMessageRef,
+    ChannelMessageContent,
 )
 
 
@@ -32,7 +35,7 @@ class ChannelMessageBuilder:
     """
 
     @staticmethod
-    def _prepare_content(content: Any) -> str:
+    def _prepare_content(content: ChannelMessageContent) -> str:
         """
         Prepare message content for sending.
 
@@ -42,12 +45,7 @@ class ChannelMessageBuilder:
         Returns:
             Serialized content string
         """
-        content_dict = {"t": content}
-        return (
-            json.dumps(content_dict)
-            if isinstance(content_dict, dict)
-            else str(content_dict)
-        )
+        return json.dumps(content.model_dump(by_alias=True))
 
     @staticmethod
     def _add_mentions(
@@ -264,4 +262,147 @@ class EphemeralMessageBuilder:
         return realtime_pb2.EphemeralMessageSend(
             receiver_id=receiver_id,
             message=channel_message_send,
+        )
+
+
+class ChannelMessageUpdateBuilder:
+    """
+    Builder class for constructing ChannelMessageUpdate protobuf messages.
+    """
+
+    @staticmethod
+    def _set_optional_fields(
+        message: realtime_pb2.ChannelMessageUpdate,
+        hide_editted: Optional[bool] = None,
+        topic_id: Optional[str] = None,
+        is_update_msg_topic: Optional[bool] = None,
+    ) -> None:
+        """
+        Set optional fields on the channel message update.
+
+        Args:
+            message: The protobuf message to update
+            hide_editted: Whether to hide the edited indicator
+            topic_id: Topic identifier for the message
+            is_update_msg_topic: Whether the topic metadata should be updated
+        """
+
+        if hide_editted is not None:
+            message.hide_editted = hide_editted
+        if topic_id:
+            message.topic_id = topic_id
+        if is_update_msg_topic is not None:
+            message.is_update_msg_topic = is_update_msg_topic
+
+    @classmethod
+    def build(
+        cls,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        content: Any,
+        mentions: Optional[List[ApiMessageMention]] = None,
+        attachments: Optional[List[ApiMessageAttachment]] = None,
+        hide_editted: Optional[bool] = None,
+        topic_id: Optional[str] = None,
+        is_update_msg_topic: Optional[bool] = None,
+    ) -> realtime_pb2.ChannelMessageUpdate:
+        """
+        Build a complete ChannelMessageUpdate protobuf message.
+
+        Args:
+            clan_id: Clan ID that owns the channel
+            channel_id: Channel ID where the message was sent
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: ID of the message to update
+            content: Updated message content
+            mentions: Updated mentions list
+            attachments: Updated attachments list
+            hide_editted: Whether to hide the edited indicator
+            topic_id: Topic ID for the message
+            is_update_msg_topic: Whether to update topic metadata
+
+        Returns:
+            Configured ChannelMessageUpdate protobuf message
+        """
+
+        content_str = ChannelMessageBuilder._prepare_content(content)
+        message = realtime_pb2.ChannelMessageUpdate(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            content=content_str,
+        )
+
+        if mentions:
+            ChannelMessageBuilder._add_mentions(message, mentions)
+        if attachments:
+            ChannelMessageBuilder._add_attachments(message, attachments)
+
+        cls._set_optional_fields(
+            message,
+            hide_editted=hide_editted,
+            topic_id=topic_id,
+            is_update_msg_topic=is_update_msg_topic,
+        )
+
+        return message
+
+
+class MessageReactionBuilder:
+    """
+    Builder class for constructing MessageReaction protobuf messages.
+    """
+
+    @staticmethod
+    def build(
+        id: str,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        emoji_id: str,
+        emoji: str,
+        count: int,
+        message_sender_id: str,
+        action_delete: bool,
+    ) -> api_pb2.MessageReaction:
+        """
+        Build a MessageReaction protobuf message.
+
+        Args:
+            id: Identifier of the reaction payload
+            clan_id: Clan ID associated with the message
+            channel_id: Channel ID containing the message
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: Identifier of the message being reacted to
+            emoji_id: Identifier for the emoji
+            emoji: Emoji short name
+            count: Emoji count
+            message_sender_id: Original message sender identifier
+            action_delete: Whether the reaction should be removed
+
+        Returns:
+            Configured MessageReaction protobuf message
+        """
+
+        return api_pb2.MessageReaction(
+            id=id,
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            emoji_id=emoji_id,
+            emoji=emoji,
+            count=count,
+            message_sender_id=message_sender_id,
+            action=action_delete,
         )

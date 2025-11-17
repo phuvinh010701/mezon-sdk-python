@@ -135,7 +135,8 @@ class Clan:
         )
 
         valid_channels = [
-            c for c in (channels.channeldesc if channels and channels.channeldesc else [])
+            c
+            for c in (channels.channeldesc if channels and channels.channeldesc else [])
             if c.channel_id
         ]
 
