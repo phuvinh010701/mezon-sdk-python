@@ -51,6 +51,7 @@ class ApiSession(BaseModel):
     token: Optional[str] = None
     user_id: str
     api_url: Optional[str] = None
+    id_token: Optional[str] = None
 
 
 class ApiAuthenticateLogoutRequest(BaseModel):
@@ -793,14 +794,15 @@ class ChannelMessageAck(BaseModel):
 
     channel_id: str
     mode: Optional[int] = None
-    message_id: str
+    message_id: Optional[str] = None
     code: Optional[int] = 0
-    username: str
-    create_time: str
-    update_time: str
+    username: Optional[str] = None
+    create_time: Optional[str] = None
+    update_time: Optional[str] = None
     persistence: Optional[bool] = None
     clan_id: Optional[str] = None
     channel_label: Optional[str] = None
+    is_public: Optional[bool] = None
 
 
 class SocketError(BaseModel):

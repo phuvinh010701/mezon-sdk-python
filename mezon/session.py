@@ -33,6 +33,7 @@ class Session:
         self.refresh_token: str = api_session.refresh_token
         self.user_id: Optional[str] = api_session.user_id
         self.api_url: Optional[str] = api_session.api_url
+        self.id_token: Optional[str] = api_session.id_token
         self.created_at: int = int(time.time())
 
         self.update(self.token, self.refresh_token)

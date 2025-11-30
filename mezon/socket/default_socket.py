@@ -643,3 +643,286 @@ class Socket:
             ChannelMessageAck,
             "Server did not return an ephemeral_message_send acknowledgement.",
         )
+
+    async def leave_chat(
+        self,
+        clan_id: str,
+        channel_id: str,
+        channel_type: int,
+        is_public: bool,
+    ) -> None:
+        """
+        Leave a channel chat.
+
+        Args:
+            clan_id: Clan ID
+            channel_id: Channel ID to leave
+            channel_type: Type of the channel
+            is_public: Whether the channel is public
+        """
+        envelope = realtime_pb2.Envelope()
+        channel_leave = realtime_pb2.ChannelLeave(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            channel_type=channel_type,
+            is_public=is_public,
+        )
+        envelope.channel_leave.CopyFrom(channel_leave)
+        await self._send_with_cid(envelope)
+
+    async def remove_chat_message(
+        self,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        topic_id: Optional[str] = None,
+    ) -> ChannelMessageAck:
+        """
+        Remove/delete a message from a channel.
+
+        Args:
+            clan_id: Clan ID
+            channel_id: Channel ID where the message exists
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: ID of the message to remove
+            topic_id: Optional topic ID for threaded messages
+
+        Returns:
+            ChannelMessageAck: Acknowledgement of the deletion
+        """
+        envelope = realtime_pb2.Envelope()
+        channel_message_remove = realtime_pb2.ChannelMessageRemove(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+        )
+        if topic_id:
+            channel_message_remove.topic_id = topic_id
+
+        envelope.channel_message_remove.CopyFrom(channel_message_remove)
+        response = await self._send_with_cid(envelope)
+
+        return self._handle_response(
+            response,
+            "channel_message_ack",
+            ChannelMessageAck,
+            "Server did not return a channel_message_remove acknowledgement.",
+        )
+
+    async def write_message_typing(
+        self,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+    ) -> Any:
+        """
+        Send typing indicator to a channel.
+
+        Args:
+            clan_id: Clan ID
+            channel_id: Channel ID where user is typing
+            mode: Channel mode
+            is_public: Whether the channel is public
+
+        Returns:
+            MessageTypingEvent acknowledgement
+        """
+        envelope = realtime_pb2.Envelope()
+        message_typing = realtime_pb2.MessageTypingEvent(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+        )
+        envelope.message_typing_event.CopyFrom(message_typing)
+        response = await self._send_with_cid(envelope)
+
+        if response and response.HasField("message_typing_event"):
+            return json_format.MessageToDict(response.message_typing_event)
+        return None
+
+    async def write_last_seen_message(
+        self,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        message_id: str,
+        timestamp_seconds: int,
+    ) -> Any:
+        """
+        Mark a message as last seen/read.
+
+        Args:
+            clan_id: Clan ID
+            channel_id: Channel ID where the message exists
+            mode: Channel mode
+            message_id: ID of the last seen message
+            timestamp_seconds: Timestamp when the message was seen
+
+        Returns:
+            LastSeenMessageEvent acknowledgement
+        """
+        envelope = realtime_pb2.Envelope()
+        last_seen = realtime_pb2.LastSeenMessageEvent(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            message_id=message_id,
+            timestamp_seconds=timestamp_seconds,
+        )
+        envelope.last_seen_message_event.CopyFrom(last_seen)
+        response = await self._send_with_cid(envelope)
+
+        if response and response.HasField("last_seen_message_event"):
+            return json_format.MessageToDict(response.last_seen_message_event)
+        return None
+
+    async def write_last_pin_message(
+        self,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        timestamp_seconds: int,
+        operation: int,
+    ) -> Any:
+        """
+        Pin or unpin a message in a channel.
+
+        Args:
+            clan_id: Clan ID
+            channel_id: Channel ID where the message exists
+            mode: Channel mode
+            is_public: Whether the channel is public
+            message_id: ID of the message to pin/unpin
+            timestamp_seconds: Timestamp of the operation
+            operation: 1 for pin, 0 for unpin
+
+        Returns:
+            LastPinMessageEvent acknowledgement
+        """
+        envelope = realtime_pb2.Envelope()
+        last_pin = realtime_pb2.LastPinMessageEvent(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            timestamp_seconds=timestamp_seconds,
+            operation=operation,
+        )
+        envelope.last_pin_message_event.CopyFrom(last_pin)
+        response = await self._send_with_cid(envelope)
+
+        if response and response.HasField("last_pin_message_event"):
+            return json_format.MessageToDict(response.last_pin_message_event)
+        return None
+
+    async def write_custom_status(
+        self,
+        clan_id: str,
+        status: str,
+    ) -> Any:
+        """
+        Set a custom status for a clan.
+
+        Args:
+            clan_id: Clan ID to set status for
+            status: Custom status text
+
+        Returns:
+            CustomStatusEvent acknowledgement
+        """
+        envelope = realtime_pb2.Envelope()
+        custom_status = realtime_pb2.CustomStatusEvent(
+            clan_id=clan_id,
+            status=status,
+        )
+        envelope.custom_status_event.CopyFrom(custom_status)
+        response = await self._send_with_cid(envelope)
+
+        if response and response.HasField("custom_status_event"):
+            return json_format.MessageToDict(response.custom_status_event)
+        return None
+
+    async def write_voice_joined(
+        self,
+        id: str,
+        clan_id: str,
+        clan_name: str,
+        voice_channel_id: str,
+        voice_channel_label: str,
+        participant: str,
+        last_screenshot: str = "",
+    ) -> Any:
+        """
+        Notify that a user joined a voice channel.
+
+        Args:
+            id: Event ID
+            clan_id: Clan ID
+            clan_name: Clan name
+            voice_channel_id: Voice channel ID
+            voice_channel_label: Voice channel name/label
+            participant: Participant user ID
+            last_screenshot: Optional screenshot URL
+
+        Returns:
+            VoiceJoinedEvent acknowledgement
+        """
+        envelope = realtime_pb2.Envelope()
+        voice_joined = realtime_pb2.VoiceJoinedEvent(
+            id=id,
+            clan_id=clan_id,
+            clan_name=clan_name,
+            voice_channel_id=voice_channel_id,
+            voice_channel_label=voice_channel_label,
+            participant=participant,
+            last_screenshot=last_screenshot,
+        )
+        envelope.voice_joined_event.CopyFrom(voice_joined)
+        response = await self._send_with_cid(envelope)
+
+        if response and response.HasField("voice_joined_event"):
+            return json_format.MessageToDict(response.voice_joined_event)
+        return None
+
+    async def write_voice_leaved(
+        self,
+        id: str,
+        clan_id: str,
+        voice_channel_id: str,
+        voice_user_id: str,
+    ) -> Any:
+        """
+        Notify that a user left a voice channel.
+
+        Args:
+            id: Event ID
+            clan_id: Clan ID
+            voice_channel_id: Voice channel ID
+            voice_user_id: User ID who left
+
+        Returns:
+            VoiceLeavedEvent acknowledgement
+        """
+        envelope = realtime_pb2.Envelope()
+        voice_leaved = realtime_pb2.VoiceLeavedEvent(
+            id=id,
+            clan_id=clan_id,
+            voice_channel_id=voice_channel_id,
+            voice_user_id=voice_user_id,
+        )
+        envelope.voice_leaved_event.CopyFrom(voice_leaved)
+        response = await self._send_with_cid(envelope)
+
+        if response and response.HasField("voice_leaved_event"):
+            return json_format.MessageToDict(response.voice_leaved_event)
+        return None
