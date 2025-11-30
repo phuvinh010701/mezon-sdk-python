@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.5.3 (2025-11-30)
+
+### Bug Fixes
+
+- Get zkproof using id_token
+  ([`cdd956a`](https://github.com/phuvinh010701/mezon-sdk-python/commit/cdd956a753800684651252610dbd62213978f0bb))
+
+
 ## v1.5.2 (2025-11-17)
 
 ### Bug Fixes
