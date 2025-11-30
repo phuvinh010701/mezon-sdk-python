@@ -19,6 +19,14 @@ import json
 from typing import Any, Callable, Literal
 import logging
 
+from tenacity import (
+    AsyncRetrying,
+    retry_if_exception_type,
+    stop_never,
+    wait_exponential,
+    before_sleep_log,
+)
+
 from mezon import ApiChannelDescription, CacheManager, ChannelType, Events
 from mezon.api.utils import parse_url_components
 from mezon.protobuf.api import api_pb2
@@ -30,6 +38,8 @@ from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.messages.queue import MessageQueue
 from mezon.models import (
+    ApiAuthenticateLogoutRequest,
+    ApiAuthenticateRefreshRequest,
     ApiCreateChannelDescRequest,
     ApiSentTokenRequest,
     ChannelMessageRaw,
@@ -52,6 +62,7 @@ from mmn import (
     ExtraInfo,
     SendTransactionRequest,
     TransferType,
+    ZkClientType,
 )
 
 from .api import MezonApi
@@ -207,7 +218,13 @@ class MezonClient:
         else:
             handler(*args, **kwargs)
 
-    async def login(self) -> None:
+    async def login(self, enable_auto_reconnect: bool = True) -> None:
+        """
+        Authenticate and initialize the client.
+
+        Args:
+            enable_auto_reconnect: Whether to enable automatic reconnection on disconnect
+        """
         session = await self.get_session()
         await self.initialize_managers(session)
 
@@ -215,6 +232,12 @@ class MezonClient:
             self.key_gen = self.get_ephemeral_key_pair()
             self.address = self.get_address_from_user_id(self.client_id)
             self.zk_proof = await self.get_zk_proof()
+
+        self._enable_auto_reconnect = enable_auto_reconnect
+        self._is_hard_disconnect = False
+
+        if enable_auto_reconnect:
+            self._setup_reconnect_handlers()
 
     def get_ephemeral_key_pair(self) -> EphemeralKeyPair:
         if self.mmn_client:
@@ -230,9 +253,10 @@ class MezonClient:
         if self.zk_client:
             return await self.zk_client.get_zk_proofs(
                 user_id=self.client_id,
-                jwt=self.session_manager.get_session().token,
-                address=self.address,
                 ephemeral_public_key=self.key_gen.public_key,
+                jwt=self.session_manager.get_session().id_token,
+                address=self.address,
+                client_type=ZkClientType.MEZON,
             )
         raise ValueError("ZK client not initialized!")
 
@@ -814,3 +838,163 @@ class MezonClient:
     async def add_friend(self, username: str) -> Any:
         session = self.session_manager.get_session()
         return await self.api_client.request_friend(session.token, username)
+
+    async def session_refresh(self) -> Session:
+        """
+        Refresh the current session using the refresh token.
+
+        Returns:
+            Session: New session with refreshed tokens
+
+        Raises:
+            ValueError: If no refresh token is available
+        """
+
+        current_session = self.session_manager.get_session()
+
+        if not current_session.refresh_token:
+            raise ValueError("No refresh token available for session refresh")
+
+        refresh_request = ApiAuthenticateRefreshRequest(
+            token=current_session.token,
+            refresh_token=current_session.refresh_token,
+        )
+
+        new_api_session = await self.api_client.mezon_authenticate_refresh(
+            basic_auth_username=self.client_id,
+            basic_auth_password=self.api_key,
+            body=refresh_request,
+        )
+
+        new_session = Session(new_api_session)
+        self.session_manager.session = new_session
+
+        logger.info("Session refreshed successfully")
+        return new_session
+
+    async def logout(self) -> bool:
+        """
+        Log out the current session and invalidate tokens.
+
+        Returns:
+            bool: True if logout was successful
+        """
+
+        session = self.session_manager.get_session()
+
+        logout_request = ApiAuthenticateLogoutRequest(
+            token=session.token,
+            refresh_token=session.refresh_token or "",
+        )
+
+        self._is_hard_disconnect = True
+
+        try:
+            await self.api_client.mezon_authenticate_logout(
+                bearer_token=session.token,
+                body=logout_request,
+            )
+            await self.close_socket()
+            logger.info("Logged out successfully")
+            return True
+        except Exception as err:
+            logger.error(f"Logout failed: {err}")
+            return False
+
+    def _setup_reconnect_handlers(self) -> None:
+        """
+        Setup event handlers for automatic reconnection.
+        """
+        socket = self.socket_manager.get_socket()
+
+        original_ondisconnect = socket.ondisconnect
+        original_onerror = socket.onerror
+
+        async def handle_disconnect(event):
+            logger.warning(f"Socket disconnected: {event}")
+            if original_ondisconnect:
+                await original_ondisconnect(event) if asyncio.iscoroutinefunction(
+                    original_ondisconnect
+                ) else original_ondisconnect(event)
+
+            if not self._is_hard_disconnect and self._enable_auto_reconnect:
+                await self._retry_connection()
+
+        async def handle_error(event):
+            logger.error(f"Socket error: {event}")
+            if original_onerror:
+                await original_onerror(event) if asyncio.iscoroutinefunction(
+                    original_onerror
+                ) else original_onerror(event)
+
+            if not self._is_hard_disconnect and self._enable_auto_reconnect:
+                if self.socket_manager.is_connected():
+                    await self._retry_connection()
+
+        socket.ondisconnect = handle_disconnect
+        socket.onerror = handle_error
+
+    async def _reconnect_attempt(self) -> None:
+        """
+        Attempt to reconnect to the server.
+
+        Raises:
+            Exception: If reconnection fails
+            asyncio.CancelledError: If hard disconnect is detected
+        """
+        if self._is_hard_disconnect:
+            raise asyncio.CancelledError("Hard disconnect, stopping reconnection")
+
+        session = await self.get_session()
+        await self.initialize_managers(session)
+        logger.info("Reconnected successfully!")
+
+    async def _retry_connection(self) -> None:
+        """
+        Retry connection with exponential backoff using tenacity.
+
+        Retries with exponential backoff starting at 5 seconds, doubling each time,
+        up to a maximum of 60 seconds between attempts. Stops if hard disconnect
+        is detected or reconnection succeeds.
+        """
+        logger.info("Starting reconnection attempts...")
+
+        def before_sleep_with_check(retry_state):
+            """Check for hard disconnect and log before waiting."""
+            if self._is_hard_disconnect:
+                logger.info("Hard disconnect detected, stopping reconnection")
+                raise asyncio.CancelledError("Hard disconnect")
+            before_sleep_log(logger, logging.INFO)(retry_state)
+
+        try:
+            async for attempt in AsyncRetrying(
+                wait=wait_exponential(multiplier=2, min=5, max=60),
+                stop=stop_never,
+                retry=retry_if_exception_type(Exception),
+                before_sleep=before_sleep_with_check,
+                reraise=True,
+            ):
+                with attempt:
+                    if self._is_hard_disconnect:
+                        logger.info("Hard disconnect detected, stopping reconnection")
+                        break
+
+                    logger.info(
+                        f"Attempting to reconnect (attempt {attempt.retry_state.attempt_number})..."
+                    )
+                    await self._reconnect_attempt()
+                    break
+
+        except asyncio.CancelledError:
+            logger.info("Hard disconnect detected, stopping reconnection")
+        except Exception as err:
+            logger.error(f"Reconnection failed after all retries: {err}")
+
+    async def disconnect(self) -> None:
+        """
+        Disconnect from the socket without logging out.
+        Sets hard disconnect flag to prevent auto-reconnection.
+        """
+        self._is_hard_disconnect = True
+        await self.close_socket()
+        logger.info("Client disconnected")

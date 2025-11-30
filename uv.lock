@@ -514,6 +514,7 @@ dependencies = [
     { name = "protobuf" },
     { name = "pydantic" },
     { name = "pyjwt" },
+    { name = "tenacity" },
     { name = "websockets" },
 ]
 
@@ -530,10 +531,11 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.9.0" },
     { name = "aiolimiter", specifier = ">=1.2.1" },
     { name = "aiosqlite", specifier = ">=0.20.0" },
-    { name = "mmn-sdk", specifier = ">=0.1.0" },
+    { name = "mmn-sdk", specifier = "==1.0.0" },
     { name = "protobuf", specifier = ">=4.25.0" },
     { name = "pydantic", specifier = ">=2.12.3" },
     { name = "pyjwt", specifier = ">=2.8.0" },
+    { name = "tenacity", specifier = ">=9.1.2" },
     { name = "websockets", specifier = ">=12.0" },
 ]
 
@@ -547,7 +549,7 @@ dev = [
 
 [[package]]
 name = "mmn-sdk"
-version = "0.1.0"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -556,9 +558,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "pynacl" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6d/9d/6e985872b54865850d54a21d1cabd5fa40855f82ff06e986c797770c2d37/mmn_sdk-0.1.0.tar.gz", hash = "sha256:5b183e20e806b30a48e823f14036cf5b4876ba6dc9d0094bca40bdcec7f394d3", size = 21057, upload-time = "2025-11-04T14:48:45.098Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2e/b0/cf084b8f8bdd90edc199b99622342b41ae2c21e95387b96bcbe66ca616cb/mmn_sdk-1.0.0.tar.gz", hash = "sha256:0404bb2a936c8cc2e72e00bf148d5d979f8e8a6be21889f21b3fe61aa4a2680e", size = 18404, upload-time = "2025-11-30T03:03:56.847Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c1/b2/abcf4e2e06cd7461f87df43f07ea07b16d51bd0776d5786a1a3a573a76d2/mmn_sdk-0.1.0-py3-none-any.whl", hash = "sha256:75767ca673a4ecddaf8f16fde708ef4c79faf7431501d3d62d001279df133989", size = 19794, upload-time = "2025-11-04T14:48:43.756Z" },
+    { url = "https://files.pythonhosted.org/packages/d5/18/a2c6f1950aede48a8693ab8508ea1baf4d59496fad67f28ff6dfbe0a2f0a/mmn_sdk-1.0.0-py3-none-any.whl", hash = "sha256:af73d9adef239fabe90f3eed867d9e1d7f6cd1c86153a8877c27650ad5c81799", size = 18062, upload-time = "2025-11-30T03:03:55.757Z" },
 ]
 
 [[package]]
@@ -1049,6 +1051,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/44/cd/a040c4b3119bbe532e5b0732286f805445375489fceaec1f48306068ee3b/smmap-5.0.2.tar.gz", hash = "sha256:26ea65a03958fa0c8a1c7e8c7a58fdc77221b8910f6be2131affade476898ad5", size = 22329, upload-time = "2025-01-02T07:14:40.909Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/04/be/d09147ad1ec7934636ad912901c5fd7667e1c858e19d355237db0d0cd5e4/smmap-5.0.2-py3-none-any.whl", hash = "sha256:b30115f0def7d7531d22a0fb6502488d879e75b260a9db4d0819cfb25403af5e", size = 24303, upload-time = "2025-01-02T07:14:38.724Z" },
+]
+
+[[package]]
+name = "tenacity"
+version = "9.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0a/d4/2b0cd0fe285e14b36db076e78c93766ff1d529d70408bd1d2a5a84f1d929/tenacity-9.1.2.tar.gz", hash = "sha256:1169d376c297e7de388d18b4481760d478b0e99a777cad3a9c86e556f4b697cb", size = 48036, upload-time = "2025-04-02T08:25:09.966Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e5/30/643397144bfbfec6f6ef821f36f33e57d35946c44a2352d3c9f0ae847619/tenacity-9.1.2-py3-none-any.whl", hash = "sha256:f77bf36710d8b73a50b2dd155c97b870017ad21afe6ab300326b0371b3b05138", size = 28248, upload-time = "2025-04-02T08:25:07.678Z" },
 ]
 
 [[package]]

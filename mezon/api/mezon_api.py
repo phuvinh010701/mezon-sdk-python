@@ -24,15 +24,22 @@ from ..models import (
     ApiClanDescList,
     ApiSession,
     ApiAuthenticateRequest,
+    ApiAuthenticateRefreshRequest,
+    ApiAuthenticateLogoutRequest,
     ApiChannelDescription,
     ApiChannelDescList,
     ApiCreateChannelDescRequest,
+    ApiUpdateMessageRequest,
+    ApiRegisterStreamingChannelRequest,
+    ApiSentTokenRequest,
 )
 
 
 class MezonApi:
     ENDPOINTS = {
         "authenticate": "/v2/apps/authenticate/token",
+        "authenticate_refresh": "/v2/apps/authenticate/refresh",
+        "authenticate_logout": "/v2/apps/authenticate/logout",
         "healthcheck": "/healthcheck",
         "readycheck": "/readycheck",
         "list_clans_descs": "/v2/clandesc",
@@ -44,6 +51,10 @@ class MezonApi:
         "list_channel_voice_users": "/v2/channelvoice",
         "update_role": "/v2/roles/{role_id}",
         "list_roles": "/v2/roles",
+        "delete_message": "/v2/messages/{message_id}",
+        "update_message": "/v2/messages/{message_id}",
+        "send_token": "/v2/token/send",
+        "register_streaming_channel": "/v2/streaming/register",
     }
 
     def __init__(self, client_id: str, api_key: str, base_url: str, timeout_ms: int):
@@ -374,6 +385,183 @@ class MezonApi:
             url_path=self.ENDPOINTS["list_roles"],
             query_params=params,
             body=None,
+            headers=headers,
+        )
+        return response
+
+    async def mezon_authenticate_refresh(
+        self,
+        basic_auth_username: str,
+        basic_auth_password: str,
+        body: ApiAuthenticateRefreshRequest,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> ApiSession:
+        """
+        Refresh a user's session using a refresh token.
+
+        Args:
+            basic_auth_username: Username for basic authentication
+            basic_auth_password: Password for basic authentication
+            body: Refresh request containing refresh token
+            options: Additional options for the request
+
+        Returns:
+            ApiSession: New session with updated tokens
+        """
+        headers = build_headers(basic_auth=(basic_auth_username, basic_auth_password))
+        body_json = build_body(body=body)
+
+        response = await self.call_api(
+            method="POST",
+            url_path=self.ENDPOINTS["authenticate_refresh"],
+            query_params={},
+            body=body_json,
+            headers=headers,
+        )
+        return ApiSession.model_validate(response)
+
+    async def mezon_authenticate_logout(
+        self,
+        bearer_token: str,
+        body: ApiAuthenticateLogoutRequest,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Log out a session, invalidate a refresh token, or log out all sessions.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            body: Logout request with token and refresh_token
+            options: Additional options for the request
+
+        Returns:
+            Any: Response from logout endpoint
+        """
+        headers = build_headers(bearer_token=bearer_token)
+        body_json = build_body(body=body)
+
+        response = await self.call_api(
+            method="POST",
+            url_path=self.ENDPOINTS["authenticate_logout"],
+            query_params={},
+            body=body_json,
+            headers=headers,
+        )
+        return response
+
+    async def mezon_delete_message(
+        self,
+        bearer_token: str,
+        message_id: str,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Delete a message by ID.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            message_id: ID of the message to delete
+            options: Additional options for the request
+
+        Returns:
+            Any: Response from delete endpoint
+        """
+        headers = build_headers(bearer_token=bearer_token)
+
+        response = await self.call_api(
+            method="DELETE",
+            url_path=self.ENDPOINTS["delete_message"].format(message_id=message_id),
+            query_params={},
+            body=None,
+            headers=headers,
+        )
+        return response
+
+    async def mezon_update_message(
+        self,
+        bearer_token: str,
+        message_id: str,
+        body: ApiUpdateMessageRequest,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Update a message by ID.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            message_id: ID of the message to update
+            body: Update request with new message content
+            options: Additional options for the request
+
+        Returns:
+            Any: Updated message response
+        """
+        headers = build_headers(bearer_token=bearer_token)
+        body_json = build_body(body=body)
+
+        response = await self.call_api(
+            method="PUT",
+            url_path=self.ENDPOINTS["update_message"].format(message_id=message_id),
+            query_params={},
+            body=body_json,
+            headers=headers,
+        )
+        return response
+
+    async def send_token(
+        self,
+        bearer_token: str,
+        body: ApiSentTokenRequest,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Send token to another user.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            body: Token send request with receiver_id, amount, note
+            options: Additional options for the request
+
+        Returns:
+            Any: Token send response
+        """
+        headers = build_headers(bearer_token=bearer_token)
+        body_json = build_body(body=body)
+
+        response = await self.call_api(
+            method="POST",
+            url_path=self.ENDPOINTS["send_token"],
+            query_params={},
+            body=body_json,
+            headers=headers,
+        )
+        return response
+
+    async def register_streaming_channel(
+        self,
+        bearer_token: str,
+        body: ApiRegisterStreamingChannelRequest,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Register a streaming channel.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            body: Streaming channel registration request
+            options: Additional options for the request
+
+        Returns:
+            Any: Registration response
+        """
+        headers = build_headers(bearer_token=bearer_token)
+        body_json = build_body(body=body)
+
+        response = await self.call_api(
+            method="POST",
+            url_path=self.ENDPOINTS["register_streaming_channel"],
+            query_params={},
+            body=body_json,
             headers=headers,
         )
         return response

@@ -11,8 +11,9 @@ dependencies = [
     "protobuf>=4.25.0",
     "pyjwt>=2.8.0",
     "aiosqlite>=0.20.0",
-    "mmn-sdk>=0.1.0",
+    "mmn-sdk==1.0.0",
     "aiolimiter>=1.2.1",
+    "tenacity>=9.1.2",
 ]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
