@@ -266,6 +266,7 @@ class ApiSentTokenRequest(BaseModel):
     note: Optional[str] = None
     extra_attribute: Optional[str] = None
     mmn_extra_info: Optional[Dict[str, Any]] = None
+    timestamp: Optional[int] = None
 
 
 # Client Models
@@ -355,6 +356,51 @@ class LinkVoiceRoomOnMessage(StartEndIndex):
     pass
 
 
+class InputFieldOption(BaseModel):
+    """
+    Input field configuration options.
+    """
+
+    defaultValue: Optional[str | int] = None
+    type: Optional[str] = None
+    textarea: Optional[bool] = None
+    disabled: Optional[bool] = None
+
+
+class SelectFieldOption(BaseModel):
+    """
+    Select field option.
+    """
+
+    label: str
+    value: str
+
+
+class RadioFieldOption(BaseModel):
+    """
+    Radio field option.
+    """
+
+    label: str
+    value: str
+    name: Optional[str] = None  # Apply when use multiple choice
+    description: Optional[str] = None
+    style: Optional[int] = None  # ButtonMessageStyle enum value
+    disabled: Optional[bool] = None
+
+
+class AnimationConfig(BaseModel):
+    """
+    Animation configuration for interactive messages.
+    """
+
+    url_image: str
+    url_position: str
+    pool: List[str]
+    repeat: Optional[int] = None
+    duration: Optional[int] = None
+
+
 class InteractiveMessageField(BaseModel):
     """
     Field for interactive/embedded message sections.
@@ -414,28 +460,75 @@ class InteractiveMessageProps(BaseModel):
     footer: Optional[InteractiveMessageFooter] = None
 
 
-class MessageComponentType(str, Enum):
+class ButtonMessageStyle(int, Enum):
+    """
+    Button message style types.
+    """
+
+    PRIMARY = 1
+    SECONDARY = 2
+    SUCCESS = 3
+    DANGER = 4
+    LINK = 5
+
+
+class MessageComponentType(int, Enum):
     """
     Supported interactive component types.
-
-    TODO: Confirm the exact backend enum values for component types.
     """
 
-    BUTTON = "button"
-    SELECT = "select"
-    INPUT = "input"
+    BUTTON = 1
+    SELECT = 2
+    INPUT = 3
+    DATEPICKER = 4
+    RADIO = 5
+    ANIMATION = 6
+    GRID = 7
+
+
+class MessageSelectType(int, Enum):
+    """
+    Message select types.
+    """
+
+    TEXT = 1
+    USER = 2
+    ROLE = 3
+    CHANNEL = 4
+
+
+class ButtonMessage(BaseModel):
+    """
+    Button message configuration.
+    """
+
+    label: str
+    disable: Optional[bool] = None
+    style: Optional[int] = None  # ButtonMessageStyle enum value
+    url: Optional[str] = None
 
 
 class MessageComponent(BaseModel):
     """
     Generic interactive component descriptor.
 
-    TODO: Expand the schema for select/input specific attributes.
+    Supports both enum-based and raw integer ``type`` values so we can
+    match the exact payload shape expected by the backend.
     """
 
-    type: Optional[MessageComponentType] = None
+    type: Optional[MessageComponentType | int] = None
     component_id: str = Field(alias="id")
     component: Dict[str, Any] = Field(default_factory=dict)
+
+    class Config:
+        """
+        Pydantic configuration for message components.
+
+        Allows using ``component_id`` when constructing the model while
+        still serializing the field name as ``id`` for the API payload.
+        """
+
+        populate_by_name = True
 
 
 class MessageActionRow(BaseModel):
@@ -499,6 +592,7 @@ class EphemeralMessageData(BaseModel):
     avatar: Optional[str] = None
     code: Optional[int] = None
     topic_id: Optional[str] = None
+    message_id: Optional[str] = None
 
 
 class ReplyMessageData(BaseModel):
@@ -569,12 +663,13 @@ class RemoveMessageData(BaseModel):
     mode: int
     is_public: bool
     message_id: str
+    topic_id: Optional[str] = None
 
 
 class SendTokenData(BaseModel):
     """Send token data"""
 
-    amount: float
+    amount: int
     note: Optional[str] = None
     extra_attribute: Optional[str] = None
 
@@ -738,15 +833,191 @@ class MessageTypingEvent(BaseModel):
     is_public: bool
     clan_id: str
     sender_id: str
+    channel_label: Optional[str] = None
 
 
 class TokenSentEvent(BaseModel):
     """Token sent event"""
 
     receiver_id: str
+    sender_id: Optional[str] = None
+    sender_name: Optional[str] = None
+    amount: int
+    note: Optional[str] = None
+    extra_attribute: Optional[str] = None
+    transaction_id: Optional[str] = None
+
+
+class UserProfileUpdatedEvent(BaseModel):
+    """User profile updated event"""
+
+    user_id: str
+    display_name: str
+    avatar: str
+    about_me: str
+    channel_id: str
+    clan_id: str
+
+
+class VoiceJoinedEvent(BaseModel):
+    """Voice joined event"""
+
+    clan_id: str
+    clan_name: str
+    id: str
+    participant: str
+    user_id: str
+    voice_channel_label: str
+    voice_channel_id: str
+    last_screenshot: Optional[str] = None
+
+
+class VoiceLeavedEvent(BaseModel):
+    """Voice leaved event"""
+
+    id: str
+    clan_id: str
+    voice_channel_id: str
+    voice_user_id: str
+
+
+class VoiceStartedEvent(BaseModel):
+    """Voice started event"""
+
+    id: str
+    clan_id: str
+    voice_channel_id: str
+
+
+class VoiceEndedEvent(BaseModel):
+    """Voice ended event"""
+
+    id: str
+    clan_id: str
+    voice_channel_id: str
+
+
+class StreamingJoinedEvent(BaseModel):
+    """Streaming joined event"""
+
+    clan_id: str
+    clan_name: str
+    id: str
+    participant: str
+    user_id: str
+    streaming_channel_label: str
+    streaming_channel_id: str
+
+
+class StreamingLeavedEvent(BaseModel):
+    """Streaming leaved event"""
+
+    id: str
+    clan_id: str
+    streaming_channel_id: str
+    streaming_user_id: str
+
+
+class CustomStatusEvent(BaseModel):
+    """Custom status event"""
+
+    clan_id: str
+    user_id: str
+    username: str
+    status: str
+
+
+class ChannelUpdatedEvent(BaseModel):
+    """Channel updated event"""
+
+    clan_id: str
+    category_id: str
+    creator_id: str
+    parent_id: str
+    channel_id: str
+    channel_label: str
+    channel_type: Optional[int] = None
+    status: int
+    meeting_code: str
+    is_error: bool
+    channel_private: bool
+    app_url: str
+    e2ee: int
+    topic: str
+    age_restricted: int
+    active: int
+
+
+class ChannelCreatedEvent(BaseModel):
+    """Channel created event"""
+
+    clan_id: str
+    category_id: str
+    creator_id: str
+    parent_id: str
+    channel_id: str
+    channel_label: str
+    channel_private: int
+    channel_type: Optional[int] = None
+    status: int
+    app_url: str
+    clan_name: str
+
+
+class ChannelDeletedEvent(BaseModel):
+    """Channel deleted event"""
+
+    clan_id: str
+    category_id: str
+    parent_id: str
+    channel_id: str
+    deletor: str
+
+
+class ClanUpdatedEvent(BaseModel):
+    """Clan updated event"""
+
+    clan_id: str
+    clan_name: str
+    clan_logo: str
+
+
+class ClanProfileUpdatedEvent(BaseModel):
+    """Clan profile updated event"""
+
+    user_id: str
+    clan_nick: str
+    clan_avatar: str
+    clan_id: str
+
+
+class GiveCoffeeEvent(BaseModel):
+    """Give coffee event"""
+
     sender_id: str
-    amount: float
-    token: str
+    receiver_id: str
+    token_count: int
+    message_ref_id: str
+    channel_id: str
+    clan_id: str
+
+
+class ClanNameExistedEvent(BaseModel):
+    """Clan name existed event"""
+
+    clan_name: str
+    exist: bool
+
+
+class DropdownBoxSelected(BaseModel):
+    """Dropdown box selected event"""
+
+    message_id: str
+    channel_id: str
+    selectbox_id: str
+    sender_id: str
+    user_id: str
+    values: List[str]
 
 
 class NotificationEvent(BaseModel):

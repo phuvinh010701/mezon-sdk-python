@@ -133,21 +133,22 @@ class Envelope(google.protobuf.message.Message):
     TRANSFER_OWNERSHIP_EVENT_FIELD_NUMBER: builtins.int
     ADD_FRIEND_FIELD_NUMBER: builtins.int
     BAN_USER_EVENT_FIELD_NUMBER: builtins.int
+    ACTIVE_ARCHIVED_THREAD_FIELD_NUMBER: builtins.int
     cid: builtins.str
     @property
-    def channel(self) -> global___Channel:
+    def channel(self) -> Global___Channel:
         """A response from a channel join operation."""
 
     @property
-    def clan_join(self) -> global___ClanJoin:
+    def clan_join(self) -> Global___ClanJoin:
         """Join a realtime chat clan"""
 
     @property
-    def channel_join(self) -> global___ChannelJoin:
+    def channel_join(self) -> Global___ChannelJoin:
         """Join a realtime chat channel."""
 
     @property
-    def channel_leave(self) -> global___ChannelLeave:
+    def channel_leave(self) -> Global___ChannelLeave:
         """Leave a realtime chat channel."""
 
     @property
@@ -155,31 +156,31 @@ class Envelope(google.protobuf.message.Message):
         """An incoming message on a realtime chat channel."""
 
     @property
-    def channel_message_ack(self) -> global___ChannelMessageAck:
+    def channel_message_ack(self) -> Global___ChannelMessageAck:
         """An acknowledgement received in response to sending a message on a chat channel."""
 
     @property
-    def channel_message_send(self) -> global___ChannelMessageSend:
+    def channel_message_send(self) -> Global___ChannelMessageSend:
         """Send a message to a realtime chat channel."""
 
     @property
-    def channel_message_update(self) -> global___ChannelMessageUpdate:
+    def channel_message_update(self) -> Global___ChannelMessageUpdate:
         """Update a message previously sent to a realtime chat channel."""
 
     @property
-    def channel_message_remove(self) -> global___ChannelMessageRemove:
+    def channel_message_remove(self) -> Global___ChannelMessageRemove:
         """Remove a message previously sent to a realtime chat channel."""
 
     @property
-    def channel_presence_event(self) -> global___ChannelPresenceEvent:
+    def channel_presence_event(self) -> Global___ChannelPresenceEvent:
         """Presence update for a particular realtime chat channel."""
 
     @property
-    def error(self) -> global___Error:
+    def error(self) -> Global___Error:
         """Describes an error which occurred on the server."""
 
     @property
-    def notifications(self) -> global___Notifications:
+    def notifications(self) -> Global___Notifications:
         """Notifications send by the server."""
 
     @property
@@ -187,47 +188,47 @@ class Envelope(google.protobuf.message.Message):
         """RPC call or response."""
 
     @property
-    def status(self) -> global___Status:
+    def status(self) -> Global___Status:
         """An incoming status snapshot for some set of users."""
 
     @property
-    def status_follow(self) -> global___StatusFollow:
+    def status_follow(self) -> Global___StatusFollow:
         """Start following some set of users to receive their status updates."""
 
     @property
-    def status_presence_event(self) -> global___StatusPresenceEvent:
+    def status_presence_event(self) -> Global___StatusPresenceEvent:
         """An incoming status update."""
 
     @property
-    def status_unfollow(self) -> global___StatusUnfollow:
+    def status_unfollow(self) -> Global___StatusUnfollow:
         """Stop following some set of users to no longer receive their status updates."""
 
     @property
-    def status_update(self) -> global___StatusUpdate:
+    def status_update(self) -> Global___StatusUpdate:
         """Set the user's own status."""
 
     @property
-    def stream_data(self) -> global___StreamData:
+    def stream_data(self) -> Global___StreamData:
         """A data message delivered over a stream."""
 
     @property
-    def stream_presence_event(self) -> global___StreamPresenceEvent:
+    def stream_presence_event(self) -> Global___StreamPresenceEvent:
         """Presence update for a particular stream."""
 
     @property
-    def ping(self) -> global___Ping:
+    def ping(self) -> Global___Ping:
         """Application-level heartbeat and connection check."""
 
     @property
-    def pong(self) -> global___Pong:
+    def pong(self) -> Global___Pong:
         """Application-level heartbeat and connection check response."""
 
     @property
-    def message_typing_event(self) -> global___MessageTypingEvent:
+    def message_typing_event(self) -> Global___MessageTypingEvent:
         """User typing event"""
 
     @property
-    def last_seen_message_event(self) -> global___LastSeenMessageEvent:
+    def last_seen_message_event(self) -> Global___LastSeenMessageEvent:
         """Last seen message event"""
 
     @property
@@ -235,71 +236,71 @@ class Envelope(google.protobuf.message.Message):
         """User send reactoin event"""
 
     @property
-    def voice_joined_event(self) -> global___VoiceJoinedEvent:
+    def voice_joined_event(self) -> Global___VoiceJoinedEvent:
         """user join voice channel"""
 
     @property
-    def voice_leaved_event(self) -> global___VoiceLeavedEvent:
+    def voice_leaved_event(self) -> Global___VoiceLeavedEvent:
         """user leave voice channel"""
 
     @property
-    def voice_started_event(self) -> global___VoiceStartedEvent:
+    def voice_started_event(self) -> Global___VoiceStartedEvent:
         """voice channel start"""
 
     @property
-    def voice_ended_event(self) -> global___VoiceEndedEvent:
+    def voice_ended_event(self) -> Global___VoiceEndedEvent:
         """voice channel end"""
 
     @property
-    def channel_created_event(self) -> global___ChannelCreatedEvent:
+    def channel_created_event(self) -> Global___ChannelCreatedEvent:
         """channel created event"""
 
     @property
-    def channel_deleted_event(self) -> global___ChannelDeletedEvent:
+    def channel_deleted_event(self) -> Global___ChannelDeletedEvent:
         """channel deleted event"""
 
     @property
-    def channel_updated_event(self) -> global___ChannelUpdatedEvent:
+    def channel_updated_event(self) -> Global___ChannelUpdatedEvent:
         """channel deleted event"""
 
     @property
-    def last_pin_message_event(self) -> global___LastPinMessageEvent:
+    def last_pin_message_event(self) -> Global___LastPinMessageEvent:
         """Last pin message event"""
 
     @property
-    def custom_status_event(self) -> global___CustomStatusEvent:
+    def custom_status_event(self) -> Global___CustomStatusEvent:
         """Update custom status"""
 
     @property
-    def user_channel_added_event(self) -> global___UserChannelAdded:
+    def user_channel_added_event(self) -> Global___UserChannelAdded:
         """User is added to channel event"""
 
     @property
-    def user_channel_removed_event(self) -> global___UserChannelRemoved:
+    def user_channel_removed_event(self) -> Global___UserChannelRemoved:
         """User is removed to channel event"""
 
     @property
-    def user_clan_removed_event(self) -> global___UserClanRemoved:
+    def user_clan_removed_event(self) -> Global___UserClanRemoved:
         """User is removed to clan event"""
 
     @property
-    def clan_updated_event(self) -> global___ClanUpdatedEvent:
+    def clan_updated_event(self) -> Global___ClanUpdatedEvent:
         """Clan updated event"""
 
     @property
-    def clan_profile_updated_event(self) -> global___ClanProfileUpdatedEvent:
+    def clan_profile_updated_event(self) -> Global___ClanProfileUpdatedEvent:
         """Clan profile updated event"""
 
     @property
-    def check_name_existed_event(self) -> global___CheckNameExistedEvent:
+    def check_name_existed_event(self) -> Global___CheckNameExistedEvent:
         """Check duplicate clan name event"""
 
     @property
-    def user_profile_updated_event(self) -> global___UserProfileUpdatedEvent:
+    def user_profile_updated_event(self) -> Global___UserProfileUpdatedEvent:
         """User profile update event"""
 
     @property
-    def add_clan_user_event(self) -> global___AddClanUserEvent:
+    def add_clan_user_event(self) -> Global___AddClanUserEvent:
         """user join clan"""
 
     @property
@@ -307,11 +308,11 @@ class Envelope(google.protobuf.message.Message):
         """clan event created"""
 
     @property
-    def role_assign_event(self) -> global___RoleAssignedEvent:
+    def role_assign_event(self) -> Global___RoleAssignedEvent:
         """role assigned event"""
 
     @property
-    def clan_deleted_event(self) -> global___ClanDeletedEvent:
+    def clan_deleted_event(self) -> Global___ClanDeletedEvent:
         """clan deleted event"""
 
     @property
@@ -319,47 +320,47 @@ class Envelope(google.protobuf.message.Message):
         """Give a coffe event"""
 
     @property
-    def sticker_create_event(self) -> global___StickerCreateEvent:
+    def sticker_create_event(self) -> Global___StickerCreateEvent:
         """sticker created event"""
 
     @property
-    def sticker_update_event(self) -> global___StickerUpdateEvent:
+    def sticker_update_event(self) -> Global___StickerUpdateEvent:
         """sticker updated event"""
 
     @property
-    def sticker_delete_event(self) -> global___StickerDeleteEvent:
+    def sticker_delete_event(self) -> Global___StickerDeleteEvent:
         """sticker deleted event"""
 
     @property
-    def role_event(self) -> global___RoleEvent:
+    def role_event(self) -> Global___RoleEvent:
         """role created event"""
 
     @property
-    def event_emoji(self) -> global___EventEmoji:
+    def event_emoji(self) -> Global___EventEmoji:
         """Event emoji"""
 
     @property
-    def streaming_joined_event(self) -> global___StreamingJoinedEvent:
+    def streaming_joined_event(self) -> Global___StreamingJoinedEvent:
         """user join streaming channel"""
 
     @property
-    def streaming_leaved_event(self) -> global___StreamingLeavedEvent:
+    def streaming_leaved_event(self) -> Global___StreamingLeavedEvent:
         """user leave streaming channel"""
 
     @property
-    def streaming_started_event(self) -> global___StreamingStartedEvent:
+    def streaming_started_event(self) -> Global___StreamingStartedEvent:
         """streaming channel start"""
 
     @property
-    def streaming_ended_event(self) -> global___StreamingEndedEvent:
+    def streaming_ended_event(self) -> Global___StreamingEndedEvent:
         """streaming channel end"""
 
     @property
-    def permission_set_event(self) -> global___PermissionSetEvent:
+    def permission_set_event(self) -> Global___PermissionSetEvent:
         """set permission of role/user in channel"""
 
     @property
-    def permission_changed_event(self) -> global___PermissionChangedEvent:
+    def permission_changed_event(self) -> Global___PermissionChangedEvent:
         """permission changed event"""
 
     @property
@@ -367,221 +368,226 @@ class Envelope(google.protobuf.message.Message):
         """token is sent event"""
 
     @property
-    def message_button_clicked(self) -> global___MessageButtonClicked: ...
+    def message_button_clicked(self) -> Global___MessageButtonClicked: ...
     @property
-    def unmute_event(self) -> global___UnmuteEvent:
+    def unmute_event(self) -> Global___UnmuteEvent:
         """unmute channel event"""
 
     @property
-    def webrtc_signaling_fwd(self) -> global___WebrtcSignalingFwd:
+    def webrtc_signaling_fwd(self) -> Global___WebrtcSignalingFwd:
         """voice call"""
 
     @property
-    def list_activity(self) -> global___ListActivity:
+    def list_activity(self) -> Global___ListActivity:
         """List activity event for each user"""
 
     @property
-    def dropdown_box_selected(self) -> global___DropdownBoxSelected:
+    def dropdown_box_selected(self) -> Global___DropdownBoxSelected:
         """dropdown box selected"""
 
     @property
-    def incoming_call_push(self) -> global___IncomingCallPush:
+    def incoming_call_push(self) -> Global___IncomingCallPush:
         """IncomingCallPush"""
 
     @property
-    def sd_topic_event(self) -> global___SdTopicEvent:
+    def sd_topic_event(self) -> Global___SdTopicEvent:
         """Sd topic event"""
 
     @property
-    def follow_event(self) -> global___FollowEvent:
+    def follow_event(self) -> Global___FollowEvent:
         """follower list"""
 
     @property
-    def channel_app_event(self) -> global___ChannelAppEvent:
+    def channel_app_event(self) -> Global___ChannelAppEvent:
         """channel app event"""
 
     @property
-    def user_status_event(self) -> global___UserStatusEvent:
+    def user_status_event(self) -> Global___UserStatusEvent:
         """User custom status event"""
 
     @property
-    def remove_friend(self) -> global___RemoveFriend:
-        """"""
+    def remove_friend(self) -> Global___RemoveFriend:
+        """remove friend"""
 
     @property
     def webhook_event(self) -> api.api_pb2.Webhook:
-        """"""
+        """webhook event"""
 
     @property
     def noti_user_channel(self) -> api.api_pb2.NotificationUserChannel:
-        """"""
+        """notification"""
 
     @property
-    def join_channel_app_data(self) -> global___JoinChannelAppData:
-        """"""
+    def join_channel_app_data(self) -> Global___JoinChannelAppData:
+        """join channel app"""
 
     @property
-    def canvas_event(self) -> global___ChannelCanvas:
+    def canvas_event(self) -> Global___ChannelCanvas:
         """channel canvas"""
 
     @property
-    def unpin_message_event(self) -> global___UnpinMessageEvent:
+    def unpin_message_event(self) -> Global___UnpinMessageEvent:
         """unpin message"""
 
     @property
-    def category_event(self) -> global___CategoryEvent:
+    def category_event(self) -> Global___CategoryEvent:
         """category event"""
 
     @property
-    def handle_participant_meet_state_event(self) -> global___HandleParticipantMeetStateEvent:
+    def handle_participant_meet_state_event(self) -> Global___HandleParticipantMeetStateEvent:
         """handle join/leave channel voice"""
 
     @property
-    def delete_account_event(self) -> global___DeleteAccountEvent:
+    def delete_account_event(self) -> Global___DeleteAccountEvent:
         """delete acc"""
 
     @property
-    def ephemeral_message_send(self) -> global___EphemeralMessageSend:
+    def ephemeral_message_send(self) -> Global___EphemeralMessageSend:
         """ephemeral message send"""
 
     @property
-    def block_friend(self) -> global___BlockFriend:
+    def block_friend(self) -> Global___BlockFriend:
         """block friend"""
 
     @property
-    def voice_reaction_send(self) -> global___VoiceReactionSend:
+    def voice_reaction_send(self) -> Global___VoiceReactionSend:
         """voice reaction message"""
 
     @property
-    def mark_as_read(self) -> global___MarkAsRead:
+    def mark_as_read(self) -> Global___MarkAsRead:
         """Mark As Read"""
 
     @property
-    def list_data_socket(self) -> global___ListDataSocket:
+    def list_data_socket(self) -> Global___ListDataSocket:
         """list socket data"""
 
     @property
-    def quick_menu_event(self) -> global___QuickMenuDataEvent:
+    def quick_menu_event(self) -> Global___QuickMenuDataEvent:
         """quick menu event"""
 
     @property
-    def un_block_friend(self) -> global___UnblockFriend:
+    def un_block_friend(self) -> Global___UnblockFriend:
         """unblock friend"""
 
     @property
-    def meet_participant_event(self) -> global___MeetParticipantEvent:
+    def meet_participant_event(self) -> Global___MeetParticipantEvent:
         """mezon meet participant event"""
 
     @property
-    def transfer_ownership_event(self) -> global___TransferOwnershipEvent:
+    def transfer_ownership_event(self) -> Global___TransferOwnershipEvent:
         """tranfer ownership event"""
 
     @property
-    def add_friend(self) -> global___AddFriend:
+    def add_friend(self) -> Global___AddFriend:
         """Add friend event"""
 
     @property
-    def ban_user_event(self) -> global___BannedUserEvent:
+    def ban_user_event(self) -> Global___BannedUserEvent:
         """Ban channel user"""
+
+    @property
+    def active_archived_thread(self) -> Global___ActiveArchivedThread:
+        """Active archive thread"""
 
     def __init__(
         self,
         *,
         cid: builtins.str = ...,
-        channel: global___Channel | None = ...,
-        clan_join: global___ClanJoin | None = ...,
-        channel_join: global___ChannelJoin | None = ...,
-        channel_leave: global___ChannelLeave | None = ...,
+        channel: Global___Channel | None = ...,
+        clan_join: Global___ClanJoin | None = ...,
+        channel_join: Global___ChannelJoin | None = ...,
+        channel_leave: Global___ChannelLeave | None = ...,
         channel_message: api.api_pb2.ChannelMessage | None = ...,
-        channel_message_ack: global___ChannelMessageAck | None = ...,
-        channel_message_send: global___ChannelMessageSend | None = ...,
-        channel_message_update: global___ChannelMessageUpdate | None = ...,
-        channel_message_remove: global___ChannelMessageRemove | None = ...,
-        channel_presence_event: global___ChannelPresenceEvent | None = ...,
-        error: global___Error | None = ...,
-        notifications: global___Notifications | None = ...,
+        channel_message_ack: Global___ChannelMessageAck | None = ...,
+        channel_message_send: Global___ChannelMessageSend | None = ...,
+        channel_message_update: Global___ChannelMessageUpdate | None = ...,
+        channel_message_remove: Global___ChannelMessageRemove | None = ...,
+        channel_presence_event: Global___ChannelPresenceEvent | None = ...,
+        error: Global___Error | None = ...,
+        notifications: Global___Notifications | None = ...,
         rpc: api.api_pb2.Rpc | None = ...,
-        status: global___Status | None = ...,
-        status_follow: global___StatusFollow | None = ...,
-        status_presence_event: global___StatusPresenceEvent | None = ...,
-        status_unfollow: global___StatusUnfollow | None = ...,
-        status_update: global___StatusUpdate | None = ...,
-        stream_data: global___StreamData | None = ...,
-        stream_presence_event: global___StreamPresenceEvent | None = ...,
-        ping: global___Ping | None = ...,
-        pong: global___Pong | None = ...,
-        message_typing_event: global___MessageTypingEvent | None = ...,
-        last_seen_message_event: global___LastSeenMessageEvent | None = ...,
+        status: Global___Status | None = ...,
+        status_follow: Global___StatusFollow | None = ...,
+        status_presence_event: Global___StatusPresenceEvent | None = ...,
+        status_unfollow: Global___StatusUnfollow | None = ...,
+        status_update: Global___StatusUpdate | None = ...,
+        stream_data: Global___StreamData | None = ...,
+        stream_presence_event: Global___StreamPresenceEvent | None = ...,
+        ping: Global___Ping | None = ...,
+        pong: Global___Pong | None = ...,
+        message_typing_event: Global___MessageTypingEvent | None = ...,
+        last_seen_message_event: Global___LastSeenMessageEvent | None = ...,
         message_reaction_event: api.api_pb2.MessageReaction | None = ...,
-        voice_joined_event: global___VoiceJoinedEvent | None = ...,
-        voice_leaved_event: global___VoiceLeavedEvent | None = ...,
-        voice_started_event: global___VoiceStartedEvent | None = ...,
-        voice_ended_event: global___VoiceEndedEvent | None = ...,
-        channel_created_event: global___ChannelCreatedEvent | None = ...,
-        channel_deleted_event: global___ChannelDeletedEvent | None = ...,
-        channel_updated_event: global___ChannelUpdatedEvent | None = ...,
-        last_pin_message_event: global___LastPinMessageEvent | None = ...,
-        custom_status_event: global___CustomStatusEvent | None = ...,
-        user_channel_added_event: global___UserChannelAdded | None = ...,
-        user_channel_removed_event: global___UserChannelRemoved | None = ...,
-        user_clan_removed_event: global___UserClanRemoved | None = ...,
-        clan_updated_event: global___ClanUpdatedEvent | None = ...,
-        clan_profile_updated_event: global___ClanProfileUpdatedEvent | None = ...,
-        check_name_existed_event: global___CheckNameExistedEvent | None = ...,
-        user_profile_updated_event: global___UserProfileUpdatedEvent | None = ...,
-        add_clan_user_event: global___AddClanUserEvent | None = ...,
+        voice_joined_event: Global___VoiceJoinedEvent | None = ...,
+        voice_leaved_event: Global___VoiceLeavedEvent | None = ...,
+        voice_started_event: Global___VoiceStartedEvent | None = ...,
+        voice_ended_event: Global___VoiceEndedEvent | None = ...,
+        channel_created_event: Global___ChannelCreatedEvent | None = ...,
+        channel_deleted_event: Global___ChannelDeletedEvent | None = ...,
+        channel_updated_event: Global___ChannelUpdatedEvent | None = ...,
+        last_pin_message_event: Global___LastPinMessageEvent | None = ...,
+        custom_status_event: Global___CustomStatusEvent | None = ...,
+        user_channel_added_event: Global___UserChannelAdded | None = ...,
+        user_channel_removed_event: Global___UserChannelRemoved | None = ...,
+        user_clan_removed_event: Global___UserClanRemoved | None = ...,
+        clan_updated_event: Global___ClanUpdatedEvent | None = ...,
+        clan_profile_updated_event: Global___ClanProfileUpdatedEvent | None = ...,
+        check_name_existed_event: Global___CheckNameExistedEvent | None = ...,
+        user_profile_updated_event: Global___UserProfileUpdatedEvent | None = ...,
+        add_clan_user_event: Global___AddClanUserEvent | None = ...,
         clan_event_created: api.api_pb2.CreateEventRequest | None = ...,
-        role_assign_event: global___RoleAssignedEvent | None = ...,
-        clan_deleted_event: global___ClanDeletedEvent | None = ...,
+        role_assign_event: Global___RoleAssignedEvent | None = ...,
+        clan_deleted_event: Global___ClanDeletedEvent | None = ...,
         give_coffee_event: api.api_pb2.GiveCoffeeEvent | None = ...,
-        sticker_create_event: global___StickerCreateEvent | None = ...,
-        sticker_update_event: global___StickerUpdateEvent | None = ...,
-        sticker_delete_event: global___StickerDeleteEvent | None = ...,
-        role_event: global___RoleEvent | None = ...,
-        event_emoji: global___EventEmoji | None = ...,
-        streaming_joined_event: global___StreamingJoinedEvent | None = ...,
-        streaming_leaved_event: global___StreamingLeavedEvent | None = ...,
-        streaming_started_event: global___StreamingStartedEvent | None = ...,
-        streaming_ended_event: global___StreamingEndedEvent | None = ...,
-        permission_set_event: global___PermissionSetEvent | None = ...,
-        permission_changed_event: global___PermissionChangedEvent | None = ...,
+        sticker_create_event: Global___StickerCreateEvent | None = ...,
+        sticker_update_event: Global___StickerUpdateEvent | None = ...,
+        sticker_delete_event: Global___StickerDeleteEvent | None = ...,
+        role_event: Global___RoleEvent | None = ...,
+        event_emoji: Global___EventEmoji | None = ...,
+        streaming_joined_event: Global___StreamingJoinedEvent | None = ...,
+        streaming_leaved_event: Global___StreamingLeavedEvent | None = ...,
+        streaming_started_event: Global___StreamingStartedEvent | None = ...,
+        streaming_ended_event: Global___StreamingEndedEvent | None = ...,
+        permission_set_event: Global___PermissionSetEvent | None = ...,
+        permission_changed_event: Global___PermissionChangedEvent | None = ...,
         token_sent_event: api.api_pb2.TokenSentEvent | None = ...,
-        message_button_clicked: global___MessageButtonClicked | None = ...,
-        unmute_event: global___UnmuteEvent | None = ...,
-        webrtc_signaling_fwd: global___WebrtcSignalingFwd | None = ...,
-        list_activity: global___ListActivity | None = ...,
-        dropdown_box_selected: global___DropdownBoxSelected | None = ...,
-        incoming_call_push: global___IncomingCallPush | None = ...,
-        sd_topic_event: global___SdTopicEvent | None = ...,
-        follow_event: global___FollowEvent | None = ...,
-        channel_app_event: global___ChannelAppEvent | None = ...,
-        user_status_event: global___UserStatusEvent | None = ...,
-        remove_friend: global___RemoveFriend | None = ...,
+        message_button_clicked: Global___MessageButtonClicked | None = ...,
+        unmute_event: Global___UnmuteEvent | None = ...,
+        webrtc_signaling_fwd: Global___WebrtcSignalingFwd | None = ...,
+        list_activity: Global___ListActivity | None = ...,
+        dropdown_box_selected: Global___DropdownBoxSelected | None = ...,
+        incoming_call_push: Global___IncomingCallPush | None = ...,
+        sd_topic_event: Global___SdTopicEvent | None = ...,
+        follow_event: Global___FollowEvent | None = ...,
+        channel_app_event: Global___ChannelAppEvent | None = ...,
+        user_status_event: Global___UserStatusEvent | None = ...,
+        remove_friend: Global___RemoveFriend | None = ...,
         webhook_event: api.api_pb2.Webhook | None = ...,
         noti_user_channel: api.api_pb2.NotificationUserChannel | None = ...,
-        join_channel_app_data: global___JoinChannelAppData | None = ...,
-        canvas_event: global___ChannelCanvas | None = ...,
-        unpin_message_event: global___UnpinMessageEvent | None = ...,
-        category_event: global___CategoryEvent | None = ...,
-        handle_participant_meet_state_event: global___HandleParticipantMeetStateEvent | None = ...,
-        delete_account_event: global___DeleteAccountEvent | None = ...,
-        ephemeral_message_send: global___EphemeralMessageSend | None = ...,
-        block_friend: global___BlockFriend | None = ...,
-        voice_reaction_send: global___VoiceReactionSend | None = ...,
-        mark_as_read: global___MarkAsRead | None = ...,
-        list_data_socket: global___ListDataSocket | None = ...,
-        quick_menu_event: global___QuickMenuDataEvent | None = ...,
-        un_block_friend: global___UnblockFriend | None = ...,
-        meet_participant_event: global___MeetParticipantEvent | None = ...,
-        transfer_ownership_event: global___TransferOwnershipEvent | None = ...,
-        add_friend: global___AddFriend | None = ...,
-        ban_user_event: global___BannedUserEvent | None = ...,
+        join_channel_app_data: Global___JoinChannelAppData | None = ...,
+        canvas_event: Global___ChannelCanvas | None = ...,
+        unpin_message_event: Global___UnpinMessageEvent | None = ...,
+        category_event: Global___CategoryEvent | None = ...,
+        handle_participant_meet_state_event: Global___HandleParticipantMeetStateEvent | None = ...,
+        delete_account_event: Global___DeleteAccountEvent | None = ...,
+        ephemeral_message_send: Global___EphemeralMessageSend | None = ...,
+        block_friend: Global___BlockFriend | None = ...,
+        voice_reaction_send: Global___VoiceReactionSend | None = ...,
+        mark_as_read: Global___MarkAsRead | None = ...,
+        list_data_socket: Global___ListDataSocket | None = ...,
+        quick_menu_event: Global___QuickMenuDataEvent | None = ...,
+        un_block_friend: Global___UnblockFriend | None = ...,
+        meet_participant_event: Global___MeetParticipantEvent | None = ...,
+        transfer_ownership_event: Global___TransferOwnershipEvent | None = ...,
+        add_friend: Global___AddFriend | None = ...,
+        ban_user_event: Global___BannedUserEvent | None = ...,
+        active_archived_thread: Global___ActiveArchivedThread | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing.Literal["add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing.Literal["message", b"message"]) -> typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event"] | None: ...
+    def HasField(self, field_name: typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing.Literal["message", b"message"]) -> typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread"] | None: ...
 
-global___Envelope = Envelope
+Global___Envelope: typing_extensions.TypeAlias = Envelope
 
 @typing.final
 class FollowEvent(google.protobuf.message.Message):
@@ -591,7 +597,7 @@ class FollowEvent(google.protobuf.message.Message):
         self,
     ) -> None: ...
 
-global___FollowEvent = FollowEvent
+Global___FollowEvent: typing_extensions.TypeAlias = FollowEvent
 
 @typing.final
 class BannedUserEvent(google.protobuf.message.Message):
@@ -600,8 +606,12 @@ class BannedUserEvent(google.protobuf.message.Message):
     USER_IDS_FIELD_NUMBER: builtins.int
     ACTION_FIELD_NUMBER: builtins.int
     BANNER_ID_FIELD_NUMBER: builtins.int
+    CHANNEL_ID_FIELD_NUMBER: builtins.int
+    CLAN_ID_FIELD_NUMBER: builtins.int
     action: builtins.int
     banner_id: builtins.str
+    channel_id: builtins.str
+    clan_id: builtins.str
     @property
     def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     def __init__(
@@ -610,10 +620,12 @@ class BannedUserEvent(google.protobuf.message.Message):
         user_ids: collections.abc.Iterable[builtins.str] | None = ...,
         action: builtins.int = ...,
         banner_id: builtins.str = ...,
+        channel_id: builtins.str = ...,
+        clan_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["action", b"action", "banner_id", b"banner_id", "user_ids", b"user_ids"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["action", b"action", "banner_id", b"banner_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_ids", b"user_ids"]) -> None: ...
 
-global___BannedUserEvent = BannedUserEvent
+Global___BannedUserEvent: typing_extensions.TypeAlias = BannedUserEvent
 
 @typing.final
 class ChannelCanvas(google.protobuf.message.Message):
@@ -657,7 +669,7 @@ class ChannelCanvas(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "content", b"content", "creator_id", b"creator_id", "editor_id", b"editor_id", "id", b"id", "is_default", b"is_default", "status", b"status", "title", b"title"]) -> None: ...
 
-global___ChannelCanvas = ChannelCanvas
+Global___ChannelCanvas: typing_extensions.TypeAlias = ChannelCanvas
 
 @typing.final
 class IncomingCallPush(google.protobuf.message.Message):
@@ -681,7 +693,7 @@ class IncomingCallPush(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "json_data", b"json_data", "receiver_id", b"receiver_id"]) -> None: ...
 
-global___IncomingCallPush = IncomingCallPush
+Global___IncomingCallPush: typing_extensions.TypeAlias = IncomingCallPush
 
 @typing.final
 class WebrtcSignalingFwd(google.protobuf.message.Message):
@@ -708,7 +720,7 @@ class WebrtcSignalingFwd(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "data_type", b"data_type", "json_data", b"json_data", "receiver_id", b"receiver_id"]) -> None: ...
 
-global___WebrtcSignalingFwd = WebrtcSignalingFwd
+Global___WebrtcSignalingFwd: typing_extensions.TypeAlias = WebrtcSignalingFwd
 
 @typing.final
 class SFUSignalingFwd(google.protobuf.message.Message):
@@ -735,7 +747,7 @@ class SFUSignalingFwd(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "data_type", b"data_type", "json_data", b"json_data", "user_id", b"user_id"]) -> None: ...
 
-global___SFUSignalingFwd = SFUSignalingFwd
+Global___SFUSignalingFwd: typing_extensions.TypeAlias = SFUSignalingFwd
 
 @typing.final
 class AddClanUserEvent(google.protobuf.message.Message):
@@ -749,20 +761,20 @@ class AddClanUserEvent(google.protobuf.message.Message):
     invitor: builtins.str
     """inviter"""
     @property
-    def user(self) -> global___UserProfileRedis:
+    def user(self) -> Global___UserProfileRedis:
         """the user"""
 
     def __init__(
         self,
         *,
         clan_id: builtins.str = ...,
-        user: global___UserProfileRedis | None = ...,
+        user: Global___UserProfileRedis | None = ...,
         invitor: builtins.str = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["user", b"user"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "invitor", b"invitor", "user", b"user"]) -> None: ...
 
-global___AddClanUserEvent = AddClanUserEvent
+Global___AddClanUserEvent: typing_extensions.TypeAlias = AddClanUserEvent
 
 @typing.final
 class RoleAssignedEvent(google.protobuf.message.Message):
@@ -796,7 +808,7 @@ class RoleAssignedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["ClanId", b"ClanId", "role_id", b"role_id", "user_ids_assigned", b"user_ids_assigned", "user_ids_removed", b"user_ids_removed"]) -> None: ...
 
-global___RoleAssignedEvent = RoleAssignedEvent
+Global___RoleAssignedEvent: typing_extensions.TypeAlias = RoleAssignedEvent
 
 @typing.final
 class PermissionRoleChannel(google.protobuf.message.Message):
@@ -818,7 +830,7 @@ class PermissionRoleChannel(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["active", b"active", "permission_id", b"permission_id"]) -> None: ...
 
-global___PermissionRoleChannel = PermissionRoleChannel
+Global___PermissionRoleChannel: typing_extensions.TypeAlias = PermissionRoleChannel
 
 @typing.final
 class HashtagDm(google.protobuf.message.Message):
@@ -864,7 +876,7 @@ class HashtagDm(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]) -> None: ...
 
-global___HashtagDm = HashtagDm
+Global___HashtagDm: typing_extensions.TypeAlias = HashtagDm
 
 @typing.final
 class ChannelDescription(google.protobuf.message.Message):
@@ -919,7 +931,7 @@ class ChannelDescription(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["last_sent_message", b"last_sent_message", "type", b"type"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]) -> None: ...
 
-global___ChannelDescription = ChannelDescription
+Global___ChannelDescription: typing_extensions.TypeAlias = ChannelDescription
 
 @typing.final
 class ClanEmoji(google.protobuf.message.Message):
@@ -962,7 +974,7 @@ class ClanEmoji(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "id", b"id", "logo", b"logo", "shortname", b"shortname", "src", b"src"]) -> None: ...
 
-global___ClanEmoji = ClanEmoji
+Global___ClanEmoji: typing_extensions.TypeAlias = ClanEmoji
 
 @typing.final
 class Channel(google.protobuf.message.Message):
@@ -985,19 +997,19 @@ class Channel(google.protobuf.message.Message):
     category_name: builtins.str
     """The category name"""
     @property
-    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """The users currently in the channel."""
 
     @property
-    def self(self) -> global___UserPresence:
+    def self(self) -> Global___UserPresence:
         """A reference to the current user's presence in the channel."""
 
     def __init__(
         self_,  # pyright: ignore[reportSelfClsParameterName]
         *,
         id: builtins.str = ...,
-        presences: collections.abc.Iterable[global___UserPresence] | None = ...,
-        self: global___UserPresence | None = ...,
+        presences: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        self: Global___UserPresence | None = ...,
         chanel_label: builtins.str = ...,
         clan_logo: builtins.str = ...,
         category_name: builtins.str = ...,
@@ -1005,7 +1017,7 @@ class Channel(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["self", b"self"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "chanel_label", b"chanel_label", "clan_logo", b"clan_logo", "id", b"id", "presences", b"presences", "self", b"self"]) -> None: ...
 
-global___Channel = Channel
+Global___Channel: typing_extensions.TypeAlias = Channel
 
 @typing.final
 class ClanJoin(google.protobuf.message.Message):
@@ -1023,7 +1035,7 @@ class ClanJoin(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id"]) -> None: ...
 
-global___ClanJoin = ClanJoin
+Global___ClanJoin: typing_extensions.TypeAlias = ClanJoin
 
 @typing.final
 class ChannelJoin(google.protobuf.message.Message):
@@ -1053,7 +1065,7 @@ class ChannelJoin(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]) -> None: ...
 
-global___ChannelJoin = ChannelJoin
+Global___ChannelJoin: typing_extensions.TypeAlias = ChannelJoin
 
 @typing.final
 class ChannelLeave(google.protobuf.message.Message):
@@ -1083,7 +1095,7 @@ class ChannelLeave(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]) -> None: ...
 
-global___ChannelLeave = ChannelLeave
+Global___ChannelLeave: typing_extensions.TypeAlias = ChannelLeave
 
 @typing.final
 class ChannelMessageAck(google.protobuf.message.Message):
@@ -1142,7 +1154,7 @@ class ChannelMessageAck(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["code", b"code", "create_time", b"create_time", "persistent", b"persistent", "update_time", b"update_time"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "code", b"code", "create_time", b"create_time", "message_id", b"message_id", "persistent", b"persistent", "update_time", b"update_time", "username", b"username"]) -> None: ...
 
-global___ChannelMessageAck = ChannelMessageAck
+Global___ChannelMessageAck: typing_extensions.TypeAlias = ChannelMessageAck
 
 @typing.final
 class EphemeralMessageSend(google.protobuf.message.Message):
@@ -1152,17 +1164,17 @@ class EphemeralMessageSend(google.protobuf.message.Message):
     RECEIVER_ID_FIELD_NUMBER: builtins.int
     receiver_id: builtins.str
     @property
-    def message(self) -> global___ChannelMessageSend: ...
+    def message(self) -> Global___ChannelMessageSend: ...
     def __init__(
         self,
         *,
-        message: global___ChannelMessageSend | None = ...,
+        message: Global___ChannelMessageSend | None = ...,
         receiver_id: builtins.str = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["message", b"message"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["message", b"message", "receiver_id", b"receiver_id"]) -> None: ...
 
-global___EphemeralMessageSend = EphemeralMessageSend
+Global___EphemeralMessageSend: typing_extensions.TypeAlias = EphemeralMessageSend
 
 @typing.final
 class QuickMenuDataEvent(google.protobuf.message.Message):
@@ -1172,17 +1184,17 @@ class QuickMenuDataEvent(google.protobuf.message.Message):
     MESSAGE_FIELD_NUMBER: builtins.int
     menu_name: builtins.str
     @property
-    def message(self) -> global___ChannelMessageSend: ...
+    def message(self) -> Global___ChannelMessageSend: ...
     def __init__(
         self,
         *,
         menu_name: builtins.str = ...,
-        message: global___ChannelMessageSend | None = ...,
+        message: Global___ChannelMessageSend | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["message", b"message"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["menu_name", b"menu_name", "message", b"message"]) -> None: ...
 
-global___QuickMenuDataEvent = QuickMenuDataEvent
+Global___QuickMenuDataEvent: typing_extensions.TypeAlias = QuickMenuDataEvent
 
 @typing.final
 class VoiceReactionSend(google.protobuf.message.Message):
@@ -1212,7 +1224,7 @@ class VoiceReactionSend(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "emojis", b"emojis", "media_type", b"media_type", "sender_id", b"sender_id"]) -> None: ...
 
-global___VoiceReactionSend = VoiceReactionSend
+Global___VoiceReactionSend: typing_extensions.TypeAlias = VoiceReactionSend
 
 @typing.final
 class MarkAsRead(google.protobuf.message.Message):
@@ -1236,7 +1248,7 @@ class MarkAsRead(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
 
-global___MarkAsRead = MarkAsRead
+Global___MarkAsRead: typing_extensions.TypeAlias = MarkAsRead
 
 @typing.final
 class ChannelMessageSend(google.protobuf.message.Message):
@@ -1257,6 +1269,7 @@ class ChannelMessageSend(google.protobuf.message.Message):
     IS_PUBLIC_FIELD_NUMBER: builtins.int
     CODE_FIELD_NUMBER: builtins.int
     TOPIC_ID_FIELD_NUMBER: builtins.int
+    ID_FIELD_NUMBER: builtins.int
     clan_id: builtins.str
     """The clan that channel belong to."""
     channel_id: builtins.str
@@ -1276,7 +1289,9 @@ class ChannelMessageSend(google.protobuf.message.Message):
     code: builtins.int
     """code"""
     topic_id: builtins.str
-    """"""
+    """topic id"""
+    id: builtins.str
+    """message id"""
     @property
     def mentions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageMention]:
         """Message mention"""
@@ -1305,10 +1320,11 @@ class ChannelMessageSend(google.protobuf.message.Message):
         is_public: builtins.bool = ...,
         code: builtins.int = ...,
         topic_id: builtins.str = ...,
+        id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["anonymous_message", b"anonymous_message", "attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "code", b"code", "content", b"content", "is_public", b"is_public", "mention_everyone", b"mention_everyone", "mentions", b"mentions", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["anonymous_message", b"anonymous_message", "attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "code", b"code", "content", b"content", "id", b"id", "is_public", b"is_public", "mention_everyone", b"mention_everyone", "mentions", b"mentions", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]) -> None: ...
 
-global___ChannelMessageSend = ChannelMessageSend
+Global___ChannelMessageSend: typing_extensions.TypeAlias = ChannelMessageSend
 
 @typing.final
 class ChannelMessageUpdate(google.protobuf.message.Message):
@@ -1374,7 +1390,7 @@ class ChannelMessageUpdate(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "hide_editted", b"hide_editted", "is_public", b"is_public", "is_update_msg_topic", b"is_update_msg_topic", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "old_mentions", b"old_mentions", "topic_id", b"topic_id"]) -> None: ...
 
-global___ChannelMessageUpdate = ChannelMessageUpdate
+Global___ChannelMessageUpdate: typing_extensions.TypeAlias = ChannelMessageUpdate
 
 @typing.final
 class ChannelMessageRemove(google.protobuf.message.Message):
@@ -1424,7 +1440,7 @@ class ChannelMessageRemove(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "has_attachment", b"has_attachment", "is_public", b"is_public", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]) -> None: ...
 
-global___ChannelMessageRemove = ChannelMessageRemove
+Global___ChannelMessageRemove: typing_extensions.TypeAlias = ChannelMessageRemove
 
 @typing.final
 class ChannelPresenceEvent(google.protobuf.message.Message):
@@ -1447,26 +1463,26 @@ class ChannelPresenceEvent(google.protobuf.message.Message):
     mode: builtins.int
     """The mode"""
     @property
-    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences joining the channel as part of this event, if any."""
 
     @property
-    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences leaving the channel as part of this event, if any."""
 
     def __init__(
         self,
         *,
         channel_id: builtins.str = ...,
-        joins: collections.abc.Iterable[global___UserPresence] | None = ...,
-        leaves: collections.abc.Iterable[global___UserPresence] | None = ...,
+        joins: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        leaves: collections.abc.Iterable[Global___UserPresence] | None = ...,
         clan_logo: builtins.str = ...,
         category_name: builtins.str = ...,
         mode: builtins.int = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "joins", b"joins", "leaves", b"leaves", "mode", b"mode"]) -> None: ...
 
-global___ChannelPresenceEvent = ChannelPresenceEvent
+Global___ChannelPresenceEvent: typing_extensions.TypeAlias = ChannelPresenceEvent
 
 @typing.final
 class Error(google.protobuf.message.Message):
@@ -1553,7 +1569,7 @@ class Error(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["code", b"code", "context", b"context", "message", b"message"]) -> None: ...
 
-global___Error = Error
+Global___Error: typing_extensions.TypeAlias = Error
 
 @typing.final
 class Notifications(google.protobuf.message.Message):
@@ -1573,7 +1589,7 @@ class Notifications(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["notifications", b"notifications"]) -> None: ...
 
-global___Notifications = Notifications
+Global___Notifications: typing_extensions.TypeAlias = Notifications
 
 @typing.final
 class AddFriend(google.protobuf.message.Message):
@@ -1601,7 +1617,7 @@ class AddFriend(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["avatar", b"avatar", "display_name", b"display_name", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
-global___AddFriend = AddFriend
+Global___AddFriend: typing_extensions.TypeAlias = AddFriend
 
 @typing.final
 class RemoveFriend(google.protobuf.message.Message):
@@ -1617,7 +1633,7 @@ class RemoveFriend(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["user_id", b"user_id"]) -> None: ...
 
-global___RemoveFriend = RemoveFriend
+Global___RemoveFriend: typing_extensions.TypeAlias = RemoveFriend
 
 @typing.final
 class BlockFriend(google.protobuf.message.Message):
@@ -1633,7 +1649,7 @@ class BlockFriend(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["user_id", b"user_id"]) -> None: ...
 
-global___BlockFriend = BlockFriend
+Global___BlockFriend: typing_extensions.TypeAlias = BlockFriend
 
 @typing.final
 class UnblockFriend(google.protobuf.message.Message):
@@ -1669,7 +1685,7 @@ class UnblockFriend(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["avatar", b"avatar", "display_name", b"display_name", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]) -> None: ...
 
-global___UnblockFriend = UnblockFriend
+Global___UnblockFriend: typing_extensions.TypeAlias = UnblockFriend
 
 @typing.final
 class Ping(google.protobuf.message.Message):
@@ -1681,7 +1697,7 @@ class Ping(google.protobuf.message.Message):
         self,
     ) -> None: ...
 
-global___Ping = Ping
+Global___Ping: typing_extensions.TypeAlias = Ping
 
 @typing.final
 class Pong(google.protobuf.message.Message):
@@ -1693,7 +1709,7 @@ class Pong(google.protobuf.message.Message):
         self,
     ) -> None: ...
 
-global___Pong = Pong
+Global___Pong: typing_extensions.TypeAlias = Pong
 
 @typing.final
 class Status(google.protobuf.message.Message):
@@ -1703,17 +1719,17 @@ class Status(google.protobuf.message.Message):
 
     PRESENCES_FIELD_NUMBER: builtins.int
     @property
-    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """User statuses."""
 
     def __init__(
         self,
         *,
-        presences: collections.abc.Iterable[global___UserPresence] | None = ...,
+        presences: collections.abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["presences", b"presences"]) -> None: ...
 
-global___Status = Status
+Global___Status: typing_extensions.TypeAlias = Status
 
 @typing.final
 class StatusFollow(google.protobuf.message.Message):
@@ -1739,7 +1755,7 @@ class StatusFollow(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["user_ids", b"user_ids", "usernames", b"usernames"]) -> None: ...
 
-global___StatusFollow = StatusFollow
+Global___StatusFollow: typing_extensions.TypeAlias = StatusFollow
 
 @typing.final
 class StatusPresenceEvent(google.protobuf.message.Message):
@@ -1750,22 +1766,22 @@ class StatusPresenceEvent(google.protobuf.message.Message):
     JOINS_FIELD_NUMBER: builtins.int
     LEAVES_FIELD_NUMBER: builtins.int
     @property
-    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """New statuses for the user."""
 
     @property
-    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Previous statuses for the user."""
 
     def __init__(
         self,
         *,
-        joins: collections.abc.Iterable[global___UserPresence] | None = ...,
-        leaves: collections.abc.Iterable[global___UserPresence] | None = ...,
+        joins: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        leaves: collections.abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["joins", b"joins", "leaves", b"leaves"]) -> None: ...
 
-global___StatusPresenceEvent = StatusPresenceEvent
+Global___StatusPresenceEvent: typing_extensions.TypeAlias = StatusPresenceEvent
 
 @typing.final
 class LastPinMessageEvent(google.protobuf.message.Message):
@@ -1835,7 +1851,7 @@ class LastPinMessageEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "message_attachment", b"message_attachment", "message_content", b"message_content", "message_created_time", b"message_created_time", "message_id", b"message_id", "message_sender_avatar", b"message_sender_avatar", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "mode", b"mode", "operation", b"operation", "timestamp_seconds", b"timestamp_seconds", "user_id", b"user_id"]) -> None: ...
 
-global___LastPinMessageEvent = LastPinMessageEvent
+Global___LastPinMessageEvent: typing_extensions.TypeAlias = LastPinMessageEvent
 
 @typing.final
 class LastSeenMessageEvent(google.protobuf.message.Message):
@@ -1873,7 +1889,7 @@ class LastSeenMessageEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["badge_count", b"badge_count", "channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id", "mode", b"mode", "timestamp_seconds", b"timestamp_seconds"]) -> None: ...
 
-global___LastSeenMessageEvent = LastSeenMessageEvent
+Global___LastSeenMessageEvent: typing_extensions.TypeAlias = LastSeenMessageEvent
 
 @typing.final
 class MessageTypingEvent(google.protobuf.message.Message):
@@ -1919,7 +1935,7 @@ class MessageTypingEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "mode", b"mode", "sender_display_name", b"sender_display_name", "sender_id", b"sender_id", "sender_username", b"sender_username", "topic_id", b"topic_id"]) -> None: ...
 
-global___MessageTypingEvent = MessageTypingEvent
+Global___MessageTypingEvent: typing_extensions.TypeAlias = MessageTypingEvent
 
 @typing.final
 class VoiceLeavedEvent(google.protobuf.message.Message):
@@ -1949,7 +1965,7 @@ class VoiceLeavedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id", "voice_user_id", b"voice_user_id"]) -> None: ...
 
-global___VoiceLeavedEvent = VoiceLeavedEvent
+Global___VoiceLeavedEvent: typing_extensions.TypeAlias = VoiceLeavedEvent
 
 @typing.final
 class VoiceJoinedEvent(google.protobuf.message.Message):
@@ -1995,7 +2011,7 @@ class VoiceJoinedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "last_screenshot", b"last_screenshot", "participant", b"participant", "user_id", b"user_id", "voice_channel_id", b"voice_channel_id", "voice_channel_label", b"voice_channel_label"]) -> None: ...
 
-global___VoiceJoinedEvent = VoiceJoinedEvent
+Global___VoiceJoinedEvent: typing_extensions.TypeAlias = VoiceJoinedEvent
 
 @typing.final
 class VoiceStartedEvent(google.protobuf.message.Message):
@@ -2021,7 +2037,7 @@ class VoiceStartedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]) -> None: ...
 
-global___VoiceStartedEvent = VoiceStartedEvent
+Global___VoiceStartedEvent: typing_extensions.TypeAlias = VoiceStartedEvent
 
 @typing.final
 class VoiceEndedEvent(google.protobuf.message.Message):
@@ -2047,7 +2063,7 @@ class VoiceEndedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]) -> None: ...
 
-global___VoiceEndedEvent = VoiceEndedEvent
+Global___VoiceEndedEvent: typing_extensions.TypeAlias = VoiceEndedEvent
 
 @typing.final
 class StreamingLeavedEvent(google.protobuf.message.Message):
@@ -2077,7 +2093,7 @@ class StreamingLeavedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "id", b"id", "streaming_channel_id", b"streaming_channel_id", "streaming_user_id", b"streaming_user_id"]) -> None: ...
 
-global___StreamingLeavedEvent = StreamingLeavedEvent
+Global___StreamingLeavedEvent: typing_extensions.TypeAlias = StreamingLeavedEvent
 
 @typing.final
 class StreamingJoinedEvent(google.protobuf.message.Message):
@@ -2119,7 +2135,7 @@ class StreamingJoinedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "participant", b"participant", "streaming_channel_id", b"streaming_channel_id", "streaming_channel_label", b"streaming_channel_label", "user_id", b"user_id"]) -> None: ...
 
-global___StreamingJoinedEvent = StreamingJoinedEvent
+Global___StreamingJoinedEvent: typing_extensions.TypeAlias = StreamingJoinedEvent
 
 @typing.final
 class StreamingStartedEvent(google.protobuf.message.Message):
@@ -2149,7 +2165,7 @@ class StreamingStartedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_streaming", b"is_streaming", "streaming_url", b"streaming_url"]) -> None: ...
 
-global___StreamingStartedEvent = StreamingStartedEvent
+Global___StreamingStartedEvent: typing_extensions.TypeAlias = StreamingStartedEvent
 
 @typing.final
 class StreamingEndedEvent(google.protobuf.message.Message):
@@ -2171,7 +2187,7 @@ class StreamingEndedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
 
-global___StreamingEndedEvent = StreamingEndedEvent
+Global___StreamingEndedEvent: typing_extensions.TypeAlias = StreamingEndedEvent
 
 @typing.final
 class ChannelCreatedEvent(google.protobuf.message.Message):
@@ -2188,6 +2204,7 @@ class ChannelCreatedEvent(google.protobuf.message.Message):
     STATUS_FIELD_NUMBER: builtins.int
     APP_ID_FIELD_NUMBER: builtins.int
     CLAN_NAME_FIELD_NUMBER: builtins.int
+    CHANNEL_AVATAR_FIELD_NUMBER: builtins.int
     clan_id: builtins.str
     """clan id"""
     category_id: builtins.str
@@ -2208,6 +2225,8 @@ class ChannelCreatedEvent(google.protobuf.message.Message):
     """app id"""
     clan_name: builtins.str
     """clan_name"""
+    channel_avatar: builtins.str
+    """channel avatar"""
     @property
     def channel_type(self) -> google.protobuf.wrappers_pb2.Int32Value:
         """channel type"""
@@ -2226,11 +2245,12 @@ class ChannelCreatedEvent(google.protobuf.message.Message):
         status: builtins.int = ...,
         app_id: builtins.str = ...,
         clan_name: builtins.str = ...,
+        channel_avatar: builtins.str = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["channel_type", b"channel_type"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "parent_id", b"parent_id", "status", b"status"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "parent_id", b"parent_id", "status", b"status"]) -> None: ...
 
-global___ChannelCreatedEvent = ChannelCreatedEvent
+Global___ChannelCreatedEvent: typing_extensions.TypeAlias = ChannelCreatedEvent
 
 @typing.final
 class CategoryEvent(google.protobuf.message.Message):
@@ -2262,7 +2282,7 @@ class CategoryEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["category_name", b"category_name", "clan_id", b"clan_id", "creator_id", b"creator_id", "id", b"id", "status", b"status"]) -> None: ...
 
-global___CategoryEvent = CategoryEvent
+Global___CategoryEvent: typing_extensions.TypeAlias = CategoryEvent
 
 @typing.final
 class RoleEvent(google.protobuf.message.Message):
@@ -2301,7 +2321,7 @@ class RoleEvent(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["role", b"role"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["active_permission_ids", b"active_permission_ids", "remove_permission_ids", b"remove_permission_ids", "role", b"role", "status", b"status", "user_add_ids", b"user_add_ids", "user_id", b"user_id", "user_remove_ids", b"user_remove_ids"]) -> None: ...
 
-global___RoleEvent = RoleEvent
+Global___RoleEvent: typing_extensions.TypeAlias = RoleEvent
 
 @typing.final
 class ChannelDeletedEvent(google.protobuf.message.Message):
@@ -2333,7 +2353,7 @@ class ChannelDeletedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "deletor", b"deletor", "parent_id", b"parent_id"]) -> None: ...
 
-global___ChannelDeletedEvent = ChannelDeletedEvent
+Global___ChannelDeletedEvent: typing_extensions.TypeAlias = ChannelDeletedEvent
 
 @typing.final
 class ClanDeletedEvent(google.protobuf.message.Message):
@@ -2353,7 +2373,7 @@ class ClanDeletedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "deletor", b"deletor"]) -> None: ...
 
-global___ClanDeletedEvent = ClanDeletedEvent
+Global___ClanDeletedEvent: typing_extensions.TypeAlias = ClanDeletedEvent
 
 @typing.final
 class StickerCreateEvent(google.protobuf.message.Message):
@@ -2397,7 +2417,7 @@ class StickerCreateEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "logo", b"logo", "shortname", b"shortname", "source", b"source", "sticker_id", b"sticker_id"]) -> None: ...
 
-global___StickerCreateEvent = StickerCreateEvent
+Global___StickerCreateEvent: typing_extensions.TypeAlias = StickerCreateEvent
 
 @typing.final
 class StickerUpdateEvent(google.protobuf.message.Message):
@@ -2421,7 +2441,7 @@ class StickerUpdateEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["shortname", b"shortname", "sticker_id", b"sticker_id", "user_id", b"user_id"]) -> None: ...
 
-global___StickerUpdateEvent = StickerUpdateEvent
+Global___StickerUpdateEvent: typing_extensions.TypeAlias = StickerUpdateEvent
 
 @typing.final
 class StickerDeleteEvent(google.protobuf.message.Message):
@@ -2441,7 +2461,7 @@ class StickerDeleteEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["sticker_id", b"sticker_id", "user_id", b"user_id"]) -> None: ...
 
-global___StickerDeleteEvent = StickerDeleteEvent
+Global___StickerDeleteEvent: typing_extensions.TypeAlias = StickerDeleteEvent
 
 @typing.final
 class ChannelUpdatedEvent(google.protobuf.message.Message):
@@ -2540,7 +2560,7 @@ class ChannelUpdatedEvent(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["channel_type", b"channel_type"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "count_mess_unread", b"count_mess_unread", "creator_id", b"creator_id", "e2ee", b"e2ee", "is_error", b"is_error", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "role_ids", b"role_ids", "status", b"status", "topic", b"topic", "user_ids", b"user_ids"]) -> None: ...
 
-global___ChannelUpdatedEvent = ChannelUpdatedEvent
+Global___ChannelUpdatedEvent: typing_extensions.TypeAlias = ChannelUpdatedEvent
 
 @typing.final
 class StatusUnfollow(google.protobuf.message.Message):
@@ -2560,7 +2580,7 @@ class StatusUnfollow(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["user_ids", b"user_ids"]) -> None: ...
 
-global___StatusUnfollow = StatusUnfollow
+Global___StatusUnfollow: typing_extensions.TypeAlias = StatusUnfollow
 
 @typing.final
 class StatusUpdate(google.protobuf.message.Message):
@@ -2581,7 +2601,7 @@ class StatusUpdate(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["status", b"status"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["status", b"status"]) -> None: ...
 
-global___StatusUpdate = StatusUpdate
+Global___StatusUpdate: typing_extensions.TypeAlias = StatusUpdate
 
 @typing.final
 class Stream(google.protobuf.message.Message):
@@ -2611,7 +2631,7 @@ class Stream(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "label", b"label", "mode", b"mode"]) -> None: ...
 
-global___Stream = Stream
+Global___Stream: typing_extensions.TypeAlias = Stream
 
 @typing.final
 class StreamData(google.protobuf.message.Message):
@@ -2628,25 +2648,25 @@ class StreamData(google.protobuf.message.Message):
     reliable: builtins.bool
     """True if this data was delivered reliably, false otherwise."""
     @property
-    def stream(self) -> global___Stream:
+    def stream(self) -> Global___Stream:
         """The stream this data message relates to."""
 
     @property
-    def sender(self) -> global___UserPresence:
+    def sender(self) -> Global___UserPresence:
         """The sender, if any."""
 
     def __init__(
         self,
         *,
-        stream: global___Stream | None = ...,
-        sender: global___UserPresence | None = ...,
+        stream: Global___Stream | None = ...,
+        sender: Global___UserPresence | None = ...,
         data: builtins.str = ...,
         reliable: builtins.bool = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["sender", b"sender", "stream", b"stream"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["data", b"data", "reliable", b"reliable", "sender", b"sender", "stream", b"stream"]) -> None: ...
 
-global___StreamData = StreamData
+Global___StreamData: typing_extensions.TypeAlias = StreamData
 
 @typing.final
 class StreamPresenceEvent(google.protobuf.message.Message):
@@ -2658,28 +2678,28 @@ class StreamPresenceEvent(google.protobuf.message.Message):
     JOINS_FIELD_NUMBER: builtins.int
     LEAVES_FIELD_NUMBER: builtins.int
     @property
-    def stream(self) -> global___Stream:
+    def stream(self) -> Global___Stream:
         """The stream this event relates to."""
 
     @property
-    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences joining the stream as part of this event, if any."""
 
     @property
-    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserPresence]:
+    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences leaving the stream as part of this event, if any."""
 
     def __init__(
         self,
         *,
-        stream: global___Stream | None = ...,
-        joins: collections.abc.Iterable[global___UserPresence] | None = ...,
-        leaves: collections.abc.Iterable[global___UserPresence] | None = ...,
+        stream: Global___Stream | None = ...,
+        joins: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        leaves: collections.abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["stream", b"stream"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["joins", b"joins", "leaves", b"leaves", "stream", b"stream"]) -> None: ...
 
-global___StreamPresenceEvent = StreamPresenceEvent
+Global___StreamPresenceEvent: typing_extensions.TypeAlias = StreamPresenceEvent
 
 @typing.final
 class UserPresence(google.protobuf.message.Message):
@@ -2720,7 +2740,7 @@ class UserPresence(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["status", b"status"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["is_mobile", b"is_mobile", "session_id", b"session_id", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]) -> None: ...
 
-global___UserPresence = UserPresence
+Global___UserPresence: typing_extensions.TypeAlias = UserPresence
 
 @typing.final
 class CustomStatusEvent(google.protobuf.message.Message):
@@ -2758,7 +2778,7 @@ class CustomStatusEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "no_clear", b"no_clear", "status", b"status", "time_reset", b"time_reset", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
-global___CustomStatusEvent = CustomStatusEvent
+Global___CustomStatusEvent: typing_extensions.TypeAlias = CustomStatusEvent
 
 @typing.final
 class UserChannelAdded(google.protobuf.message.Message):
@@ -2786,28 +2806,28 @@ class UserChannelAdded(google.protobuf.message.Message):
         """the channel id"""
 
     @property
-    def users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___UserProfileRedis]:
+    def users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserProfileRedis]:
         """the user"""
 
     @property
-    def caller(self) -> global___UserProfileRedis:
+    def caller(self) -> Global___UserProfileRedis:
         """"""
 
     def __init__(
         self,
         *,
         channel_desc: api.api_pb2.ChannelDescription | None = ...,
-        users: collections.abc.Iterable[global___UserProfileRedis] | None = ...,
+        users: collections.abc.Iterable[Global___UserProfileRedis] | None = ...,
         status: builtins.str = ...,
         clan_id: builtins.str = ...,
-        caller: global___UserProfileRedis | None = ...,
+        caller: Global___UserProfileRedis | None = ...,
         create_time_second: builtins.int = ...,
         active: builtins.int = ...,
     ) -> None: ...
     def HasField(self, field_name: typing.Literal["caller", b"caller", "channel_desc", b"channel_desc"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["active", b"active", "caller", b"caller", "channel_desc", b"channel_desc", "clan_id", b"clan_id", "create_time_second", b"create_time_second", "status", b"status", "users", b"users"]) -> None: ...
 
-global___UserChannelAdded = UserChannelAdded
+Global___UserChannelAdded: typing_extensions.TypeAlias = UserChannelAdded
 
 @typing.final
 class UserChannelRemoved(google.protobuf.message.Message):
@@ -2843,7 +2863,7 @@ class UserChannelRemoved(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["badge_counts", b"badge_counts", "channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "user_ids", b"user_ids"]) -> None: ...
 
-global___UserChannelRemoved = UserChannelRemoved
+Global___UserChannelRemoved: typing_extensions.TypeAlias = UserChannelRemoved
 
 @typing.final
 class UserClanRemoved(google.protobuf.message.Message):
@@ -2867,7 +2887,7 @@ class UserClanRemoved(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]) -> None: ...
 
-global___UserClanRemoved = UserClanRemoved
+Global___UserClanRemoved: typing_extensions.TypeAlias = UserClanRemoved
 
 @typing.final
 class ClanUpdatedEvent(google.protobuf.message.Message):
@@ -2929,7 +2949,7 @@ class ClanUpdatedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]) -> None: ...
 
-global___ClanUpdatedEvent = ClanUpdatedEvent
+Global___ClanUpdatedEvent: typing_extensions.TypeAlias = ClanUpdatedEvent
 
 @typing.final
 class ClanProfileUpdatedEvent(google.protobuf.message.Message):
@@ -2959,7 +2979,7 @@ class ClanProfileUpdatedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "user_id", b"user_id"]) -> None: ...
 
-global___ClanProfileUpdatedEvent = ClanProfileUpdatedEvent
+Global___ClanProfileUpdatedEvent: typing_extensions.TypeAlias = ClanProfileUpdatedEvent
 
 @typing.final
 class UserProfileUpdatedEvent(google.protobuf.message.Message):
@@ -3001,7 +3021,7 @@ class UserProfileUpdatedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["about_me", b"about_me", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "encrypt_private_key", b"encrypt_private_key", "user_id", b"user_id"]) -> None: ...
 
-global___UserProfileUpdatedEvent = UserProfileUpdatedEvent
+Global___UserProfileUpdatedEvent: typing_extensions.TypeAlias = UserProfileUpdatedEvent
 
 @typing.final
 class UserProfileRedis(google.protobuf.message.Message):
@@ -3013,17 +3033,13 @@ class UserProfileRedis(google.protobuf.message.Message):
     USERNAME_FIELD_NUMBER: builtins.int
     AVATAR_FIELD_NUMBER: builtins.int
     DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    ABOUT_ME_FIELD_NUMBER: builtins.int
     USER_STATUS_FIELD_NUMBER: builtins.int
     STATUS_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECOND_FIELD_NUMBER: builtins.int
-    FCM_TOKENS_FIELD_NUMBER: builtins.int
     ONLINE_FIELD_NUMBER: builtins.int
-    IS_DISABLED_FIELD_NUMBER: builtins.int
+    FCM_TOKENS_FIELD_NUMBER: builtins.int
     JOINED_CLANS_FIELD_NUMBER: builtins.int
-    PUBKEY_FIELD_NUMBER: builtins.int
-    MEZON_ID_FIELD_NUMBER: builtins.int
     APP_TOKEN_FIELD_NUMBER: builtins.int
+    CREATE_TIME_SECOND_FIELD_NUMBER: builtins.int
     APP_URL_FIELD_NUMBER: builtins.int
     IS_BOT_FIELD_NUMBER: builtins.int
     VOIP_TOKEN_FIELD_NUMBER: builtins.int
@@ -3035,24 +3051,16 @@ class UserProfileRedis(google.protobuf.message.Message):
     """Avatar to follow."""
     display_name: builtins.str
     """Display name"""
-    about_me: builtins.str
-    """about me"""
     user_status: builtins.str
     """user status"""
     status: builtins.str
     """status online, offline, invisible, idle, do not disturb"""
-    create_time_second: builtins.int
-    """create time"""
     online: builtins.bool
     """isOnline"""
-    is_disabled: builtins.bool
-    """is disabled"""
-    pubkey: builtins.str
-    """public key"""
-    mezon_id: builtins.str
-    """mezon id"""
     app_token: builtins.str
     """app token"""
+    create_time_second: builtins.int
+    """create time"""
     app_url: builtins.str
     """app url"""
     is_bot: builtins.bool
@@ -3060,7 +3068,7 @@ class UserProfileRedis(google.protobuf.message.Message):
     voip_token: builtins.str
     """for call DM iOS"""
     @property
-    def fcm_tokens(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___FCMTokens]:
+    def fcm_tokens(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___FCMTokens]:
         """FCM token"""
 
     @property
@@ -3074,24 +3082,20 @@ class UserProfileRedis(google.protobuf.message.Message):
         username: builtins.str = ...,
         avatar: builtins.str = ...,
         display_name: builtins.str = ...,
-        about_me: builtins.str = ...,
         user_status: builtins.str = ...,
         status: builtins.str = ...,
-        create_time_second: builtins.int = ...,
-        fcm_tokens: collections.abc.Iterable[global___FCMTokens] | None = ...,
         online: builtins.bool = ...,
-        is_disabled: builtins.bool = ...,
+        fcm_tokens: collections.abc.Iterable[Global___FCMTokens] | None = ...,
         joined_clans: collections.abc.Iterable[builtins.str] | None = ...,
-        pubkey: builtins.str = ...,
-        mezon_id: builtins.str = ...,
         app_token: builtins.str = ...,
+        create_time_second: builtins.int = ...,
         app_url: builtins.str = ...,
         is_bot: builtins.bool = ...,
         voip_token: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["about_me", b"about_me", "app_token", b"app_token", "app_url", b"app_url", "avatar", b"avatar", "create_time_second", b"create_time_second", "display_name", b"display_name", "fcm_tokens", b"fcm_tokens", "is_bot", b"is_bot", "is_disabled", b"is_disabled", "joined_clans", b"joined_clans", "mezon_id", b"mezon_id", "online", b"online", "pubkey", b"pubkey", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username", "voip_token", b"voip_token"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["app_token", b"app_token", "app_url", b"app_url", "avatar", b"avatar", "create_time_second", b"create_time_second", "display_name", b"display_name", "fcm_tokens", b"fcm_tokens", "is_bot", b"is_bot", "joined_clans", b"joined_clans", "online", b"online", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username", "voip_token", b"voip_token"]) -> None: ...
 
-global___UserProfileRedis = UserProfileRedis
+Global___UserProfileRedis: typing_extensions.TypeAlias = UserProfileRedis
 
 @typing.final
 class FCMTokens(google.protobuf.message.Message):
@@ -3115,7 +3119,7 @@ class FCMTokens(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["device_id", b"device_id", "platform", b"platform", "token_id", b"token_id"]) -> None: ...
 
-global___FCMTokens = FCMTokens
+Global___FCMTokens: typing_extensions.TypeAlias = FCMTokens
 
 @typing.final
 class CheckNameExistedEvent(google.protobuf.message.Message):
@@ -3143,7 +3147,7 @@ class CheckNameExistedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["condition_id", b"condition_id", "exist", b"exist", "name", b"name", "type", b"type"]) -> None: ...
 
-global___CheckNameExistedEvent = CheckNameExistedEvent
+Global___CheckNameExistedEvent: typing_extensions.TypeAlias = CheckNameExistedEvent
 
 @typing.final
 class NotificationChannelCategorySetting(google.protobuf.message.Message):
@@ -3177,7 +3181,7 @@ class NotificationChannelCategorySetting(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["action", b"action", "channel_category_label", b"channel_category_label", "channel_category_title", b"channel_category_title", "id", b"id", "notification_setting_type", b"notification_setting_type"]) -> None: ...
 
-global___NotificationChannelCategorySetting = NotificationChannelCategorySetting
+Global___NotificationChannelCategorySetting: typing_extensions.TypeAlias = NotificationChannelCategorySetting
 
 @typing.final
 class EventEmoji(google.protobuf.message.Message):
@@ -3219,7 +3223,7 @@ class EventEmoji(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["action", b"action", "category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "short_name", b"short_name", "source", b"source", "user_id", b"user_id"]) -> None: ...
 
-global___EventEmoji = EventEmoji
+Global___EventEmoji: typing_extensions.TypeAlias = EventEmoji
 
 @typing.final
 class PermissionSetEvent(google.protobuf.message.Message):
@@ -3247,7 +3251,7 @@ class PermissionSetEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["caller", b"caller", "channel_id", b"channel_id", "permission_updates", b"permission_updates", "role_id", b"role_id", "user_id", b"user_id"]) -> None: ...
 
-global___PermissionSetEvent = PermissionSetEvent
+Global___PermissionSetEvent: typing_extensions.TypeAlias = PermissionSetEvent
 
 @typing.final
 class PermissionChangedEvent(google.protobuf.message.Message):
@@ -3277,7 +3281,7 @@ class PermissionChangedEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["add_permissions", b"add_permissions", "channel_id", b"channel_id", "default_permissions", b"default_permissions", "remove_permissions", b"remove_permissions", "user_id", b"user_id"]) -> None: ...
 
-global___PermissionChangedEvent = PermissionChangedEvent
+Global___PermissionChangedEvent: typing_extensions.TypeAlias = PermissionChangedEvent
 
 @typing.final
 class MessageButtonClicked(google.protobuf.message.Message):
@@ -3307,7 +3311,7 @@ class MessageButtonClicked(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["button_id", b"button_id", "channel_id", b"channel_id", "extra_data", b"extra_data", "message_id", b"message_id", "sender_id", b"sender_id", "user_id", b"user_id"]) -> None: ...
 
-global___MessageButtonClicked = MessageButtonClicked
+Global___MessageButtonClicked: typing_extensions.TypeAlias = MessageButtonClicked
 
 @typing.final
 class UnmuteEvent(google.protobuf.message.Message):
@@ -3331,7 +3335,7 @@ class UnmuteEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
 
-global___UnmuteEvent = UnmuteEvent
+Global___UnmuteEvent: typing_extensions.TypeAlias = UnmuteEvent
 
 @typing.final
 class ListActivity(google.protobuf.message.Message):
@@ -3347,7 +3351,7 @@ class ListActivity(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["acts", b"acts"]) -> None: ...
 
-global___ListActivity = ListActivity
+Global___ListActivity: typing_extensions.TypeAlias = ListActivity
 
 @typing.final
 class DropdownBoxSelected(google.protobuf.message.Message):
@@ -3378,7 +3382,7 @@ class DropdownBoxSelected(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "selectbox_id", b"selectbox_id", "sender_id", b"sender_id", "user_id", b"user_id", "values", b"values"]) -> None: ...
 
-global___DropdownBoxSelected = DropdownBoxSelected
+Global___DropdownBoxSelected: typing_extensions.TypeAlias = DropdownBoxSelected
 
 @typing.final
 class SdTopicEvent(google.protobuf.message.Message):
@@ -3414,7 +3418,7 @@ class SdTopicEvent(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["last_sent_message", b"last_sent_message", "message", b"message"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "last_sent_message", b"last_sent_message", "message", b"message", "message_id", b"message_id", "user_id", b"user_id"]) -> None: ...
 
-global___SdTopicEvent = SdTopicEvent
+Global___SdTopicEvent: typing_extensions.TypeAlias = SdTopicEvent
 
 @typing.final
 class ChannelAppEvent(google.protobuf.message.Message):
@@ -3441,7 +3445,7 @@ class ChannelAppEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
-global___ChannelAppEvent = ChannelAppEvent
+Global___ChannelAppEvent: typing_extensions.TypeAlias = ChannelAppEvent
 
 @typing.final
 class UserStatusEvent(google.protobuf.message.Message):
@@ -3459,7 +3463,7 @@ class UserStatusEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["custom_status", b"custom_status", "user_id", b"user_id"]) -> None: ...
 
-global___UserStatusEvent = UserStatusEvent
+Global___UserStatusEvent: typing_extensions.TypeAlias = UserStatusEvent
 
 @typing.final
 class JoinChannelAppData(google.protobuf.message.Message):
@@ -3480,7 +3484,7 @@ class JoinChannelAppData(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["hash", b"hash", "user_id", b"user_id", "username", b"username"]) -> None: ...
 
-global___JoinChannelAppData = JoinChannelAppData
+Global___JoinChannelAppData: typing_extensions.TypeAlias = JoinChannelAppData
 
 @typing.final
 class UnpinMessageEvent(google.protobuf.message.Message):
@@ -3504,7 +3508,7 @@ class UnpinMessageEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "message_id", b"message_id"]) -> None: ...
 
-global___UnpinMessageEvent = UnpinMessageEvent
+Global___UnpinMessageEvent: typing_extensions.TypeAlias = UnpinMessageEvent
 
 @typing.final
 class HandleParticipantMeetStateEvent(google.protobuf.message.Message):
@@ -3536,7 +3540,7 @@ class HandleParticipantMeetStateEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "room_name", b"room_name", "state", b"state"]) -> None: ...
 
-global___HandleParticipantMeetStateEvent = HandleParticipantMeetStateEvent
+Global___HandleParticipantMeetStateEvent: typing_extensions.TypeAlias = HandleParticipantMeetStateEvent
 
 @typing.final
 class DeleteAccountEvent(google.protobuf.message.Message):
@@ -3552,7 +3556,7 @@ class DeleteAccountEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["user_id", b"user_id"]) -> None: ...
 
-global___DeleteAccountEvent = DeleteAccountEvent
+Global___DeleteAccountEvent: typing_extensions.TypeAlias = DeleteAccountEvent
 
 @typing.final
 class ListDataSocket(google.protobuf.message.Message):
@@ -3828,7 +3832,7 @@ class ListDataSocket(google.protobuf.message.Message):
     def HasField(self, field_name: typing.Literal["category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "hashtag_dm_list", b"hashtag_dm_list", "hashtag_dm_req", b"hashtag_dm_req", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing.Literal["api_name", b"api_name", "category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "hashtag_dm_list", b"hashtag_dm_list", "hashtag_dm_req", b"hashtag_dm_req", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]) -> None: ...
 
-global___ListDataSocket = ListDataSocket
+Global___ListDataSocket: typing_extensions.TypeAlias = ListDataSocket
 
 @typing.final
 class MeetParticipantEvent(google.protobuf.message.Message):
@@ -3855,7 +3859,7 @@ class MeetParticipantEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]) -> None: ...
 
-global___MeetParticipantEvent = MeetParticipantEvent
+Global___MeetParticipantEvent: typing_extensions.TypeAlias = MeetParticipantEvent
 
 @typing.final
 class TransferOwnershipEvent(google.protobuf.message.Message):
@@ -3876,4 +3880,22 @@ class TransferOwnershipEvent(google.protobuf.message.Message):
     ) -> None: ...
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "curr_owner", b"curr_owner", "prev_owner", b"prev_owner"]) -> None: ...
 
-global___TransferOwnershipEvent = TransferOwnershipEvent
+Global___TransferOwnershipEvent: typing_extensions.TypeAlias = TransferOwnershipEvent
+
+@typing.final
+class ActiveArchivedThread(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: builtins.int
+    CHANNEL_ID_FIELD_NUMBER: builtins.int
+    clan_id: builtins.str
+    channel_id: builtins.str
+    def __init__(
+        self,
+        *,
+        clan_id: builtins.str = ...,
+        channel_id: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
+
+Global___ActiveArchivedThread: typing_extensions.TypeAlias = ActiveArchivedThread

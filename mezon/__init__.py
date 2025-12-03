@@ -54,6 +54,16 @@ from .client import MezonClient
 # Socket imports
 from .socket import WebSocketAdapter, WebSocketAdapterPb, Socket
 
+# Structure imports
+from .structures import (
+    Clan,
+    Message,
+    TextChannel,
+    User,
+    ButtonBuilder,
+    InteractiveBuilder,
+)
+
 # Utils imports
 from .utils import setup_logger, get_logger, disable_logging, enable_logging
 
@@ -95,6 +105,13 @@ __all__ = [
     "SocketManager",
     "CacheManager",
     "Collection",
+    # Structures
+    "Clan",
+    "Message",
+    "TextChannel",
+    "User",
+    "ButtonBuilder",
+    "InteractiveBuilder",
     # Utils
     "setup_logger",
     "get_logger",
