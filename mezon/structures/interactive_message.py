@@ -104,10 +104,7 @@ class InteractiveBuilder:
         return self
 
     def set_author(
-        self,
-        name: str,
-        icon_url: Optional[str] = None,
-        url: Optional[str] = None
+        self, name: str, icon_url: Optional[str] = None, url: Optional[str] = None
     ) -> "InteractiveBuilder":
         """
         Set the author information.
@@ -155,10 +152,7 @@ class InteractiveBuilder:
         return self
 
     def set_image(
-        self,
-        url: str,
-        width: Optional[str] = None,
-        height: Optional[str] = None
+        self, url: str, width: Optional[str] = None, height: Optional[str] = None
     ) -> "InteractiveBuilder":
         """
         Set the main image.
@@ -179,9 +173,7 @@ class InteractiveBuilder:
         return self
 
     def set_footer(
-        self,
-        text: str,
-        icon_url: Optional[str] = None
+        self, text: str, icon_url: Optional[str] = None
     ) -> "InteractiveBuilder":
         """
         Set the footer information.
@@ -200,10 +192,7 @@ class InteractiveBuilder:
         return self
 
     def add_field(
-        self,
-        name: str,
-        value: str,
-        inline: bool = False
+        self, name: str, value: str, inline: bool = False
     ) -> "InteractiveBuilder":
         """
         Add a simple text field.
@@ -216,11 +205,13 @@ class InteractiveBuilder:
         Returns:
             Self for method chaining
         """
-        self.interactive["fields"].append({
-            "name": name,
-            "value": value,
-            "inline": inline,
-        })
+        self.interactive["fields"].append(
+            {
+                "name": name,
+                "value": value,
+                "inline": inline,
+            }
+        )
         return self
 
     def add_input_field(
@@ -229,7 +220,7 @@ class InteractiveBuilder:
         name: str,
         placeholder: Optional[str] = None,
         options: Optional[InputFieldOption] = None,
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ) -> "InteractiveBuilder":
         """
         Add an input field for user text entry.
@@ -268,7 +259,7 @@ class InteractiveBuilder:
         name: str,
         options: List[SelectFieldOption],
         value_selected: Optional[SelectFieldOption] = None,
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ) -> "InteractiveBuilder":
         """
         Add a select dropdown field.
@@ -290,8 +281,13 @@ class InteractiveBuilder:
                 "id": field_id,
                 "type": MessageComponentType.SELECT.value,
                 "component": {
-                    "options": [opt.model_dump() if hasattr(opt, 'model_dump') else opt for opt in options],
-                    "valueSelected": value_selected.model_dump() if value_selected and hasattr(value_selected, 'model_dump') else value_selected,
+                    "options": [
+                        opt.model_dump() if hasattr(opt, "model_dump") else opt
+                        for opt in options
+                    ],
+                    "valueSelected": value_selected.model_dump()
+                    if value_selected and hasattr(value_selected, "model_dump")
+                    else value_selected,
                 },
             },
         }
@@ -304,7 +300,7 @@ class InteractiveBuilder:
         name: str,
         options: List[RadioFieldOption],
         description: Optional[str] = None,
-        max_options: Optional[int] = None
+        max_options: Optional[int] = None,
     ) -> "InteractiveBuilder":
         """
         Add a radio button field.
@@ -325,7 +321,10 @@ class InteractiveBuilder:
             "inputs": {
                 "id": field_id,
                 "type": MessageComponentType.RADIO.value,
-                "component": [opt.model_dump() if hasattr(opt, 'model_dump') else opt for opt in options],
+                "component": [
+                    opt.model_dump() if hasattr(opt, "model_dump") else opt
+                    for opt in options
+                ],
             },
         }
         if max_options:
@@ -334,10 +333,7 @@ class InteractiveBuilder:
         return self
 
     def add_datepicker_field(
-        self,
-        field_id: str,
-        name: str,
-        description: Optional[str] = None
+        self, field_id: str, name: str, description: Optional[str] = None
     ) -> "InteractiveBuilder":
         """
         Add a date picker field.
@@ -367,7 +363,7 @@ class InteractiveBuilder:
         field_id: str,
         config: AnimationConfig,
         name: Optional[str] = None,
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ) -> "InteractiveBuilder":
         """
         Add an animation field.
@@ -387,7 +383,9 @@ class InteractiveBuilder:
             "inputs": {
                 "id": field_id,
                 "type": MessageComponentType.ANIMATION.value,
-                "component": config.model_dump() if hasattr(config, 'model_dump') else config,
+                "component": config.model_dump()
+                if hasattr(config, "model_dump")
+                else config,
             },
         }
         self.interactive["fields"].append(field_data)
