@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.2 (2025-12-03)
+
+### Bug Fixes
+
+- Execute default handler first
+  ([`21b96fb`](https://github.com/phuvinh010701/mezon-sdk-python/commit/21b96fb27eb5de7de34daaecc5915b134a1cbebd))
+
+
 ## v1.6.1 (2025-12-03)
 
 
