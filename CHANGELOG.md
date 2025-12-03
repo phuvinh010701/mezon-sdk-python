@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.0 (2025-12-03)
+
+### Features
+
+- Add new interactive message structures and methods for clan and notification management
+  ([`13cc0df`](https://github.com/phuvinh010701/mezon-sdk-python/commit/13cc0dfb47c244e88654d107608a4960742458f7))
+
+
 ## v1.5.3 (2025-11-30)
 
 ### Bug Fixes
