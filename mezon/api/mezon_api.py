@@ -55,6 +55,8 @@ class MezonApi:
         "update_message": "/v2/messages/{message_id}",
         "send_token": "/v2/token/send",
         "register_streaming_channel": "/v2/streaming/register",
+        "add_quick_menu_access": "/v2/quickmenuaccess",
+        "delete_quick_menu_access": "/v2/quickmenuaccess",
     }
 
     def __init__(self, client_id: str, api_key: str, base_url: str, timeout_ms: int):
@@ -560,6 +562,134 @@ class MezonApi:
         response = await self.call_api(
             method="POST",
             url_path=self.ENDPOINTS["register_streaming_channel"],
+            query_params={},
+            body=body_json,
+            headers=headers,
+        )
+        return response
+
+    async def list_transaction_detail(
+        self,
+        bearer_token: str,
+        transaction_id: str,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Get transaction detail by ID.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            transaction_id: Transaction ID to retrieve
+            options: Additional query parameters
+
+        Returns:
+            Any: Transaction detail response
+        """
+        headers = build_headers(bearer_token=bearer_token)
+        query_params = options if options else {}
+
+        response = await self.call_api(
+            method="GET",
+            url_path=f"/v2/transaction/{transaction_id}",
+            query_params=query_params,
+            body=None,
+            headers=headers,
+        )
+        return response
+
+    async def add_quick_menu_access(
+        self,
+        bearer_token: str,
+        body: Dict[str, Any],
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Add quick menu access for a bot.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            body: Quick menu access payload with fields:
+                - channel_id: Channel ID
+                - clan_id: Clan ID
+                - menu_type: Menu type (default 1)
+                - action_msg: Action message
+                - background: Background image URL
+                - menu_name: Menu name
+                - id: Menu ID
+                - bot_id: Bot ID
+            options: Additional options for the request
+
+        Returns:
+            Any: Quick menu access response
+        """
+        headers = build_headers(bearer_token=bearer_token)
+        body_json = build_body(body=body)
+
+        response = await self.call_api(
+            method="POST",
+            url_path=self.ENDPOINTS["add_quick_menu_access"],
+            query_params={},
+            body=body_json,
+            headers=headers,
+        )
+        return response
+
+    async def delete_quick_menu_access(
+        self,
+        bearer_token: str,
+        bot_id: str,
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Delete quick menu access for a bot.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            bot_id: Bot ID to delete quick menu for
+            options: Additional options for the request
+
+        Returns:
+            Any: Delete response
+        """
+        headers = build_headers(bearer_token=bearer_token)
+
+        response = await self.call_api(
+            method="DELETE",
+            url_path=self.ENDPOINTS["delete_quick_menu_access"],
+            query_params={"bot_id": bot_id},
+            body=None,
+            headers=headers,
+        )
+        return response
+
+    async def play_media(
+        self,
+        bearer_token: str,
+        body: Dict[str, Any],
+        options: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """
+        Play media in a voice channel.
+
+        Args:
+            bearer_token: Bearer token for authentication
+            body: Media playback payload with fields:
+                - room_name: Voice room name
+                - participant_identity: Participant identity
+                - participant_name: Participant name
+                - url: URL of media to play
+                - name: Media name
+            options: Additional options for the request
+
+        Returns:
+            Any: Media playback response
+        """
+        headers = build_headers(bearer_token=bearer_token)
+        body_json = build_body(body=body)
+
+        response = await self.call_api(
+            method="POST",
+            url_path="https://stn.mezon.ai/api/playmedia",
             query_params={},
             body=body_json,
             headers=headers,

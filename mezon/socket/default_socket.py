@@ -926,3 +926,147 @@ class Socket:
         if response and response.HasField("voice_leaved_event"):
             return json_format.MessageToDict(response.voice_leaved_event)
         return None
+
+    async def check_duplicate_clan_name(self, clan_name: str) -> Dict[str, Any]:
+        """
+        Check if a clan name already exists.
+
+        Args:
+            clan_name: The clan name to check
+
+        Returns:
+            ClanNameExistedEvent with exists status
+        """
+        envelope = realtime_pb2.Envelope()
+        clan_name_check = realtime_pb2.CheckNameExistedEvent(name=clan_name)
+        envelope.check_name_existed_event.CopyFrom(clan_name_check)
+        response = await self._send_with_cid(envelope)
+
+        if response and response.HasField("check_name_existed_event"):
+            return json_format.MessageToDict(response.check_name_existed_event)
+        return None
+
+    async def list_clan_emoji_by_clan_id(self, clan_id: str) -> Dict[str, Any]:
+        """
+        List all emojis for a specific clan.
+
+        Args:
+            clan_id: The clan ID
+
+        Returns:
+            Dict with emoji list from EmojiListedEvent
+        """
+        # TODO: Implement this method
+        return None
+
+    async def list_channel_by_user_id(self) -> Dict[str, Any]:
+        """
+        List all channels for the current user.
+
+        Returns:
+            ChannelDescListEvent with channel list
+        """
+        # TODO: Implement this method
+        return None
+
+    async def hashtag_dm_list(
+        self,
+        user_ids: List[str],
+        limit: int
+    ) -> Dict[str, Any]:
+        """
+        Get hashtag DM list.
+
+        Args:
+            user_ids: List of user IDs
+            limit: Maximum number of results
+
+        Returns:
+            HashtagDmListEvent with DM list
+        """
+        # TODO: Implement this method
+        return None
+
+    async def list_clan_stickers_by_clan_id(self, clan_id: str) -> Dict[str, Any]:
+        """
+        List all stickers for a specific clan.
+
+        Args:
+            clan_id: The clan ID
+
+        Returns:
+            StickerListedEvent with sticker list
+        """
+        # TODO: Implement this method
+        return None
+
+    async def get_notification_channel_setting(
+        self,
+        channel_id: str
+    ) -> Dict[str, Any]:
+        """
+        Get notification settings for a channel.
+
+        Args:
+            channel_id: The channel ID
+
+        Returns:
+            NotificationChannelSettingEvent with settings
+        """
+        # TODO: Implement this method
+        return None
+
+    async def get_notification_category_setting(
+        self,
+        category_id: str
+    ) -> Dict[str, Any]:
+        """
+        Get notification settings for a category.
+
+        Args:
+            category_id: The category ID
+
+        Returns:
+            NotificationCategorySettingEvent with settings
+        """
+        # TODO: Implement this method
+        return None
+
+    async def get_notification_clan_setting(self, clan_id: str) -> Dict[str, Any]:
+        """
+        Get notification settings for a clan.
+
+        Args:
+            clan_id: The clan ID
+
+        Returns:
+            NotificationClanSettingEvent with settings
+        """
+        # TODO: Implement this method
+        return None
+
+    async def get_notification_react_message(
+        self,
+        channel_id: str
+    ) -> Dict[str, Any]:
+        """
+        Get notification settings for message reactions.
+
+        Args:
+            channel_id: The channel ID
+
+        Returns:
+            NotifiReactMessageEvent with settings
+        """
+        # TODO: Implement this method
+        return None
+
+    async def update_status(self, status: Optional[str] = None) -> None:
+        """
+        Update the user's online status.
+
+        Args:
+            status: Optional status string. If None, user appears offline.
+        """
+        # TODO: Implement this method
+        return None
