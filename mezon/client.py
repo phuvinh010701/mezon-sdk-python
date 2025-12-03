@@ -177,6 +177,8 @@ class MezonClient:
             async def wrapper(message: Any, method: Callable[..., Any] = attr) -> None:
                 await self._invoke_handler(method, message)
 
+            setattr(wrapper, "_is_default_handler", True)
+
             self.event_manager.on(event_name, wrapper)
 
     async def get_session(self) -> Session:
@@ -735,11 +737,13 @@ class MezonClient:
                     logger.info(
                         f"User {user.user_id} joined channel {message.channel_desc.channel_id}"
                     )
-                    await socket.join_chat(
-                        clan_id=message.clan_id,
-                        channel_id=message.channel_desc.channel_id,
-                        channel_type=message.channel_desc.type.value,
-                        is_public=not message.channel_desc.channel_private,
+                    asyncio.create_task(
+                        socket.join_chat(
+                            clan_id=message.clan_id,
+                            channel_id=message.channel_desc.channel_id,
+                            channel_type=message.channel_desc.type.value,
+                            is_public=not message.channel_desc.channel_private,
+                        )
                     )
                     break
 
