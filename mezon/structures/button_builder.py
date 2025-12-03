@@ -39,7 +39,7 @@ class ButtonBuilder:
         label: str,
         style: ButtonMessageStyle,
         url: str = None,
-        disabled: bool = False
+        disabled: bool = False,
     ) -> "ButtonBuilder":
         """
         Add a button to the builder.
@@ -59,7 +59,9 @@ class ButtonBuilder:
             "type": MessageComponentType.BUTTON.value,
             "component": {
                 "label": label,
-                "style": style.value if isinstance(style, ButtonMessageStyle) else style,
+                "style": style.value
+                if isinstance(style, ButtonMessageStyle)
+                else style,
             },
         }
 

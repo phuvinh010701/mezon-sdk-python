@@ -82,6 +82,29 @@ DEFAULT_ZK_API = "https://dong.mezon.ai/zk-api/"
 logger = get_logger(__name__)
 
 
+def auto_bind(event_name: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    """
+    Decorator to auto-bind a default event handler to the client's event manager.
+
+    This decorator is intended for instance methods of ``MezonClient`` that
+    should always be registered, even if the user does not explicitly call an
+    ``on_*`` registration method. The actual binding happens when the client
+    is initialized and scans for decorated methods.
+
+    Args:
+        event_name: Name of the event in ``Events`` to subscribe to.
+
+    Returns:
+        The original function, annotated with metadata for later registration.
+    """
+
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+        setattr(func, "_auto_bind_event", event_name)
+        return func
+
+    return decorator
+
+
 class MezonClient:
     """
     A client for Mezon server.
@@ -134,6 +157,27 @@ class MezonClient:
         self.message_db = MessageDB()
 
         logger.info(f"MezonClient initialized for client_id: {client_id}")
+
+        self._register_auto_bound_handlers()
+
+    def _register_auto_bound_handlers(self) -> None:
+        """
+        Register all methods decorated with ``@auto_bind`` on this client.
+
+        This scans the instance for callables annotated with the
+        ``_auto_bind_event`` attribute and wires them into the
+        ``EventManager`` so they are always active as default handlers.
+        """
+        for attr_name in dir(self):
+            attr = getattr(self, attr_name)
+            event_name = getattr(attr, "_auto_bind_event", None)
+            if not event_name or not callable(attr):
+                continue
+
+            async def wrapper(message: Any, method: Callable[..., Any] = attr) -> None:
+                await self._invoke_handler(method, message)
+
+            self.event_manager.on(event_name, wrapper)
 
     async def get_session(self) -> Session:
         """
@@ -501,19 +545,43 @@ class MezonClient:
     def on_channel_message(
         self, handler: Callable[[api_pb2.ChannelMessage], None]
     ) -> None:
+        """
+        Register a user-defined handler for channel messages.
+
+        Default internal behavior (initializing channel & user caches) is always
+        active via an auto-bound handler. This method only wires an additional
+        user callback.
+
+        Args:
+            handler: Callback to invoke when a channel message is received.
+        """
+
         async def wrapper(message: api_pb2.ChannelMessage) -> None:
-            await self._init_channel_message_cache(message)
-            await self._init_user_clan_cache(message)
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.CHANNEL_MESSAGE, wrapper)
+
+    @auto_bind(Events.CHANNEL_MESSAGE)
+    async def _handle_channel_message_default(
+        self, message: api_pb2.ChannelMessage
+    ) -> None:
+        """
+        Default handler for ``ChannelMessage`` events.
+
+        This handler is automatically registered and is responsible for keeping
+        the channel and user caches in sync with incoming messages.
+
+        Args:
+            message: The ``ChannelMessage`` payload from the server.
+        """
+        await self._init_channel_message_cache(message)
+        await self._init_user_clan_cache(message)
 
     def on_channel_created(
         self,
         handler: Callable[[realtime_pb2.ChannelCreatedEvent], None],
     ) -> None:
         async def wrapper(message: realtime_pb2.ChannelCreatedEvent) -> None:
-            await self._update_cache_channel(message)
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.CHANNEL_CREATED, wrapper)
@@ -521,34 +589,68 @@ class MezonClient:
     def on_channel_updated(
         self, handler: Callable[[realtime_pb2.ChannelUpdatedEvent], None]
     ) -> None:
+        """
+        Register a user-defined handler for channel updated events.
+
+        Default internal behavior (joining new threads and updating caches) is
+        always active via an auto-bound handler. This method only wires an
+        additional user callback.
+        """
+
         async def wrapper(message: realtime_pb2.ChannelUpdatedEvent) -> None:
-            if (
-                message.channel_type == ChannelType.CHANNEL_TYPE_THREAD
-                and message.status == 1
-            ):
-                await self.socket_manager.get_socket().join_chat(
-                    message.clan_id, message.channel_id, message.channel_type, False
-                )
-            await self._update_cache_channel(message)
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.CHANNEL_UPDATED, wrapper)
 
+    @auto_bind(Events.CHANNEL_UPDATED)
+    async def _handle_channel_updated_default(
+        self, message: realtime_pb2.ChannelUpdatedEvent
+    ) -> None:
+        """
+        Default handler for ``ChannelUpdatedEvent``.
+
+        Auto-joins newly activated threads and refreshes channel cache state.
+        """
+        if (
+            message.channel_type == ChannelType.CHANNEL_TYPE_THREAD
+            and message.status == 1
+        ):
+            await self.socket_manager.get_socket().join_chat(
+                message.clan_id, message.channel_id, message.channel_type, False
+            )
+
     def on_channel_deleted(
         self, handler: Callable[[realtime_pb2.ChannelDeletedEvent], None]
     ) -> None:
+        """
+        Register a user-defined handler for channel deleted events.
+
+        Default internal behavior (removing channel from caches) is always
+        active via an auto-bound handler. This method only wires an additional
+        user callback.
+        """
+
         async def wrapper(message: realtime_pb2.ChannelDeletedEvent) -> None:
-            clan = self.clans.get(message.clan_id)
-            if not clan:
-                logger.debug(f"Clan {message.clan_id} not found!")
-                return
-
-            self.channels.delete(message.channel_id)
-            clan.channels.delete(message.channel_id)
-
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.CHANNEL_DELETED, wrapper)
+
+    @auto_bind(Events.CHANNEL_DELETED)
+    async def _handle_channel_deleted_default(
+        self, message: realtime_pb2.ChannelDeletedEvent
+    ) -> None:
+        """
+        Default handler for ``ChannelDeletedEvent``.
+
+        Cleans up channel entries from the client and clan caches.
+        """
+        clan = self.clans.get(message.clan_id)
+        if not clan:
+            logger.debug(f"Clan {message.clan_id} not found!")
+            return
+
+        self.channels.delete(message.channel_id)
+        clan.channels.delete(message.channel_id)
 
     def on_message_reaction(
         self, handler: Callable[[api_pb2.MessageReaction], None]
@@ -569,18 +671,36 @@ class MezonClient:
     def on_user_clan_removed(
         self, handler: Callable[[realtime_pb2.UserClanRemoved], None]
     ) -> None:
+        """
+        Register a user-defined handler for user clan removal events.
+
+        Default internal behavior (removing users from clan cache) is always
+        active via an auto-bound handler. This method only wires an additional
+        user callback.
+        """
+
         async def wrapper(message: realtime_pb2.UserClanRemoved) -> None:
-            clan = self.clans.get(message.clan_id)
-            if not clan:
-                logger.debug(f"Clan {message.clan_id} not found!")
-                return
-
-            for user_id in message.user_ids:
-                clan.users.delete(user_id)
-
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.USER_CLAN_REMOVED, wrapper)
+
+    @auto_bind(Events.USER_CLAN_REMOVED)
+    async def _handle_user_clan_removed_default(
+        self, message: realtime_pb2.UserClanRemoved
+    ) -> None:
+        """
+        Default handler for ``UserClanRemoved`` events.
+
+        Ensures the clan user cache reflects the server state when users are
+        removed from a clan.
+        """
+        clan = self.clans.get(message.clan_id)
+        if not clan:
+            logger.debug(f"Clan {message.clan_id} not found!")
+            return
+
+        for user_id in message.user_ids:
+            clan.users.delete(user_id)
 
     def on_user_channel_added(
         self, handler: Callable[[realtime_pb2.UserChannelAdded], None]
@@ -594,21 +714,34 @@ class MezonClient:
         """
 
         async def wrapper(message: realtime_pb2.UserChannelAdded) -> None:
-            socket = self.socket_manager.get_socket()
-            if message.users:
-                for user in message.users:
-                    if user.user_id == self.client_id:
-                        await socket.join_chat(
-                            clan_id=message.clan_id,
-                            channel_id=message.channel_desc.channel_id,
-                            channel_type=message.channel_desc.type.value,
-                            is_public=not message.channel_desc.channel_private,
-                        )
-                        break
-
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.USER_CHANNEL_ADDED, wrapper)
+
+    @auto_bind(Events.USER_CHANNEL_ADDED)
+    async def _handle_user_channel_added_default(
+        self, message: realtime_pb2.UserChannelAdded
+    ) -> None:
+        """
+        Default handler for ``UserChannelAdded`` events.
+
+        Automatically joins channels when the current client is added, keeping
+        the socket subscription state in sync.
+        """
+        socket = self.socket_manager.get_socket()
+        if message.users:
+            for user in message.users:
+                if user.user_id == self.client_id:
+                    logger.info(
+                        f"User {user.user_id} joined channel {message.channel_desc.channel_id}"
+                    )
+                    await socket.join_chat(
+                        clan_id=message.clan_id,
+                        channel_id=message.channel_desc.channel_id,
+                        channel_type=message.channel_desc.type.value,
+                        is_public=not message.channel_desc.channel_private,
+                    )
+                    break
 
     def on_give_coffee(
         self, handler: Callable[[api_pb2.GiveCoffeeEvent], None]
@@ -635,98 +768,142 @@ class MezonClient:
     def on_notification(
         self, handler: Callable[[realtime_pb2.Notifications], None]
     ) -> None:
+        """
+        Register a user-defined handler for notification events.
+
+        Default internal behavior (e.g. auto-handling certain notification
+        codes like friend requests) is always active via an auto-bound handler.
+        This method only wires an additional user callback.
+        """
+
         async def wrapper(message: realtime_pb2.Notifications) -> None:
-            notifications = message.notifications if message.notifications else []
-
-            for notification in notifications:
-                try:
-                    content = (
-                        json.loads(notification.content) if notification.content else {}
-                    )
-
-                    if notification.code == -2:
-                        session = self.session_manager.get_session()
-                        if session and session.token:
-                            username = content.get("username", "")
-                            sender_id = notification.sender_id
-
-                            if hasattr(self.api_client, "request_friend"):
-                                try:
-                                    await self.api_client.request_friend(
-                                        session.token, username, sender_id
-                                    )
-                                except Exception as err:
-                                    logger.warning(f"Failed to request friend: {err}")
-                except json.JSONDecodeError:
-                    logger.warning(
-                        f"Failed to parse notification content: {notification.content}"
-                    )
-                except Exception as err:
-                    logger.warning(f"Error processing notification: {err}")
-
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.NOTIFICATIONS, wrapper)
 
+    @auto_bind(Events.NOTIFICATIONS)
+    async def _handle_notifications_default(
+        self, message: realtime_pb2.Notifications
+    ) -> None:
+        """
+        Default handler for ``Notifications`` events.
+
+        Processes built-in behaviors such as auto-accepting certain friend
+        requests based on notification codes.
+        """
+        notifications = message.notifications if message.notifications else []
+
+        for notification in notifications:
+            try:
+                content = (
+                    json.loads(notification.content) if notification.content else {}
+                )
+
+                if notification.code == -2:
+                    session = self.session_manager.get_session()
+                    if session and session.token:
+                        username = content.get("username", "")
+                        sender_id = notification.sender_id
+
+                        if hasattr(self.api_client, "request_friend"):
+                            try:
+                                await self.api_client.request_friend(
+                                    session.token, username, sender_id
+                                )
+                            except Exception as err:
+                                logger.warning(f"Failed to request friend: {err}")
+            except json.JSONDecodeError:
+                logger.warning(
+                    f"Failed to parse notification content: {notification.content}"
+                )
+            except Exception as err:
+                logger.warning(f"Error processing notification: {err}")
+
     def on_add_clan_user(
         self, handler: Callable[[realtime_pb2.AddClanUserEvent], None]
     ) -> None:
+        """
+        Register a user-defined handler for ``AddClanUserEvent``.
+
+        Default internal behavior (joining clan chats and updating caches) is
+        always active via an auto-bound handler, even if this method is never
+        called. This method only wires an additional user callback.
+
+        Args:
+            handler: Callback to invoke when a clan user is added.
+        """
+
         async def wrapper(message: realtime_pb2.AddClanUserEvent) -> None:
-            if message.user and message.user.user_id == self.client_id:
-                socket = self.socket_manager.get_socket()
-                await socket.join_clan_chat(message.clan_id)
-
-                clan = self.clans.get(message.clan_id)
-                if not clan:
-                    clan_obj = Clan(
-                        clan_id=message.clan_id,
-                        clan_name="unknown",
-                        welcome_channel_id="",
-                        client=self,
-                        api_client=self.api_client,
-                        socket_manager=self.socket_manager,
-                        session_token=self.session_manager.get_session().token,
-                        message_queue=self.message_queue,
-                        message_db=self.message_db,
-                    )
-                    await clan_obj.load_channels()
-                    self.clans.set(message.clan_id, clan_obj)
-            else:
-                user_init_data = UserInitData(
-                    id=message.user.user_id if message.user else "",
-                    username=message.user.username if message.user else "",
-                    clan_nick="",
-                    clan_avatar="",
-                    avatar=message.user.avatar if message.user else "",
-                    display_name=message.user.display_name if message.user else "",
-                    dm_channel_id="",
-                )
-
-                clan = self.clans.get(message.clan_id)
-                if clan and message.user:
-                    user = User(
-                        user_init_data=user_init_data,
-                        clan=clan,
-                        message_queue=self.message_queue,
-                        socket_manager=self.socket_manager,
-                        channel_manager=self.chanel_manager,
-                    )
-                    clan.users.set(message.user.user_id, user)
-
-                clan_dm = self.clans.get("0")
-                if clan_dm and message.user:
-                    user = User(
-                        user_init_data=user_init_data,
-                        clan=clan_dm,
-                        message_queue=self.message_queue,
-                        socket_manager=self.socket_manager,
-                        channel_manager=self.chanel_manager,
-                    )
-                    clan_dm.users.set(message.user.user_id, user)
-
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.ADD_CLAN_USER, wrapper)
+
+    @auto_bind(Events.ADD_CLAN_USER)
+    async def _handle_add_clan_user_default(
+        self, message: realtime_pb2.AddClanUserEvent
+    ) -> None:
+        """
+        Default handler for ``AddClanUserEvent``.
+
+        This handler is automatically registered at client initialization and
+        is responsible for joining clan chats and populating user caches when
+        the current client or other users are added to a clan.
+
+        Args:
+            message: The ``AddClanUserEvent`` payload from the server.
+        """
+        if message.user and message.user.user_id == self.client_id:
+            socket = self.socket_manager.get_socket()
+            await socket.join_clan_chat(message.clan_id)
+
+            clan = self.clans.get(message.clan_id)
+            if not clan:
+                clan_obj = Clan(
+                    clan_id=message.clan_id,
+                    clan_name="unknown",
+                    welcome_channel_id="",
+                    client=self,
+                    api_client=self.api_client,
+                    socket_manager=self.socket_manager,
+                    session_token=self.session_manager.get_session().token,
+                    message_queue=self.message_queue,
+                    message_db=self.message_db,
+                )
+                await clan_obj.load_channels()
+                self.clans.set(message.clan_id, clan_obj)
+            return
+
+        user_init_data = UserInitData(
+            id=message.user.user_id if message.user else "",
+            username=message.user.username if message.user else "",
+            clan_nick="",
+            clan_avatar="",
+            avatar=message.user.avatar if message.user else "",
+            display_name=message.user.display_name if message.user else "",
+            dm_channel_id="",
+        )
+
+        clan = self.clans.get(message.clan_id)
+        if clan and message.user:
+            user = User(
+                user_init_data=user_init_data,
+                clan=clan,
+                message_queue=self.message_queue,
+                socket_manager=self.socket_manager,
+                channel_manager=self.chanel_manager,
+            )
+            clan.users.set(message.user.user_id, user)
+
+        clan_dm = self.clans.get("0")
+        if clan_dm and message.user:
+            user = User(
+                user_init_data=user_init_data,
+                clan=clan_dm,
+                message_queue=self.message_queue,
+                socket_manager=self.socket_manager,
+                channel_manager=self.chanel_manager,
+            )
+            clan_dm.users.set(message.user.user_id, user)
 
     def on_clan_event_created(
         self, handler: Callable[[api_pb2.CreateEventRequest], None]

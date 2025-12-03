@@ -969,11 +969,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def hashtag_dm_list(
-        self,
-        user_ids: List[str],
-        limit: int
-    ) -> Dict[str, Any]:
+    async def hashtag_dm_list(self, user_ids: List[str], limit: int) -> Dict[str, Any]:
         """
         Get hashtag DM list.
 
@@ -1000,10 +996,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_channel_setting(
-        self,
-        channel_id: str
-    ) -> Dict[str, Any]:
+    async def get_notification_channel_setting(self, channel_id: str) -> Dict[str, Any]:
         """
         Get notification settings for a channel.
 
@@ -1017,8 +1010,7 @@ class Socket:
         return None
 
     async def get_notification_category_setting(
-        self,
-        category_id: str
+        self, category_id: str
     ) -> Dict[str, Any]:
         """
         Get notification settings for a category.
@@ -1045,10 +1037,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_react_message(
-        self,
-        channel_id: str
-    ) -> Dict[str, Any]:
+    async def get_notification_react_message(self, channel_id: str) -> Dict[str, Any]:
         """
         Get notification settings for message reactions.
 
