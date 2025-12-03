@@ -234,6 +234,296 @@ async def get_voice_users(clan_id: str):
 # Run with: uvicorn main:app --reload
 ```
 
+## Interactive Messages (New!)
+
+The SDK now includes powerful builders for creating rich interactive messages with buttons, forms, and embeds.
+
+### ButtonBuilder
+
+Create interactive buttons with various styles:
+
+```python
+from mezon import ButtonBuilder, ButtonMessageStyle
+
+# Create buttons
+buttons = ButtonBuilder()
+buttons.add_button("accept", "Accept", ButtonMessageStyle.SUCCESS)
+buttons.add_button("decline", "Decline", ButtonMessageStyle.DANGER)
+buttons.add_button("help", "Help", ButtonMessageStyle.LINK, url="https://help.mezon.ai")
+
+# Use in a message
+from mezon.models import ChannelMessageContent
+
+channel = await client.channels.fetch(channel_id)
+content = ChannelMessageContent(
+    text="Do you accept the terms?",
+    components=[{"components": buttons.build()}]
+)
+await channel.send(content=content)
+```
+
+**Available Button Styles:**
+- `ButtonMessageStyle.PRIMARY` - Blue (primary action)
+- `ButtonMessageStyle.SECONDARY` - Gray (secondary action)
+- `ButtonMessageStyle.SUCCESS` - Green (confirm/accept)
+- `ButtonMessageStyle.DANGER` - Red (cancel/delete)
+- `ButtonMessageStyle.LINK` - Link button (requires URL)
+
+### InteractiveBuilder
+
+Build rich interactive forms with multiple field types:
+
+```python
+from mezon import InteractiveBuilder
+from mezon.models import SelectFieldOption, RadioFieldOption
+
+# Create interactive message
+interactive = InteractiveBuilder("User Survey")
+interactive.set_description("Please fill out this survey")
+interactive.set_color("#5865F2")
+interactive.set_author("Survey Bot", icon_url="https://example.com/icon.png")
+
+# Add input field
+interactive.add_input_field(
+    "username",
+    "Username",
+    placeholder="Enter your username",
+    description="Choose a unique username"
+)
+
+# Add select dropdown
+interactive.add_select_field(
+    "country",
+    "Country",
+    options=[
+        SelectFieldOption(label="United States", value="us"),
+        SelectFieldOption(label="United Kingdom", value="uk"),
+        SelectFieldOption(label="Vietnam", value="vn"),
+    ],
+    description="Select your country"
+)
+
+# Add radio buttons
+interactive.add_radio_field(
+    "plan",
+    "Subscription Plan",
+    options=[
+        RadioFieldOption(label="Free", value="free", description="Basic features"),
+        RadioFieldOption(label="Pro", value="pro", description="Advanced features"),
+    ],
+    description="Choose your plan"
+)
+
+# Add date picker
+interactive.add_datepicker_field(
+    "birthdate",
+    "Birth Date",
+    description="Select your birth date"
+)
+
+# Combine with buttons
+buttons = ButtonBuilder()
+buttons.add_button("submit", "Submit", ButtonMessageStyle.SUCCESS)
+buttons.add_button("cancel", "Cancel", ButtonMessageStyle.SECONDARY)
+
+# Send the interactive message
+content = ChannelMessageContent(
+    text="📝 Please complete this form:",
+    embed=[interactive.build()],
+    components=[{"components": buttons.build()}]
+)
+await channel.send(content=content)
+```
+
+**Available Field Types:**
+- `add_input_field()` - Text input (single line or textarea)
+- `add_select_field()` - Dropdown selection
+- `add_radio_field()` - Radio buttons (single or multiple choice)
+- `add_datepicker_field()` - Date picker
+- `add_animation()` - Animated content
+- `add_field()` - Simple text field
+
+### Customizing Embeds
+
+```python
+interactive = InteractiveBuilder("Custom Embed")
+
+# Set colors and styling
+interactive.set_color("#FF5733")
+interactive.set_title("My Custom Title")
+interactive.set_url("https://mezon.ai")
+
+# Add author information
+interactive.set_author(
+    "Author Name",
+    icon_url="https://example.com/author.png",
+    url="https://example.com/author"
+)
+
+# Add images
+interactive.set_thumbnail("https://example.com/thumb.png")
+interactive.set_image("https://example.com/banner.png", width="800", height="400")
+
+# Add footer
+interactive.set_footer("Footer Text", icon_url="https://example.com/footer.png")
+
+# Add simple text fields
+interactive.add_field("Field 1", "Value 1", inline=True)
+interactive.add_field("Field 2", "Value 2", inline=True)
+
+await channel.send(ChannelMessageContent(embed=[interactive.build()]))
+```
+
+## New Socket Methods ⚠️
+
+**Note**: Most socket methods are currently not functional due to protobuf limitations. See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for details.
+
+The following socket methods have been implemented but require protobuf updates to work:
+
+### Clan & Channel Management ⚠️ Not Yet Functional
+
+```python
+# Get socket instance
+socket = client.socket_manager.get_socket()
+
+# ⚠️ These methods require protobuf updates:
+
+# Check if clan name is available
+result = await socket.check_duplicate_clan_name("MyClanName")  # Not working - protobuf field missing
+
+# List all emojis in a clan
+emojis = await socket.list_clan_emoji_by_clan_id(clan_id)  # Not working - protobuf field missing
+
+# List all stickers in a clan
+stickers = await socket.list_clan_stickers_by_clan_id(clan_id)  # Not working - protobuf field missing
+
+# List all channels for the current user
+channels = await socket.list_channel_by_user_id()  # Not working - protobuf field missing
+
+# Get hashtag DM list
+dm_list = await socket.hashtag_dm_list(user_ids=["user1", "user2"], limit=50)  # Works
+```
+
+### Notification Settings ⚠️ Not Yet Functional
+
+```python
+# ⚠️ These methods require protobuf updates:
+
+# Get notification settings for a channel
+channel_settings = await socket.get_notification_channel_setting(channel_id)  # Not working
+
+# Get notification settings for a category
+category_settings = await socket.get_notification_category_setting(category_id)  # Not working
+
+# Get notification settings for a clan
+clan_settings = await socket.get_notification_clan_setting(clan_id)  # Not working
+
+# Get reaction notification settings
+react_settings = await socket.get_notification_react_message(channel_id)  # Not working
+```
+
+### User Status ⚠️ Not Yet Functional
+
+```python
+# ⚠️ This method requires protobuf updates:
+
+# Update user status
+await socket.update_status("Playing Mezon")  # Not working - protobuf structure issue
+
+# Clear status (appear offline)
+await socket.update_status(None)  # Not working - protobuf structure issue
+```
+
+**Why these don't work**: The Python protobuf definitions (`realtime_pb2.py`) don't have the required message fields for these methods. They need either:
+1. Updated protobuf definitions regenerated from latest `.proto` files
+2. Alternative implementation using RPC or different socket mechanism
+3. Server-side support for these protobuf messages
+
+See the [Implementation Status](IMPLEMENTATION_STATUS.md) document for detailed analysis and potential solutions.
+
+## New API Methods ✅
+
+All API methods have been implemented and tested successfully!
+
+### Transaction Management
+
+```python
+# Get transaction detail by ID
+session = client.session_manager.get_session()
+transaction = await client.api_client.list_transaction_detail(
+    bearer_token=session.token,
+    transaction_id="your_transaction_id_here"
+)
+```
+
+**Note**: Requires a valid transaction ID. Endpoint: `GET /v2/transaction/{transId}`
+
+### Quick Menu Management
+
+```python
+# Add quick menu access for a bot
+await client.api_client.add_quick_menu_access(
+    bearer_token=session.token,
+    body={
+        "clan_id": "123456789",
+        "menu_name": "My Command",
+        "action_msg": "!mycommand",
+        "bot_id": client.client_id,
+        "menu_type": 1,
+        "background": "https://example.com/bg.png"
+    }
+)
+
+# Delete quick menu access
+await client.api_client.delete_quick_menu_access(
+    bearer_token=session.token,
+    bot_id=client.client_id
+)
+```
+
+**Note**: Uses endpoint `/v2/quickmenuaccess`. Delete method uses query parameter `?bot_id={bot_id}`.
+
+### Media Playback
+
+```python
+# Play media in a voice channel
+await client.api_client.play_media(
+    bearer_token=session.token,
+    body={
+        "room_name": "voice_room_name",
+        "participant_identity": "user_identity",
+        "participant_name": "User Name",
+        "url": "https://example.com/audio.mp3",
+        "name": "audio.mp3"
+    }
+)
+```
+
+**Note**: Uses full URL endpoint `https://stn.mezon.ai/api/playmedia` for media streaming server.
+
+## Testing All Features
+
+A comprehensive test script is provided to verify all new features work correctly with actual API calls:
+
+```bash
+# Run the comprehensive feature test
+python test_all_features.py
+```
+
+The script will prompt you for:
+- **Bot/Client ID** - Your bot's client ID
+- **API Key** - Your API key
+- **Channel ID** - A test channel where messages will be sent
+- **Clan ID** - A clan ID for testing clan-related features
+
+**Test Results:**
+- ✅ **ButtonBuilder** - Fully working with all button styles
+- ✅ **InteractiveBuilder** - Fully working with all field types (input, select, radio, datepicker, animation)
+- ✅ **API Methods** - All 4 methods working (transactions, quick menu, media playback)
+- ⚠️ **Socket Methods** - Currently blocked due to protobuf limitations (see [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md))
+
+**Note**: Some socket methods (list emojis, stickers, channels, notifications) require protobuf updates and are currently not functional. See the [Implementation Status](IMPLEMENTATION_STATUS.md) document for details.
+
 ## Development Setup
 
 ### Prerequisites
@@ -374,15 +664,122 @@ await client.send_message(
 
 # Send tokens to users
 from mezon.models import ApiSentTokenRequest
+from mmn import AddTxResponse
 
-await client.send_token(
+# Basic token sending
+result: AddTxResponse = await client.send_token(
     ApiSentTokenRequest(
         receiver_id="user_id",
-        amount=100,
+        amount=1,  # Amount in tokens (automatically scaled to decimals)
         note="Thanks for your help!",
     )
 )
+
+# Check if transaction was successful
+if result.ok:
+    print(f"Token sent successfully! TX Hash: {result.tx_hash}")
+else:
+    print(f"Failed to send token: {result.error}")
+
+# With additional options
+result = await client.send_token(
+    ApiSentTokenRequest(
+        receiver_id="user_id",
+        amount=10,
+        note="Reward for participation",
+        sender_name="Bot Name",  # Optional: Custom sender name
+        extra_attribute="custom_data",  # Optional: Extra metadata
+    )
+)
 ```
+
+### Sending Tokens
+
+The `send_token` method allows you to send tokens to other users on the Mezon platform. The SDK automatically handles:
+- **ZK Proof Generation**: Generates zero-knowledge proofs for transaction authentication
+- **Nonce Management**: Automatically fetches and increments the nonce for each transaction
+- **Transaction Signing**: Signs transactions using ephemeral key pairs
+- **Error Handling**: Returns detailed error information if the transaction fails
+
+#### Basic Usage
+
+```python
+from mezon.models import ApiSentTokenRequest
+from mmn import AddTxResponse
+
+# Send tokens to a user
+result: AddTxResponse = await client.send_token(
+    ApiSentTokenRequest(
+        receiver_id="user_id",
+        amount=1,  # Amount in tokens
+        note="Thanks for your help!",
+    )
+)
+
+# Check transaction result
+if result.ok:
+    print(f"✅ Token sent! Transaction hash: {result.tx_hash}")
+else:
+    print(f"❌ Transaction failed: {result.error}")
+```
+
+#### Advanced Usage
+
+```python
+# Send tokens with additional metadata
+result = await client.send_token(
+    ApiSentTokenRequest(
+        receiver_id="user_id",
+        amount=10,
+        note="Reward for participation in event",
+        sender_name="My Bot",  # Optional: Custom sender display name
+        sender_id="custom_sender_id",  # Optional: Override sender ID
+        extra_attribute="event_reward_2024",  # Optional: Additional metadata
+        mmn_extra_info={  # Optional: MMN-specific extra info
+            "event_id": "12345",
+            "reward_type": "participation",
+        },
+    )
+)
+```
+
+#### Error Handling
+
+```python
+try:
+    result = await client.send_token(
+        ApiSentTokenRequest(
+            receiver_id="user_id",
+            amount=1,
+            note="Test transaction",
+        )
+    )
+    
+    if not result.ok:
+        # Handle transaction failure
+        logger.error(f"Transaction failed: {result.error}")
+        # result.error contains the error message
+    else:
+        # Transaction successful
+        logger.info(f"Transaction hash: {result.tx_hash}")
+        
+except ValueError as e:
+    # MMN client not initialized
+    logger.error(f"MMN client not available: {e}")
+except Exception as e:
+    # Other errors (network, validation, etc.)
+    logger.error(f"Unexpected error: {e}")
+```
+
+#### Requirements
+
+Before using `send_token`, ensure:
+1. The client has been logged in (`await client.login()`)
+2. MMN and ZK API URLs are configured (defaults are provided)
+3. The bot has sufficient token balance
+4. The receiver user ID is valid
+
+The SDK automatically initializes the MMN and ZK clients during login if the API URLs are provided.
 
 ### Event Handlers
 

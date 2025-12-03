@@ -15,7 +15,81 @@ limitations under the License.
 """
 
 import logging
+import sys
 from typing import Optional
+
+
+class ColoredFormatter(logging.Formatter):
+    """
+    Colored log formatter using ANSI escape codes.
+
+    Colors are applied to log levels for better visibility in the terminal.
+    """
+
+    COLORS = {
+        "DEBUG": "\033[36m",  # Cyan
+        "INFO": "\033[32m",  # Green
+        "WARNING": "\033[33m",  # Yellow
+        "ERROR": "\033[31m",  # Red
+        "CRITICAL": "\033[35m",  # Magenta
+    }
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+
+    def __init__(
+        self,
+        fmt: Optional[str] = None,
+        datefmt: Optional[str] = None,
+        use_colors: bool = True,
+    ):
+        super().__init__(fmt, datefmt)
+        self.use_colors = use_colors and self._supports_color()
+
+    def _supports_color(self) -> bool:
+        """
+        Check if the terminal supports color output.
+
+        Returns:
+            True if colors are supported, False otherwise
+        """
+        if not hasattr(sys.stderr, "isatty"):
+            return False
+        if not sys.stderr.isatty():
+            return False
+
+        try:
+            import platform
+
+            if platform.system() == "Windows":
+                import ctypes
+
+                kernel32 = ctypes.windll.kernel32
+                kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+        except Exception:
+            pass
+
+        return True
+
+    def format(self, record: logging.LogRecord) -> str:
+        """
+        Format the log record with colors.
+
+        Args:
+            record: The log record to format
+
+        Returns:
+            Formatted log string with ANSI color codes
+        """
+        if self.use_colors:
+            levelname_original = record.levelname
+            color = self.COLORS.get(record.levelname, "")
+            record.levelname = f"{color}{self.BOLD}{record.levelname}{self.RESET}"
+            formatted = super().format(record)
+            record.levelname = levelname_original
+
+            return formatted
+        else:
+            return super().format(record)
 
 
 def setup_logger(
@@ -23,6 +97,7 @@ def setup_logger(
     log_level: int = logging.INFO,
     log_format: Optional[str] = None,
     date_format: Optional[str] = None,
+    use_colors: bool = True,
 ) -> logging.Logger:
     """
     Configure and return a logger for the Mezon SDK.
@@ -32,6 +107,7 @@ def setup_logger(
         log_level: The logging level (default: logging.INFO)
         log_format: Custom log format string (optional)
         date_format: Custom date format string (optional)
+        use_colors: Enable colored output (default: True)
 
     Returns:
         Configured logger instance
@@ -48,7 +124,9 @@ def setup_logger(
         if date_format is None:
             date_format = "%Y-%m-%d %H:%M:%S"
 
-        formatter = logging.Formatter(log_format, datefmt=date_format)
+        formatter = ColoredFormatter(
+            log_format, datefmt=date_format, use_colors=use_colors
+        )
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
