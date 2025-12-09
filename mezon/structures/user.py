@@ -14,15 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, Any, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
+from mezon import ApiMessageAttachment, ChannelMessageAck, ChannelType, TypeMessage
 from mezon.messages.queue import MessageQueue
-from mezon.models import UserInitData
+from mezon.models import ChannelMessageContent, UserInitData, ApiChannelDescription
+from mezon.utils import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger
 
 if TYPE_CHECKING:
+    from mezon.managers.channel import ChannelManager
     from mezon.managers.socket import SocketManager
-    from .clan import Clan
 
 logger = get_logger(__name__)
 
@@ -38,10 +40,9 @@ class User:
     def __init__(
         self,
         user_init_data: UserInitData,
-        clan: "Clan",
         message_queue: MessageQueue,
         socket_manager: "SocketManager",
-        channel_manager: Optional[Any] = None,
+        channel_manager: "ChannelManager",
     ):
         """
         Initialize a User.
@@ -68,10 +69,37 @@ class User:
         self.clan_avatar = user_init_data.clan_avatar
         self.display_name = user_init_data.display_name
 
-        self.clan = clan
         self.channel_manager = channel_manager
         self.message_queue = message_queue
         self.socket_manager = socket_manager
+
+    async def create_dm_channel(self) -> ApiChannelDescription:
+        logger.debug(f"Creating DM channel for user {self.id}")
+        return await self.channel_manager.create_dm_channel(self.id)
+
+    async def send_dm_message(
+        self,
+        content: ChannelMessageContent,
+        code: int = TypeMessage.CHAT,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
+    ) -> ChannelMessageAck:
+        if not self.dm_channel_id:
+            dm_channel = await self.create_dm_channel()
+            self.dm_channel_id = dm_channel.channel_id
+
+        logger.debug(
+            f"Sending DM message to user {self.id} with channel {self.dm_channel_id}"
+        )
+
+        return await self.socket_manager.write_chat_message(
+            clan_id="0",
+            channel_id=self.dm_channel_id,
+            mode=convert_channeltype_to_channel_mode(ChannelType.CHANNEL_TYPE_DM),
+            is_public=False,
+            content=content,
+            code=code,
+            attachments=attachments,
+        )
 
     def __repr__(self) -> str:
         """String representation of the user."""

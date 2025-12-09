@@ -151,6 +151,9 @@ class MezonClient:
         self.channels: CacheManager[str, TextChannel] = CacheManager(
             self.get_channel_from_id, max_size=1000
         )
+        self.users: CacheManager[str, User] = CacheManager(
+            self.get_user_from_id, max_size=1000
+        )
 
         self.event_manager = EventManager()
         self.message_queue = MessageQueue()
@@ -390,6 +393,23 @@ class MezonClient:
         self.channels.set(channel_id, channel)
         return channel
 
+    async def get_user_from_id(self, user_id: str) -> User:
+        dm_channel = await self.chanel_manager.create_dm_channel(user_id)
+        if not dm_channel or not dm_channel.channel_id:
+            raise ValueError(f"User {user_id} not found in this clan {self.client_id}!")
+
+        user = User(
+            user_init_data=UserInitData(
+                id=user_id,
+                dm_channel_id=dm_channel.channel_id,
+            ),
+            message_queue=self.message_queue,
+            socket_manager=self.socket_manager,
+            channel_manager=self.chanel_manager,
+        )
+        self.users.set(user_id, user)
+        return user
+
     async def _init_channel_message_cache(
         self, message: api_pb2.ChannelMessage
     ) -> None:
@@ -430,38 +450,25 @@ class MezonClient:
             message: The channel message from protobuf
         """
 
-        clan = self.clans.get(message.clan_id or "0")
-        if not clan:
-            return
-
-        clan_dm = self.clans.get("0")
-
         all_dm_channels = self.chanel_manager.get_all_dm_channels()
-        user_cache = clan.users.get(message.sender_id)
+        user_cache = self.users.get(message.sender_id)
 
         if not user_cache and message.sender_id != self.client_id and all_dm_channels:
             for user_id, dm_channel_id in all_dm_channels.items():
                 if not user_id:
                     continue
 
-                user_data = UserInitData(
-                    sender_id=user_id,
-                    dmChannelId=dm_channel_id,
-                )
-
                 user = User(
-                    user_init_data=user_data,
-                    clan=clan,
+                    user_init_data=UserInitData(
+                        sender_id=user_id,
+                        dm_channel_id=dm_channel_id,
+                    ),
                     message_queue=self.message_queue,
                     socket_manager=self.socket_manager,
                     channel_manager=self.chanel_manager,
                 )
 
-                if clan_dm and not clan_dm.users.get(user_id):
-                    clan_dm.users.set(user_id, user)
-
-                if not clan.users.get(user_id):
-                    clan.users.set(user_id, user)
+                self.users.set(user_id, user)
 
         sender_dm_channel = (
             all_dm_channels.get(message.sender_id, "") if all_dm_channels else ""
@@ -470,16 +477,11 @@ class MezonClient:
 
         sender_user = User(
             user_init_data=user_data,
-            clan=clan,
             message_queue=self.message_queue,
             socket_manager=self.socket_manager,
             channel_manager=self.chanel_manager,
         )
-
-        clan.users.set(message.sender_id, sender_user)
-
-        if clan_dm:
-            clan_dm.users.set(message.sender_id, sender_user)
+        self.users.set(message.sender_id, sender_user)
 
     async def create_dm_channel(self, user_id: str) -> ApiChannelDescription:
         if not is_valid_user_id(user_id):
@@ -887,27 +889,14 @@ class MezonClient:
             dm_channel_id="",
         )
 
-        clan = self.clans.get(message.clan_id)
-        if clan and message.user:
-            user = User(
-                user_init_data=user_init_data,
-                clan=clan,
-                message_queue=self.message_queue,
-                socket_manager=self.socket_manager,
-                channel_manager=self.chanel_manager,
-            )
-            clan.users.set(message.user.user_id, user)
-
-        clan_dm = self.clans.get("0")
-        if clan_dm and message.user:
-            user = User(
-                user_init_data=user_init_data,
-                clan=clan_dm,
-                message_queue=self.message_queue,
-                socket_manager=self.socket_manager,
-                channel_manager=self.chanel_manager,
-            )
-            clan_dm.users.set(message.user.user_id, user)
+        user = User(
+            user_init_data=user_init_data,
+            message_queue=self.message_queue,
+            socket_manager=self.socket_manager,
+            channel_manager=self.chanel_manager,
+        )
+        self.users.set(message.user.user_id, user)
+        return user
 
     def on_clan_event_created(
         self, handler: Callable[[api_pb2.CreateEventRequest], None]
