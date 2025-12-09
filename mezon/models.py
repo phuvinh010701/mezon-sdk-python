@@ -1214,7 +1214,7 @@ class UserInitData(BaseModel):
             clan_avatar=getattr(message, "clan_avatar", ""),
             avatar=getattr(message, "avatar", ""),
             display_name=getattr(message, "display_name", ""),
-            dmChannelId=dm_channel_id,
+            dm_channel_id=dm_channel_id,
         )
 
     def to_user_dict(self) -> Dict[str, Any]:

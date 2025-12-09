@@ -1,6 +1,8 @@
 from typing import Optional, Dict
 
+from mezon import ApiChannelDescription
 import mezon.api as api
+from mezon.models import ApiCreateChannelDescRequest
 from .socket import SocketManager
 from .session import SessionManager
 from mezon.constants import ChannelType
@@ -65,3 +67,34 @@ class ChannelManager:
             Dictionary mapping user_id to channel_id, or None if not initialized
         """
         return self.all_dm_channels
+
+    async def create_dm_channel(self, user_id: str) -> ApiChannelDescription:
+        """
+        Create a DM channel for a user.
+
+        Args:
+            user_id: User ID to create a DM channel for
+
+        Returns:
+            ApiChannelDescription: Created channel description
+        """
+        channel_dm_desc = await self.api_client.create_channel_desc(
+            token=self.session_manager.get_session().token,
+            request=ApiCreateChannelDescRequest(
+                clan_id="",
+                channel_id="0",
+                category_id="0",
+                channel_type=ChannelType.CHANNEL_TYPE_DM,
+                user_ids=[user_id],
+                channel_private=1,
+            ),
+        )
+
+        await self.socket_manager.get_socket().join_chat(
+            clan_id=channel_dm_desc.clan_id,
+            channel_id=channel_dm_desc.channel_id,
+            channel_type=channel_dm_desc.type,
+            is_public=False,
+        )
+
+        return channel_dm_desc
