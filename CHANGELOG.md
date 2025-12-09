@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.3 (2025-12-09)
+
+### Bug Fixes
+
+- Add user caching and DM channel creation to MezonClient
+  ([`c4fb221`](https://github.com/phuvinh010701/mezon-sdk-python/commit/c4fb221f43947fd02bcc07af7b8bdda50a4b2a5a))
+
+
 ## v1.6.2 (2025-12-03)
 
 ### Bug Fixes
