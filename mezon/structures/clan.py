@@ -20,11 +20,10 @@ from mezon.api import MezonApi
 from mezon.constants.enum import ChannelType
 from mezon.managers.cache import CacheManager
 from mezon.messages.db import MessageDB
-from mezon.messages.queue import MessageQueue
+from mezon.models import ApiVoiceChannelUserList, ApiRoleListEventResponse
 from mezon.utils.logger import get_logger
 
 from .text_channel import TextChannel
-from .user import User
 
 if TYPE_CHECKING:
     from mezon.client import MezonClient
@@ -50,7 +49,6 @@ class Clan:
         api_client: MezonApi,
         socket_manager: "SocketManager",
         session_token: str,
-        message_queue: MessageQueue,
         message_db: MessageDB,
     ):
         """
@@ -64,7 +62,6 @@ class Clan:
             api_client: API client for making requests
             socket_manager: Socket manager for real-time communication
             session_token: Authentication session token
-            message_queue: Message queue for rate limiting
             message_db: Database for message caching
         """
         self.id = clan_id
@@ -76,7 +73,6 @@ class Clan:
 
         self.api_client = api_client
         self.socket_manager = socket_manager
-        self.message_queue = message_queue
         self.session_token = session_token
         self.message_db = message_db
 
@@ -89,36 +85,6 @@ class Clan:
         self.channels: CacheManager[str, TextChannel] = CacheManager(
             fetcher=channel_fetcher
         )
-
-        async def user_fetcher(user_id: str) -> User:
-            dm_channel = await self.client.create_dm_channel(user_id)
-            if not dm_channel or not dm_channel.get("channel_id"):
-                raise ValueError(f"User {user_id} not found in this clan {self.id}!")
-
-            user_data = {
-                "id": user_id,
-                "dmChannelId": dm_channel["channel_id"],
-            }
-            user = User(
-                user_data,
-                self,
-                self.message_queue,
-                self.socket_manager,
-                channel_manager=getattr(self.client, "chanel_manager", None),
-            )
-            self.users.set(user_id, user)
-            return user
-
-        self.users: CacheManager[str, User] = CacheManager(fetcher=user_fetcher)
-
-    def get_client_id(self) -> Optional[str]:
-        """
-        Get the client ID.
-
-        Returns:
-            The client ID if available, None otherwise
-        """
-        return getattr(self.client, "client_id", None)
 
     def __repr__(self) -> str:
         """String representation of the clan."""
@@ -145,7 +111,6 @@ class Clan:
                 init_channel_data=channel,
                 clan=self,
                 socket_manager=self.socket_manager,
-                message_queue=self.message_queue,
                 message_db=self.message_db,
             )
             self.channels.set(channel.channel_id, channel_obj)
@@ -160,7 +125,7 @@ class Clan:
         limit: int = 500,
         state: int = None,
         cursor: str = None,
-    ) -> Any:
+    ) -> ApiVoiceChannelUserList:
         if channel_type is None:
             channel_type = ChannelType.CHANNEL_TYPE_GMEET_VOICE
 
@@ -168,7 +133,7 @@ class Clan:
             logger.error("0 < limit <= 500")
             raise ValueError("0 < limit <= 500")
 
-        response = await self.api_client.list_channel_voice_users(
+        return await self.api_client.list_channel_voice_users(
             token=self.session_token,
             clan_id=self.id,
             channel_id=channel_id,
@@ -177,23 +142,6 @@ class Clan:
             state=state,
             cursor=cursor,
         )
-
-        result = {"voice_channel_users": []}
-
-        if not response or not response.get("voice_channel_users"):
-            return result
-
-        for user in response.get("voice_channel_users", []):
-            result["voice_channel_users"].append(
-                {
-                    "id": user.get("id"),
-                    "channel_id": user.get("channel_id"),
-                    "user_id": user.get("user_id"),
-                    "participant": user.get("participant"),
-                }
-            )
-
-        return result
 
     async def update_role(self, role_id: str, request: dict) -> bool:
         return await self.api_client.update_role(
@@ -207,7 +155,7 @@ class Clan:
         limit: str = None,
         state: str = None,
         cursor: str = None,
-    ) -> Any:
+    ) -> ApiRoleListEventResponse:
         return await self.api_client.list_roles(
             token=self.session_token,
             clan_id=self.id,

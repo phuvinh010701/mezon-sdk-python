@@ -25,7 +25,6 @@ from mezon.models import (
     ChannelMessageContent,
     ChannelMessageRaw,
 )
-from mezon.messages.queue import MessageQueue
 from mezon.utils.helper import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger
 
@@ -49,16 +48,14 @@ class Message:
         message_raw: ChannelMessageRaw,
         channel: "TextChannel",
         socket_manager: "SocketManager",
-        message_queue: MessageQueue,
     ):
         """
         Initialize a Message.
-        message_raw: ChannelMessageRaw,
+
         Args:
             message_raw: ChannelMessageRaw
             channel: The TextChannel this message belongs to
             socket_manager: Socket manager for sending updates
-            message_queue: Message queue for rate limiting
         """
         self.id: str = message_raw.id
         self.sender_id: str = message_raw.sender_id
@@ -72,7 +69,6 @@ class Message:
 
         self.channel = channel
         self.socket_manager = socket_manager
-        self.message_queue = message_queue
 
     async def reply(
         self,
@@ -100,41 +96,42 @@ class Message:
             Message acknowledgement
         """
 
-        async def reply_operation():
-            user = await self.channel.clan.users.fetch(self.sender_id)
+        user = await self.channel.clan.client.users.fetch(self.sender_id)
+        if not user:
+            raise ValueError(
+                f"User {self.sender_id} not found in this clan {self.channel.clan.id}!"
+            )
 
-            references: List[ApiMessageRef] = [
-                ApiMessageRef(
-                    message_ref_id=self.id,
-                    message_sender_id=self.sender_id,
-                    message_sender_username=user.clan_nick
-                    or user.display_name
-                    or user.username,
-                    mesages_sender_avatar=user.clan_avatar or user.avatar,
-                    content=json.dumps(self.content)
-                    if isinstance(self.content, dict)
-                    else str(self.content),
-                )
-            ]
+        references: List[ApiMessageRef] = [
+            ApiMessageRef(
+                message_ref_id=self.id,
+                message_sender_id=self.sender_id,
+                message_sender_username=user.clan_nick
+                or user.display_name
+                or user.username,
+                mesages_sender_avatar=user.clan_avatar or user.avatar,
+                content=json.dumps(self.content)
+                if isinstance(self.content, dict)
+                else str(self.content),
+            )
+        ]
 
-            data_reply = {
-                "clan_id": self.channel.clan.id,
-                "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
-                "is_public": not self.channel.is_private,
-                "channel_id": self.channel.id,
-                "content": content,
-                "mentions": mentions,
-                "attachments": attachments,
-                "references": references,
-                "anonymous_message": anonymous_message,
-                "mention_everyone": mention_everyone,
-                "code": code,
-                "topic_id": topic_id or self.topic_id,
-            }
+        data_reply = {
+            "clan_id": self.channel.clan.id,
+            "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
+            "is_public": not self.channel.is_private,
+            "channel_id": self.channel.id,
+            "content": content,
+            "mentions": mentions,
+            "attachments": attachments,
+            "references": references,
+            "anonymous_message": anonymous_message,
+            "mention_everyone": mention_everyone,
+            "code": code,
+            "topic_id": topic_id or self.topic_id,
+        }
 
-            return await self.socket_manager.write_chat_message(**data_reply)
-
-        return await self.message_queue.enqueue(reply_operation)
+        return await self.socket_manager.write_chat_message(**data_reply)
 
     async def update(
         self,
@@ -154,24 +151,20 @@ class Message:
         Returns:
             Update acknowledgement
         """
+        data_update = {
+            "clan_id": self.channel.clan.id,
+            "channel_id": self.channel.id,
+            "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
+            "is_public": not self.channel.is_private,
+            "message_id": self.id,
+            "content": content,
+            "mentions": mentions,
+            "attachments": attachments,
+            "topic_id": self.topic_id,
+            "is_update_msg_topic": self.topic_id is not None,
+        }
 
-        async def update_operation() -> ChannelMessageAck:
-            data_update = {
-                "clan_id": self.channel.clan.id,
-                "channel_id": self.channel.id,
-                "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
-                "is_public": not self.channel.is_private,
-                "message_id": self.id,
-                "content": content,
-                "mentions": mentions,
-                "attachments": attachments,
-                "topic_id": self.topic_id,
-                "is_update_msg_topic": self.topic_id is not None,
-            }
-
-            return await self.socket_manager.update_chat_message(**data_update)
-
-        return await self.message_queue.enqueue(update_operation)
+        return await self.socket_manager.update_chat_message(**data_update)
 
     async def react(
         self,
@@ -194,25 +187,21 @@ class Message:
         Returns:
             Reaction acknowledgement
         """
+        data_react = {
+            "id": id,
+            "clan_id": self.channel.clan.id,
+            "channel_id": self.channel.id,
+            "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
+            "is_public": not self.channel.is_private,
+            "message_id": self.id,
+            "emoji_id": emoji_id,
+            "emoji": emoji,
+            "count": count,
+            "message_sender_id": self.sender_id,
+            "action_delete": action_delete,
+        }
 
-        async def react_operation():
-            data_react = {
-                "id": id,
-                "clan_id": self.channel.clan.id,
-                "channel_id": self.channel.id,
-                "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
-                "is_public": not self.channel.is_private,
-                "message_id": self.id,
-                "emoji_id": emoji_id,
-                "emoji": emoji,
-                "count": count,
-                "message_sender_id": self.sender_id,
-                "action_delete": action_delete,
-            }
-
-            return await self.socket_manager.write_message_reaction(**data_react)
-
-        return await self.message_queue.enqueue(react_operation)
+        return await self.socket_manager.write_message_reaction(**data_react)
 
     async def delete(self) -> Any:
         """
@@ -221,19 +210,15 @@ class Message:
         Returns:
             Delete acknowledgement
         """
+        data_remove = {
+            "clan_id": self.channel.clan.id,
+            "channel_id": self.channel.id,
+            "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
+            "is_public": not self.channel.is_private,
+            "message_id": self.id,
+        }
 
-        async def delete_operation():
-            data_remove = {
-                "clan_id": self.channel.clan.id,
-                "channel_id": self.channel.id,
-                "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
-                "is_public": not self.channel.is_private,
-                "message_id": self.id,
-            }
-
-            return await self.socket_manager.remove_chat_message(**data_remove)
-
-        return await self.message_queue.enqueue(delete_operation)
+        return await self.socket_manager.remove_chat_message(**data_remove)
 
     def __repr__(self) -> str:
         """String representation of the message."""

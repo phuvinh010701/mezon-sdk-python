@@ -36,7 +36,6 @@ from mezon.managers.event import EventManager
 from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
-from mezon.messages.queue import MessageQueue
 from mezon.models import (
     ApiAuthenticateLogoutRequest,
     ApiAuthenticateRefreshRequest,
@@ -156,7 +155,6 @@ class MezonClient:
         )
 
         self.event_manager = EventManager()
-        self.message_queue = MessageQueue()
         self.message_db = MessageDB()
 
         logger.info(f"MezonClient initialized for client_id: {client_id}")
@@ -216,7 +214,6 @@ class MezonClient:
             use_ssl=url_components["use_ssl"],
             api_client=self.api_client,
             event_manager=self.event_manager,
-            message_queue=self.message_queue,
             mezon_client=self,
             message_db=self.message_db,
         )
@@ -387,7 +384,6 @@ class MezonClient:
             init_channel_data=channel_detail,
             clan=clan,
             socket_manager=self.socket_manager,
-            message_queue=self.message_queue,
             message_db=self.message_db,
         )
         self.channels.set(channel_id, channel)
@@ -403,7 +399,6 @@ class MezonClient:
                 id=user_id,
                 dm_channel_id=dm_channel.channel_id,
             ),
-            message_queue=self.message_queue,
             socket_manager=self.socket_manager,
             channel_manager=self.chanel_manager,
         )
@@ -432,7 +427,6 @@ class MezonClient:
             message_raw,
             channel,
             self.socket_manager,
-            self.message_queue,
         )
 
         channel.messages.set(message_raw.id, message_obj)
@@ -463,7 +457,6 @@ class MezonClient:
                         sender_id=user_id,
                         dm_channel_id=dm_channel_id,
                     ),
-                    message_queue=self.message_queue,
                     socket_manager=self.socket_manager,
                     channel_manager=self.chanel_manager,
                 )
@@ -477,7 +470,6 @@ class MezonClient:
 
         sender_user = User(
             user_init_data=user_data,
-            message_queue=self.message_queue,
             socket_manager=self.socket_manager,
             channel_manager=self.chanel_manager,
         )
@@ -495,7 +487,7 @@ class MezonClient:
                 clan_id="",
                 channel_id="0",
                 category_id="0",
-                channel_type=ChannelType.CHANNEL_TYPE_DM,
+                type=ChannelType.CHANNEL_TYPE_DM,
                 user_ids=[user_id],
                 channel_private=1,
             ),
@@ -507,20 +499,7 @@ class MezonClient:
                 channel_type=channel_dm.type,
                 is_public=False,
             )
-            clan_dm = self.clans.get("0")
-            if clan_dm:
-                user = User(
-                    user_init_data=UserInitData(
-                        id=user_id,
-                        dm_channel_id=channel_dm.channel_id,
-                    ),
-                    clan=clan_dm,
-                    message_queue=self.message_queue,
-                    socket_manager=self.socket_manager,
-                    channel_manager=self.chanel_manager,
-                )
-                clan_dm.users.set(user_id, user)
-                return channel_dm
+            return channel_dm
 
         return None
 
@@ -536,7 +515,6 @@ class MezonClient:
             ApiChannelDescription.from_protobuf(message),
             clan,
             self.socket_manager,
-            self.message_queue,
             self.message_db,
         )
         self.channels.set(message.channel_id, channel)
@@ -872,7 +850,6 @@ class MezonClient:
                     api_client=self.api_client,
                     socket_manager=self.socket_manager,
                     session_token=self.session_manager.get_session().token,
-                    message_queue=self.message_queue,
                     message_db=self.message_db,
                 )
                 await clan_obj.load_channels()
@@ -891,7 +868,6 @@ class MezonClient:
 
         user = User(
             user_init_data=user_init_data,
-            message_queue=self.message_queue,
             socket_manager=self.socket_manager,
             channel_manager=self.chanel_manager,
         )

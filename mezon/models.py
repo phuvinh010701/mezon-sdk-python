@@ -236,6 +236,85 @@ class ApiVoiceChannelUserList(BaseModel):
     voice_channel_users: Optional[List[ApiVoiceChannelUser]] = None
 
 
+class ApiPermission(BaseModel):
+    """Permission"""
+
+    id: Optional[str] = None
+    active: Optional[int] = None
+    description: Optional[str] = None
+    level: Optional[int] = None
+    scope: Optional[int] = None
+    slug: Optional[str] = None
+    title: Optional[str] = None
+
+
+class ApiPermissionList(BaseModel):
+    """Permission list"""
+
+    max_level_permission: Optional[int] = None
+    permissions: Optional[List[ApiPermission]] = None
+
+
+class RoleUserListRoleUser(BaseModel):
+    """Role user in role user list"""
+
+    id: Optional[str] = None
+    avatar_url: Optional[str] = None
+    display_name: Optional[str] = None
+    lang_tag: Optional[str] = None
+    location: Optional[str] = None
+    online: Optional[bool] = None
+    username: Optional[str] = None
+
+
+class ApiRoleUserList(BaseModel):
+    """Role user list"""
+
+    cursor: Optional[str] = None
+    role_users: Optional[List[RoleUserListRoleUser]] = None
+
+
+class ApiRole(BaseModel):
+    """Role"""
+
+    id: Optional[str] = None
+    title: Optional[str] = None
+    color: Optional[str] = None
+    role_icon: Optional[str] = None
+    slug: Optional[str] = None
+    description: Optional[str] = None
+    creator_id: Optional[str] = None
+    clan_id: Optional[str] = None
+    active: Optional[int] = None
+    display_online: Optional[int] = None
+    allow_mention: Optional[int] = None
+    max_level_permission: Optional[int] = None
+    order_role: Optional[int] = None
+    channel_ids: Optional[List[str]] = None
+    permission_list: Optional[ApiPermissionList] = None
+    role_user_list: Optional[ApiRoleUserList] = None
+    role_channel_active: Optional[int] = None
+
+
+class ApiRoleList(BaseModel):
+    """Role list"""
+
+    cacheable_cursor: Optional[str] = None
+    next_cursor: Optional[str] = None
+    prev_cursor: Optional[str] = None
+    roles: Optional[List[ApiRole]] = None
+
+
+class ApiRoleListEventResponse(BaseModel):
+    """Role list event response"""
+
+    clan_id: Optional[str] = None
+    cursor: Optional[str] = None
+    limit: Optional[str] = None
+    roles: Optional[ApiRoleList] = None
+    state: Optional[str] = None
+
+
 class ApiCreateChannelDescRequest(BaseModel):
     """Create channel description request"""
 

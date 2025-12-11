@@ -24,7 +24,6 @@ from mezon.models import (
     ChannelMessageContent,
 )
 from mezon.managers.cache import CacheManager
-from mezon.messages.queue import MessageQueue
 from mezon.messages.db import MessageDB
 
 from mezon.utils.helper import (
@@ -54,7 +53,6 @@ class TextChannel:
         init_channel_data: ApiChannelDescription,
         clan: "Clan",
         socket_manager: "SocketManager",
-        message_queue: MessageQueue,
         message_db: MessageDB,
     ):
         """
@@ -64,7 +62,6 @@ class TextChannel:
             init_channel_data: Channel description data
             clan: The clan this channel belongs to
             socket_manager: Socket manager for sending messages
-            message_queue: Message queue for rate limiting
             message_db: Database for message caching
         """
         self.id: Optional[str] = init_channel_data.channel_id
@@ -82,14 +79,13 @@ class TextChannel:
         )
 
         self.socket_manager = socket_manager
-        self.message_queue = message_queue
         self.message_db = message_db
 
     async def message_fetcher(self, message_id: str) -> "Message":
         message_data = await self.message_db.get_message_by_id(message_id, self.id)
         if not message_data:
             raise ValueError(f"Message {message_id} not found on channel {self.id}!")
-        return Message(message_data, self, self.socket_manager, self.message_queue)
+        return Message(message_data, self, self.socket_manager)
 
     async def send(
         self,
@@ -116,24 +112,20 @@ class TextChannel:
         Returns:
             The message acknowledgement
         """
-
-        async def send_operation() -> ChannelMessageAck:
-            data_send = {
-                "clan_id": self.clan.id,
-                "channel_id": self.id,
-                "mode": convert_channeltype_to_channel_mode(self.channel_type),
-                "is_public": not self.is_private,
-                "content": content,
-                "mentions": mentions,
-                "attachments": attachments,
-                "anonymous_message": anonymous_message,
-                "mention_everyone": mention_everyone,
-                "code": code,
-                "topic_id": topic_id,
-            }
-            return await self.socket_manager.write_chat_message(**data_send)
-
-        return await self.message_queue.enqueue(send_operation)
+        data_send = {
+            "clan_id": self.clan.id,
+            "channel_id": self.id,
+            "mode": convert_channeltype_to_channel_mode(self.channel_type),
+            "is_public": not self.is_private,
+            "content": content,
+            "mentions": mentions,
+            "attachments": attachments,
+            "anonymous_message": anonymous_message,
+            "mention_everyone": mention_everyone,
+            "code": code,
+            "topic_id": topic_id,
+        }
+        return await self.socket_manager.write_chat_message(**data_send)
 
     async def send_ephemeral(
         self,
@@ -164,44 +156,40 @@ class TextChannel:
         Returns:
             The message acknowledgement
         """
+        references: List[ApiMessageRef] = []
 
-        async def send_ephemeral_operation():
-            references: List[ApiMessageRef] = []
+        if reference_message_id:
+            message_ref = await self.messages.fetch(reference_message_id)
+            user = await self.clan.users.fetch(message_ref.sender_id)
 
-            if reference_message_id:
-                message_ref = await self.messages.fetch(reference_message_id)
-                user = await self.clan.users.fetch(message_ref.sender_id)
+            references = [
+                ApiMessageRef(
+                    message_ref_id=message_ref.id,
+                    message_sender_id=message_ref.sender_id,
+                    message_sender_username=user.clan_nick
+                    or user.display_name
+                    or user.username,
+                    mesages_sender_avatar=user.clan_avatar or user.avatar,
+                    content=str(message_ref.content),
+                )
+            ]
 
-                references = [
-                    ApiMessageRef(
-                        message_ref_id=message_ref.id,
-                        message_sender_id=message_ref.sender_id,
-                        message_sender_username=user.clan_nick
-                        or user.display_name
-                        or user.username,
-                        mesages_sender_avatar=user.clan_avatar or user.avatar,
-                        content=str(message_ref.content),
-                    )
-                ]
-
-            data_send = {
-                "receiver_id": receiver_id,
-                "clan_id": self.clan.id,
-                "channel_id": self.id,
-                "mode": convert_channeltype_to_channel_mode(self.channel_type),
-                "is_public": not self.is_private,
-                "content": content,
-                "mentions": mentions,
-                "attachments": attachments,
-                "references": references,
-                "anonymous_message": anonymous_message,
-                "mention_everyone": mention_everyone,
-                "code": code,
-                "topic_id": topic_id,
-            }
-            return await self.socket_manager.write_ephemeral_message(**data_send)
-
-        return await self.message_queue.enqueue(send_ephemeral_operation)
+        data_send = {
+            "receiver_id": receiver_id,
+            "clan_id": self.clan.id,
+            "channel_id": self.id,
+            "mode": convert_channeltype_to_channel_mode(self.channel_type),
+            "is_public": not self.is_private,
+            "content": content,
+            "mentions": mentions,
+            "attachments": attachments,
+            "references": references,
+            "anonymous_message": anonymous_message,
+            "mention_everyone": mention_everyone,
+            "code": code,
+            "topic_id": topic_id,
+        }
+        return await self.socket_manager.write_ephemeral_message(**data_send)
 
     def __repr__(self) -> str:
         """String representation of the channel."""
