@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.6.4 (2025-12-11)
+
+### Bug Fixes
+
+- Remove MessageQueue from MezonClient and related structures; add new ApiPermission and ApiRole
+  models
+  ([`af66d3f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/af66d3fc02798d635fdf5f1d4f7f6eb6d7f9180e))
+
+
 ## v1.6.3 (2025-12-09)
 
 ### Bug Fixes
