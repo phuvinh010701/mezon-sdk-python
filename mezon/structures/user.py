@@ -17,7 +17,6 @@ limitations under the License.
 from typing import Optional, TYPE_CHECKING
 
 from mezon import ApiMessageAttachment, ChannelMessageAck, ChannelType, TypeMessage
-from mezon.messages.queue import MessageQueue
 from mezon.models import ChannelMessageContent, UserInitData, ApiChannelDescription
 from mezon.utils import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger
@@ -40,7 +39,6 @@ class User:
     def __init__(
         self,
         user_init_data: UserInitData,
-        message_queue: MessageQueue,
         socket_manager: "SocketManager",
         channel_manager: "ChannelManager",
     ):
@@ -56,10 +54,8 @@ class User:
                 - display_name: Display name (optional)
                 - avatar: Avatar URL (optional)
                 - dm_channel_id: DM channel ID (optional)
-            clan: The clan this user belongs to
-            message_queue: Message queue for rate limiting
             socket_manager: Socket manager for sending messages
-            channel_manager: Channel manager for creating DM channels (optional)
+            channel_manager: Channel manager for creating DM channels
         """
         self.id = user_init_data.id
         self.avatar = user_init_data.avatar
@@ -70,7 +66,6 @@ class User:
         self.display_name = user_init_data.display_name
 
         self.channel_manager = channel_manager
-        self.message_queue = message_queue
         self.socket_manager = socket_manager
 
     async def create_dm_channel(self) -> ApiChannelDescription:

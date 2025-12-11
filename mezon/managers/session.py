@@ -1,6 +1,10 @@
 from typing import Optional
 from mezon.api.mezon_api import MezonApi
-from mezon.models import ApiAccountApp, ApiAuthenticateRequest
+from mezon.models import (
+    ApiAccountApp,
+    ApiAuthenticateLogoutRequest,
+    ApiAuthenticateRequest,
+)
 from mezon.session import Session
 
 
@@ -18,5 +22,17 @@ class SessionManager:
             basic_auth_password=client_secret,
             body=ApiAuthenticateRequest(
                 account=ApiAccountApp(appid=client_id, token=client_secret)
+            ),
+        )
+
+    async def logout(self):
+        if not self.session:
+            return
+
+        return await self.api_client.mezon_authenticate_logout(
+            bearer_token=self.session.token,
+            body=ApiAuthenticateLogoutRequest(
+                token=self.session.token,
+                refresh_token=self.session.refresh_token,
             ),
         )

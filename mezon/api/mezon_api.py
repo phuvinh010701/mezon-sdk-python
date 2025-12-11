@@ -32,6 +32,8 @@ from ..models import (
     ApiUpdateMessageRequest,
     ApiRegisterStreamingChannelRequest,
     ApiSentTokenRequest,
+    ApiVoiceChannelUserList,
+    ApiRoleListEventResponse,
 )
 
 
@@ -53,8 +55,8 @@ class MezonApi:
         "list_roles": "/v2/roles",
         "delete_message": "/v2/messages/{message_id}",
         "update_message": "/v2/messages/{message_id}",
-        "send_token": "/v2/token/send",
-        "register_streaming_channel": "/v2/streaming/register",
+        "send_token": "/v2/sendtoken",
+        "register_streaming_channel": "/v2/streaming-channels",
         "add_quick_menu_access": "/v2/quickmenuaccess",
         "delete_quick_menu_access": "/v2/quickmenuaccess",
     }
@@ -110,7 +112,7 @@ class MezonApi:
         headers = build_headers(bearer_token=bearer_token)
         return await self.call_api(
             method="GET",
-            url_path="/healthcheck",
+            url_path=self.ENDPOINTS["healthcheck"],
             query_params={},
             body=None,
             headers=headers,
@@ -324,7 +326,7 @@ class MezonApi:
         limit: int = 500,
         state: Optional[int] = None,
         cursor: Optional[str] = None,
-    ) -> Any:
+    ) -> ApiVoiceChannelUserList:
         headers = build_headers(bearer_token=token)
         params = build_params(
             params={
@@ -344,7 +346,7 @@ class MezonApi:
             body=None,
             headers=headers,
         )
-        return response
+        return ApiVoiceChannelUserList.model_validate(response)
 
     async def update_role(
         self,
@@ -371,7 +373,7 @@ class MezonApi:
         limit: Optional[str] = None,
         state: Optional[str] = None,
         cursor: Optional[str] = None,
-    ) -> Any:
+    ) -> ApiRoleListEventResponse:
         headers = build_headers(bearer_token=token)
         params = build_params(
             params={

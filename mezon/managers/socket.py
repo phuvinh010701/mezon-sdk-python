@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 from mezon.api import MezonApi
 from mezon.socket import WebSocketAdapterPb, Socket
 from mezon.managers.event import EventManager
-from mezon.messages import MessageQueue, MessageDB
+from mezon.messages import MessageDB
 from mezon.structures.clan import Clan
 
 from mezon.models import (
@@ -33,7 +33,6 @@ class SocketManager:
         use_ssl: bool,
         api_client: MezonApi,
         event_manager: EventManager,
-        message_queue: MessageQueue,
         mezon_client: "MezonClient",
         message_db: MessageDB,
     ):
@@ -42,7 +41,6 @@ class SocketManager:
         self.use_ssl = use_ssl
         self.api_client = api_client
         self.event_manager = event_manager
-        self.message_queue = message_queue
         self.mezon_client = mezon_client
         self.message_db = message_db
         self.adapter = WebSocketAdapterPb()
@@ -73,9 +71,7 @@ class SocketManager:
         clans.clandesc.append(
             ApiClanDesc(clan_id="0", clan_name="DM", welcome_channel_id="0")
         )
-        await asyncio.gather(
-            self.join_all_clans(clans.clandesc, token),
-        )
+        await asyncio.gather(self.join_all_clans(clans.clandesc, token), self.join_dm())
 
     async def join_all_clans(self, clans: List[ApiClanDesc], token: str) -> None:
         async with asyncio.TaskGroup() as tg:
@@ -90,7 +86,6 @@ class SocketManager:
                     api_client=self.api_client,
                     socket_manager=self,
                     session_token=token,
-                    message_queue=self.message_queue,
                     message_db=self.message_db,
                 )
                 self.mezon_client.clans.set(clan_desc.clan_id, clan)
@@ -258,6 +253,24 @@ class SocketManager:
             count=count,
             message_sender_id=message_sender_id,
             action_delete=action_delete,
+        )
+
+    async def remove_chat_message(
+        self,
+        clan_id: str,
+        channel_id: str,
+        mode: int,
+        is_public: bool,
+        message_id: str,
+        topic_id: Optional[str] = None,
+    ) -> ChannelMessageAck:
+        return await self.socket.remove_chat_message(
+            clan_id=clan_id,
+            channel_id=channel_id,
+            mode=mode,
+            is_public=is_public,
+            message_id=message_id,
+            topic_id=topic_id,
         )
 
     async def disconnect(self) -> None:
