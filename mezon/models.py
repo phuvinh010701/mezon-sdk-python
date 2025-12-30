@@ -134,8 +134,17 @@ class ApiChannelDescription(BaseModel):
         cls,
         message: realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent,
     ) -> "ApiChannelDescription":
+        channel_type_value = None
+        if message.HasField("channel_type"):
+            channel_type_value = message.channel_type.value
+
         json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
-        return cls.model_validate_json(json_data)
+        data_dict = json.loads(json_data)
+
+        if channel_type_value is not None:
+            data_dict["type"] = channel_type_value
+
+        return cls.model_validate(data_dict)
 
 
 class ApiChannelDescList(BaseModel):

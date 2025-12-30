@@ -31,11 +31,11 @@ from mezon.utils.helper import (
 )
 from mezon.constants import TypeMessage
 from mezon.utils.logger import get_logger
+from .message import Message
 
 if TYPE_CHECKING:
     from mezon.managers.socket import SocketManager
     from .clan import Clan
-    from .message import Message
 
 logger = get_logger(__name__)
 

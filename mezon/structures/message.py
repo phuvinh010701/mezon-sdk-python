@@ -79,7 +79,7 @@ class Message:
         anonymous_message: Optional[bool] = None,
         topic_id: Optional[str] = None,
         code: Optional[int] = None,
-    ) -> Any:
+    ) -> ChannelMessageAck:
         """
         Reply to this message.
 
@@ -216,6 +216,7 @@ class Message:
             "mode": convert_channeltype_to_channel_mode(self.channel.channel_type),
             "is_public": not self.channel.is_private,
             "message_id": self.id,
+            "topic_id": self.topic_id,
         }
 
         return await self.socket_manager.remove_chat_message(**data_remove)

@@ -71,7 +71,7 @@ class SocketManager:
         clans.clandesc.append(
             ApiClanDesc(clan_id="0", clan_name="DM", welcome_channel_id="0")
         )
-        await asyncio.gather(self.join_all_clans(clans.clandesc, token), self.join_dm())
+        await self.join_all_clans(clans.clandesc, token)
 
     async def join_all_clans(self, clans: List[ApiClanDesc], token: str) -> None:
         async with asyncio.TaskGroup() as tg:
@@ -89,9 +89,6 @@ class SocketManager:
                     message_db=self.message_db,
                 )
                 self.mezon_client.clans.set(clan_desc.clan_id, clan)
-
-    async def join_dm(self, default_dm_channel_id: str = "0") -> None:
-        await self.socket.join_clan_chat(default_dm_channel_id)
 
     async def write_ephemeral_message(
         self,

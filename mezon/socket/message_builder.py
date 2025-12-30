@@ -35,7 +35,7 @@ class ChannelMessageBuilder:
     """
 
     @staticmethod
-    def _prepare_content(content: ChannelMessageContent) -> str:
+    def _prepare_content(content: ChannelMessageContent | dict) -> str:
         """
         Prepare message content for sending.
 
@@ -45,6 +45,8 @@ class ChannelMessageBuilder:
         Returns:
             Serialized content string
         """
+        if isinstance(content, dict):
+            return json.dumps(content)
         return json.dumps(content.model_dump(by_alias=True))
 
     @staticmethod
