@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.5 (2025-12-30)
+
+### Bug Fixes
+
+- Enhance MezonClient with additional event handlers and improve channel management logic
+  ([`fe13897`](https://github.com/phuvinh010701/mezon-sdk-python/commit/fe13897f34094011ea6cf7ec0d4bce48dd1a0991))
+
+
 ## v1.6.4 (2025-12-11)
 
 ### Bug Fixes
