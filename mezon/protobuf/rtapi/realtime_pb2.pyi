@@ -134,6 +134,7 @@ class Envelope(google.protobuf.message.Message):
     ADD_FRIEND_FIELD_NUMBER: builtins.int
     BAN_USER_EVENT_FIELD_NUMBER: builtins.int
     ACTIVE_ARCHIVED_THREAD_FIELD_NUMBER: builtins.int
+    ALLOW_ANONYMOUS_EVENT_FIELD_NUMBER: builtins.int
     cid: builtins.str
     @property
     def channel(self) -> Global___Channel:
@@ -489,6 +490,10 @@ class Envelope(google.protobuf.message.Message):
     def active_archived_thread(self) -> Global___ActiveArchivedThread:
         """Active archive thread"""
 
+    @property
+    def allow_anonymous_event(self) -> Global___AllowAnonymousEvent:
+        """Config Allow Anonymous"""
+
     def __init__(
         self,
         *,
@@ -582,10 +587,11 @@ class Envelope(google.protobuf.message.Message):
         add_friend: Global___AddFriend | None = ...,
         ban_user_event: Global___BannedUserEvent | None = ...,
         active_archived_thread: Global___ActiveArchivedThread | None = ...,
+        allow_anonymous_event: Global___AllowAnonymousEvent | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing.Literal["message", b"message"]) -> typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread"] | None: ...
+    def HasField(self, field_name: typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing.Literal["message", b"message"]) -> typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread", "allow_anonymous_event"] | None: ...
 
 Global___Envelope: typing_extensions.TypeAlias = Envelope
 
@@ -608,10 +614,12 @@ class BannedUserEvent(google.protobuf.message.Message):
     BANNER_ID_FIELD_NUMBER: builtins.int
     CHANNEL_ID_FIELD_NUMBER: builtins.int
     CLAN_ID_FIELD_NUMBER: builtins.int
+    BAN_TIME_FIELD_NUMBER: builtins.int
     action: builtins.int
     banner_id: builtins.str
     channel_id: builtins.str
     clan_id: builtins.str
+    ban_time: builtins.int
     @property
     def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
     def __init__(
@@ -622,8 +630,9 @@ class BannedUserEvent(google.protobuf.message.Message):
         banner_id: builtins.str = ...,
         channel_id: builtins.str = ...,
         clan_id: builtins.str = ...,
+        ban_time: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["action", b"action", "banner_id", b"banner_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_ids", b"user_ids"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["action", b"action", "ban_time", b"ban_time", "banner_id", b"banner_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_ids", b"user_ids"]) -> None: ...
 
 Global___BannedUserEvent: typing_extensions.TypeAlias = BannedUserEvent
 
@@ -2907,6 +2916,7 @@ class ClanUpdatedEvent(google.protobuf.message.Message):
     IS_COMMUNITY_FIELD_NUMBER: builtins.int
     ABOUT_FIELD_NUMBER: builtins.int
     DESCRIPTION_FIELD_NUMBER: builtins.int
+    PREVENT_ANONYMOUS_FIELD_NUMBER: builtins.int
     clan_id: builtins.str
     """clan id"""
     clan_name: builtins.str
@@ -2931,6 +2941,8 @@ class ClanUpdatedEvent(google.protobuf.message.Message):
     """about"""
     description: builtins.str
     """description"""
+    prevent_anonymous: builtins.bool
+    """prevent anonymous"""
     def __init__(
         self,
         *,
@@ -2946,8 +2958,9 @@ class ClanUpdatedEvent(google.protobuf.message.Message):
         is_community: builtins.bool = ...,
         about: builtins.str = ...,
         description: builtins.str = ...,
+        prevent_anonymous: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]) -> None: ...
 
 Global___ClanUpdatedEvent: typing_extensions.TypeAlias = ClanUpdatedEvent
 
@@ -3022,6 +3035,24 @@ class UserProfileUpdatedEvent(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["about_me", b"about_me", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "encrypt_private_key", b"encrypt_private_key", "user_id", b"user_id"]) -> None: ...
 
 Global___UserProfileUpdatedEvent: typing_extensions.TypeAlias = UserProfileUpdatedEvent
+
+@typing.final
+class ConfirmLinkMezonOTPData(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    TYPE_FIELD_NUMBER: builtins.int
+    VALUE_FIELD_NUMBER: builtins.int
+    type: builtins.int
+    value: builtins.str
+    def __init__(
+        self,
+        *,
+        type: builtins.int = ...,
+        value: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["type", b"type", "value", b"value"]) -> None: ...
+
+Global___ConfirmLinkMezonOTPData: typing_extensions.TypeAlias = ConfirmLinkMezonOTPData
 
 @typing.final
 class UserProfileRedis(google.protobuf.message.Message):
@@ -3129,6 +3160,7 @@ class CheckNameExistedEvent(google.protobuf.message.Message):
     CONDITION_ID_FIELD_NUMBER: builtins.int
     EXIST_FIELD_NUMBER: builtins.int
     TYPE_FIELD_NUMBER: builtins.int
+    CLAN_ID_FIELD_NUMBER: builtins.int
     name: builtins.str
     """name"""
     condition_id: builtins.str
@@ -3137,6 +3169,8 @@ class CheckNameExistedEvent(google.protobuf.message.Message):
     """is exist"""
     type: builtins.int
     """type check"""
+    clan_id: builtins.str
+    """clan id"""
     def __init__(
         self,
         *,
@@ -3144,8 +3178,9 @@ class CheckNameExistedEvent(google.protobuf.message.Message):
         condition_id: builtins.str = ...,
         exist: builtins.bool = ...,
         type: builtins.int = ...,
+        clan_id: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["condition_id", b"condition_id", "exist", b"exist", "name", b"name", "type", b"type"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "condition_id", b"condition_id", "exist", b"exist", "name", b"name", "type", b"type"]) -> None: ...
 
 Global___CheckNameExistedEvent: typing_extensions.TypeAlias = CheckNameExistedEvent
 
@@ -3899,3 +3934,82 @@ class ActiveArchivedThread(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]) -> None: ...
 
 Global___ActiveArchivedThread: typing_extensions.TypeAlias = ActiveArchivedThread
+
+@typing.final
+class AllowAnonymousEvent(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: builtins.int
+    ALLOW_FIELD_NUMBER: builtins.int
+    clan_id: builtins.str
+    allow: builtins.bool
+    def __init__(
+        self,
+        *,
+        clan_id: builtins.str = ...,
+        allow: builtins.bool = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["allow", b"allow", "clan_id", b"clan_id"]) -> None: ...
+
+Global___AllowAnonymousEvent: typing_extensions.TypeAlias = AllowAnonymousEvent
+
+@typing.final
+class FcmDataPayload(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    COMMAND_TYPE_FIELD_NUMBER: builtins.int
+    RECEIVER_ID_FIELD_NUMBER: builtins.int
+    TITLE_FIELD_NUMBER: builtins.int
+    BODY_FIELD_NUMBER: builtins.int
+    USER_ROLE_IDS_FIELD_NUMBER: builtins.int
+    USER_SENT_IDS_FIELD_NUMBER: builtins.int
+    PRIORITY_FIELD_NUMBER: builtins.int
+    MESSAGE_FIELD_NUMBER: builtins.int
+    IS_E2EE_FIELD_NUMBER: builtins.int
+    IS_DM_FIELD_NUMBER: builtins.int
+    MENTION_HERE_FIELD_NUMBER: builtins.int
+    MENTIONS_FIELD_NUMBER: builtins.int
+    REFERENCES_FIELD_NUMBER: builtins.int
+    ATTACHMENTS_FIELD_NUMBER: builtins.int
+    command_type: builtins.int
+    receiver_id: builtins.str
+    title: builtins.str
+    body: builtins.str
+    priority: builtins.int
+    is_e2ee: builtins.bool
+    is_dm: builtins.bool
+    mention_here: builtins.bool
+    @property
+    def user_role_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    @property
+    def user_sent_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    @property
+    def message(self) -> api.api_pb2.ChannelMessage: ...
+    @property
+    def mentions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageMention]: ...
+    @property
+    def references(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageRef]: ...
+    @property
+    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageAttachment]: ...
+    def __init__(
+        self,
+        *,
+        command_type: builtins.int = ...,
+        receiver_id: builtins.str = ...,
+        title: builtins.str = ...,
+        body: builtins.str = ...,
+        user_role_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        user_sent_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        priority: builtins.int = ...,
+        message: api.api_pb2.ChannelMessage | None = ...,
+        is_e2ee: builtins.bool = ...,
+        is_dm: builtins.bool = ...,
+        mention_here: builtins.bool = ...,
+        mentions: collections.abc.Iterable[api.api_pb2.MessageMention] | None = ...,
+        references: collections.abc.Iterable[api.api_pb2.MessageRef] | None = ...,
+        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment] | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["message", b"message"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["attachments", b"attachments", "body", b"body", "command_type", b"command_type", "is_dm", b"is_dm", "is_e2ee", b"is_e2ee", "mention_here", b"mention_here", "mentions", b"mentions", "message", b"message", "priority", b"priority", "receiver_id", b"receiver_id", "references", b"references", "title", b"title", "user_role_ids", b"user_role_ids", "user_sent_ids", b"user_sent_ids"]) -> None: ...
+
+Global___FcmDataPayload: typing_extensions.TypeAlias = FcmDataPayload

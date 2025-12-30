@@ -84,7 +84,7 @@ class ChannelManager:
                 clan_id="",
                 channel_id="0",
                 category_id="0",
-                channel_type=ChannelType.CHANNEL_TYPE_DM,
+                type=ChannelType.CHANNEL_TYPE_DM,
                 user_ids=[user_id],
                 channel_private=1,
             ),

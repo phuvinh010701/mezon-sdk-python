@@ -789,6 +789,7 @@ class MessageAttachment(google.protobuf.message.Message):
     WIDTH_FIELD_NUMBER: builtins.int
     HEIGHT_FIELD_NUMBER: builtins.int
     THUMBNAIL_FIELD_NUMBER: builtins.int
+    DURATION_FIELD_NUMBER: builtins.int
     filename: builtins.str
     """Attachment file name"""
     size: builtins.int
@@ -803,6 +804,8 @@ class MessageAttachment(google.protobuf.message.Message):
     """Attachment width"""
     thumbnail: builtins.str
     """thumbnail"""
+    duration: builtins.int
+    """duration for video"""
     def __init__(
         self,
         *,
@@ -813,8 +816,9 @@ class MessageAttachment(google.protobuf.message.Message):
         width: builtins.int = ...,
         height: builtins.int = ...,
         thumbnail: builtins.str = ...,
+        duration: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["filename", b"filename", "filetype", b"filetype", "height", b"height", "size", b"size", "thumbnail", b"thumbnail", "url", b"url", "width", b"width"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["duration", b"duration", "filename", b"filename", "filetype", b"filetype", "height", b"height", "size", b"size", "thumbnail", b"thumbnail", "url", b"url", "width", b"width"]) -> None: ...
 
 Global___MessageAttachment: typing_extensions.TypeAlias = MessageAttachment
 
@@ -3289,7 +3293,6 @@ class ChannelMessageHeader(google.protobuf.message.Message):
     REFERENCE_FIELD_NUMBER: builtins.int
     MENTION_FIELD_NUMBER: builtins.int
     REACTION_FIELD_NUMBER: builtins.int
-    REPLIERS_FIELD_NUMBER: builtins.int
     id: builtins.str
     """the message id"""
     timestamp_seconds: builtins.int
@@ -3306,10 +3309,6 @@ class ChannelMessageHeader(google.protobuf.message.Message):
     """the mention"""
     reaction: builtins.str
     """the reactions"""
-    @property
-    def repliers(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
-        """"""
-
     def __init__(
         self,
         *,
@@ -3321,9 +3320,8 @@ class ChannelMessageHeader(google.protobuf.message.Message):
         reference: builtins.str = ...,
         mention: builtins.str = ...,
         reaction: builtins.str = ...,
-        repliers: collections.abc.Iterable[builtins.str] | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["attachment", b"attachment", "content", b"content", "id", b"id", "mention", b"mention", "reaction", b"reaction", "reference", b"reference", "repliers", b"repliers", "sender_id", b"sender_id", "timestamp_seconds", b"timestamp_seconds"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["attachment", b"attachment", "content", b"content", "id", b"id", "mention", b"mention", "reaction", b"reaction", "reference", b"reference", "sender_id", b"sender_id", "timestamp_seconds", b"timestamp_seconds"]) -> None: ...
 
 Global___ChannelMessageHeader: typing_extensions.TypeAlias = ChannelMessageHeader
 
@@ -3489,16 +3487,7 @@ class ChannelDescList(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     CHANNELDESC_FIELD_NUMBER: builtins.int
-    NEXT_CURSOR_FIELD_NUMBER: builtins.int
-    PREV_CURSOR_FIELD_NUMBER: builtins.int
-    CACHEABLE_CURSOR_FIELD_NUMBER: builtins.int
     PAGE_FIELD_NUMBER: builtins.int
-    next_cursor: builtins.str
-    """The cursor to send when retrieving the next page, if any."""
-    prev_cursor: builtins.str
-    """The cursor to send when retrieving the previous page, if any."""
-    cacheable_cursor: builtins.str
-    """Cacheable cursor to list newer channel description. Durable and designed to be stored, unlike next/prev cursors."""
     page: builtins.int
     """Page thread"""
     @property
@@ -3509,12 +3498,9 @@ class ChannelDescList(google.protobuf.message.Message):
         self,
         *,
         channeldesc: collections.abc.Iterable[Global___ChannelDescription] | None = ...,
-        next_cursor: builtins.str = ...,
-        prev_cursor: builtins.str = ...,
-        cacheable_cursor: builtins.str = ...,
         page: builtins.int = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["cacheable_cursor", b"cacheable_cursor", "channeldesc", b"channeldesc", "next_cursor", b"next_cursor", "page", b"page", "prev_cursor", b"prev_cursor"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["channeldesc", b"channeldesc", "page", b"page"]) -> None: ...
 
 Global___ChannelDescList: typing_extensions.TypeAlias = ChannelDescList
 
@@ -7003,6 +6989,8 @@ class ChannelAppResponse(google.protobuf.message.Message):
     CHANNEL_ID_FIELD_NUMBER: builtins.int
     APP_ID_FIELD_NUMBER: builtins.int
     APP_URL_FIELD_NUMBER: builtins.int
+    APP_NAME_FIELD_NUMBER: builtins.int
+    APP_LOGO_FIELD_NUMBER: builtins.int
     id: builtins.str
     """id"""
     clan_id: builtins.str
@@ -7013,6 +7001,10 @@ class ChannelAppResponse(google.protobuf.message.Message):
     """app id"""
     app_url: builtins.str
     """app url"""
+    app_name: builtins.str
+    """app name"""
+    app_logo: builtins.str
+    """app logo"""
     def __init__(
         self,
         *,
@@ -7021,8 +7013,10 @@ class ChannelAppResponse(google.protobuf.message.Message):
         channel_id: builtins.str = ...,
         app_id: builtins.str = ...,
         app_url: builtins.str = ...,
+        app_name: builtins.str = ...,
+        app_logo: builtins.str = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["app_id", b"app_id", "app_url", b"app_url", "channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]) -> None: ...
+    def ClearField(self, field_name: typing.Literal["app_id", b"app_id", "app_logo", b"app_logo", "app_name", b"app_name", "app_url", b"app_url", "channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]) -> None: ...
 
 Global___ChannelAppResponse: typing_extensions.TypeAlias = ChannelAppResponse
 
@@ -9667,3 +9661,63 @@ class TransferOwnershipRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["clan_id", b"clan_id", "new_owner_id", b"new_owner_id"]) -> None: ...
 
 Global___TransferOwnershipRequest: typing_extensions.TypeAlias = TransferOwnershipRequest
+
+@typing.final
+class UserIds(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    USER_IDS_FIELD_NUMBER: builtins.int
+    @property
+    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    def __init__(
+        self,
+        *,
+        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["user_ids", b"user_ids"]) -> None: ...
+
+Global___UserIds: typing_extensions.TypeAlias = UserIds
+
+@typing.final
+class ReportMessageAbuseReqest(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    MESSAGE_ID_FIELD_NUMBER: builtins.int
+    ABUSE_TYPE_FIELD_NUMBER: builtins.int
+    message_id: builtins.str
+    abuse_type: builtins.str
+    def __init__(
+        self,
+        *,
+        message_id: builtins.str = ...,
+        abuse_type: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["abuse_type", b"abuse_type", "message_id", b"message_id"]) -> None: ...
+
+Global___ReportMessageAbuseReqest: typing_extensions.TypeAlias = ReportMessageAbuseReqest
+
+@typing.final
+class LogedDeviceList(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    DEVICE_NAME_FIELD_NUMBER: builtins.int
+    LOGED_TIME_FIELD_NUMBER: builtins.int
+    STATUS_FIELD_NUMBER: builtins.int
+    PLATFORM_FIELD_NUMBER: builtins.int
+    device_name: builtins.str
+    status: builtins.int
+    platform: builtins.str
+    @property
+    def loged_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    def __init__(
+        self,
+        *,
+        device_name: builtins.str = ...,
+        loged_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        status: builtins.int = ...,
+        platform: builtins.str = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["loged_time", b"loged_time"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["device_name", b"device_name", "loged_time", b"loged_time", "platform", b"platform", "status", b"status"]) -> None: ...
+
+Global___LogedDeviceList: typing_extensions.TypeAlias = LogedDeviceList

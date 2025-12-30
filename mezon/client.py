@@ -16,7 +16,7 @@ limitations under the License.
 
 import asyncio
 import json
-from typing import Any, Callable, Literal
+from typing import Any, Callable, Literal, Dict
 import logging
 
 from tenacity import (
@@ -39,7 +39,6 @@ from mezon.messages.db import MessageDB
 from mezon.models import (
     ApiAuthenticateLogoutRequest,
     ApiAuthenticateRefreshRequest,
-    ApiCreateChannelDescRequest,
     ApiSentTokenRequest,
     ChannelMessageRaw,
     UserInitData,
@@ -48,7 +47,6 @@ from mezon.structures.clan import Clan
 from mezon.structures.message import Message
 from mezon.structures.text_channel import TextChannel
 from mezon.structures.user import User
-from mezon.utils import is_valid_user_id
 from mezon.utils.logger import get_logger, setup_logger
 from mmn import (
     EphemeralKeyPair,
@@ -66,6 +64,9 @@ from mmn import (
 
 from .api import MezonApi
 from .session import Session
+from mezon.utils.helper import generate_snowflake_id
+from mezon.models import ChannelMessageContent
+from mezon.constants import TypeMessage
 
 DEFAULT_HOST = "gw.mezon.ai"
 DEFAULT_PORT = "443"
@@ -220,7 +221,7 @@ class MezonClient:
         self.session_manager = SessionManager(
             api_client=self.api_client, session=sock_session
         )
-        self.chanel_manager = ChannelManager(
+        self.channel_manager = ChannelManager(
             api_client=self.api_client,
             socket_manager=self.socket_manager,
             session_manager=self.session_manager,
@@ -246,7 +247,7 @@ class MezonClient:
         if sock_session.token:
             await asyncio.gather(
                 self.socket_manager.connect_socket(sock_session.token),
-                self.chanel_manager.init_all_dm_channels(sock_session.token),
+                self.channel_manager.init_all_dm_channels(sock_session.token),
             )
 
     async def _invoke_handler(self, handler: Callable, *args, **kwargs) -> None:
@@ -369,6 +370,10 @@ class MezonClient:
         Raises:
             ValueError: If channel has no clan_id
         """
+        existing_channel = self.channels.get(channel_id)
+        if existing_channel:
+            return existing_channel
+
         session = self.session_manager.get_session()
         channel_detail = await self.api_client.get_channel_detail(
             session.token, channel_id
@@ -379,6 +384,32 @@ class MezonClient:
             raise ValueError(f"Channel {channel_id} has no clan_id!")
 
         clan = self.clans.get(clan_id)
+        if not clan:
+            clans_response = await self.api_client.list_clans_descs(token=session.token)
+            clan_desc = None
+            for desc in (
+                clans_response.clandesc
+                if clans_response and clans_response.clandesc
+                else []
+            ):
+                if desc.clan_id == clan_id:
+                    clan_desc = desc
+                    break
+
+            if clan_desc:
+                clan = Clan(
+                    clan_id=clan_desc.clan_id,
+                    clan_name=clan_desc.clan_name,
+                    welcome_channel_id=clan_desc.welcome_channel_id,
+                    client=self,
+                    api_client=self.api_client,
+                    socket_manager=self.socket_manager,
+                    session_token=session.token,
+                    message_db=self.message_db,
+                )
+                self.clans.set(clan_id, clan)
+            else:
+                raise ValueError(f"Clan {clan_id} not found for channel {channel_id}!")
 
         channel = TextChannel(
             init_channel_data=channel_detail,
@@ -390,7 +421,7 @@ class MezonClient:
         return channel
 
     async def get_user_from_id(self, user_id: str) -> User:
-        dm_channel = await self.chanel_manager.create_dm_channel(user_id)
+        dm_channel = await self.channel_manager.create_dm_channel(user_id)
         if not dm_channel or not dm_channel.channel_id:
             raise ValueError(f"User {user_id} not found in this clan {self.client_id}!")
 
@@ -400,10 +431,70 @@ class MezonClient:
                 dm_channel_id=dm_channel.channel_id,
             ),
             socket_manager=self.socket_manager,
-            channel_manager=self.chanel_manager,
+            channel_manager=self.channel_manager,
         )
         self.users.set(user_id, user)
         return user
+
+    async def add_quick_menu_access(self, body: Dict[str, Any]) -> Any:
+        id = generate_snowflake_id()
+        session = self.session_manager.get_session()
+        if not session:
+            return None
+
+        bot_id = self.client_id
+        payload = {
+            "channel_id": "0",
+            "clan_id": body.get("clan_id", "0"),
+            "menu_type": body.get("menu_type", 1),
+            "action_msg": body.get("action_msg"),
+            "background": body.get("background", ""),
+            "menu_name": body.get("menu_name"),
+            "id": id,
+            "bot_id": bot_id,
+        }
+
+        return await self.api_client.add_quick_menu_access(session.token, payload)
+
+    async def delete_quick_menu_access(self, bot_id: str = None) -> Any:
+        session = self.session_manager.get_session()
+        if not session:
+            return None
+
+        target_bot_id = bot_id if bot_id else self.client_id
+        return await self.api_client.delete_quick_menu_access(
+            session.token, target_bot_id
+        )
+
+    async def get_list_friends(
+        self, limit: int = None, state: str = None, cursor: str = None
+    ) -> Any:
+        session = self.session_manager.get_session()
+        if not session:
+            return None
+        return await self.api_client.get_list_friends(
+            session.token, limit, state, cursor
+        )
+
+    async def accept_friend(self, user_id: str, username: str) -> Any:
+        session = self.session_manager.get_session()
+        if not session:
+            return None
+        return await self.api_client.request_friend(session.token, username, user_id)
+
+    async def add_friend(self, username: str) -> Any:
+        session = self.session_manager.get_session()
+        if not session:
+            return None
+        return await self.api_client.request_friend(session.token, username)
+
+    async def list_transaction_detail(self, transaction_id: str) -> Any:
+        session = self.session_manager.get_session()
+        if not session:
+            return None
+        return await self.api_client.list_transaction_detail(
+            session.token, transaction_id
+        )
 
     async def _init_channel_message_cache(
         self, message: api_pb2.ChannelMessage
@@ -413,15 +504,33 @@ class MezonClient:
 
         Args:
             message: The channel message from protobuf
-
-        Raises:
-            ValueError: If the channel is not found
         """
         message_raw = ChannelMessageRaw.from_protobuf(message)
 
-        channel = await self.channels.fetch(message_raw.channel_id)
+        try:
+            await self.message_db.save_message(message_raw.to_db_dict())
+        except Exception as err:
+            logger.warning(f"Failed to save message {message_raw.id}: {err}")
+
+        if message_raw.clan_id and message_raw.clan_id != "0":
+            clan = self.clans.get(message_raw.clan_id)
+            if clan:
+                try:
+                    await clan.load_channels()
+                except Exception as err:
+                    logger.warning(f"Failed to load channels: {err}")
+
+        try:
+            channel = await self.channels.fetch(message_raw.channel_id)
+        except Exception as err:
+            logger.warning(f"Fetch channel {message_raw.channel_id} failed: {err}")
+            channel = None
+
         if not channel:
-            raise ValueError(f"Channel {message_raw.channel_id} not found!")
+            return
+
+        if not message_raw.id:
+            return
 
         message_obj = Message(
             message_raw,
@@ -431,11 +540,6 @@ class MezonClient:
 
         channel.messages.set(message_raw.id, message_obj)
 
-        try:
-            await self.message_db.save_message(message_raw.to_db_dict())
-        except Exception as err:
-            logger.warning(f"Failed to save message {message_raw.id}: {err}")
-
     async def _init_user_clan_cache(self, message: api_pb2.ChannelMessage) -> None:
         """
         Initialize user and clan cache when receiving a message.
@@ -444,7 +548,7 @@ class MezonClient:
             message: The channel message from protobuf
         """
 
-        all_dm_channels = self.chanel_manager.get_all_dm_channels()
+        all_dm_channels = self.channel_manager.get_all_dm_channels()
         user_cache = self.users.get(message.sender_id)
 
         if not user_cache and message.sender_id != self.client_id and all_dm_channels:
@@ -458,7 +562,7 @@ class MezonClient:
                         dm_channel_id=dm_channel_id,
                     ),
                     socket_manager=self.socket_manager,
-                    channel_manager=self.chanel_manager,
+                    channel_manager=self.channel_manager,
                 )
 
                 self.users.set(user_id, user)
@@ -471,37 +575,9 @@ class MezonClient:
         sender_user = User(
             user_init_data=user_data,
             socket_manager=self.socket_manager,
-            channel_manager=self.chanel_manager,
+            channel_manager=self.channel_manager,
         )
         self.users.set(message.sender_id, sender_user)
-
-    async def create_dm_channel(self, user_id: str) -> ApiChannelDescription:
-        if not is_valid_user_id(user_id):
-            logger.error(f"Invalid user ID: {user_id}")
-            return None
-
-        socket = self.socket_manager.get_socket()
-        channel_dm = await self.api_client.create_channel_desc(
-            token=self.session_manager.get_session().token,
-            request=ApiCreateChannelDescRequest(
-                clan_id="",
-                channel_id="0",
-                category_id="0",
-                type=ChannelType.CHANNEL_TYPE_DM,
-                user_ids=[user_id],
-                channel_private=1,
-            ),
-        )
-        if channel_dm:
-            await socket.join_chat(
-                channel_id=channel_dm.channel_id,
-                clan_id=channel_dm.clan_id,
-                channel_type=channel_dm.type,
-                is_public=False,
-            )
-            return channel_dm
-
-        return None
 
     async def _update_cache_channel(
         self,
@@ -519,9 +595,6 @@ class MezonClient:
         )
         self.channels.set(message.channel_id, channel)
         clan.channels.set(message.channel_id, channel)
-        await self.socket_manager.get_socket().join_chat(
-            channel.clan.id, channel.id, channel.channel_type, channel.is_private
-        )
         return channel
 
     def on_channel_message(
@@ -568,6 +641,15 @@ class MezonClient:
 
         self.event_manager.on(Events.CHANNEL_CREATED, wrapper)
 
+    @auto_bind(Events.CHANNEL_CREATED)
+    async def _handle_channel_created_default(
+        self, message: realtime_pb2.ChannelCreatedEvent
+    ) -> None:
+        """
+        Default handler for channel created events.
+        """
+        await self._update_cache_channel(message)
+
     def on_channel_updated(
         self, handler: Callable[[realtime_pb2.ChannelUpdatedEvent], None]
     ) -> None:
@@ -598,8 +680,13 @@ class MezonClient:
             and message.status == 1
         ):
             await self.socket_manager.get_socket().join_chat(
-                message.clan_id, message.channel_id, message.channel_type, False
+                clan_id=message.clan_id,
+                channel_id=message.channel_id,
+                channel_type=message.channel_type,
+                is_public=False,
             )
+
+        await self._update_cache_channel(message)
 
     def on_channel_deleted(
         self, handler: Callable[[realtime_pb2.ChannelDeletedEvent], None]
@@ -633,6 +720,24 @@ class MezonClient:
 
         self.channels.delete(message.channel_id)
         clan.channels.delete(message.channel_id)
+
+    def on_token_send(self, handler: Callable[[api_pb2.TokenSentEvent], None]) -> None:
+        async def wrapper(message: api_pb2.TokenSentEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.TOKEN_SEND, wrapper)
+
+    @auto_bind(Events.TOKEN_SEND)
+    async def _handle_token_send_default(self, message: api_pb2.TokenSentEvent) -> None:
+        if message.sender_id == self.client_id:
+            receiver = await self.users.fetch(message.receiver_id)
+            if receiver:
+                await receiver.send_dm_message(
+                    content=ChannelMessageContent(
+                        t=f"Funds Transferred: {(int(message.amount)):,}₫ | {message.note or 'Transfer funds'}"
+                    ),
+                    code=TypeMessage.SEND_TOKEN,
+                )
 
     def on_message_reaction(
         self, handler: Callable[[api_pb2.MessageReaction], None]
@@ -676,13 +781,8 @@ class MezonClient:
         Ensures the clan user cache reflects the server state when users are
         removed from a clan.
         """
-        clan = self.clans.get(message.clan_id)
-        if not clan:
-            logger.debug(f"Clan {message.clan_id} not found!")
-            return
-
         for user_id in message.user_ids:
-            clan.users.delete(user_id)
+            self.users.delete(user_id)
 
     def on_user_channel_added(
         self, handler: Callable[[realtime_pb2.UserChannelAdded], None]
@@ -710,20 +810,14 @@ class MezonClient:
         Automatically joins channels when the current client is added, keeping
         the socket subscription state in sync.
         """
-        socket = self.socket_manager.get_socket()
         if message.users:
             for user in message.users:
                 if user.user_id == self.client_id:
-                    logger.info(
-                        f"User {user.user_id} joined channel {message.channel_desc.channel_id}"
-                    )
-                    asyncio.create_task(
-                        socket.join_chat(
-                            clan_id=message.clan_id,
-                            channel_id=message.channel_desc.channel_id,
-                            channel_type=message.channel_desc.type.value,
-                            is_public=not message.channel_desc.channel_private,
-                        )
+                    await self.socket_manager.get_socket().join_chat(
+                        clan_id=message.clan_id,
+                        channel_id=message.channel_desc.channel_id,
+                        channel_type=message.channel_desc.type.value,
+                        is_public=not message.channel_desc.channel_private,
                     )
                     break
 
@@ -740,6 +834,90 @@ class MezonClient:
             await self._invoke_handler(handler, message)
 
         self.event_manager.on(Events.ROLE_EVENT, wrapper)
+
+    def on_clan_event_created(self, handler: Callable[[Any], None]) -> None:
+        async def wrapper(message: Any) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.CLAN_EVENT_CREATED, wrapper)
+
+    def on_message_button_clicked(
+        self, handler: Callable[[realtime_pb2.MessageButtonClicked], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.MessageButtonClicked) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.MESSAGE_BUTTON_CLICKED, wrapper)
+
+    def on_streaming_joined_event(
+        self, handler: Callable[[realtime_pb2.StreamingJoinedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.StreamingJoinedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.STREAMING_JOINED_EVENT, wrapper)
+
+    def on_streaming_leaved_event(
+        self, handler: Callable[[realtime_pb2.StreamingLeavedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.StreamingLeavedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.STREAMING_LEAVED_EVENT, wrapper)
+
+    def on_dropdown_box_selected(
+        self, handler: Callable[[realtime_pb2.DropdownBoxSelected], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.DropdownBoxSelected) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.DROPDOWN_BOX_SELECTED, wrapper)
+
+    def on_webrtc_signaling_fwd(
+        self, handler: Callable[[realtime_pb2.WebrtcSignalingFwd], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.WebrtcSignalingFwd) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.WEBRTC_SIGNALING_FWD, wrapper)
+
+    def on_voice_started_event(
+        self, handler: Callable[[realtime_pb2.VoiceStartedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceStartedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_STARTED_EVENT, wrapper)
+
+    def on_voice_ended_event(
+        self, handler: Callable[[realtime_pb2.VoiceEndedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceEndedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_ENDED_EVENT, wrapper)
+
+    def on_voice_joined_event(
+        self, handler: Callable[[realtime_pb2.VoiceJoinedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceJoinedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_JOINED_EVENT, wrapper)
+
+    def on_voice_leaved_event(
+        self, handler: Callable[[realtime_pb2.VoiceLeavedEvent], None]
+    ) -> None:
+        async def wrapper(message: realtime_pb2.VoiceLeavedEvent) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.VOICE_LEAVED_EVENT, wrapper)
+
+    def on_quick_menu_event(self, handler: Callable[[Any], None]) -> None:
+        async def wrapper(message: Any) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(Events.QUICK_MENU, wrapper)
 
     def on_role_assign(
         self, handler: Callable[[realtime_pb2.RoleAssignedEvent], None]
@@ -869,7 +1047,7 @@ class MezonClient:
         user = User(
             user_init_data=user_init_data,
             socket_manager=self.socket_manager,
-            channel_manager=self.chanel_manager,
+            channel_manager=self.channel_manager,
         )
         self.users.set(message.user.user_id, user)
         return user

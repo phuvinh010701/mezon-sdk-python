@@ -16,9 +16,11 @@ limitations under the License.
 
 import aiohttp
 from typing import Dict, Any, Optional
+from aiolimiter import AsyncLimiter
 
 
 from mezon.api.utils import build_body, build_headers, build_params
+from mezon.utils.logger import get_logger
 
 from ..models import (
     ApiClanDescList,
@@ -35,6 +37,8 @@ from ..models import (
     ApiVoiceChannelUserList,
     ApiRoleListEventResponse,
 )
+
+logger = get_logger(__name__)
 
 
 class MezonApi:
@@ -61,6 +65,8 @@ class MezonApi:
         "delete_quick_menu_access": "/v2/quickmenuaccess",
     }
 
+    _rate_limiter = AsyncLimiter(max_rate=1, time_period=1.25)
+
     def __init__(self, client_id: str, api_key: str, base_url: str, timeout_ms: int):
         """
         Initialize Mezon API client.
@@ -85,16 +91,20 @@ class MezonApi:
         body: Optional[str] = None,
         headers: Optional[Dict[str, Any]] = None,
     ) -> Any:
-        async with aiohttp.ClientSession(timeout=self.client_timeout) as session:
-            async with session.request(
-                method,
-                f"{self.base_url}{url_path}",
-                params=query_params,
-                data=body,
-                headers=headers,
-            ) as resp:
-                resp.raise_for_status()
-                return await resp.json()
+        logger.debug(
+            f"Method: {method}, URL: {url_path}, Query Params: {query_params}, Body: {body}, Headers: {headers}"
+        )
+        async with self._rate_limiter:
+            async with aiohttp.ClientSession(timeout=self.client_timeout) as session:
+                async with session.request(
+                    method,
+                    f"{self.base_url}{url_path}",
+                    params=query_params,
+                    data=body,
+                    headers=headers,
+                ) as resp:
+                    resp.raise_for_status()
+                    return await resp.json()
 
     async def mezon_healthcheck(
         self, bearer_token: str, options: Optional[Dict[str, Any]] = None
@@ -181,9 +191,7 @@ class MezonApi:
         options: Optional[Dict[str, Any]] = None,
     ) -> ApiClanDescList:
         headers = build_headers(bearer_token=token)
-        params = build_params(
-            params={"lang": "en", "limit": limit, "state": state, "cursor": cursor}
-        )
+        params = build_params(params={"limit": limit, "state": state, "cursor": cursor})
         response = await self.call_api(
             method="GET",
             url_path=self.ENDPOINTS["list_clans_descs"],
@@ -223,7 +231,7 @@ class MezonApi:
         params = build_params(
             params={
                 "clan_id": clan_id,
-                "type": channel_type,
+                "channel_type": channel_type,
                 "limit": limit,
                 "state": state,
                 "cursor": cursor,

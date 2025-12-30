@@ -190,7 +190,7 @@ class Socket:
                         logger.debug(f"No executor found for cid: {envelope.cid}")
                 else:
                     if self.event_manager:
-                        await self._emit_event_from_envelope(envelope)
+                        asyncio.create_task(self._emit_event_from_envelope(envelope))
 
     async def _start_listen(self) -> None:
         """Start the heartbeat ping-pong task."""
@@ -294,8 +294,8 @@ class Socket:
             return result
 
         except asyncio.CancelledError:
-            logger.debug(f"Request with cid {cid} was cancelled")
-            return None
+            logger.error(f"Request with cid {cid} was cancelled due to timeout")
+            raise TimeoutError(f"Request with cid {cid} timed out after {timeout_ms}ms")
 
         except Exception as e:
             logger.error(f"Error with message cid {cid}: {e}")
