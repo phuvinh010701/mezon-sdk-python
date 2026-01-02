@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.6 (2026-01-02)
+
+### Bug Fixes
+
+- Added support for binary protobuf responses in API calls
+  ([`85da121`](https://github.com/phuvinh010701/mezon-sdk-python/commit/85da12172fec14d44b8d78f8ed41144bc7154ed5))
+
+
 ## v1.6.5 (2025-12-30)
 
 ### Bug Fixes
