@@ -16,11 +16,29 @@ limitations under the License.
 
 import json
 from enum import Enum
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Type
 from pydantic import BaseModel, Field
 from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
 from google.protobuf import json_format
+
+
+def protobuf_to_pydantic(proto_message, pydantic_class: Type[BaseModel]) -> BaseModel:
+    """Convert protobuf message to Pydantic model via JSON.
+
+    Args:
+        proto_message: Protobuf message instance
+        pydantic_class: Target Pydantic model class
+
+    Returns:
+        Pydantic model instance
+    """
+    json_data = json_format.MessageToJson(
+        proto_message, preserving_proto_field_name=True
+    )
+    data_dict = json.loads(json_data)
+    return pydantic_class.model_validate(data_dict)
+
 
 # API Models
 
@@ -39,11 +57,21 @@ class ApiClanDesc(BaseModel):
     welcome_channel_id: Optional[str] = None
     onboarding_banner: Optional[str] = None
 
+    @classmethod
+    def from_protobuf(cls, message: api_pb2.ClanDesc) -> "ApiClanDesc":
+        """Convert protobuf ClanDesc to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
+
 
 class ApiClanDescList(BaseModel):
     """A list of clan descriptions"""
 
     clandesc: Optional[List[ApiClanDesc]] = None
+
+    @classmethod
+    def from_protobuf(cls, message: api_pb2.ClanDescList) -> "ApiClanDescList":
+        """Convert protobuf ClanDescList to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
 
 
 class ApiSession(BaseModel):
@@ -132,10 +160,13 @@ class ApiChannelDescription(BaseModel):
     @classmethod
     def from_protobuf(
         cls,
-        message: realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent,
+        message: realtime_pb2.ChannelCreatedEvent
+        | realtime_pb2.ChannelUpdatedEvent
+        | api_pb2.ChannelDescription,
     ) -> "ApiChannelDescription":
-        channel_type_value = None
-        if message.HasField("channel_type"):
+        if isinstance(message, api_pb2.ChannelDescription):
+            channel_type_value = message.type.value
+        else:
             channel_type_value = message.channel_type.value
 
         json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
@@ -152,6 +183,11 @@ class ApiChannelDescList(BaseModel):
 
     channeldesc: Optional[List[ApiChannelDescription]] = None
     cursor: Optional[str] = None
+
+    @classmethod
+    def from_protobuf(cls, message: api_pb2.ChannelDescList) -> "ApiChannelDescList":
+        """Convert protobuf ChannelDescList to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
 
 
 class ApiMessageAttachment(BaseModel):
@@ -238,11 +274,23 @@ class ApiVoiceChannelUser(BaseModel):
     participant: Optional[str] = None
     user_id: Optional[str] = None
 
+    @classmethod
+    def from_protobuf(cls, message: api_pb2.VoiceChannelUser) -> "ApiVoiceChannelUser":
+        """Convert protobuf VoiceChannelUser to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
+
 
 class ApiVoiceChannelUserList(BaseModel):
     """Voice channel user list"""
 
     voice_channel_users: Optional[List[ApiVoiceChannelUser]] = None
+
+    @classmethod
+    def from_protobuf(
+        cls, message: api_pb2.VoiceChannelUserList
+    ) -> "ApiVoiceChannelUserList":
+        """Convert protobuf VoiceChannelUserList to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
 
 
 class ApiPermission(BaseModel):
@@ -304,6 +352,11 @@ class ApiRole(BaseModel):
     role_user_list: Optional[ApiRoleUserList] = None
     role_channel_active: Optional[int] = None
 
+    @classmethod
+    def from_protobuf(cls, message: api_pb2.Role) -> "ApiRole":
+        """Convert protobuf Role to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
+
 
 class ApiRoleList(BaseModel):
     """Role list"""
@@ -312,6 +365,11 @@ class ApiRoleList(BaseModel):
     next_cursor: Optional[str] = None
     prev_cursor: Optional[str] = None
     roles: Optional[List[ApiRole]] = None
+
+    @classmethod
+    def from_protobuf(cls, message: api_pb2.RoleList) -> "ApiRoleList":
+        """Convert protobuf RoleList to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
 
 
 class ApiRoleListEventResponse(BaseModel):
@@ -322,6 +380,13 @@ class ApiRoleListEventResponse(BaseModel):
     limit: Optional[str] = None
     roles: Optional[ApiRoleList] = None
     state: Optional[str] = None
+
+    @classmethod
+    def from_protobuf(
+        cls, message: api_pb2.RoleListEventResponse
+    ) -> "ApiRoleListEventResponse":
+        """Convert protobuf RoleListEventResponse to Pydantic model."""
+        return protobuf_to_pydantic(message, cls)
 
 
 class ApiCreateChannelDescRequest(BaseModel):
@@ -1231,7 +1296,7 @@ class ChannelMessageRaw(BaseModel):
             content=safe_json_parse(getattr(message, "content", None), {}),
             reactions=safe_json_parse(getattr(message, "reactions", None), []),
             mentions=safe_json_parse(getattr(message, "mentions", None), []),
-            attachments=safe_json_parse(getattr(message, "attachments", None), []),
+            attachments=safe_json_parse(getattr(message, "attachments", None), []) if isinstance(message.attachments, list) else [],
             references=safe_json_parse(getattr(message, "references", None), []),
             create_time_seconds=getattr(message, "create_time_seconds", None),
             topic_id=getattr(message, "topic_id", None),
