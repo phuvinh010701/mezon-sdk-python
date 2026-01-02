@@ -15,11 +15,12 @@ limitations under the License.
 """
 
 import aiohttp
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Type
 from aiolimiter import AsyncLimiter
 
 
-from mezon.api.utils import build_body, build_headers, build_params
+from mezon.api.utils import build_body, build_headers, build_params, parse_response
+from mezon.protobuf.api import api_pb2
 from mezon.utils.logger import get_logger
 
 from ..models import (
@@ -90,10 +91,29 @@ class MezonApi:
         query_params: Optional[Dict[str, Any]] = None,
         body: Optional[str] = None,
         headers: Optional[Dict[str, Any]] = None,
+        accept_binary: bool = False,
+        response_proto_class: Optional[Type] = None,
     ) -> Any:
+        """
+        Make API call with optional binary protobuf response support.
+
+        Args:
+            method (str): HTTP method
+            url_path (str): API endpoint path
+            query_params (Optional[Dict[str, Any]]): URL query parameters
+            body (Optional[str]): Request body (JSON string)
+            headers (Optional[Dict[str, Any]]): HTTP headers
+            accept_binary (bool): If True, request binary protobuf response
+            response_proto_class (Optional[Type]): Protobuf message class for binary responses
+
+        Returns:
+            Any: Dict (from JSON) or protobuf message (from binary)
+        """
         logger.debug(
-            f"Method: {method}, URL: {url_path}, Query Params: {query_params}, Body: {body}, Headers: {headers}"
+            f"Method: {method}, URL: {url_path}, Binary: {accept_binary}, "
+            f"Proto class: {response_proto_class}"
         )
+
         async with self._rate_limiter:
             async with aiohttp.ClientSession(timeout=self.client_timeout) as session:
                 async with session.request(
@@ -104,7 +124,9 @@ class MezonApi:
                     headers=headers,
                 ) as resp:
                     resp.raise_for_status()
-                    return await resp.json()
+                    return await parse_response(
+                        resp, accept_binary, response_proto_class
+                    )
 
     async def mezon_healthcheck(
         self, bearer_token: str, options: Optional[Dict[str, Any]] = None
@@ -189,8 +211,23 @@ class MezonApi:
         state: Optional[int] = None,
         cursor: Optional[str] = None,
         options: Optional[Dict[str, Any]] = None,
+        use_binary: bool = True,
     ) -> ApiClanDescList:
-        headers = build_headers(bearer_token=token)
+        """
+        List clan descriptions.
+
+        Args:
+            token: Bearer token for authentication
+            limit: Maximum number of results
+            state: Filter state
+            cursor: Pagination cursor
+            options: Additional options for the request
+            use_binary: If True, uses binary protobuf for response (default: True)
+
+        Returns:
+            ApiClanDescList: Clan descriptions
+        """
+        headers = build_headers(bearer_token=token, accept_binary=use_binary)
         params = build_params(params={"limit": limit, "state": state, "cursor": cursor})
         response = await self.call_api(
             method="GET",
@@ -198,8 +235,14 @@ class MezonApi:
             query_params=params,
             body=None,
             headers=headers,
+            accept_binary=use_binary,
+            response_proto_class=api_pb2.ClanDescList if use_binary else None,
         )
-        return ApiClanDescList.model_validate(response)
+
+        if use_binary and isinstance(response, api_pb2.ClanDescList):
+            return ApiClanDescList.from_protobuf(response)
+        else:
+            return ApiClanDescList.model_validate(response)
 
     async def list_channel_descs(
         self,
@@ -210,6 +253,7 @@ class MezonApi:
         state: Optional[int] = None,
         cursor: Optional[str] = None,
         options: Optional[Dict[str, Any]] = None,
+        use_binary: bool = True,
     ) -> ApiChannelDescList:
         """
         List channel descriptions.
@@ -223,11 +267,12 @@ class MezonApi:
             cursor: Pagination cursor
             parent_id: Parent channel ID
             options: Additional options for the request
+            use_binary: If True, uses binary protobuf for response (default: True)
 
         Returns:
             ApiChannelDescList: List of channel descriptions with optional cursor
         """
-        headers = build_headers(bearer_token=token)
+        headers = build_headers(bearer_token=token, accept_binary=use_binary)
         params = build_params(
             params={
                 "clan_id": clan_id,
@@ -243,8 +288,15 @@ class MezonApi:
             query_params=params,
             body=None,
             headers=headers,
+            accept_binary=use_binary,
+            response_proto_class=api_pb2.ChannelDescList if use_binary else None,
         )
-        return ApiChannelDescList.model_validate(response)
+
+        # Handle both binary and JSON responses
+        if use_binary and isinstance(response, api_pb2.ChannelDescList):
+            return ApiChannelDescList.from_protobuf(response)
+        else:
+            return ApiChannelDescList.model_validate(response)
 
     async def create_channel_desc(
         self,
@@ -276,17 +328,37 @@ class MezonApi:
         return ApiChannelDescription.model_validate(response)
 
     async def get_channel_detail(
-        self, token: str, channel_id: str
+        self,
+        token: str,
+        channel_id: str,
+        use_binary: bool = True,
     ) -> ApiChannelDescription:
-        headers = build_headers(bearer_token=token)
+        """
+        Get channel detail by ID.
+
+        Args:
+            token: Bearer token for authentication
+            channel_id: Channel ID to retrieve
+            use_binary: If True, uses binary protobuf for response (default: True)
+
+        Returns:
+            ApiChannelDescription: Channel description details
+        """
+        headers = build_headers(bearer_token=token, accept_binary=use_binary)
         response = await self.call_api(
             method="GET",
             url_path=self.ENDPOINTS["get_channel_detail"].format(channel_id=channel_id),
             query_params={},
             body=None,
             headers=headers,
+            accept_binary=use_binary,
+            response_proto_class=api_pb2.ChannelDescription if use_binary else None,
         )
-        return ApiChannelDescription.model_validate(response)
+
+        if use_binary and isinstance(response, api_pb2.ChannelDescription):
+            return ApiChannelDescription.from_protobuf(response)
+        else:
+            return ApiChannelDescription.model_validate(response)
 
     async def request_friend(
         self,
@@ -334,8 +406,25 @@ class MezonApi:
         limit: int = 500,
         state: Optional[int] = None,
         cursor: Optional[str] = None,
+        use_binary: bool = True,
     ) -> ApiVoiceChannelUserList:
-        headers = build_headers(bearer_token=token)
+        """
+        List voice channel users.
+
+        Args:
+            token: Bearer token for authentication
+            clan_id: Clan ID to filter
+            channel_id: Channel ID (default: empty string for all)
+            channel_type: Channel type (default: 4 for voice)
+            limit: Maximum number of results (default: 500)
+            state: State filter
+            cursor: Pagination cursor
+            use_binary: If True, uses binary protobuf for response (default: True)
+
+        Returns:
+            ApiVoiceChannelUserList: List of voice channel users
+        """
+        headers = build_headers(bearer_token=token, accept_binary=use_binary)
         params = build_params(
             params={
                 "clan_id": clan_id,
@@ -353,8 +442,14 @@ class MezonApi:
             query_params=params,
             body=None,
             headers=headers,
+            accept_binary=use_binary,
+            response_proto_class=api_pb2.VoiceChannelUserList if use_binary else None,
         )
-        return ApiVoiceChannelUserList.model_validate(response)
+
+        if use_binary and isinstance(response, api_pb2.VoiceChannelUserList):
+            return ApiVoiceChannelUserList.from_protobuf(response)
+        else:
+            return ApiVoiceChannelUserList.model_validate(response)
 
     async def update_role(
         self,
@@ -381,8 +476,23 @@ class MezonApi:
         limit: Optional[str] = None,
         state: Optional[str] = None,
         cursor: Optional[str] = None,
+        use_binary: bool = True,
     ) -> ApiRoleListEventResponse:
-        headers = build_headers(bearer_token=token)
+        """
+        List roles in a clan.
+
+        Args:
+            token: Bearer token for authentication
+            clan_id: Clan ID to list roles for
+            limit: Maximum number of results
+            state: State filter
+            cursor: Pagination cursor
+            use_binary: If True, uses binary protobuf for response (default: True)
+
+        Returns:
+            ApiRoleListEventResponse: Role list response
+        """
+        headers = build_headers(bearer_token=token, accept_binary=use_binary)
         params = build_params(
             params={
                 "clan_id": clan_id,
@@ -398,8 +508,14 @@ class MezonApi:
             query_params=params,
             body=None,
             headers=headers,
+            accept_binary=use_binary,
+            response_proto_class=api_pb2.RoleListEventResponse if use_binary else None,
         )
-        return response
+
+        if use_binary and isinstance(response, api_pb2.RoleListEventResponse):
+            return ApiRoleListEventResponse.from_protobuf(response)
+        else:
+            return ApiRoleListEventResponse.model_validate(response)
 
     async def mezon_authenticate_refresh(
         self,

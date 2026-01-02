@@ -1,0 +1,22 @@
+{
+    "cSpell.words": [
+        "aiolimiter",
+        "channeldesc",
+        "channeltype",
+        "channelvoice",
+        "cids",
+        "clandesc",
+        "descs",
+        "GMEET",
+        "healthcheck",
+        "mezon",
+        "NEOF",
+        "ondisconnect",
+        "onheartbeattimeout",
+        "quickmenuaccess",
+        "readycheck",
+        "rtapi",
+        "sendtoken",
+        "webrtc"
+    ]
+}
