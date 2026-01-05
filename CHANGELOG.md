@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.7 (2026-01-05)
+
+### Bug Fixes
+
+- Update dependencies and enhance MezonClient with improved socket management and event handling
+  ([`5df770f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/5df770ff226623b384859b79fd5bab6fcc09c8da))
+
+
 ## v1.6.6 (2026-01-02)
 
 ### Bug Fixes
