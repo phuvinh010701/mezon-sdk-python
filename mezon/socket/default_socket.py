@@ -93,10 +93,12 @@ class Socket:
 
         self._heartbeat_timeout_ms = self.DEFAULT_HEARTBEAT_TIMEOUT_MS
         self._heartbeat_task: Optional[asyncio.Task] = None
+        self._listen_task: Optional[asyncio.Task] = None
 
         self.ondisconnect: Optional[callable] = None
         self.onerror: Optional[callable] = None
         self.onheartbeattimeout: Optional[callable] = None
+        self.onconnect: Optional[callable] = None
 
     def generate_cid(self) -> str:
         """
@@ -122,10 +124,9 @@ class Socket:
         """Close the socket connection."""
         if self._heartbeat_task:
             self._heartbeat_task.cancel()
-            try:
-                await self._heartbeat_task
-            except asyncio.CancelledError:
-                pass
+
+        if self._listen_task:
+            self._listen_task.cancel()
 
         await self.adapter.close()
 
@@ -168,6 +169,12 @@ class Socket:
             )
             await self._start_listen()
 
+            if self.onconnect:
+                if asyncio.iscoroutinefunction(self.onconnect):
+                    asyncio.create_task(self.onconnect())
+                else:
+                    asyncio.create_task(asyncio.to_thread(self.onconnect))
+
             return session
         except asyncio.TimeoutError:
             raise TimeoutError("The socket timed out when trying to connect.")
@@ -193,10 +200,11 @@ class Socket:
                         asyncio.create_task(self._emit_event_from_envelope(envelope))
 
     async def _start_listen(self) -> None:
-        """Start the heartbeat ping-pong task."""
+        """Start the heartbeat ping-pong and listen tasks."""
         if self._heartbeat_task is None or self._heartbeat_task.done():
             self._heartbeat_task = asyncio.create_task(self._ping_pong())
-        asyncio.create_task(self._listen())
+        if self._listen_task is None or self._listen_task.done():
+            self._listen_task = asyncio.create_task(self._listen())
 
     def _cleanup_cid(self, cid: str, executor: PromiseExecutor) -> None:
         """
@@ -236,9 +244,11 @@ class Socket:
                     if self.onheartbeattimeout:
                         try:
                             if asyncio.iscoroutinefunction(self.onheartbeattimeout):
-                                await self.onheartbeattimeout()
+                                asyncio.create_task(self.onheartbeattimeout())
                             else:
-                                self.onheartbeattimeout()
+                                asyncio.create_task(
+                                    asyncio.to_thread(self.onheartbeattimeout)
+                                )
                         except Exception as callback_error:
                             logger.error(
                                 f"Error in heartbeat timeout callback: {callback_error}"

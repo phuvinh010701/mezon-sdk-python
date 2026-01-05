@@ -45,16 +45,39 @@ class SocketManager:
         self.message_db = message_db
         self.adapter = WebSocketAdapterPb()
         self.socket = Socket(
-            host=host, port=port, use_ssl=use_ssl, event_manager=event_manager
+            host=host,
+            port=port,
+            use_ssl=use_ssl,
+            adapter=self.adapter,
+            event_manager=event_manager,
         )
 
     def get_socket(self) -> Socket:
         return self.socket
 
     async def connect(self, api_session: Session) -> Session:
+        """
+        Connect or reconnect the socket to the server.
+
+        If socket is already open, it will be closed first to ensure clean reconnection.
+
+        Args:
+            api_session: Session object with authentication token
+
+        Returns:
+            The session object
+        """
+        if self.socket.is_open():
+            await self.socket.close()
         return await self.socket.connect(api_session, create_status=True)
 
     async def is_connected(self) -> bool:
+        """
+        Check if socket is connected.
+
+        Returns:
+            True if socket is open, False otherwise
+        """
         return self.socket.is_open()
 
     async def connect_socket(self, token: str) -> None:

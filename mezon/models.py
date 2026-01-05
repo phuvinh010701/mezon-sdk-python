@@ -165,7 +165,7 @@ class ApiChannelDescription(BaseModel):
         | api_pb2.ChannelDescription,
     ) -> "ApiChannelDescription":
         if isinstance(message, api_pb2.ChannelDescription):
-            channel_type_value = message.type.value
+            channel_type_value = message.type
         else:
             channel_type_value = message.channel_type.value
 
@@ -1296,7 +1296,9 @@ class ChannelMessageRaw(BaseModel):
             content=safe_json_parse(getattr(message, "content", None), {}),
             reactions=safe_json_parse(getattr(message, "reactions", None), []),
             mentions=safe_json_parse(getattr(message, "mentions", None), []),
-            attachments=safe_json_parse(getattr(message, "attachments", None), []) if isinstance(message.attachments, list) else [],
+            attachments=safe_json_parse(getattr(message, "attachments", None), [])
+            if isinstance(message.attachments, list)
+            else [],
             references=safe_json_parse(getattr(message, "references", None), []),
             create_time_seconds=getattr(message, "create_time_seconds", None),
             topic_id=getattr(message, "topic_id", None),

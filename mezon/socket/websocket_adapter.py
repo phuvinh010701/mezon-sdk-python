@@ -160,6 +160,7 @@ class WebSocketAdapterPb(WebSocketAdapter):
         if self.is_open():
             try:
                 await self._socket.close()
+                await self._socket.wait_closed()
             except Exception as e:
                 logger.error(f"Error closing socket: {e}")
 

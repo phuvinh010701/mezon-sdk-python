@@ -202,6 +202,12 @@ class MezonClient:
         return Session(session)
 
     async def initialize_managers(self, sock_session: Session) -> None:
+        """
+        Initialize or reinitialize managers for the client.
+
+        Args:
+            sock_session: Session object with authentication token
+        """
         url_components = parse_url_components(sock_session.api_url)
         self.api_client = MezonApi(
             self.client_id,
@@ -209,15 +215,20 @@ class MezonClient:
             f"{url_components['scheme']}://{url_components['hostname']}:{url_components['port']}",
             self.timeout_ms,
         )
-        self.socket_manager = SocketManager(
-            host=url_components["hostname"],
-            port=url_components["port"],
-            use_ssl=url_components["use_ssl"],
-            api_client=self.api_client,
-            event_manager=self.event_manager,
-            mezon_client=self,
-            message_db=self.message_db,
-        )
+
+        if not hasattr(self, "socket_manager"):
+            self.socket_manager = SocketManager(
+                host=url_components["hostname"],
+                port=url_components["port"],
+                use_ssl=url_components["use_ssl"],
+                api_client=self.api_client,
+                event_manager=self.event_manager,
+                mezon_client=self,
+                message_db=self.message_db,
+            )
+        else:
+            self.socket_manager.api_client = self.api_client
+
         self.session_manager = SessionManager(
             api_client=self.api_client, session=sock_session
         )
@@ -816,7 +827,7 @@ class MezonClient:
                     await self.socket_manager.get_socket().join_chat(
                         clan_id=message.clan_id,
                         channel_id=message.channel_desc.channel_id,
-                        channel_type=message.channel_desc.type.value,
+                        channel_type=message.channel_desc.type,
                         is_public=not message.channel_desc.channel_private,
                     )
                     break
@@ -1237,9 +1248,10 @@ class MezonClient:
         async def handle_disconnect(event):
             logger.warning(f"Socket disconnected: {event}")
             if original_ondisconnect:
-                await original_ondisconnect(event) if asyncio.iscoroutinefunction(
-                    original_ondisconnect
-                ) else original_ondisconnect(event)
+                if asyncio.iscoroutinefunction(original_ondisconnect):
+                    asyncio.create_task(original_ondisconnect(event))
+                else:
+                    asyncio.create_task(asyncio.to_thread(original_ondisconnect, event))
 
             if not self._is_hard_disconnect and self._enable_auto_reconnect:
                 await self._retry_connection()
@@ -1247,9 +1259,10 @@ class MezonClient:
         async def handle_error(event):
             logger.error(f"Socket error: {event}")
             if original_onerror:
-                await original_onerror(event) if asyncio.iscoroutinefunction(
-                    original_onerror
-                ) else original_onerror(event)
+                if asyncio.iscoroutinefunction(original_onerror):
+                    asyncio.create_task(original_onerror(event))
+                else:
+                    asyncio.create_task(asyncio.to_thread(original_onerror, event))
 
             if not self._is_hard_disconnect and self._enable_auto_reconnect:
                 if self.socket_manager.is_connected():
@@ -1271,7 +1284,7 @@ class MezonClient:
 
         session = await self.get_session()
         await self.initialize_managers(session)
-        logger.info("Reconnected successfully!")
+        logger.debug("Reconnected successfully!")
 
     async def _retry_connection(self) -> None:
         """
