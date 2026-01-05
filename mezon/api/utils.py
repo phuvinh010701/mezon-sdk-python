@@ -61,6 +61,7 @@ def build_body(body: BaseModel | Dict[str, Any]) -> str:
     else:
         raise ValueError(f"Invalid body type: {type(body)}")
 
+
 def parse_url_components(url: str) -> Dict[str, Any]:
     """
     Parse URL components.
