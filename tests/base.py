@@ -5,7 +5,7 @@ Base test utilities and configuration for Mezon SDK tests.
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 from mezon import MezonClient
 
@@ -32,6 +32,9 @@ class TestConfig:
     clan_id: str
     channel_id: str
     user_id: str
+    user_name: str
+    user_id_2: str
+    user_name_2: str
     voice_channel_id: Optional[str] = None
     role_id: Optional[str] = None
     token_receiver_id: Optional[str] = None
@@ -151,4 +154,3 @@ def print_test_summary(results: TestResults, start_time: float) -> None:
     else:
         print(f"⚠️  {failed} test(s) failed")
     print("=" * 80)
-

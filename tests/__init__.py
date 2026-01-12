@@ -6,6 +6,8 @@ Comprehensive tests for all SDK features organized into submodules.
 
 from tests.base import BaseTestSuite, TestConfig
 from tests.test_messages import MessageTests
+from tests.test_mentions import MentionTests
+from tests.test_buzz import BuzzTests
 from tests.test_interactive import InteractiveTests
 from tests.test_users import UserTests
 from tests.test_clans import ClanTests
@@ -21,6 +23,8 @@ __all__ = [
     "BaseTestSuite",
     "TestConfig",
     "MessageTests",
+    "MentionTests",
+    "BuzzTests",
     "InteractiveTests",
     "UserTests",
     "ClanTests",
@@ -32,4 +36,3 @@ __all__ = [
     "TokenTests",
     "HealthTests",
 ]
-

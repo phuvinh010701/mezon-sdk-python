@@ -4,7 +4,7 @@ Message operation tests for Mezon SDK.
 
 import asyncio
 from mezon import ChannelMessageContent
-from mezon.models import ApiMessageAttachment
+from mezon.models import ApiMessageAttachment, ApiMessageMention
 
 from tests.base import BaseTestSuite
 
@@ -24,6 +24,10 @@ class MessageTests(BaseTestSuite):
         await self.test_message_react()
         await self.test_message_reply()
         await self.test_message_with_attachment()
+        await self.test_anonymous_message()
+        await asyncio.sleep(1)
+        await self.test_anonymous_message_with_mention()
+        await asyncio.sleep(1)
         await self.test_ephemeral_message()
         await self.test_message_delete()
 
@@ -126,6 +130,57 @@ class MessageTests(BaseTestSuite):
         except Exception as e:
             self.log_result("Message with Attachment", False, str(e))
 
+    async def test_anonymous_message(self) -> None:
+        """Test: Send anonymous message (sender identity hidden)."""
+        try:
+            clan = await self.client.clans.fetch(self.config.clan_id)
+            if not clan:
+                raise ValueError(f"Clan {self.config.clan_id} not found")
+
+            await clan.load_channels()
+            channel = await clan.channels.fetch(self.config.channel_id)
+            if not channel:
+                raise ValueError(f"Channel {self.config.channel_id} not found")
+
+            # Send anonymous message
+            await channel.send(
+                content=ChannelMessageContent(t="🎭 Anonymous test message"),
+                anonymous_message=True,
+            )
+            self.log_result("Anonymous Message", True)
+        except Exception as e:
+            self.log_result("Anonymous Message", False, str(e))
+
+    async def test_anonymous_message_with_mention(self) -> None:
+        """Test: Send anonymous message with user mention."""
+        try:
+            clan = await self.client.clans.fetch(self.config.clan_id)
+            if not clan:
+                raise ValueError(f"Clan {self.config.clan_id} not found")
+
+            await clan.load_channels()
+            channel = await clan.channels.fetch(self.config.channel_id)
+            if not channel:
+                raise ValueError(f"Channel {self.config.channel_id} not found")
+
+            mention = ApiMessageMention(
+                user_id=self.config.user_id,
+                username=self.config.user_name,
+                s=0,
+                e=len(self.config.user_name) + 1,
+            )
+
+            await channel.send(
+                content=ChannelMessageContent(
+                    t=f"@{self.config.user_name} 🎭 Anonymous message with mention"
+                ),
+                mentions=[mention],
+                anonymous_message=True,
+            )
+            self.log_result("Anonymous Message with Mention", True)
+        except Exception as e:
+            self.log_result("Anonymous Message with Mention", False, str(e))
+
     async def test_ephemeral_message(self) -> None:
         """Test: Send ephemeral message (only visible to one user)."""
         try:
@@ -138,4 +193,3 @@ class MessageTests(BaseTestSuite):
             self.log_result("Ephemeral Message", True)
         except Exception as e:
             self.log_result("Ephemeral Message", False, str(e))
-

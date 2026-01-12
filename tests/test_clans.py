@@ -111,4 +111,3 @@ class ClanTests(BaseTestSuite):
             self.log_result("Channel Types", True)
         except Exception as e:
             self.log_result("Channel Types", False, str(e))
-

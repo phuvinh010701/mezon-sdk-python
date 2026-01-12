@@ -41,4 +41,3 @@ class QuickMenuTests(BaseTestSuite):
                 self.log_result("Delete Quick Menu", True)  # Not found is OK
             else:
                 self.log_result("Delete Quick Menu", False, str(e))
-

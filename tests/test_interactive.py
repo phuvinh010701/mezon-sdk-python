@@ -69,12 +69,20 @@ class InteractiveTests(BaseTestSuite):
         """Test: Multiple rows of buttons."""
         try:
             builder1 = ButtonBuilder()
-            builder1.add_button("row1_btn1", "Row 1 - Button 1", ButtonMessageStyle.PRIMARY)
-            builder1.add_button("row1_btn2", "Row 1 - Button 2", ButtonMessageStyle.PRIMARY)
+            builder1.add_button(
+                "row1_btn1", "Row 1 - Button 1", ButtonMessageStyle.PRIMARY
+            )
+            builder1.add_button(
+                "row1_btn2", "Row 1 - Button 2", ButtonMessageStyle.PRIMARY
+            )
 
             builder2 = ButtonBuilder()
-            builder2.add_button("row2_btn1", "Row 2 - Button 1", ButtonMessageStyle.SECONDARY)
-            builder2.add_button("row2_btn2", "Row 2 - Button 2", ButtonMessageStyle.SECONDARY)
+            builder2.add_button(
+                "row2_btn1", "Row 2 - Button 1", ButtonMessageStyle.SECONDARY
+            )
+            builder2.add_button(
+                "row2_btn2", "Row 2 - Button 2", ButtonMessageStyle.SECONDARY
+            )
 
             action_rows = [
                 {"components": builder1.build()},
@@ -133,4 +141,3 @@ class InteractiveTests(BaseTestSuite):
             self.log_result("Form Fields", True)
         except Exception as e:
             self.log_result("Form Fields", False, str(e))
-

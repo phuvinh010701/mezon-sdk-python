@@ -4,7 +4,6 @@ Binary API (protobuf) tests for Mezon SDK.
 
 import time
 
-from mezon.protobuf.api import api_pb2
 
 from tests.base import BaseTestSuite
 
@@ -79,9 +78,9 @@ class BinaryApiTests(BaseTestSuite):
                 use_binary=True,
             )
             assert result is not None, "Result should not be None"
-            assert hasattr(
-                result, "voice_channel_users"
-            ), "Should have voice_channel_users"
+            assert hasattr(result, "voice_channel_users"), (
+                "Should have voice_channel_users"
+            )
             self.log_result("Binary API - Voice Users", True)
         except Exception as e:
             self.log_result("Binary API - Voice Users", False, str(e))
@@ -152,4 +151,3 @@ class BinaryApiTests(BaseTestSuite):
             self.log_result("Binary Performance", True)
         except Exception as e:
             self.log_result("Binary Performance", False, str(e))
-

@@ -52,11 +52,12 @@ class HealthTests(BaseTestSuite):
         """Test: Disconnect functionality (skipped to preserve connection)."""
         # Note: Actually disconnecting would break subsequent tests
         try:
-            assert hasattr(
-                self.client, "disconnect"
-            ), "Client should have disconnect method"
+            assert hasattr(self.client, "disconnect"), (
+                "Client should have disconnect method"
+            )
             assert callable(self.client.disconnect), "disconnect should be callable"
-            self.skip_test("Disconnect", "Skipped to preserve connection for other tests")
+            self.skip_test(
+                "Disconnect", "Skipped to preserve connection for other tests"
+            )
         except Exception as e:
             self.log_result("Disconnect", False, str(e))
-
