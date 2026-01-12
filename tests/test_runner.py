@@ -30,12 +30,15 @@ from mezon import MezonClient
 
 from tests.base import TestConfig, TestResults, print_test_summary
 from tests.test_binary_api import BinaryApiTests
+from tests.test_buzz import BuzzTests
 from tests.test_clans import ClanTests
 from tests.test_friends import FriendTests
 from tests.test_health import HealthTests
 from tests.test_interactive import InteractiveTests
+from tests.test_mentions import MentionTests
 from tests.test_messages import MessageTests
 from tests.test_quick_menu import QuickMenuTests
+from tests.test_reconnect import ReconnectTests
 from tests.test_session import SessionTests
 from tests.test_streaming import StreamingTests
 from tests.test_tokens import TokenTests
@@ -57,12 +60,18 @@ def get_config_from_env() -> TestConfig:
     Raises:
         ValueError: If required environment variables are missing
     """
+    import dotenv
+
+    dotenv.load_dotenv()
+
     client_id = os.getenv("MEZON_CLIENT_ID")
     api_key = os.getenv("MEZON_API_KEY")
     clan_id = os.getenv("MEZON_CLAN_ID")
     channel_id = os.getenv("MEZON_CHANNEL_ID")
     user_id = os.getenv("MEZON_USER_ID")
-
+    user_name = os.getenv("MEZON_USER_NAME")
+    user_id_2 = os.getenv("MEZON_USER_ID_2")
+    user_name_2 = os.getenv("MEZON_USER_NAME_2")
     missing = []
     if not client_id:
         missing.append("MEZON_CLIENT_ID")
@@ -74,7 +83,12 @@ def get_config_from_env() -> TestConfig:
         missing.append("MEZON_CHANNEL_ID")
     if not user_id:
         missing.append("MEZON_USER_ID")
-
+    if not user_name:
+        missing.append("MEZON_USER_NAME")
+    if not user_id_2:
+        missing.append("MEZON_USER_ID_2")
+    if not user_name_2:
+        missing.append("MEZON_USER_NAME_2")
     if missing:
         raise ValueError(
             f"Missing required environment variables: {', '.join(missing)}\n"
@@ -83,7 +97,10 @@ def get_config_from_env() -> TestConfig:
             "  export MEZON_API_KEY=your_api_key\n"
             "  export MEZON_CLAN_ID=your_clan_id\n"
             "  export MEZON_CHANNEL_ID=your_channel_id\n"
-            "  export MEZON_USER_ID=your_user_id"
+            "  export MEZON_USER_ID=your_user_id\n"
+            "  export MEZON_USER_NAME=your_user_name"
+            "  export MEZON_USER_ID_2=your_user_id_2\n"
+            "  export MEZON_USER_NAME_2=your_user_name_2"
         )
 
     return TestConfig(
@@ -92,6 +109,9 @@ def get_config_from_env() -> TestConfig:
         clan_id=clan_id,
         channel_id=channel_id,
         user_id=user_id,
+        user_name=user_name,
+        user_id_2=user_id_2,
+        user_name_2=user_name_2,
         voice_channel_id=os.getenv("MEZON_VOICE_CHANNEL_ID"),
         role_id=os.getenv("MEZON_ROLE_ID"),
         token_receiver_id=os.getenv("MEZON_TOKEN_RECEIVER_ID"),
@@ -145,11 +165,14 @@ async def run_all_tests(
         # Create test suite instances
         test_suites = [
             ("MESSAGE OPERATIONS", MessageTests(client, config, results)),
+            ("MENTION OPERATIONS", MentionTests(client, config, results)),
+            ("BUZZ MESSAGES", BuzzTests(client, config, results)),
             ("INTERACTIVE UI", InteractiveTests(client, config, results)),
             ("USER OPERATIONS", UserTests(client, config, results)),
             ("CLAN OPERATIONS", ClanTests(client, config, results)),
             ("BINARY API", BinaryApiTests(client, config, results)),
             ("SESSION MANAGEMENT", SessionTests(client, config, results)),
+            ("WEBSOCKET RECONNECT", ReconnectTests(client, config, results)),
             ("FRIEND OPERATIONS", FriendTests(client, config, results)),
             ("QUICK MENU", QuickMenuTests(client, config, results)),
             ("STREAMING", StreamingTests(client, config, results)),
@@ -189,11 +212,14 @@ def main():
 ║                                                                              ║
 ║  Tests ALL features including:                                               ║
 ║  • Messages (send, edit, delete, react, reply, ephemeral, attachments)       ║
+║  • Mentions (user, everyone, role, reply with mention, multiple mentions)    ║
+║  • Buzz Messages (buzz, buzz with mention, buzz with @everyone)              ║
 ║  • Interactive UI (buttons, embeds, forms, multi-row)                        ║
 ║  • Users & DM (fetch, send DM, cache)                                        ║
 ║  • Clans (channels, roles, voice, cache)                                     ║
 ║  • Binary API (protobuf vs JSON, performance comparison)                     ║
 ║  • Session (get, refresh, properties, serialization)                         ║
+║  • WebSocket Reconnect (auto-reconnect, hard disconnect, functionality)      ║
 ║  • Friends (list, add, accept, pagination)                                   ║
 ║  • Quick Menu (add, delete)                                                  ║
 ║  • Streaming (register channel)                                              ║
@@ -216,4 +242,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

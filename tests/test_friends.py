@@ -76,8 +76,11 @@ class FriendTests(BaseTestSuite):
         except Exception as e:
             # May fail if no pending request
             error_str = str(e).lower()
-            if "already" in error_str or "friend" in error_str or "not found" in error_str:
+            if (
+                "already" in error_str
+                or "friend" in error_str
+                or "not found" in error_str
+            ):
                 self.log_result("Accept Friend", True)  # Already friends is OK
             else:
                 self.log_result("Accept Friend", False, str(e))
-

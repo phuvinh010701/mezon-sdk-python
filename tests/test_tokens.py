@@ -58,4 +58,3 @@ class TokenTests(BaseTestSuite):
                 self.log_result("Transaction Detail", True)  # API works, just no data
             else:
                 self.log_result("Transaction Detail", False, str(e))
-

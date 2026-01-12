@@ -79,4 +79,3 @@ class SessionTests(BaseTestSuite):
             self.log_result("Session Refresh", True)
         except Exception as e:
             self.log_result("Session Refresh", False, str(e))
-

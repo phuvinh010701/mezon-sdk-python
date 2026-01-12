@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "mezon-sdk"
 version = "1.6.7"
@@ -24,6 +28,8 @@ dev = [
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
     "python-semantic-release>=9.0.0",
+    "build>=1.0.0",
+    "twine>=4.0.0",
     "fastapi>=0.128.0",
     "uvicorn>=0.40.0",
     "python-dotenv>=1.2.1",
@@ -34,7 +40,7 @@ version_toml = ["pyproject.toml:project.version"]
 branch = "master"
 upload_to_pypi = false
 upload_to_release = true
-build_command = ""
+build_command = "python -m build"
 commit_message = "chore(release): {version} [skip ci]"
 commit_parser = "angular"
 logging_use_named_masks = false
@@ -82,3 +88,8 @@ exclude = [
 [project.urls]
 Homepage = "https://github.com/phuvinh010701/mezon-sdk-python"
 Issues = "https://github.com/phuvinh010701/mezon-sdk-python/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mezon*"]
+exclude = ["tests*", "scripts*", "*.tests", "*.tests.*", "tests.*"]

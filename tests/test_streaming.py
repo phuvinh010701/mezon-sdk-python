@@ -39,7 +39,8 @@ class StreamingTests(BaseTestSuite):
             # May fail due to permissions or already registered
             error_str = str(e).lower()
             if "permission" in error_str or "already" in error_str:
-                self.skip_test("Register Streaming Channel", "Permission/already registered")
+                self.skip_test(
+                    "Register Streaming Channel", "Permission/already registered"
+                )
             else:
                 self.log_result("Register Streaming Channel", False, str(e))
-

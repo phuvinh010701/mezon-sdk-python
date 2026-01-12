@@ -54,4 +54,3 @@ class UserTests(BaseTestSuite):
             self.log_result("User Cache", True)
         except Exception as e:
             self.log_result("User Cache", False, str(e))
-
