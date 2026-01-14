@@ -15,9 +15,11 @@ limitations under the License.
 """
 
 import asyncio
+import inspect
 import json
-from typing import Any, Callable, Literal
 import logging
+from collections.abc import Callable
+from typing import Any, Literal
 
 from tenacity import (
     AsyncRetrying,
@@ -82,7 +84,10 @@ DEFAULT_ZK_API = "https://dong.mezon.ai/zk-api/"
 logger = get_logger(__name__)
 
 
-def auto_bind(event_name: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+EventHandler = Callable[..., Any]
+
+
+def auto_bind(event_name: str) -> Callable[[EventHandler], EventHandler]:
     """
     Decorator to auto-bind a default event handler to the client's event manager.
 
@@ -92,14 +97,14 @@ def auto_bind(event_name: str) -> Callable[[Callable[..., Any]], Callable[..., A
     is initialized and scans for decorated methods.
 
     Args:
-        event_name: Name of the event in ``Events`` to subscribe to.
+        event_name (str): Name of the event in ``Events`` to subscribe to.
 
     Returns:
-        The original function, annotated with metadata for later registration.
+        Callable: The original function, annotated with metadata for later registration.
     """
 
-    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-        setattr(func, "_auto_bind_event", event_name)
+    def decorator(func: EventHandler) -> EventHandler:
+        func._auto_bind_event = event_name  # type: ignore[attr-defined]
         return func
 
     return decorator
@@ -166,21 +171,24 @@ class MezonClient:
         """
         Register all methods decorated with ``@auto_bind`` on this client.
 
-        This scans the instance for callables annotated with the
+        This scans the class for callables annotated with the
         ``_auto_bind_event`` attribute and wires them into the
         ``EventManager`` so they are always active as default handlers.
         """
-        for attr_name in dir(self):
-            attr = getattr(self, attr_name)
-            event_name = getattr(attr, "_auto_bind_event", None)
-            if not event_name or not callable(attr):
+        for attr_name in vars(type(self)):
+            unbound_method = getattr(type(self), attr_name)
+            event_name = getattr(unbound_method, "_auto_bind_event", None)
+            if not event_name:
                 continue
 
-            async def wrapper(message: Any, method: Callable[..., Any] = attr) -> None:
+            bound_method = getattr(self, attr_name)
+
+            async def wrapper(
+                message: Any, method: EventHandler = bound_method
+            ) -> None:
                 await self._invoke_handler(method, message)
 
-            setattr(wrapper, "_is_default_handler", True)
-
+            wrapper._is_default_handler = True  # type: ignore[attr-defined]
             self.event_manager.on(event_name, wrapper)
 
     async def get_session(self) -> Session:
@@ -261,17 +269,19 @@ class MezonClient:
                 self.channel_manager.init_all_dm_channels(sock_session.token),
             )
 
-    async def _invoke_handler(self, handler: Callable, *args, **kwargs) -> None:
+    async def _invoke_handler(
+        self, handler: EventHandler, *args: Any, **kwargs: Any
+    ) -> None:
         """
         Invoke a handler function, automatically handling both sync and async callables.
 
         Args:
-            handler: The handler function to invoke
-            *args: Positional arguments to pass to the handler
-            **kwargs: Keyword arguments to pass to the handler
+            handler (EventHandler): The handler function to invoke.
+            *args (Any): Positional arguments to pass to the handler.
+            **kwargs (Any): Keyword arguments to pass to the handler.
         """
         logger.debug(f"Invoking handler {handler} with args {args} and kwargs {kwargs}")
-        if asyncio.iscoroutinefunction(handler):
+        if inspect.iscoroutinefunction(handler):
             await handler(*args, **kwargs)
         else:
             handler(*args, **kwargs)
@@ -287,7 +297,7 @@ class MezonClient:
         await self.initialize_managers(session)
 
         if session.user_id:
-            self.key_gen = self.get_ephemeral_key_pair()
+            self.ephemeral_key_pair = self.get_ephemeral_key_pair()
             self.address = self.get_address_from_user_id(self.client_id)
             self.zk_proof = await self.get_zk_proof()
 
@@ -298,20 +308,50 @@ class MezonClient:
             self._setup_reconnect_handlers()
 
     def get_ephemeral_key_pair(self) -> EphemeralKeyPair:
+        """
+        Generate an ephemeral key pair for secure transactions.
+
+        Returns:
+            EphemeralKeyPair: The generated ephemeral key pair.
+
+        Raises:
+            ValueError: If MMN client is not initialized.
+        """
         if self.mmn_client:
             return self.mmn_client.generate_ephemeral_key_pair()
         raise ValueError("MMN client not initialized!")
 
     def get_address_from_user_id(self, user_id: str) -> str:
+        """
+        Get the blockchain address for a user ID.
+
+        Args:
+            user_id (str): The user ID to convert.
+
+        Returns:
+            str: The blockchain address.
+
+        Raises:
+            ValueError: If MMN client is not initialized.
+        """
         if self.mmn_client:
             return self.mmn_client.get_address_from_user_id(user_id)
         raise ValueError("MMN client not initialized!")
 
     async def get_zk_proof(self) -> ZkProof:
+        """
+        Get a zero-knowledge proof for the current session.
+
+        Returns:
+            ZkProof: The zero-knowledge proof.
+
+        Raises:
+            ValueError: If ZK client is not initialized.
+        """
         if self.zk_client:
             return await self.zk_client.get_zk_proofs(
                 user_id=self.client_id,
-                ephemeral_public_key=self.key_gen.public_key,
+                ephemeral_public_key=self.ephemeral_key_pair.public_key,
                 jwt=self.session_manager.get_session().id_token,
                 address=self.address,
                 client_type=ZkClientType.MEZON,
@@ -321,6 +361,19 @@ class MezonClient:
     async def get_current_nonce(
         self, user_id: str, tag: Literal["latest", "pending"] = "latest"
     ) -> int:
+        """
+        Get the current transaction nonce for a user.
+
+        Args:
+            user_id (str): The user ID to get nonce for.
+            tag (Literal["latest", "pending"]): The nonce tag type.
+
+        Returns:
+            int: The current nonce value.
+
+        Raises:
+            ValueError: If MMN client is not initialized.
+        """
         if self.mmn_client:
             return await self.mmn_client.get_current_nonce(
                 user_id=user_id,
@@ -329,6 +382,18 @@ class MezonClient:
         raise ValueError("MMN client not initialized!")
 
     async def send_token(self, token_event: ApiSentTokenRequest) -> AddTxResponse:
+        """
+        Send tokens to another user.
+
+        Args:
+            token_event (ApiSentTokenRequest): The token transfer request details.
+
+        Returns:
+            AddTxResponse: The transaction response.
+
+        Raises:
+            ValueError: If MMN client is not initialized.
+        """
         if not self.mmn_client:
             raise ValueError("MMN client not initialized")
 
@@ -350,23 +415,43 @@ class MezonClient:
             nonce=nonce_response.nonce + 1,
             text_data=token_event.note,
             extra_info=extra_info,
-            public_key=self.key_gen.public_key,
-            private_key=self.key_gen.private_key,
+            public_key=self.ephemeral_key_pair.public_key,
+            private_key=self.ephemeral_key_pair.private_key,
             zk_proof=self.zk_proof.proof,
             zk_pub=self.zk_proof.public_input,
         )
 
         logger.debug(f"Sending transaction: {tx_request}")
 
-        result = await self.mmn_client.send_transaction(tx_request)
-        return result
+        return await self.mmn_client.send_transaction(tx_request)
 
-    def on(self, event_name: str, handler: Callable) -> None:
+    def on(self, event_name: str, handler: EventHandler) -> None:
         """
-        Override the default event manager
+        Register a custom event handler.
 
+        Args:
+            event_name (str): The name of the event to listen for.
+            handler (EventHandler): The callback function to handle the event.
         """
         self.event_manager.on(event_name, handler)
+
+    def _register_event_handler(self, event_name: str, handler: EventHandler) -> None:
+        """
+        Register an event handler with automatic async wrapper.
+
+        This helper wraps the given handler in an async function that properly
+        invokes it via ``_invoke_handler``, ensuring consistent behavior for
+        both sync and async handlers.
+
+        Args:
+            event_name (str): The name of the event to listen for.
+            handler (EventHandler): The callback function to handle the event.
+        """
+
+        async def wrapper(message: Any) -> None:
+            await self._invoke_handler(handler, message)
+
+        self.event_manager.on(event_name, wrapper)
 
     async def get_channel_from_id(self, channel_id: str) -> TextChannel:
         """
@@ -448,12 +533,21 @@ class MezonClient:
         return user
 
     async def add_quick_menu_access(self, body: dict[str, Any]) -> Any:
-        id = generate_snowflake_id()
+        """
+        Add a quick menu access entry for this bot.
+
+        Args:
+            body (dict[str, Any]): Menu configuration containing clan_id, menu_type,
+                action_msg, background, and menu_name.
+
+        Returns:
+            Any: The API response or None if session is unavailable.
+        """
+        menu_id = generate_snowflake_id()
         session = self.session_manager.get_session()
         if not session:
             return None
 
-        bot_id = self.client_id
         payload = {
             "channel_id": "0",
             "clan_id": body.get("clan_id", "0"),
@@ -461,25 +555,47 @@ class MezonClient:
             "action_msg": body.get("action_msg"),
             "background": body.get("background", ""),
             "menu_name": body.get("menu_name"),
-            "id": id,
-            "bot_id": bot_id,
+            "id": menu_id,
+            "bot_id": self.client_id,
         }
 
         return await self.api_client.add_quick_menu_access(session.token, payload)
 
-    async def delete_quick_menu_access(self, bot_id: str = None) -> Any:
+    async def delete_quick_menu_access(self, bot_id: str | None = None) -> Any:
+        """
+        Delete a quick menu access entry.
+
+        Args:
+            bot_id (str | None): The bot ID to delete. Defaults to this client's ID.
+
+        Returns:
+            Any: The API response or None if session is unavailable.
+        """
         session = self.session_manager.get_session()
         if not session:
             return None
 
-        target_bot_id = bot_id if bot_id else self.client_id
         return await self.api_client.delete_quick_menu_access(
-            session.token, target_bot_id
+            session.token, bot_id or self.client_id
         )
 
     async def get_list_friends(
-        self, limit: int = None, state: str = None, cursor: str = None
+        self,
+        limit: int | None = None,
+        state: str | None = None,
+        cursor: str | None = None,
     ) -> Any:
+        """
+        Get the list of friends for this client.
+
+        Args:
+            limit (int | None): Maximum number of friends to return.
+            state (str | None): Filter by friend state.
+            cursor (str | None): Pagination cursor.
+
+        Returns:
+            Any: The friends list or None if session is unavailable.
+        """
         session = self.session_manager.get_session()
         if not session:
             return None
@@ -488,18 +604,46 @@ class MezonClient:
         )
 
     async def accept_friend(self, user_id: str, username: str) -> Any:
+        """
+        Accept a friend request from a user.
+
+        Args:
+            user_id (str): The ID of the user to accept.
+            username (str): The username of the user to accept.
+
+        Returns:
+            Any: The API response or None if session is unavailable.
+        """
         session = self.session_manager.get_session()
         if not session:
             return None
         return await self.api_client.request_friend(session.token, username, user_id)
 
     async def add_friend(self, username: str) -> Any:
+        """
+        Send a friend request to a user.
+
+        Args:
+            username (str): The username of the user to add.
+
+        Returns:
+            Any: The API response or None if session is unavailable.
+        """
         session = self.session_manager.get_session()
         if not session:
             return None
         return await self.api_client.request_friend(session.token, username)
 
     async def list_transaction_detail(self, transaction_id: str) -> Any:
+        """
+        Get details of a specific transaction.
+
+        Args:
+            transaction_id (str): The ID of the transaction.
+
+        Returns:
+            Any: The transaction details or None if session is unavailable.
+        """
         session = self.session_manager.get_session()
         if not session:
             return None
@@ -619,13 +763,9 @@ class MezonClient:
         user callback.
 
         Args:
-            handler: Callback to invoke when a channel message is received.
+            handler (Callable): Callback to invoke when a channel message is received.
         """
-
-        async def wrapper(message: api_pb2.ChannelMessage) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.CHANNEL_MESSAGE, wrapper)
+        self._register_event_handler(Events.CHANNEL_MESSAGE, handler)
 
     @auto_bind(Events.CHANNEL_MESSAGE)
     async def _handle_channel_message_default(
@@ -647,10 +787,13 @@ class MezonClient:
         self,
         handler: Callable[[realtime_pb2.ChannelCreatedEvent], None],
     ) -> None:
-        async def wrapper(message: realtime_pb2.ChannelCreatedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for channel created events.
 
-        self.event_manager.on(Events.CHANNEL_CREATED, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a channel is created.
+        """
+        self._register_event_handler(Events.CHANNEL_CREATED, handler)
 
     @auto_bind(Events.CHANNEL_CREATED)
     async def _handle_channel_created_default(
@@ -670,12 +813,11 @@ class MezonClient:
         Default internal behavior (joining new threads and updating caches) is
         always active via an auto-bound handler. This method only wires an
         additional user callback.
+
+        Args:
+            handler (Callable): Callback to invoke when a channel is updated.
         """
-
-        async def wrapper(message: realtime_pb2.ChannelUpdatedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.CHANNEL_UPDATED, wrapper)
+        self._register_event_handler(Events.CHANNEL_UPDATED, handler)
 
     @auto_bind(Events.CHANNEL_UPDATED)
     async def _handle_channel_updated_default(
@@ -708,12 +850,11 @@ class MezonClient:
         Default internal behavior (removing channel from caches) is always
         active via an auto-bound handler. This method only wires an additional
         user callback.
+
+        Args:
+            handler (Callable): Callback to invoke when a channel is deleted.
         """
-
-        async def wrapper(message: realtime_pb2.ChannelDeletedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.CHANNEL_DELETED, wrapper)
+        self._register_event_handler(Events.CHANNEL_DELETED, handler)
 
     @auto_bind(Events.CHANNEL_DELETED)
     async def _handle_channel_deleted_default(
@@ -733,10 +874,13 @@ class MezonClient:
         clan.channels.delete(message.channel_id)
 
     def on_token_send(self, handler: Callable[[api_pb2.TokenSentEvent], None]) -> None:
-        async def wrapper(message: api_pb2.TokenSentEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for token send events.
 
-        self.event_manager.on(Events.TOKEN_SEND, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when tokens are sent.
+        """
+        self._register_event_handler(Events.TOKEN_SEND, handler)
 
     @auto_bind(Events.TOKEN_SEND)
     async def _handle_token_send_default(self, message: api_pb2.TokenSentEvent) -> None:
@@ -753,18 +897,24 @@ class MezonClient:
     def on_message_reaction(
         self, handler: Callable[[api_pb2.MessageReaction], None]
     ) -> None:
-        async def wrapper(message: api_pb2.MessageReaction) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for message reaction events.
 
-        self.event_manager.on(Events.MESSAGE_REACTION, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a message reaction occurs.
+        """
+        self._register_event_handler(Events.MESSAGE_REACTION, handler)
 
     def on_channel_user_removed(
         self, handler: Callable[[realtime_pb2.UserChannelRemoved], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.UserChannelRemoved) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for channel user removal events.
 
-        self.event_manager.on(Events.USER_CHANNEL_REMOVED, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a user is removed from a channel.
+        """
+        self._register_event_handler(Events.USER_CHANNEL_REMOVED, handler)
 
     def on_user_clan_removed(
         self, handler: Callable[[realtime_pb2.UserClanRemoved], None]
@@ -775,12 +925,11 @@ class MezonClient:
         Default internal behavior (removing users from clan cache) is always
         active via an auto-bound handler. This method only wires an additional
         user callback.
+
+        Args:
+            handler (Callable): Callback to invoke when a user is removed from a clan.
         """
-
-        async def wrapper(message: realtime_pb2.UserClanRemoved) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.USER_CLAN_REMOVED, wrapper)
+        self._register_event_handler(Events.USER_CLAN_REMOVED, handler)
 
     @auto_bind(Events.USER_CLAN_REMOVED)
     async def _handle_user_clan_removed_default(
@@ -802,14 +951,10 @@ class MezonClient:
         Register a handler for when a user is added to a channel.
 
         Args:
-            handler: The callback function to handle the event.
-                     Can be either sync or async.
+            handler (Callable): The callback function to handle the event.
+                Can be either sync or async.
         """
-
-        async def wrapper(message: realtime_pb2.UserChannelAdded) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.USER_CHANNEL_ADDED, wrapper)
+        self._register_event_handler(Events.USER_CHANNEL_ADDED, handler)
 
     @auto_bind(Events.USER_CHANNEL_ADDED)
     async def _handle_user_channel_added_default(
@@ -835,108 +980,150 @@ class MezonClient:
     def on_give_coffee(
         self, handler: Callable[[api_pb2.GiveCoffeeEvent], None]
     ) -> None:
-        async def wrapper(message: api_pb2.GiveCoffeeEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for give coffee events.
 
-        self.event_manager.on(Events.GIVE_COFFEE, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when coffee is given.
+        """
+        self._register_event_handler(Events.GIVE_COFFEE, handler)
 
     def on_role_event(self, handler: Callable[[realtime_pb2.RoleEvent], None]) -> None:
-        async def wrapper(message: realtime_pb2.RoleEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for role events.
 
-        self.event_manager.on(Events.ROLE_EVENT, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a role event occurs.
+        """
+        self._register_event_handler(Events.ROLE_EVENT, handler)
 
     def on_clan_event_created(self, handler: Callable[[Any], None]) -> None:
-        async def wrapper(message: Any) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for clan event creation.
 
-        self.event_manager.on(Events.CLAN_EVENT_CREATED, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a clan event is created.
+        """
+        self._register_event_handler(Events.CLAN_EVENT_CREATED, handler)
 
     def on_message_button_clicked(
         self, handler: Callable[[realtime_pb2.MessageButtonClicked], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.MessageButtonClicked) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for message button click events.
 
-        self.event_manager.on(Events.MESSAGE_BUTTON_CLICKED, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a message button is clicked.
+        """
+        self._register_event_handler(Events.MESSAGE_BUTTON_CLICKED, handler)
 
     def on_streaming_joined_event(
         self, handler: Callable[[realtime_pb2.StreamingJoinedEvent], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.StreamingJoinedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for streaming joined events.
 
-        self.event_manager.on(Events.STREAMING_JOINED_EVENT, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a user joins streaming.
+        """
+        self._register_event_handler(Events.STREAMING_JOINED_EVENT, handler)
 
     def on_streaming_leaved_event(
         self, handler: Callable[[realtime_pb2.StreamingLeavedEvent], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.StreamingLeavedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for streaming left events.
 
-        self.event_manager.on(Events.STREAMING_LEAVED_EVENT, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a user leaves streaming.
+        """
+        self._register_event_handler(Events.STREAMING_LEAVED_EVENT, handler)
 
     def on_dropdown_box_selected(
         self, handler: Callable[[realtime_pb2.DropdownBoxSelected], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.DropdownBoxSelected) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for dropdown box selection events.
 
-        self.event_manager.on(Events.DROPDOWN_BOX_SELECTED, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a dropdown box is selected.
+        """
+        self._register_event_handler(Events.DROPDOWN_BOX_SELECTED, handler)
 
     def on_webrtc_signaling_fwd(
         self, handler: Callable[[realtime_pb2.WebrtcSignalingFwd], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.WebrtcSignalingFwd) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for WebRTC signaling forward events.
 
-        self.event_manager.on(Events.WEBRTC_SIGNALING_FWD, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when WebRTC signaling is forwarded.
+        """
+        self._register_event_handler(Events.WEBRTC_SIGNALING_FWD, handler)
 
     def on_voice_started_event(
         self, handler: Callable[[realtime_pb2.VoiceStartedEvent], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceStartedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for voice started events.
 
-        self.event_manager.on(Events.VOICE_STARTED_EVENT, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when voice starts.
+        """
+        self._register_event_handler(Events.VOICE_STARTED_EVENT, handler)
 
     def on_voice_ended_event(
         self, handler: Callable[[realtime_pb2.VoiceEndedEvent], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceEndedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for voice ended events.
 
-        self.event_manager.on(Events.VOICE_ENDED_EVENT, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when voice ends.
+        """
+        self._register_event_handler(Events.VOICE_ENDED_EVENT, handler)
 
     def on_voice_joined_event(
         self, handler: Callable[[realtime_pb2.VoiceJoinedEvent], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceJoinedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for voice joined events.
 
-        self.event_manager.on(Events.VOICE_JOINED_EVENT, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a user joins voice.
+        """
+        self._register_event_handler(Events.VOICE_JOINED_EVENT, handler)
 
     def on_voice_leaved_event(
         self, handler: Callable[[realtime_pb2.VoiceLeavedEvent], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceLeavedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for voice left events.
 
-        self.event_manager.on(Events.VOICE_LEAVED_EVENT, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a user leaves voice.
+        """
+        self._register_event_handler(Events.VOICE_LEAVED_EVENT, handler)
 
     def on_quick_menu_event(self, handler: Callable[[Any], None]) -> None:
-        async def wrapper(message: Any) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for quick menu events.
 
-        self.event_manager.on(Events.QUICK_MENU, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a quick menu event occurs.
+        """
+        self._register_event_handler(Events.QUICK_MENU, handler)
 
     def on_role_assign(
         self, handler: Callable[[realtime_pb2.RoleAssignedEvent], None]
     ) -> None:
-        async def wrapper(message: realtime_pb2.RoleAssignedEvent) -> None:
-            await self._invoke_handler(handler, message)
+        """
+        Register a user-defined handler for role assignment events.
 
-        self.event_manager.on(Events.ROLE_ASSIGN, wrapper)
+        Args:
+            handler (Callable): Callback to invoke when a role is assigned.
+        """
+        self._register_event_handler(Events.ROLE_ASSIGN, handler)
 
     def on_notification(
         self, handler: Callable[[realtime_pb2.Notifications], None]
@@ -947,12 +1134,11 @@ class MezonClient:
         Default internal behavior (e.g. auto-handling certain notification
         codes like friend requests) is always active via an auto-bound handler.
         This method only wires an additional user callback.
+
+        Args:
+            handler (Callable): Callback to invoke when a notification is received.
         """
-
-        async def wrapper(message: realtime_pb2.Notifications) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.NOTIFICATIONS, wrapper)
+        self._register_event_handler(Events.NOTIFICATIONS, handler)
 
     @auto_bind(Events.NOTIFICATIONS)
     async def _handle_notifications_default(
@@ -1003,13 +1189,9 @@ class MezonClient:
         called. This method only wires an additional user callback.
 
         Args:
-            handler: Callback to invoke when a clan user is added.
+            handler (Callable): Callback to invoke when a clan user is added.
         """
-
-        async def wrapper(message: realtime_pb2.AddClanUserEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.ADD_CLAN_USER, wrapper)
+        self._register_event_handler(Events.ADD_CLAN_USER, handler)
 
     @auto_bind(Events.ADD_CLAN_USER)
     async def _handle_add_clan_user_default(
