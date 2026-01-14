@@ -16,14 +16,14 @@ limitations under the License.
 
 import json
 from enum import Enum
-from typing import Optional, List, Dict, Any, Type
+from typing import Optional, Any
 from pydantic import BaseModel, Field
 from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
 from google.protobuf import json_format
 
 
-def protobuf_to_pydantic(proto_message, pydantic_class: Type[BaseModel]) -> BaseModel:
+def protobuf_to_pydantic(proto_message, pydantic_class: type[BaseModel]) -> BaseModel:
     """Convert protobuf message to Pydantic model via JSON.
 
     Args:
@@ -66,7 +66,7 @@ class ApiClanDesc(BaseModel):
 class ApiClanDescList(BaseModel):
     """A list of clan descriptions"""
 
-    clandesc: Optional[List[ApiClanDesc]] = None
+    clandesc: Optional[list[ApiClanDesc]] = None
 
     @classmethod
     def from_protobuf(cls, message: api_pb2.ClanDescList) -> "ApiClanDescList":
@@ -101,7 +101,7 @@ class ApiAccountApp(BaseModel):
     appid: Optional[str] = None
     appname: Optional[str] = None
     token: Optional[str] = None
-    vars: Optional[Dict[str, str]] = None
+    vars: Optional[dict[str, str]] = None
 
 
 class ApiAuthenticateRequest(BaseModel):
@@ -129,10 +129,10 @@ class ApiChannelDescription(BaseModel):
     """Channel description model"""
 
     active: Optional[int] = None
-    avatars: Optional[List[str]] = None
+    avatars: Optional[list[str]] = None
     category_id: Optional[str] = None
     category_name: Optional[str] = None
-    channel_avatar: Optional[List[str]] = None
+    channel_avatar: Optional[list[str]] = None
     channel_id: Optional[str] = None
     channel_label: Optional[str] = None
     channel_private: Optional[int] = None
@@ -142,20 +142,20 @@ class ApiChannelDescription(BaseModel):
     create_time_seconds: Optional[int] = None
     creator_id: Optional[str] = None
     creator_name: Optional[str] = None
-    display_names: Optional[List[str]] = None
+    display_names: Optional[list[str]] = None
     last_pin_message: Optional[str] = None
     last_seen_message: Optional[ApiChannelMessageHeader] = None
     last_sent_message: Optional[ApiChannelMessageHeader] = None
     meeting_code: Optional[str] = None
     meeting_uri: Optional[str] = None
-    onlines: Optional[List[bool]] = None
+    onlines: Optional[list[bool]] = None
     parent_id: Optional[str] = None
     status: Optional[int] = None
     type: Optional[int] = None
     update_time_seconds: Optional[int] = None
-    user_id: Optional[List[str]] = None
-    user_ids: Optional[List[str]] = None
-    usernames: Optional[List[str]] = None
+    user_id: Optional[list[str]] = None
+    user_ids: Optional[list[str]] = None
+    usernames: Optional[list[str]] = None
 
     @classmethod
     def from_protobuf(
@@ -181,7 +181,7 @@ class ApiChannelDescription(BaseModel):
 class ApiChannelDescList(BaseModel):
     """A list of channel descriptions"""
 
-    channeldesc: Optional[List[ApiChannelDescription]] = None
+    channeldesc: Optional[list[ApiChannelDescription]] = None
     cursor: Optional[str] = None
 
     @classmethod
@@ -283,7 +283,7 @@ class ApiVoiceChannelUser(BaseModel):
 class ApiVoiceChannelUserList(BaseModel):
     """Voice channel user list"""
 
-    voice_channel_users: Optional[List[ApiVoiceChannelUser]] = None
+    voice_channel_users: Optional[list[ApiVoiceChannelUser]] = None
 
     @classmethod
     def from_protobuf(
@@ -309,7 +309,7 @@ class ApiPermissionList(BaseModel):
     """Permission list"""
 
     max_level_permission: Optional[int] = None
-    permissions: Optional[List[ApiPermission]] = None
+    permissions: Optional[list[ApiPermission]] = None
 
 
 class RoleUserListRoleUser(BaseModel):
@@ -328,7 +328,7 @@ class ApiRoleUserList(BaseModel):
     """Role user list"""
 
     cursor: Optional[str] = None
-    role_users: Optional[List[RoleUserListRoleUser]] = None
+    role_users: Optional[list[RoleUserListRoleUser]] = None
 
 
 class ApiRole(BaseModel):
@@ -347,7 +347,7 @@ class ApiRole(BaseModel):
     allow_mention: Optional[int] = None
     max_level_permission: Optional[int] = None
     order_role: Optional[int] = None
-    channel_ids: Optional[List[str]] = None
+    channel_ids: Optional[list[str]] = None
     permission_list: Optional[ApiPermissionList] = None
     role_user_list: Optional[ApiRoleUserList] = None
     role_channel_active: Optional[int] = None
@@ -364,7 +364,7 @@ class ApiRoleList(BaseModel):
     cacheable_cursor: Optional[str] = None
     next_cursor: Optional[str] = None
     prev_cursor: Optional[str] = None
-    roles: Optional[List[ApiRole]] = None
+    roles: Optional[list[ApiRole]] = None
 
     @classmethod
     def from_protobuf(cls, message: api_pb2.RoleList) -> "ApiRoleList":
@@ -399,7 +399,7 @@ class ApiCreateChannelDescRequest(BaseModel):
     clan_id: Optional[str] = None
     parent_id: Optional[str] = None
     type: Optional[int] = None
-    user_ids: Optional[List[str]] = None
+    user_ids: Optional[list[str]] = None
 
 
 class ApiRegisterStreamingChannelRequest(BaseModel):
@@ -418,7 +418,7 @@ class ApiSentTokenRequest(BaseModel):
     sender_name: Optional[str] = None
     note: Optional[str] = None
     extra_attribute: Optional[str] = None
-    mmn_extra_info: Optional[Dict[str, Any]] = None
+    mmn_extra_info: Optional[dict[str, Any]] = None
     timestamp: Optional[int] = None
 
 
@@ -549,7 +549,7 @@ class AnimationConfig(BaseModel):
 
     url_image: str
     url_position: str
-    pool: List[str]
+    pool: list[str]
     repeat: Optional[int] = None
     duration: Optional[int] = None
 
@@ -562,8 +562,8 @@ class InteractiveMessageField(BaseModel):
     name: str
     value: str
     inline: Optional[bool] = None
-    options: Optional[List[Any]] = None
-    inputs: Optional[Dict[str, Any]] = None
+    options: Optional[list[Any]] = None
+    inputs: Optional[dict[str, Any]] = None
     max_options: Optional[int] = Field(default=None, alias="max_options")
 
 
@@ -607,7 +607,7 @@ class InteractiveMessageProps(BaseModel):
     author: Optional[InteractiveMessageAuthor] = None
     description: Optional[str] = None
     thumbnail: Optional[InteractiveMessageMedia] = None
-    fields: Optional[List[InteractiveMessageField]] = None
+    fields: Optional[list[InteractiveMessageField]] = None
     image: Optional[InteractiveMessageMedia] = None
     timestamp: Optional[str] = None
     footer: Optional[InteractiveMessageFooter] = None
@@ -671,7 +671,7 @@ class MessageComponent(BaseModel):
 
     type: Optional[MessageComponentType | int] = None
     component_id: str = Field(alias="id")
-    component: Dict[str, Any] = Field(default_factory=dict)
+    component: dict[str, Any] = Field(default_factory=dict)
 
     class Config:
         """
@@ -689,7 +689,7 @@ class MessageActionRow(BaseModel):
     Group of interactive components displayed on a single row.
     """
 
-    components: List[MessageComponent]
+    components: list[MessageComponent]
 
 
 class ChannelMessageContent(BaseModel):
@@ -699,15 +699,15 @@ class ChannelMessageContent(BaseModel):
 
     text: Optional[str] = Field(default=None, alias="t")
     content_thread: Optional[str] = Field(default=None, alias="contentThread")
-    hashtags: Optional[List[HashtagOnMessage]] = Field(default=None, alias="hg")
-    emojis: Optional[List[EmojiOnMessage]] = Field(default=None, alias="ej")
-    links: Optional[List[LinkOnMessage]] = Field(default=None, alias="lk")
-    markdown: Optional[List[MarkdownOnMessage]] = Field(default=None, alias="mk")
-    voice_links: Optional[List[LinkVoiceRoomOnMessage]] = Field(
+    hashtags: Optional[list[HashtagOnMessage]] = Field(default=None, alias="hg")
+    emojis: Optional[list[EmojiOnMessage]] = Field(default=None, alias="ej")
+    links: Optional[list[LinkOnMessage]] = Field(default=None, alias="lk")
+    markdown: Optional[list[MarkdownOnMessage]] = Field(default=None, alias="mk")
+    voice_links: Optional[list[LinkVoiceRoomOnMessage]] = Field(
         default=None, alias="vk"
     )
-    embed: Optional[List[InteractiveMessageProps]] = None
-    components: Optional[List[MessageActionRow]] = None
+    embed: Optional[list[InteractiveMessageProps]] = None
+    components: Optional[list[MessageActionRow]] = None
 
     class Config:
         populate_by_name = True
@@ -721,9 +721,9 @@ class MessagePayLoad(BaseModel):
     mode: int
     is_public: bool
     msg: ChannelMessageContent
-    mentions: Optional[List[ApiMessageMention]] = None
-    attachments: Optional[List[ApiMessageAttachment]] = None
-    ref: Optional[List[ApiMessageRef]] = None
+    mentions: Optional[list[ApiMessageMention]] = None
+    attachments: Optional[list[ApiMessageAttachment]] = None
+    ref: Optional[list[ApiMessageRef]] = None
     hideEditted: Optional[bool] = None
     topic_id: Optional[str] = None
 
@@ -737,9 +737,9 @@ class EphemeralMessageData(BaseModel):
     mode: int
     is_public: bool
     content: Any
-    mentions: Optional[List[ApiMessageMention]] = None
-    attachments: Optional[List[ApiMessageAttachment]] = None
-    references: Optional[List[ApiMessageRef]] = None
+    mentions: Optional[list[ApiMessageMention]] = None
+    attachments: Optional[list[ApiMessageAttachment]] = None
+    references: Optional[list[ApiMessageRef]] = None
     anonymous_message: Optional[bool] = None
     mention_everyone: Optional[bool] = None
     avatar: Optional[str] = None
@@ -756,9 +756,9 @@ class ReplyMessageData(BaseModel):
     mode: int
     is_public: bool
     content: ChannelMessageContent
-    mentions: Optional[List[ApiMessageMention]] = None
-    attachments: Optional[List[ApiMessageAttachment]] = None
-    references: Optional[List[ApiMessageRef]] = None
+    mentions: Optional[list[ApiMessageMention]] = None
+    attachments: Optional[list[ApiMessageAttachment]] = None
+    references: Optional[list[ApiMessageRef]] = None
     anonymous_message: Optional[bool] = None
     mention_everyone: Optional[bool] = None
     avatar: Optional[str] = None
@@ -775,8 +775,8 @@ class UpdateMessageData(BaseModel):
     is_public: bool
     message_id: str
     content: Any
-    mentions: Optional[List[ApiMessageMention]] = None
-    attachments: Optional[List[ApiMessageAttachment]] = None
+    mentions: Optional[list[ApiMessageMention]] = None
+    attachments: Optional[list[ApiMessageAttachment]] = None
     hideEditted: Optional[bool] = None
     topic_id: Optional[str] = None
     is_update_msg_topic: Optional[bool] = None
@@ -832,9 +832,9 @@ class MessageUserPayLoad(BaseModel):
 
     userId: str
     msg: str
-    messOptions: Optional[Dict[str, Any]] = None
-    attachments: Optional[List[ApiMessageAttachment]] = None
-    refs: Optional[List[ApiMessageRef]] = None
+    messOptions: Optional[dict[str, Any]] = None
+    attachments: Optional[list[ApiMessageAttachment]] = None
+    refs: Optional[list[ApiMessageRef]] = None
 
 
 # Socket Models
@@ -861,7 +861,7 @@ class Channel(BaseModel):
 
     id: str
     chanel_label: str
-    presences: List[Presence]
+    presences: list[Presence]
     self_presence: Presence = Field(alias="self")
     clan_logo: str
     category_name: str
@@ -876,13 +876,13 @@ class ClanJoin(SocketMessage):
 class ChannelJoin(BaseModel):
     """Join a realtime chat channel"""
 
-    channel_join: Dict[str, Any]
+    channel_join: dict[str, Any]
 
 
 class ChannelLeave(BaseModel):
     """Leave a realtime chat channel"""
 
-    channel_leave: Dict[str, Any]
+    channel_leave: dict[str, Any]
 
 
 class FCMTokens(BaseModel):
@@ -903,11 +903,11 @@ class UserProfileRedis(BaseModel):
     about_me: str
     custom_status: str
     create_time_second: int
-    fcm_tokens: List[FCMTokens]
+    fcm_tokens: list[FCMTokens]
     online: bool
     metadata: str
     is_disabled: bool
-    joined_clans: List[str]
+    joined_clans: list[str]
     pubkey: str
     mezon_id: str
     app_token: str
@@ -932,7 +932,7 @@ class UserChannelAddedEvent(BaseModel):
     """User channel added event"""
 
     channel_desc: ChannelDescription
-    users: List[UserProfileRedis]
+    users: list[UserProfileRedis]
     status: str
     clan_id: str
     caller: Optional[UserProfileRedis] = None
@@ -944,7 +944,7 @@ class UserChannelRemoved(BaseModel):
     """User channel removed"""
 
     channel_id: str
-    user_ids: List[str]
+    user_ids: list[str]
     channel_type: int
     clan_id: str
 
@@ -953,7 +953,7 @@ class UserClanRemovedEvent(BaseModel):
     """User clan removed event"""
 
     clan_id: str
-    user_ids: List[str]
+    user_ids: list[str]
 
 
 class LastPinMessageEvent(BaseModel):
@@ -1170,7 +1170,7 @@ class DropdownBoxSelected(BaseModel):
     selectbox_id: str
     sender_id: str
     user_id: str
-    values: List[str]
+    values: list[str]
 
 
 class NotificationEvent(BaseModel):
@@ -1187,9 +1187,9 @@ class ChannelMessageSend(BaseModel):
     is_public: bool
     clan_id: str
     content: Any
-    mentions: Optional[List[ApiMessageMention]] = None
-    attachments: Optional[List[ApiMessageAttachment]] = None
-    references: Optional[List[ApiMessageRef]] = None
+    mentions: Optional[list[ApiMessageMention]] = None
+    attachments: Optional[list[ApiMessageAttachment]] = None
+    references: Optional[list[ApiMessageRef]] = None
 
 
 class ChannelMessageUpdate(BaseModel):
@@ -1256,11 +1256,11 @@ class ChannelMessageRaw(BaseModel):
     clan_id: str
     channel_id: str
     sender_id: str
-    content: Dict[str, Any] = Field(default_factory=dict)
-    reactions: List[ApiMessageReaction] = Field(default_factory=list)
-    mentions: List[ApiMessageMention] = Field(default_factory=list)
-    attachments: List[ApiMessageAttachment] = Field(default_factory=list)
-    references: List[ApiMessageRef] = Field(default_factory=list)
+    content: dict[str, Any] = Field(default_factory=dict)
+    reactions: list[ApiMessageReaction] = Field(default_factory=list)
+    mentions: list[ApiMessageMention] = Field(default_factory=list)
+    attachments: list[ApiMessageAttachment] = Field(default_factory=list)
+    references: list[ApiMessageRef] = Field(default_factory=list)
     create_time_seconds: Optional[int] = None
     topic_id: Optional[str] = None
 
@@ -1304,7 +1304,7 @@ class ChannelMessageRaw(BaseModel):
             topic_id=getattr(message, "topic_id", None),
         )
 
-    def to_message_dict(self) -> Dict[str, Any]:
+    def to_message_dict(self) -> dict[str, Any]:
         """
         Convert to Message initialization dictionary.
 
@@ -1313,7 +1313,7 @@ class ChannelMessageRaw(BaseModel):
         """
         return self.model_dump(by_alias=False)
 
-    def to_db_dict(self) -> Dict[str, Any]:
+    def to_db_dict(self) -> dict[str, Any]:
         """
         Convert to database storage dictionary.
 
@@ -1372,7 +1372,7 @@ class UserInitData(BaseModel):
             dm_channel_id=dm_channel_id,
         )
 
-    def to_user_dict(self) -> Dict[str, Any]:
+    def to_user_dict(self) -> dict[str, Any]:
         """
         Convert to User class initialization dictionary.
 

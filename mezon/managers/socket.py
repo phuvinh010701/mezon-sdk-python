@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, List, Optional, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from mezon.client import MezonClient
@@ -96,7 +96,7 @@ class SocketManager:
         )
         await self.join_all_clans(clans.clandesc, token)
 
-    async def join_all_clans(self, clans: List[ApiClanDesc], token: str) -> None:
+    async def join_all_clans(self, clans: list[ApiClanDesc], token: str) -> None:
         async with asyncio.TaskGroup() as tg:
             for clan_desc in clans:
                 tg.create_task(self.socket.join_clan_chat(clan_desc.clan_id))
@@ -121,9 +121,9 @@ class SocketManager:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
-        references: Optional[List[ApiMessageRef]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
+        references: Optional[list[ApiMessageRef]] = None,
         anonymous_message: Optional[bool] = None,
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
@@ -154,9 +154,9 @@ class SocketManager:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
-        references: Optional[List[ApiMessageRef]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
+        references: Optional[list[ApiMessageRef]] = None,
         anonymous_message: Optional[bool] = None,
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
@@ -187,8 +187,8 @@ class SocketManager:
         is_public: bool,
         message_id: str,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
         hide_editted: bool = False,
         topic_id: Optional[str] = None,
         is_update_msg_topic: Optional[bool] = None,

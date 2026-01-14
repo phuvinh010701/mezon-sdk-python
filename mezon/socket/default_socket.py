@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Dict, Optional, Any, List, TypeVar, Type
+from typing import Optional, Any, TypeVar
 
 from mezon.protobuf.rtapi import realtime_pb2
 from mezon.utils.logger import get_logger
@@ -84,7 +84,7 @@ class Socket:
         self.send_timeout_ms = send_timeout_ms
         self.event_manager = event_manager or EventManager()
 
-        self.cids: Dict[str, PromiseExecutor] = {}
+        self.cids: dict[str, PromiseExecutor] = {}
         self.next_cid = 1
 
         self.adapter = adapter or WebSocketAdapterPb()
@@ -354,7 +354,7 @@ class Socket:
         self,
         response: Optional[realtime_pb2.Envelope],
         field_name: str,
-        model_class: Type[T],
+        model_class: type[T],
         error_message: str,
     ) -> T:
         """
@@ -435,9 +435,9 @@ class Socket:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
-        references: Optional[List[ApiMessageRef]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
+        references: Optional[list[ApiMessageRef]] = None,
         anonymous_message: Optional[bool] = None,
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
@@ -502,8 +502,8 @@ class Socket:
         is_public: bool,
         message_id: str,
         content: ChannelMessageContent,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
         hide_editted: bool = False,
         topic_id: Optional[str] = None,
         is_update_msg_topic: Optional[bool] = None,
@@ -618,9 +618,9 @@ class Socket:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
-        references: Optional[List[ApiMessageRef]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
+        references: Optional[list[ApiMessageRef]] = None,
         anonymous_message: Optional[bool] = None,
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
@@ -937,7 +937,7 @@ class Socket:
             return json_format.MessageToDict(response.voice_leaved_event)
         return None
 
-    async def check_duplicate_clan_name(self, clan_name: str) -> Dict[str, Any]:
+    async def check_duplicate_clan_name(self, clan_name: str) -> dict[str, Any]:
         """
         Check if a clan name already exists.
 
@@ -956,7 +956,7 @@ class Socket:
             return json_format.MessageToDict(response.check_name_existed_event)
         return None
 
-    async def list_clan_emoji_by_clan_id(self, clan_id: str) -> Dict[str, Any]:
+    async def list_clan_emoji_by_clan_id(self, clan_id: str) -> dict[str, Any]:
         """
         List all emojis for a specific clan.
 
@@ -969,7 +969,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def list_channel_by_user_id(self) -> Dict[str, Any]:
+    async def list_channel_by_user_id(self) -> dict[str, Any]:
         """
         List all channels for the current user.
 
@@ -979,7 +979,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def hashtag_dm_list(self, user_ids: List[str], limit: int) -> Dict[str, Any]:
+    async def hashtag_dm_list(self, user_ids: list[str], limit: int) -> dict[str, Any]:
         """
         Get hashtag DM list.
 
@@ -993,7 +993,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def list_clan_stickers_by_clan_id(self, clan_id: str) -> Dict[str, Any]:
+    async def list_clan_stickers_by_clan_id(self, clan_id: str) -> dict[str, Any]:
         """
         List all stickers for a specific clan.
 
@@ -1006,7 +1006,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_channel_setting(self, channel_id: str) -> Dict[str, Any]:
+    async def get_notification_channel_setting(self, channel_id: str) -> dict[str, Any]:
         """
         Get notification settings for a channel.
 
@@ -1021,7 +1021,7 @@ class Socket:
 
     async def get_notification_category_setting(
         self, category_id: str
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Get notification settings for a category.
 
@@ -1034,7 +1034,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_clan_setting(self, clan_id: str) -> Dict[str, Any]:
+    async def get_notification_clan_setting(self, clan_id: str) -> dict[str, Any]:
         """
         Get notification settings for a clan.
 
@@ -1047,7 +1047,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_react_message(self, channel_id: str) -> Dict[str, Any]:
+    async def get_notification_react_message(self, channel_id: str) -> dict[str, Any]:
         """
         Get notification settings for message reactions.
 

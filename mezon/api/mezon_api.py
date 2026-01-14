@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import aiohttp
-from typing import Dict, Any, Optional, Type
+from typing import Any, Optional
 from aiolimiter import AsyncLimiter
 
 
@@ -88,11 +88,11 @@ class MezonApi:
         self,
         method: str,
         url_path: str,
-        query_params: Optional[Dict[str, Any]] = None,
+        query_params: Optional[dict[str, Any]] = None,
         body: Optional[str] = None,
-        headers: Optional[Dict[str, Any]] = None,
+        headers: Optional[dict[str, Any]] = None,
         accept_binary: bool = False,
-        response_proto_class: Optional[Type] = None,
+        response_proto_class: Optional[type] = None,
     ) -> Any:
         """
         Make API call with optional binary protobuf response support.
@@ -100,11 +100,11 @@ class MezonApi:
         Args:
             method (str): HTTP method
             url_path (str): API endpoint path
-            query_params (Optional[Dict[str, Any]]): URL query parameters
+            query_params (Optional[dict[str, Any]]): URL query parameters
             body (Optional[str]): Request body (JSON string)
-            headers (Optional[Dict[str, Any]]): HTTP headers
+            headers (Optional[dict[str, Any]]): HTTP headers
             accept_binary (bool): If True, request binary protobuf response
-            response_proto_class (Optional[Type]): Protobuf message class for binary responses
+            response_proto_class (Optional[type]): Protobuf message class for binary responses
 
         Returns:
             Any: Dict (from JSON) or protobuf message (from binary)
@@ -129,14 +129,14 @@ class MezonApi:
                     )
 
     async def mezon_healthcheck(
-        self, bearer_token: str, options: Optional[Dict[str, Any]] = None
+        self, bearer_token: str, options: Optional[dict[str, Any]] = None
     ) -> Any:
         """
         Check if the Mezon service is healthy.
 
         Args:
             bearer_token (str): Bearer token for authentication
-            options (Optional[Dict[str, Any]]): Additional options for the request
+            options (Optional[dict[str, Any]]): Additional options for the request
 
         Returns:
             Any: Response from the healthcheck endpoint
@@ -151,14 +151,14 @@ class MezonApi:
         )
 
     async def mezon_readycheck(
-        self, bearer_token: str, options: Optional[Dict[str, Any]] = None
+        self, bearer_token: str, options: Optional[dict[str, Any]] = None
     ) -> Any:
         """
         Check if the Mezon service is ready.
 
         Args:
             bearer_token (str): Bearer token for authentication
-            options (Optional[Dict[str, Any]]): Additional options for the request
+            options (Optional[dict[str, Any]]): Additional options for the request
 
         Returns:
             Any: Response from the readycheck endpoint
@@ -177,7 +177,7 @@ class MezonApi:
         basic_auth_username: str,
         basic_auth_password: str,
         body: ApiAuthenticateRequest,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> ApiSession:
         """
         Authenticate a app with a token against the server.
@@ -186,7 +186,7 @@ class MezonApi:
             basic_auth_username (str): Username for basic authentication
             basic_auth_password (str): Password for basic authentication
             body (ApiAuthenticateRequest): Authentication request body
-            options (Optional[Dict[str, Any]]): Additional options for the request
+            options (Optional[dict[str, Any]]): Additional options for the request
 
         Returns:
             ApiSession: Session object containing authentication details
@@ -210,7 +210,7 @@ class MezonApi:
         limit: Optional[int] = None,
         state: Optional[int] = None,
         cursor: Optional[str] = None,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
         use_binary: bool = True,
     ) -> ApiClanDescList:
         """
@@ -252,7 +252,7 @@ class MezonApi:
         limit: Optional[int] = None,
         state: Optional[int] = None,
         cursor: Optional[str] = None,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
         use_binary: bool = True,
     ) -> ApiChannelDescList:
         """
@@ -302,7 +302,7 @@ class MezonApi:
         self,
         token: str,
         request: ApiCreateChannelDescRequest,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> ApiChannelDescription:
         """
         Create a channel description.
@@ -455,7 +455,7 @@ class MezonApi:
         self,
         token: str,
         role_id: str,
-        request: Dict[str, Any],
+        request: dict[str, Any],
     ) -> bool:
         headers = build_headers(bearer_token=token)
         body = build_body(body=request)
@@ -522,7 +522,7 @@ class MezonApi:
         basic_auth_username: str,
         basic_auth_password: str,
         body: ApiAuthenticateRefreshRequest,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> ApiSession:
         """
         Refresh a user's session using a refresh token.
@@ -552,7 +552,7 @@ class MezonApi:
         self,
         bearer_token: str,
         body: ApiAuthenticateLogoutRequest,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Log out a session, invalidate a refresh token, or log out all sessions.
@@ -581,7 +581,7 @@ class MezonApi:
         self,
         bearer_token: str,
         message_id: str,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Delete a message by ID.
@@ -610,7 +610,7 @@ class MezonApi:
         bearer_token: str,
         message_id: str,
         body: ApiUpdateMessageRequest,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Update a message by ID.
@@ -640,7 +640,7 @@ class MezonApi:
         self,
         bearer_token: str,
         body: ApiSentTokenRequest,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Send token to another user.
@@ -669,7 +669,7 @@ class MezonApi:
         self,
         bearer_token: str,
         body: ApiRegisterStreamingChannelRequest,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Register a streaming channel.
@@ -698,7 +698,7 @@ class MezonApi:
         self,
         bearer_token: str,
         transaction_id: str,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Get transaction detail by ID.
@@ -726,8 +726,8 @@ class MezonApi:
     async def add_quick_menu_access(
         self,
         bearer_token: str,
-        body: Dict[str, Any],
-        options: Optional[Dict[str, Any]] = None,
+        body: dict[str, Any],
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Add quick menu access for a bot.
@@ -764,7 +764,7 @@ class MezonApi:
         self,
         bearer_token: str,
         bot_id: str,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Delete quick menu access for a bot.
@@ -791,8 +791,8 @@ class MezonApi:
     async def play_media(
         self,
         bearer_token: str,
-        body: Dict[str, Any],
-        options: Optional[Dict[str, Any]] = None,
+        body: dict[str, Any],
+        options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
         Play media in a voice channel.

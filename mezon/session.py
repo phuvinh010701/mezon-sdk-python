@@ -16,7 +16,7 @@ limitations under the License.
 
 import jwt
 import time
-from typing import Optional, Dict, Any
+from typing import Optional, Any
 
 from .models import ApiSession
 
@@ -92,7 +92,7 @@ class Session:
             self.refresh_token = refresh_token
 
     @classmethod
-    def restore(cls, session: Dict[str, Any]) -> "Session":
+    def restore(cls, session: dict[str, Any]) -> "Session":
         """
         Restore a session from a dictionary.
 
@@ -104,7 +104,7 @@ class Session:
         """
         return cls(session)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert session to dictionary for serialization.
 

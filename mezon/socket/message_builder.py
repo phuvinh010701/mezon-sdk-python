@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import json
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 
 from mezon.protobuf.rtapi import realtime_pb2
@@ -52,7 +52,7 @@ class ChannelMessageBuilder:
     @staticmethod
     def _add_mentions(
         message: realtime_pb2.ChannelMessageSend,
-        mentions: List[ApiMessageMention],
+        mentions: list[ApiMessageMention],
     ) -> None:
         """
         Add mentions to the channel message.
@@ -77,7 +77,7 @@ class ChannelMessageBuilder:
     @staticmethod
     def _add_attachments(
         message: realtime_pb2.ChannelMessageSend,
-        attachments: List[ApiMessageAttachment],
+        attachments: list[ApiMessageAttachment],
     ) -> None:
         """
         Add attachments to the channel message.
@@ -104,7 +104,7 @@ class ChannelMessageBuilder:
     @staticmethod
     def _add_references(
         message: realtime_pb2.ChannelMessageSend,
-        references: List[ApiMessageRef],
+        references: list[ApiMessageRef],
     ) -> None:
         """
         Add message references to the channel message.
@@ -163,9 +163,9 @@ class ChannelMessageBuilder:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
-        references: Optional[List[ApiMessageRef]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
+        references: Optional[list[ApiMessageRef]] = None,
         anonymous_message: Optional[bool] = None,
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
@@ -234,9 +234,9 @@ class EphemeralMessageBuilder:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
-        references: Optional[List[ApiMessageRef]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
+        references: Optional[list[ApiMessageRef]] = None,
         anonymous_message: Optional[bool] = None,
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
@@ -305,8 +305,8 @@ class ChannelMessageUpdateBuilder:
         is_public: bool,
         message_id: str,
         content: Any,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
         hide_editted: Optional[bool] = None,
         topic_id: Optional[str] = None,
         is_update_msg_topic: Optional[bool] = None,

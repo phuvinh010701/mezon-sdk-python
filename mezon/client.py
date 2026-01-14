@@ -16,7 +16,7 @@ limitations under the License.
 
 import asyncio
 import json
-from typing import Any, Callable, Literal, Dict
+from typing import Any, Callable, Literal
 import logging
 
 from tenacity import (
@@ -447,7 +447,7 @@ class MezonClient:
         self.users.set(user_id, user)
         return user
 
-    async def add_quick_menu_access(self, body: Dict[str, Any]) -> Any:
+    async def add_quick_menu_access(self, body: dict[str, Any]) -> Any:
         id = generate_snowflake_id()
         session = self.session_manager.get_session()
         if not session:
@@ -1063,116 +1063,9 @@ class MezonClient:
         self.users.set(message.user.user_id, user)
         return user
 
-    def on_clan_event_created(
-        self, handler: Callable[[api_pb2.CreateEventRequest], None]
-    ) -> None:
-        async def wrapper(message: api_pb2.CreateEventRequest) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.CLAN_EVENT_CREATED, wrapper)
-
-    def on_message_button_clicked(
-        self, handler: Callable[[realtime_pb2.MessageButtonClicked], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.MessageButtonClicked) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.MESSAGE_BUTTON_CLICKED, wrapper)
-
-    def on_streaming_joined_event(
-        self, handler: Callable[[realtime_pb2.StreamingJoinedEvent], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.StreamingJoinedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.STREAMING_JOINED_EVENT, wrapper)
-
-    def on_streaming_leaved_event(
-        self, handler: Callable[[realtime_pb2.StreamingLeavedEvent], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.StreamingLeavedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.STREAMING_LEAVED_EVENT, wrapper)
-
-    def on_dropdown_box_selected(
-        self, handler: Callable[[realtime_pb2.DropdownBoxSelected], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.DropdownBoxSelected) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.DROPDOWN_BOX_SELECTED, wrapper)
-
-    def on_webrtc_signaling_fwd(
-        self, handler: Callable[[realtime_pb2.WebrtcSignalingFwd], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.WebrtcSignalingFwd) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.WEBRTC_SIGNALING_FWD, wrapper)
-
-    def on_voice_started_event(
-        self, handler: Callable[[realtime_pb2.VoiceStartedEvent], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceStartedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.VOICE_STARTED_EVENT, wrapper)
-
-    def on_voice_ended_event(
-        self, handler: Callable[[realtime_pb2.VoiceEndedEvent], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceEndedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.VOICE_ENDED_EVENT, wrapper)
-
-    def on_voice_joined_event(
-        self, handler: Callable[[realtime_pb2.VoiceJoinedEvent], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceJoinedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.VOICE_JOINED_EVENT, wrapper)
-
-    def on_voice_leaved_event(
-        self, handler: Callable[[realtime_pb2.VoiceLeavedEvent], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.VoiceLeavedEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.VOICE_LEAVED_EVENT, wrapper)
-
-    def on_quick_menu_event(
-        self, handler: Callable[[realtime_pb2.QuickMenuDataEvent], None]
-    ) -> None:
-        async def wrapper(message: realtime_pb2.QuickMenuDataEvent) -> None:
-            await self._invoke_handler(handler, message)
-
-        self.event_manager.on(Events.QUICK_MENU, wrapper)
-
     async def close_socket(self) -> None:
         await self.socket_manager.get_socket().close()
         self.event_manager = EventManager()
-
-    async def get_list_friends(
-        self,
-        limit: int = None,
-        state: str = None,
-        cursor: str = None,
-    ) -> Any:
-        session = self.session_manager.get_session()
-        return await self.api_client.get_list_friends(
-            session.token, limit, state, cursor
-        )
-
-    async def accept_friend(self, user_id: str, username: str) -> Any:
-        session = self.session_manager.get_session()
-        return await self.api_client.request_friend(session.token, username, user_id)
-
-    async def add_friend(self, username: str) -> Any:
-        session = self.session_manager.get_session()
-        return await self.api_client.request_friend(session.token, username)
 
     async def session_refresh(self) -> Session:
         """

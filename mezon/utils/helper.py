@@ -1,7 +1,7 @@
 import asyncio
 import re
 import time
-from typing import Dict, TypeVar, Any
+from typing import TypeVar, Any
 from urllib.parse import urlparse
 
 from ..constants import ChannelType, ChannelStreamMode, InternalEventsSocket
@@ -74,7 +74,7 @@ async def sleep(ms: int) -> None:
     await asyncio.sleep(ms / 1000)
 
 
-def parse_url_to_host_and_ssl(url_str: str) -> Dict[str, Any]:
+def parse_url_to_host_and_ssl(url_str: str) -> dict[str, Any]:
     """
     Parse URL to extract host, port, and SSL information.
 

@@ -81,9 +81,13 @@ minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
 
 [tool.ruff]
-exclude = [
-    "mezon/protobuf",
+extend-exclude = [
+    "mezon/protobuf/*",
 ]
+
+[tool.ruff.lint.per-file-ignores]
+"mezon/protobuf/**" = ["ALL"]
+"**/__init__.py" = ["F401"]
 
 [project.urls]
 Homepage = "https://github.com/phuvinh010701/mezon-sdk-python"
