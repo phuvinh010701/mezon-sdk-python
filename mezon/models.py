@@ -167,7 +167,7 @@ class ApiChannelDescription(BaseModel):
         if isinstance(message, api_pb2.ChannelDescription):
             channel_type_value = message.type
         else:
-            channel_type_value = message.channel_type.value
+            channel_type_value = message.channel_type
 
         json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
         data_dict = json.loads(json_data)
