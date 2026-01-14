@@ -16,7 +16,7 @@ limitations under the License.
 
 import random
 from datetime import datetime
-from typing import List, Optional, Dict, Any
+from typing import Optional, Any
 from mezon.models import (
     MessageComponentType,
     InputFieldOption,
@@ -53,7 +53,7 @@ class InteractiveBuilder:
         Args:
             title: Optional title for the interactive message
         """
-        self.interactive: Dict[str, Any] = {
+        self.interactive: dict[str, Any] = {
             "color": get_random_color(),
             "title": title,
             "fields": [],
@@ -257,7 +257,7 @@ class InteractiveBuilder:
         self,
         field_id: str,
         name: str,
-        options: List[SelectFieldOption],
+        options: list[SelectFieldOption],
         value_selected: Optional[SelectFieldOption] = None,
         description: Optional[str] = None,
     ) -> "InteractiveBuilder":
@@ -298,7 +298,7 @@ class InteractiveBuilder:
         self,
         field_id: str,
         name: str,
-        options: List[RadioFieldOption],
+        options: list[RadioFieldOption],
         description: Optional[str] = None,
         max_options: Optional[int] = None,
     ) -> "InteractiveBuilder":
@@ -391,7 +391,7 @@ class InteractiveBuilder:
         self.interactive["fields"].append(field_data)
         return self
 
-    def build(self) -> Dict[str, Any]:
+    def build(self) -> dict[str, Any]:
         """
         Build and return the interactive message dictionary.
 

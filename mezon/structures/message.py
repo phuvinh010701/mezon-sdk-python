@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, List, Any, TYPE_CHECKING
+from typing import Optional, Any, TYPE_CHECKING
 import json
 from mezon import ChannelMessageAck
 from mezon.models import (
@@ -60,10 +60,10 @@ class Message:
         self.id: str = message_raw.id
         self.sender_id: str = message_raw.sender_id
         self.content: ChannelMessageContent = message_raw.content
-        self.mentions: Optional[List[ApiMessageMention]] = message_raw.mentions
-        self.attachments: Optional[List[ApiMessageAttachment]] = message_raw.attachments
-        self.reactions: Optional[List[ApiMessageReaction]] = message_raw.reactions
-        self.references: Optional[List[ApiMessageRef]] = message_raw.references
+        self.mentions: Optional[list[ApiMessageMention]] = message_raw.mentions
+        self.attachments: Optional[list[ApiMessageAttachment]] = message_raw.attachments
+        self.reactions: Optional[list[ApiMessageReaction]] = message_raw.reactions
+        self.references: Optional[list[ApiMessageRef]] = message_raw.references
         self.topic_id: Optional[str] = message_raw.topic_id
         self.create_time_seconds: Optional[int] = message_raw.create_time_seconds
 
@@ -73,8 +73,8 @@ class Message:
     async def reply(
         self,
         content: ChannelMessageContent,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
         mention_everyone: Optional[bool] = None,
         anonymous_message: Optional[bool] = None,
         topic_id: Optional[str] = None,
@@ -102,7 +102,7 @@ class Message:
                 f"User {self.sender_id} not found in this clan {self.channel.clan.id}!"
             )
 
-        references: List[ApiMessageRef] = [
+        references: list[ApiMessageRef] = [
             ApiMessageRef(
                 message_ref_id=self.id,
                 message_sender_id=self.sender_id,
@@ -136,8 +136,8 @@ class Message:
     async def update(
         self,
         content: ChannelMessageContent,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
     ) -> ChannelMessageAck:
         """
         Update (edit) this message.

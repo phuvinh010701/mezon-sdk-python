@@ -17,7 +17,7 @@ limitations under the License.
 import aiosqlite
 import json
 import os
-from typing import Optional, Dict, Any, List
+from typing import Optional, Any
 from mezon.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -86,7 +86,7 @@ class MessageDB:
         await self.db.commit()
         logger.debug("Database tables initialized")
 
-    async def save_message(self, message: Dict[str, Any]) -> None:
+    async def save_message(self, message: dict[str, Any]) -> None:
         """
         Save or update a message in the database.
 
@@ -136,7 +136,7 @@ class MessageDB:
 
     async def get_message_by_id(
         self, message_id: str, channel_id: str
-    ) -> Optional[Dict[str, Any]]:
+    ) -> Optional[dict[str, Any]]:
         """
         Retrieve a message by its ID and channel ID.
 
@@ -174,7 +174,7 @@ class MessageDB:
 
     async def get_messages_by_channel(
         self, channel_id: str, limit: int = 50, offset: int = 0
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         Retrieve messages from a specific channel.
 

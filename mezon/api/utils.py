@@ -1,4 +1,4 @@
-from typing import Any, Optional, Dict, Type
+from typing import Any, Optional
 import base64
 import json
 from urllib.parse import urlparse
@@ -19,7 +19,7 @@ def build_headers(
     bearer_token: Optional[str] = None,
     basic_auth: Optional[tuple] = None,
     accept_binary: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Build headers for API requests.
 
@@ -29,7 +29,7 @@ def build_headers(
         accept_binary (bool): Whether to accept binary protobuf responses. Defaults to False.
 
     Returns:
-        Dict[str, Any]: Headers dictionary
+        dict[str, Any]: Headers dictionary
     """
     headers = {
         "Accept": "application/x-protobuf" if accept_binary else "application/json",
@@ -44,7 +44,7 @@ def build_headers(
     return headers
 
 
-def build_body(body: BaseModel | Dict[str, Any]) -> str:
+def build_body(body: BaseModel | dict[str, Any]) -> str:
     """
     Build body for API requests.
 
@@ -62,7 +62,7 @@ def build_body(body: BaseModel | Dict[str, Any]) -> str:
         raise ValueError(f"Invalid body type: {type(body)}")
 
 
-def parse_url_components(url: str) -> Dict[str, Any]:
+def parse_url_components(url: str) -> dict[str, Any]:
     """
     Parse URL components.
 
@@ -70,7 +70,7 @@ def parse_url_components(url: str) -> Dict[str, Any]:
         url (str): URL string to parse
 
     Returns:
-        Dict[str, Any]: Dictionary with scheme, hostname, use_ssl, and port
+        dict[str, Any]: Dictionary with scheme, hostname, use_ssl, and port
     """
     parsed_url = urlparse(url)
 
@@ -89,15 +89,15 @@ def parse_url_components(url: str) -> Dict[str, Any]:
     }
 
 
-def build_params(params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def build_params(params: Optional[dict[str, Any]] = None) -> dict[str, Any]:
     """
     Build parameters for API requests, filtering out None values.
 
     Args:
-        params (Optional[Dict[str, Any]]): Parameters dictionary
+        params (Optional[dict[str, Any]]): Parameters dictionary
 
     Returns:
-        Dict[str, Any]: Parameters dictionary with None values filtered out
+        dict[str, Any]: Parameters dictionary with None values filtered out
     """
     if not params:
         return {}
@@ -119,7 +119,7 @@ def is_binary_response(content_type: str) -> bool:
 
 async def parse_binary_response(
     resp: aiohttp.ClientResponse,
-    response_proto_class: Type,
+    response_proto_class: type,
 ) -> Any:
     """
     Parse binary protobuf response.
@@ -145,7 +145,7 @@ async def parse_binary_response(
 async def parse_response(
     resp: aiohttp.ClientResponse,
     accept_binary: bool,
-    response_proto_class: Optional[Type],
+    response_proto_class: Optional[type],
 ) -> Any:
     """
     Parse API response based on content type.
@@ -153,7 +153,7 @@ async def parse_response(
     Args:
         resp (aiohttp.ClientResponse): HTTP response object
         accept_binary (bool): Whether binary response was requested
-        response_proto_class (Optional[Type]): Protobuf class for binary parsing
+        response_proto_class (Optional[type]): Protobuf class for binary parsing
 
     Returns:
         Any: Parsed response (dict from JSON or protobuf message)

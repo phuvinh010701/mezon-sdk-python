@@ -1,5 +1,5 @@
 import asyncio
-from typing import Callable, Dict, List
+from typing import Callable
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ class EventManager:
     """
 
     def __init__(self):
-        self.event_handlers: Dict[str, List[Callable]] = {}
+        self.event_handlers: dict[str, list[Callable]] = {}
 
     def on(self, event_name: str, handler: Callable) -> None:
         """

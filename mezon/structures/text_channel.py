@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, List, Any, TYPE_CHECKING
+from typing import Optional, Any, TYPE_CHECKING
 from mezon.models import (
     ApiChannelDescription,
     ApiMessageAttachment,
@@ -90,8 +90,8 @@ class TextChannel:
     async def send(
         self,
         content: ChannelMessageContent,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
         mention_everyone: Optional[bool] = None,
         anonymous_message: Optional[bool] = None,
         topic_id: Optional[str] = None,
@@ -132,8 +132,8 @@ class TextChannel:
         receiver_id: str,
         content: Any,
         reference_message_id: Optional[str] = None,
-        mentions: Optional[List[ApiMessageMention]] = None,
-        attachments: Optional[List[ApiMessageAttachment]] = None,
+        mentions: Optional[list[ApiMessageMention]] = None,
+        attachments: Optional[list[ApiMessageAttachment]] = None,
         mention_everyone: Optional[bool] = None,
         anonymous_message: Optional[bool] = None,
         topic_id: Optional[str] = None,
@@ -156,7 +156,7 @@ class TextChannel:
         Returns:
             The message acknowledgement
         """
-        references: List[ApiMessageRef] = []
+        references: list[ApiMessageRef] = []
 
         if reference_message_id:
             message_ref = await self.messages.fetch(reference_message_id)

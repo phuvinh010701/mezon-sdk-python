@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 from mezon.models import ButtonMessageStyle, MessageComponentType
 
 
@@ -31,7 +31,7 @@ class ButtonBuilder:
 
     def __init__(self):
         """Initialize an empty ButtonBuilder."""
-        self.components: List[Dict[str, Any]] = []
+        self.components: list[dict[str, Any]] = []
 
     def add_button(
         self,
@@ -74,7 +74,7 @@ class ButtonBuilder:
         self.components.append(button_component)
         return self
 
-    def build(self) -> List[Dict[str, Any]]:
+    def build(self) -> list[dict[str, Any]]:
         """
         Build and return the list of button components.
 

@@ -14,27 +14,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import jwt
 import time
-from typing import Optional, Dict, Any
+from typing import Any
+
+import jwt
 
 from .models import ApiSession
 
 
 class Session:
-    def __init__(self, api_session: ApiSession):
+    """Represents an authenticated user session with JWT token management."""
+
+    def __init__(self, api_session: ApiSession) -> None:
         """
         Initialize a Session from an API session response.
 
         Args:
-            api_session: Dictionary containing token, refresh_token, and user_id
+            api_session (ApiSession): API session containing token and user data.
         """
         self.token: str = api_session.token
         self.refresh_token: str = api_session.refresh_token
-        self.user_id: Optional[str] = api_session.user_id
-        self.api_url: Optional[str] = api_session.api_url
-        self.id_token: Optional[str] = api_session.id_token
+        self.user_id: str | None = api_session.user_id
+        self.api_url: str | None = api_session.api_url
+        self.id_token: str | None = api_session.id_token
         self.created_at: int = int(time.time())
+        self.expires_at: int | None = None
+        self.refresh_expires_at: int | None = None
+        self.vars: dict[str, Any] = {}
 
         self.update(self.token, self.refresh_token)
 
@@ -66,7 +72,7 @@ class Session:
             return True
         return (self.refresh_expires_at - currenttime) < 0
 
-    def update(self, token: str, refresh_token: Optional[str] = None) -> None:
+    def update(self, token: str, refresh_token: str | None = None) -> None:
         """
         Update the session with new tokens.
 
@@ -92,7 +98,7 @@ class Session:
             self.refresh_token = refresh_token
 
     @classmethod
-    def restore(cls, session: Dict[str, Any]) -> "Session":
+    def restore(cls, session: dict[str, Any]) -> "Session":
         """
         Restore a session from a dictionary.
 
@@ -104,7 +110,7 @@ class Session:
         """
         return cls(session)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert session to dictionary for serialization.
 
