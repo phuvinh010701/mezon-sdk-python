@@ -2,6 +2,29 @@
 
 <!-- version list -->
 
+## v1.6.8 (2026-01-14)
+
+### Bug Fixes
+
+- Correct channel type assignment in ApiChannelDescription model
+  ([`47fe7fb`](https://github.com/phuvinh010701/mezon-sdk-python/commit/47fe7fb1bc302e35af8c60d3ef8792d3d24b7f27))
+
+### Chores
+
+- **deps**: Update dependencies for build step, exclude test file after build, add test reconnect
+  ([`ad9a1f5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ad9a1f519646e471063a378dbc69e595d14e5d4a))
+
+### Refactoring
+
+- Enhance MezonClient with improved event handler registration, update type annotations, and add
+  detailed docstrings for better clarity
+  ([`f79c3eb`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f79c3ebf49a85217bd1b3a7975937398b1d568f7))
+
+- Update type annotations to use built-in types, enhance coding conventions documentation, and
+  adjust Ruff configuration for linting exclusions
+  ([`8e99e1e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8e99e1e375a2f5ece0bec67589c0fbf2a82e4cc9))
+
+
 ## v1.6.7 (2026-01-05)
 
 ### Bug Fixes

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mezon-sdk"
-version = "1.6.7"
+version = "1.6.8"
 description = "Mezon Python SDK - A Python implementation of the Mezon TypeScript SDK"
 readme = "README.md"
 requires-python = ">=3.13"
