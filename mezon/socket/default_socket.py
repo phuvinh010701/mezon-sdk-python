@@ -947,8 +947,8 @@ class Socket:
         Returns:
             ClanNameExistedEvent with exists status
         """
-        envelope = realtime.Envelope()
-        clan_name_check = realtime.CheckNameExistedEvent(name=clan_name)
+        envelope = realtime_pb2.Envelope()
+        clan_name_check = realtime_pb2.CheckNameExistedEvent(name=clan_name)
         envelope.check_name_existed_event.CopyFrom(clan_name_check)
         response = await self._send_with_cid(envelope)
 
