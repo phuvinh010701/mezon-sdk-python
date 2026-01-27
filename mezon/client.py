@@ -475,8 +475,6 @@ class MezonClient:
             session.token, channel_id
         )
 
-        print(channel_detail, "==============CHANNEL DETAIL===============")
-
         clan_id = channel_detail.clan_id or 0
 
         clan = self.clans.get(clan_id)
