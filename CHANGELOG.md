@@ -2,6 +2,43 @@
 
 <!-- version list -->
 
+## v1.6.9 (2026-01-27)
+
+### Bug Fixes
+
+- Add ApiSentTokenRequest model for token transfer requests
+  ([`1560049`](https://github.com/phuvinh010701/mezon-sdk-python/commit/15600492459bdda7df1f03becb176154cdf2ee17))
+
+### Chores
+
+- **deps**: Update mmn-sdk dependency to version 1.0.1 and remove unused logout method from
+  MezonClient
+  ([`1322c19`](https://github.com/phuvinh010701/mezon-sdk-python/commit/1322c19463f4e562ad29609017cefcda7f6e0684))
+
+### Refactoring
+
+- Enhance MezonApi with support for protobuf-based API calls, restructure endpoints, and improve
+  request handling
+  ([`d84305e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d84305ea6de0c335a446a9bcfd1401264318f668))
+
+- Remove debug print statement from MezonClient to clean up code
+  ([`d78cd44`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d78cd44408f404bd3d5a2883b5dd2e6878b2d0d9))
+
+- Remove list_transaction_detail method from MezonApi to streamline code and improve maintainability
+  ([`28478ac`](https://github.com/phuvinh010701/mezon-sdk-python/commit/28478aca446681b4a2f4ed4baf9809874922bdd6))
+
+- Remove unused API request models and endpoints from MezonApi, streamline code for better
+  maintainability
+  ([`8516329`](https://github.com/phuvinh010701/mezon-sdk-python/commit/851632979c9c0fb8ef6009f1931643dc79013af7))
+
+- Update MezonClient and related models to use integer type annotations for IDs, enhance protobuf
+  handling, and improve dependency management
+  ([`d40fa71`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d40fa71329eafec8e51a7c608f07cb1933f8571f))
+
+- Update Socket class to use protobuf-based envelope and event for clan name existence check
+  ([`accd38d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/accd38df40c4abaf612e2b7599795261b53f9c3a))
+
+
 ## v1.6.8 (2026-01-14)
 
 ### Bug Fixes
