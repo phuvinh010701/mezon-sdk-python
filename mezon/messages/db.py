@@ -135,8 +135,8 @@ class MessageDB:
         )
 
     async def get_message_by_id(
-        self, message_id: str, channel_id: str
-    ) -> Optional[dict[str, Any]]:
+        self, message_id: int, channel_id: int
+    ) -> Optional[ChannelMessageRaw]:
         """
         Retrieve a message by its ID and channel ID.
 

@@ -382,7 +382,7 @@ class Socket:
         logger.debug(f"Response: {response}")
         raise Exception(error_message)
 
-    async def join_clan_chat(self, clan_id: str) -> realtime_pb2.ClanJoin:
+    async def join_clan_chat(self, clan_id: int) -> realtime_pb2.ClanJoin:
         """
         Join a clan chat.
 
@@ -399,8 +399,8 @@ class Socket:
 
     async def join_chat(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         channel_type: int,
         is_public: bool = True,
     ) -> realtime_pb2.ChannelJoin:
@@ -430,8 +430,8 @@ class Socket:
 
     async def write_chat_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
         content: Any,
@@ -442,7 +442,7 @@ class Socket:
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
         code: Optional[int] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         """
         Write a message to a channel.
@@ -496,16 +496,16 @@ class Socket:
 
     async def update_chat_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
+        message_id: int,
         content: ChannelMessageContent,
         mentions: Optional[list[ApiMessageMention]] = None,
         attachments: Optional[list[ApiMessageAttachment]] = None,
         hide_editted: bool = False,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
         is_update_msg_topic: Optional[bool] = None,
     ) -> ChannelMessageAck:
         """
@@ -554,16 +554,16 @@ class Socket:
 
     async def write_message_reaction(
         self,
-        id: str,
-        clan_id: str,
-        channel_id: str,
+        id: int,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
-        emoji_id: str,
+        message_id: int,
+        emoji_id: int,
         emoji: str,
         count: int,
-        message_sender_id: str,
+        message_sender_id: int,
         action_delete: bool = False,
     ) -> ApiMessageReaction:
         """
@@ -612,9 +612,9 @@ class Socket:
 
     async def write_ephemeral_message(
         self,
-        receiver_id: str,
-        clan_id: str,
-        channel_id: str,
+        receiver_id: int,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
         content: Any,
@@ -625,7 +625,7 @@ class Socket:
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
         code: Optional[int] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         ephemeral_message_send = EphemeralMessageBuilder.build(
             receiver_id=receiver_id,
@@ -656,8 +656,8 @@ class Socket:
 
     async def leave_chat(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         channel_type: int,
         is_public: bool,
     ) -> None:
@@ -682,12 +682,12 @@ class Socket:
 
     async def remove_chat_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
-        topic_id: Optional[str] = None,
+        message_id: int,
+        topic_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         """
         Remove/delete a message from a channel.
@@ -726,8 +726,8 @@ class Socket:
 
     async def write_message_typing(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
     ) -> Any:
@@ -759,10 +759,10 @@ class Socket:
 
     async def write_last_seen_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
-        message_id: str,
+        message_id: int,
         timestamp_seconds: int,
     ) -> Any:
         """
@@ -795,11 +795,11 @@ class Socket:
 
     async def write_last_pin_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
+        message_id: int,
         timestamp_seconds: int,
         operation: int,
     ) -> Any:
@@ -837,7 +837,7 @@ class Socket:
 
     async def write_custom_status(
         self,
-        clan_id: str,
+        clan_id: int,
         status: str,
     ) -> Any:
         """
@@ -865,9 +865,9 @@ class Socket:
     async def write_voice_joined(
         self,
         id: str,
-        clan_id: str,
+        clan_id: int,
         clan_name: str,
-        voice_channel_id: str,
+        voice_channel_id: int,
         voice_channel_label: str,
         participant: str,
         last_screenshot: str = "",
@@ -907,9 +907,9 @@ class Socket:
     async def write_voice_leaved(
         self,
         id: str,
-        clan_id: str,
-        voice_channel_id: str,
-        voice_user_id: str,
+        clan_id: int,
+        voice_channel_id: int,
+        voice_user_id: int,
     ) -> Any:
         """
         Notify that a user left a voice channel.
@@ -947,8 +947,8 @@ class Socket:
         Returns:
             ClanNameExistedEvent with exists status
         """
-        envelope = realtime_pb2.Envelope()
-        clan_name_check = realtime_pb2.CheckNameExistedEvent(name=clan_name)
+        envelope = realtime.Envelope()
+        clan_name_check = realtime.CheckNameExistedEvent(name=clan_name)
         envelope.check_name_existed_event.CopyFrom(clan_name_check)
         response = await self._send_with_cid(envelope)
 
@@ -1006,7 +1006,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_channel_setting(self, channel_id: str) -> dict[str, Any]:
+    async def get_notification_channel_setting(self, channel_id: int) -> dict[str, Any]:
         """
         Get notification settings for a channel.
 
@@ -1020,7 +1020,7 @@ class Socket:
         return None
 
     async def get_notification_category_setting(
-        self, category_id: str
+        self, category_id: int
     ) -> dict[str, Any]:
         """
         Get notification settings for a category.
@@ -1034,7 +1034,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_clan_setting(self, clan_id: str) -> dict[str, Any]:
+    async def get_notification_clan_setting(self, clan_id: int) -> dict[str, Any]:
         """
         Get notification settings for a clan.
 
@@ -1047,7 +1047,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def get_notification_react_message(self, channel_id: str) -> dict[str, Any]:
+    async def get_notification_react_message(self, channel_id: int) -> dict[str, Any]:
         """
         Get notification settings for message reactions.
 

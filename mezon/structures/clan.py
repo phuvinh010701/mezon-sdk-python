@@ -42,9 +42,9 @@ class Clan:
 
     def __init__(
         self,
-        clan_id: str,
+        clan_id: int,
         clan_name: str,
-        welcome_channel_id: str,
+        welcome_channel_id: int,
         client: "MezonClient",
         api_client: MezonApi,
         socket_manager: "SocketManager",
@@ -79,10 +79,10 @@ class Clan:
         self._channels_loaded = False
         self._loading_promise: Optional[Any] = None
 
-        async def channel_fetcher(channel_id: str) -> TextChannel:
+        async def channel_fetcher(channel_id: int) -> TextChannel:
             return await self.client.channels.fetch(channel_id)
 
-        self.channels: CacheManager[str, TextChannel] = CacheManager(
+        self.channels: CacheManager[int, TextChannel] = CacheManager(
             fetcher=channel_fetcher
         )
 
@@ -120,7 +120,7 @@ class Clan:
 
     async def list_channel_voice_users(
         self,
-        channel_id: str = "",
+        channel_id: int = 0,
         channel_type: int = None,
         limit: int = 500,
         state: int = None,
@@ -143,7 +143,7 @@ class Clan:
             cursor=cursor,
         )
 
-    async def update_role(self, role_id: str, request: dict) -> bool:
+    async def update_role(self, role_id: int, request: dict) -> bool:
         return await self.api_client.update_role(
             token=self.session_token,
             role_id=role_id,
@@ -152,8 +152,8 @@ class Clan:
 
     async def list_roles(
         self,
-        limit: str = None,
-        state: str = None,
+        limit: int = None,
+        state: int = None,
         cursor: str = None,
     ) -> ApiRoleListEventResponse:
         return await self.api_client.list_roles(

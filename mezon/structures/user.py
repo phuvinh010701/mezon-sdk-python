@@ -87,7 +87,7 @@ class User:
         )
 
         return await self.socket_manager.write_chat_message(
-            clan_id="0",
+            clan_id=0,
             channel_id=self.dm_channel_id,
             mode=convert_channeltype_to_channel_mode(ChannelType.CHANNEL_TYPE_DM),
             is_public=False,

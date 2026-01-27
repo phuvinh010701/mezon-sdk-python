@@ -12,7 +12,6 @@ dependencies = [
     "pydantic>=2.12.3",
     "aiohttp>=3.9.0",
     "websockets>=12.0",
-    "protobuf>=4.25.0",
     "pyjwt>=2.8.0",
     "aiosqlite>=0.20.0",
     "mmn-sdk==1.0.0",
@@ -33,6 +32,8 @@ dev = [
     "fastapi>=0.128.0",
     "uvicorn>=0.40.0",
     "python-dotenv>=1.2.1",
+    "mypy-protobuf>=5.0.0",
+    "protobuf>=6.33.2",
 ]
 
 [tool.semantic_release]

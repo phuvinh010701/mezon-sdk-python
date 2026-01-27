@@ -19,495 +19,494 @@ limitations under the License.
 The realtime protocol for Mezon server.
 """
 
-import api.api_pb2
-import builtins
-import collections.abc
-import google.protobuf.descriptor
-import google.protobuf.internal.containers
-import google.protobuf.internal.enum_type_wrapper
-import google.protobuf.message
-import google.protobuf.timestamp_pb2
-import google.protobuf.wrappers_pb2
+from api import api_pb2 as _api_pb2
+from collections import abc as _abc
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+import builtins as _builtins
 import sys
-import typing
+import typing as _typing
 
 if sys.version_info >= (3, 10):
-    import typing as typing_extensions
+    from typing import TypeAlias as _TypeAlias
 else:
-    import typing_extensions
+    from typing_extensions import TypeAlias as _TypeAlias
 
-DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
+DESCRIPTOR: _descriptor.FileDescriptor
 
-@typing.final
-class Envelope(google.protobuf.message.Message):
+@_typing.final
+class Envelope(_message.Message):
     """An envelope for a realtime message."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CID_FIELD_NUMBER: builtins.int
-    CHANNEL_FIELD_NUMBER: builtins.int
-    CLAN_JOIN_FIELD_NUMBER: builtins.int
-    CHANNEL_JOIN_FIELD_NUMBER: builtins.int
-    CHANNEL_LEAVE_FIELD_NUMBER: builtins.int
-    CHANNEL_MESSAGE_FIELD_NUMBER: builtins.int
-    CHANNEL_MESSAGE_ACK_FIELD_NUMBER: builtins.int
-    CHANNEL_MESSAGE_SEND_FIELD_NUMBER: builtins.int
-    CHANNEL_MESSAGE_UPDATE_FIELD_NUMBER: builtins.int
-    CHANNEL_MESSAGE_REMOVE_FIELD_NUMBER: builtins.int
-    CHANNEL_PRESENCE_EVENT_FIELD_NUMBER: builtins.int
-    ERROR_FIELD_NUMBER: builtins.int
-    NOTIFICATIONS_FIELD_NUMBER: builtins.int
-    RPC_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    STATUS_FOLLOW_FIELD_NUMBER: builtins.int
-    STATUS_PRESENCE_EVENT_FIELD_NUMBER: builtins.int
-    STATUS_UNFOLLOW_FIELD_NUMBER: builtins.int
-    STATUS_UPDATE_FIELD_NUMBER: builtins.int
-    STREAM_DATA_FIELD_NUMBER: builtins.int
-    STREAM_PRESENCE_EVENT_FIELD_NUMBER: builtins.int
-    PING_FIELD_NUMBER: builtins.int
-    PONG_FIELD_NUMBER: builtins.int
-    MESSAGE_TYPING_EVENT_FIELD_NUMBER: builtins.int
-    LAST_SEEN_MESSAGE_EVENT_FIELD_NUMBER: builtins.int
-    MESSAGE_REACTION_EVENT_FIELD_NUMBER: builtins.int
-    VOICE_JOINED_EVENT_FIELD_NUMBER: builtins.int
-    VOICE_LEAVED_EVENT_FIELD_NUMBER: builtins.int
-    VOICE_STARTED_EVENT_FIELD_NUMBER: builtins.int
-    VOICE_ENDED_EVENT_FIELD_NUMBER: builtins.int
-    CHANNEL_CREATED_EVENT_FIELD_NUMBER: builtins.int
-    CHANNEL_DELETED_EVENT_FIELD_NUMBER: builtins.int
-    CHANNEL_UPDATED_EVENT_FIELD_NUMBER: builtins.int
-    LAST_PIN_MESSAGE_EVENT_FIELD_NUMBER: builtins.int
-    CUSTOM_STATUS_EVENT_FIELD_NUMBER: builtins.int
-    USER_CHANNEL_ADDED_EVENT_FIELD_NUMBER: builtins.int
-    USER_CHANNEL_REMOVED_EVENT_FIELD_NUMBER: builtins.int
-    USER_CLAN_REMOVED_EVENT_FIELD_NUMBER: builtins.int
-    CLAN_UPDATED_EVENT_FIELD_NUMBER: builtins.int
-    CLAN_PROFILE_UPDATED_EVENT_FIELD_NUMBER: builtins.int
-    CHECK_NAME_EXISTED_EVENT_FIELD_NUMBER: builtins.int
-    USER_PROFILE_UPDATED_EVENT_FIELD_NUMBER: builtins.int
-    ADD_CLAN_USER_EVENT_FIELD_NUMBER: builtins.int
-    CLAN_EVENT_CREATED_FIELD_NUMBER: builtins.int
-    ROLE_ASSIGN_EVENT_FIELD_NUMBER: builtins.int
-    CLAN_DELETED_EVENT_FIELD_NUMBER: builtins.int
-    GIVE_COFFEE_EVENT_FIELD_NUMBER: builtins.int
-    STICKER_CREATE_EVENT_FIELD_NUMBER: builtins.int
-    STICKER_UPDATE_EVENT_FIELD_NUMBER: builtins.int
-    STICKER_DELETE_EVENT_FIELD_NUMBER: builtins.int
-    ROLE_EVENT_FIELD_NUMBER: builtins.int
-    EVENT_EMOJI_FIELD_NUMBER: builtins.int
-    STREAMING_JOINED_EVENT_FIELD_NUMBER: builtins.int
-    STREAMING_LEAVED_EVENT_FIELD_NUMBER: builtins.int
-    STREAMING_STARTED_EVENT_FIELD_NUMBER: builtins.int
-    STREAMING_ENDED_EVENT_FIELD_NUMBER: builtins.int
-    PERMISSION_SET_EVENT_FIELD_NUMBER: builtins.int
-    PERMISSION_CHANGED_EVENT_FIELD_NUMBER: builtins.int
-    TOKEN_SENT_EVENT_FIELD_NUMBER: builtins.int
-    MESSAGE_BUTTON_CLICKED_FIELD_NUMBER: builtins.int
-    UNMUTE_EVENT_FIELD_NUMBER: builtins.int
-    WEBRTC_SIGNALING_FWD_FIELD_NUMBER: builtins.int
-    LIST_ACTIVITY_FIELD_NUMBER: builtins.int
-    DROPDOWN_BOX_SELECTED_FIELD_NUMBER: builtins.int
-    INCOMING_CALL_PUSH_FIELD_NUMBER: builtins.int
-    SD_TOPIC_EVENT_FIELD_NUMBER: builtins.int
-    FOLLOW_EVENT_FIELD_NUMBER: builtins.int
-    CHANNEL_APP_EVENT_FIELD_NUMBER: builtins.int
-    USER_STATUS_EVENT_FIELD_NUMBER: builtins.int
-    REMOVE_FRIEND_FIELD_NUMBER: builtins.int
-    WEBHOOK_EVENT_FIELD_NUMBER: builtins.int
-    NOTI_USER_CHANNEL_FIELD_NUMBER: builtins.int
-    JOIN_CHANNEL_APP_DATA_FIELD_NUMBER: builtins.int
-    CANVAS_EVENT_FIELD_NUMBER: builtins.int
-    UNPIN_MESSAGE_EVENT_FIELD_NUMBER: builtins.int
-    CATEGORY_EVENT_FIELD_NUMBER: builtins.int
-    HANDLE_PARTICIPANT_MEET_STATE_EVENT_FIELD_NUMBER: builtins.int
-    DELETE_ACCOUNT_EVENT_FIELD_NUMBER: builtins.int
-    EPHEMERAL_MESSAGE_SEND_FIELD_NUMBER: builtins.int
-    BLOCK_FRIEND_FIELD_NUMBER: builtins.int
-    VOICE_REACTION_SEND_FIELD_NUMBER: builtins.int
-    MARK_AS_READ_FIELD_NUMBER: builtins.int
-    LIST_DATA_SOCKET_FIELD_NUMBER: builtins.int
-    QUICK_MENU_EVENT_FIELD_NUMBER: builtins.int
-    UN_BLOCK_FRIEND_FIELD_NUMBER: builtins.int
-    MEET_PARTICIPANT_EVENT_FIELD_NUMBER: builtins.int
-    TRANSFER_OWNERSHIP_EVENT_FIELD_NUMBER: builtins.int
-    ADD_FRIEND_FIELD_NUMBER: builtins.int
-    BAN_USER_EVENT_FIELD_NUMBER: builtins.int
-    ACTIVE_ARCHIVED_THREAD_FIELD_NUMBER: builtins.int
-    ALLOW_ANONYMOUS_EVENT_FIELD_NUMBER: builtins.int
-    UPDATE_LOCALCACHE_EVENT_FIELD_NUMBER: builtins.int
-    cid: builtins.str
-    @property
+    CID_FIELD_NUMBER: _builtins.int
+    CHANNEL_FIELD_NUMBER: _builtins.int
+    CLAN_JOIN_FIELD_NUMBER: _builtins.int
+    CHANNEL_JOIN_FIELD_NUMBER: _builtins.int
+    CHANNEL_LEAVE_FIELD_NUMBER: _builtins.int
+    CHANNEL_MESSAGE_FIELD_NUMBER: _builtins.int
+    CHANNEL_MESSAGE_ACK_FIELD_NUMBER: _builtins.int
+    CHANNEL_MESSAGE_SEND_FIELD_NUMBER: _builtins.int
+    CHANNEL_MESSAGE_UPDATE_FIELD_NUMBER: _builtins.int
+    CHANNEL_MESSAGE_REMOVE_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRESENCE_EVENT_FIELD_NUMBER: _builtins.int
+    ERROR_FIELD_NUMBER: _builtins.int
+    NOTIFICATIONS_FIELD_NUMBER: _builtins.int
+    RPC_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    STATUS_FOLLOW_FIELD_NUMBER: _builtins.int
+    STATUS_PRESENCE_EVENT_FIELD_NUMBER: _builtins.int
+    STATUS_UNFOLLOW_FIELD_NUMBER: _builtins.int
+    STATUS_UPDATE_FIELD_NUMBER: _builtins.int
+    STREAM_DATA_FIELD_NUMBER: _builtins.int
+    STREAM_PRESENCE_EVENT_FIELD_NUMBER: _builtins.int
+    PING_FIELD_NUMBER: _builtins.int
+    PONG_FIELD_NUMBER: _builtins.int
+    MESSAGE_TYPING_EVENT_FIELD_NUMBER: _builtins.int
+    LAST_SEEN_MESSAGE_EVENT_FIELD_NUMBER: _builtins.int
+    MESSAGE_REACTION_EVENT_FIELD_NUMBER: _builtins.int
+    VOICE_JOINED_EVENT_FIELD_NUMBER: _builtins.int
+    VOICE_LEAVED_EVENT_FIELD_NUMBER: _builtins.int
+    VOICE_STARTED_EVENT_FIELD_NUMBER: _builtins.int
+    VOICE_ENDED_EVENT_FIELD_NUMBER: _builtins.int
+    CHANNEL_CREATED_EVENT_FIELD_NUMBER: _builtins.int
+    CHANNEL_DELETED_EVENT_FIELD_NUMBER: _builtins.int
+    CHANNEL_UPDATED_EVENT_FIELD_NUMBER: _builtins.int
+    LAST_PIN_MESSAGE_EVENT_FIELD_NUMBER: _builtins.int
+    CUSTOM_STATUS_EVENT_FIELD_NUMBER: _builtins.int
+    USER_CHANNEL_ADDED_EVENT_FIELD_NUMBER: _builtins.int
+    USER_CHANNEL_REMOVED_EVENT_FIELD_NUMBER: _builtins.int
+    USER_CLAN_REMOVED_EVENT_FIELD_NUMBER: _builtins.int
+    CLAN_UPDATED_EVENT_FIELD_NUMBER: _builtins.int
+    CLAN_PROFILE_UPDATED_EVENT_FIELD_NUMBER: _builtins.int
+    CHECK_NAME_EXISTED_EVENT_FIELD_NUMBER: _builtins.int
+    USER_PROFILE_UPDATED_EVENT_FIELD_NUMBER: _builtins.int
+    ADD_CLAN_USER_EVENT_FIELD_NUMBER: _builtins.int
+    CLAN_EVENT_CREATED_FIELD_NUMBER: _builtins.int
+    ROLE_ASSIGN_EVENT_FIELD_NUMBER: _builtins.int
+    CLAN_DELETED_EVENT_FIELD_NUMBER: _builtins.int
+    GIVE_COFFEE_EVENT_FIELD_NUMBER: _builtins.int
+    STICKER_CREATE_EVENT_FIELD_NUMBER: _builtins.int
+    STICKER_UPDATE_EVENT_FIELD_NUMBER: _builtins.int
+    STICKER_DELETE_EVENT_FIELD_NUMBER: _builtins.int
+    ROLE_EVENT_FIELD_NUMBER: _builtins.int
+    EVENT_EMOJI_FIELD_NUMBER: _builtins.int
+    STREAMING_JOINED_EVENT_FIELD_NUMBER: _builtins.int
+    STREAMING_LEAVED_EVENT_FIELD_NUMBER: _builtins.int
+    STREAMING_STARTED_EVENT_FIELD_NUMBER: _builtins.int
+    STREAMING_ENDED_EVENT_FIELD_NUMBER: _builtins.int
+    PERMISSION_SET_EVENT_FIELD_NUMBER: _builtins.int
+    PERMISSION_CHANGED_EVENT_FIELD_NUMBER: _builtins.int
+    TOKEN_SENT_EVENT_FIELD_NUMBER: _builtins.int
+    MESSAGE_BUTTON_CLICKED_FIELD_NUMBER: _builtins.int
+    UNMUTE_EVENT_FIELD_NUMBER: _builtins.int
+    WEBRTC_SIGNALING_FWD_FIELD_NUMBER: _builtins.int
+    LIST_ACTIVITY_FIELD_NUMBER: _builtins.int
+    DROPDOWN_BOX_SELECTED_FIELD_NUMBER: _builtins.int
+    INCOMING_CALL_PUSH_FIELD_NUMBER: _builtins.int
+    SD_TOPIC_EVENT_FIELD_NUMBER: _builtins.int
+    FOLLOW_EVENT_FIELD_NUMBER: _builtins.int
+    CHANNEL_APP_EVENT_FIELD_NUMBER: _builtins.int
+    USER_STATUS_EVENT_FIELD_NUMBER: _builtins.int
+    REMOVE_FRIEND_FIELD_NUMBER: _builtins.int
+    WEBHOOK_EVENT_FIELD_NUMBER: _builtins.int
+    NOTI_USER_CHANNEL_FIELD_NUMBER: _builtins.int
+    JOIN_CHANNEL_APP_DATA_FIELD_NUMBER: _builtins.int
+    CANVAS_EVENT_FIELD_NUMBER: _builtins.int
+    UNPIN_MESSAGE_EVENT_FIELD_NUMBER: _builtins.int
+    CATEGORY_EVENT_FIELD_NUMBER: _builtins.int
+    HANDLE_PARTICIPANT_MEET_STATE_EVENT_FIELD_NUMBER: _builtins.int
+    DELETE_ACCOUNT_EVENT_FIELD_NUMBER: _builtins.int
+    EPHEMERAL_MESSAGE_SEND_FIELD_NUMBER: _builtins.int
+    BLOCK_FRIEND_FIELD_NUMBER: _builtins.int
+    VOICE_REACTION_SEND_FIELD_NUMBER: _builtins.int
+    MARK_AS_READ_FIELD_NUMBER: _builtins.int
+    LIST_DATA_SOCKET_FIELD_NUMBER: _builtins.int
+    QUICK_MENU_EVENT_FIELD_NUMBER: _builtins.int
+    UN_BLOCK_FRIEND_FIELD_NUMBER: _builtins.int
+    MEET_PARTICIPANT_EVENT_FIELD_NUMBER: _builtins.int
+    TRANSFER_OWNERSHIP_EVENT_FIELD_NUMBER: _builtins.int
+    ADD_FRIEND_FIELD_NUMBER: _builtins.int
+    BAN_USER_EVENT_FIELD_NUMBER: _builtins.int
+    ACTIVE_ARCHIVED_THREAD_FIELD_NUMBER: _builtins.int
+    ALLOW_ANONYMOUS_EVENT_FIELD_NUMBER: _builtins.int
+    UPDATE_LOCALCACHE_EVENT_FIELD_NUMBER: _builtins.int
+    cid: _builtins.str
+    @_builtins.property
     def channel(self) -> Global___Channel:
         """A response from a channel join operation."""
 
-    @property
+    @_builtins.property
     def clan_join(self) -> Global___ClanJoin:
         """Join a realtime chat clan"""
 
-    @property
+    @_builtins.property
     def channel_join(self) -> Global___ChannelJoin:
         """Join a realtime chat channel."""
 
-    @property
+    @_builtins.property
     def channel_leave(self) -> Global___ChannelLeave:
         """Leave a realtime chat channel."""
 
-    @property
-    def channel_message(self) -> api.api_pb2.ChannelMessage:
+    @_builtins.property
+    def channel_message(self) -> _api_pb2.ChannelMessage:
         """An incoming message on a realtime chat channel."""
 
-    @property
+    @_builtins.property
     def channel_message_ack(self) -> Global___ChannelMessageAck:
         """An acknowledgement received in response to sending a message on a chat channel."""
 
-    @property
+    @_builtins.property
     def channel_message_send(self) -> Global___ChannelMessageSend:
         """Send a message to a realtime chat channel."""
 
-    @property
+    @_builtins.property
     def channel_message_update(self) -> Global___ChannelMessageUpdate:
         """Update a message previously sent to a realtime chat channel."""
 
-    @property
+    @_builtins.property
     def channel_message_remove(self) -> Global___ChannelMessageRemove:
         """Remove a message previously sent to a realtime chat channel."""
 
-    @property
+    @_builtins.property
     def channel_presence_event(self) -> Global___ChannelPresenceEvent:
         """Presence update for a particular realtime chat channel."""
 
-    @property
+    @_builtins.property
     def error(self) -> Global___Error:
         """Describes an error which occurred on the server."""
 
-    @property
+    @_builtins.property
     def notifications(self) -> Global___Notifications:
         """Notifications send by the server."""
 
-    @property
-    def rpc(self) -> api.api_pb2.Rpc:
+    @_builtins.property
+    def rpc(self) -> _api_pb2.Rpc:
         """RPC call or response."""
 
-    @property
+    @_builtins.property
     def status(self) -> Global___Status:
         """An incoming status snapshot for some set of users."""
 
-    @property
+    @_builtins.property
     def status_follow(self) -> Global___StatusFollow:
         """Start following some set of users to receive their status updates."""
 
-    @property
+    @_builtins.property
     def status_presence_event(self) -> Global___StatusPresenceEvent:
         """An incoming status update."""
 
-    @property
+    @_builtins.property
     def status_unfollow(self) -> Global___StatusUnfollow:
         """Stop following some set of users to no longer receive their status updates."""
 
-    @property
+    @_builtins.property
     def status_update(self) -> Global___StatusUpdate:
         """Set the user's own status."""
 
-    @property
+    @_builtins.property
     def stream_data(self) -> Global___StreamData:
         """A data message delivered over a stream."""
 
-    @property
+    @_builtins.property
     def stream_presence_event(self) -> Global___StreamPresenceEvent:
         """Presence update for a particular stream."""
 
-    @property
+    @_builtins.property
     def ping(self) -> Global___Ping:
         """Application-level heartbeat and connection check."""
 
-    @property
+    @_builtins.property
     def pong(self) -> Global___Pong:
         """Application-level heartbeat and connection check response."""
 
-    @property
+    @_builtins.property
     def message_typing_event(self) -> Global___MessageTypingEvent:
         """User typing event"""
 
-    @property
+    @_builtins.property
     def last_seen_message_event(self) -> Global___LastSeenMessageEvent:
         """Last seen message event"""
 
-    @property
-    def message_reaction_event(self) -> api.api_pb2.MessageReaction:
+    @_builtins.property
+    def message_reaction_event(self) -> _api_pb2.MessageReaction:
         """User send reactoin event"""
 
-    @property
+    @_builtins.property
     def voice_joined_event(self) -> Global___VoiceJoinedEvent:
         """user join voice channel"""
 
-    @property
+    @_builtins.property
     def voice_leaved_event(self) -> Global___VoiceLeavedEvent:
         """user leave voice channel"""
 
-    @property
+    @_builtins.property
     def voice_started_event(self) -> Global___VoiceStartedEvent:
         """voice channel start"""
 
-    @property
+    @_builtins.property
     def voice_ended_event(self) -> Global___VoiceEndedEvent:
         """voice channel end"""
 
-    @property
+    @_builtins.property
     def channel_created_event(self) -> Global___ChannelCreatedEvent:
         """channel created event"""
 
-    @property
+    @_builtins.property
     def channel_deleted_event(self) -> Global___ChannelDeletedEvent:
         """channel deleted event"""
 
-    @property
+    @_builtins.property
     def channel_updated_event(self) -> Global___ChannelUpdatedEvent:
         """channel deleted event"""
 
-    @property
+    @_builtins.property
     def last_pin_message_event(self) -> Global___LastPinMessageEvent:
         """Last pin message event"""
 
-    @property
+    @_builtins.property
     def custom_status_event(self) -> Global___CustomStatusEvent:
         """Update custom status"""
 
-    @property
+    @_builtins.property
     def user_channel_added_event(self) -> Global___UserChannelAdded:
         """User is added to channel event"""
 
-    @property
+    @_builtins.property
     def user_channel_removed_event(self) -> Global___UserChannelRemoved:
         """User is removed to channel event"""
 
-    @property
+    @_builtins.property
     def user_clan_removed_event(self) -> Global___UserClanRemoved:
         """User is removed to clan event"""
 
-    @property
+    @_builtins.property
     def clan_updated_event(self) -> Global___ClanUpdatedEvent:
         """Clan updated event"""
 
-    @property
+    @_builtins.property
     def clan_profile_updated_event(self) -> Global___ClanProfileUpdatedEvent:
         """Clan profile updated event"""
 
-    @property
+    @_builtins.property
     def check_name_existed_event(self) -> Global___CheckNameExistedEvent:
         """Check duplicate clan name event"""
 
-    @property
+    @_builtins.property
     def user_profile_updated_event(self) -> Global___UserProfileUpdatedEvent:
         """User profile update event"""
 
-    @property
+    @_builtins.property
     def add_clan_user_event(self) -> Global___AddClanUserEvent:
         """user join clan"""
 
-    @property
-    def clan_event_created(self) -> api.api_pb2.CreateEventRequest:
+    @_builtins.property
+    def clan_event_created(self) -> _api_pb2.CreateEventRequest:
         """clan event created"""
 
-    @property
+    @_builtins.property
     def role_assign_event(self) -> Global___RoleAssignedEvent:
         """role assigned event"""
 
-    @property
+    @_builtins.property
     def clan_deleted_event(self) -> Global___ClanDeletedEvent:
         """clan deleted event"""
 
-    @property
-    def give_coffee_event(self) -> api.api_pb2.GiveCoffeeEvent:
+    @_builtins.property
+    def give_coffee_event(self) -> _api_pb2.GiveCoffeeEvent:
         """Give a coffe event"""
 
-    @property
+    @_builtins.property
     def sticker_create_event(self) -> Global___StickerCreateEvent:
         """sticker created event"""
 
-    @property
+    @_builtins.property
     def sticker_update_event(self) -> Global___StickerUpdateEvent:
         """sticker updated event"""
 
-    @property
+    @_builtins.property
     def sticker_delete_event(self) -> Global___StickerDeleteEvent:
         """sticker deleted event"""
 
-    @property
+    @_builtins.property
     def role_event(self) -> Global___RoleEvent:
         """role created event"""
 
-    @property
+    @_builtins.property
     def event_emoji(self) -> Global___EventEmoji:
         """Event emoji"""
 
-    @property
+    @_builtins.property
     def streaming_joined_event(self) -> Global___StreamingJoinedEvent:
         """user join streaming channel"""
 
-    @property
+    @_builtins.property
     def streaming_leaved_event(self) -> Global___StreamingLeavedEvent:
         """user leave streaming channel"""
 
-    @property
+    @_builtins.property
     def streaming_started_event(self) -> Global___StreamingStartedEvent:
         """streaming channel start"""
 
-    @property
+    @_builtins.property
     def streaming_ended_event(self) -> Global___StreamingEndedEvent:
         """streaming channel end"""
 
-    @property
+    @_builtins.property
     def permission_set_event(self) -> Global___PermissionSetEvent:
         """set permission of role/user in channel"""
 
-    @property
+    @_builtins.property
     def permission_changed_event(self) -> Global___PermissionChangedEvent:
         """permission changed event"""
 
-    @property
-    def token_sent_event(self) -> api.api_pb2.TokenSentEvent:
+    @_builtins.property
+    def token_sent_event(self) -> _api_pb2.TokenSentEvent:
         """token is sent event"""
 
-    @property
+    @_builtins.property
     def message_button_clicked(self) -> Global___MessageButtonClicked: ...
-    @property
+    @_builtins.property
     def unmute_event(self) -> Global___UnmuteEvent:
         """unmute channel event"""
 
-    @property
+    @_builtins.property
     def webrtc_signaling_fwd(self) -> Global___WebrtcSignalingFwd:
         """voice call"""
 
-    @property
+    @_builtins.property
     def list_activity(self) -> Global___ListActivity:
         """List activity event for each user"""
 
-    @property
+    @_builtins.property
     def dropdown_box_selected(self) -> Global___DropdownBoxSelected:
         """dropdown box selected"""
 
-    @property
+    @_builtins.property
     def incoming_call_push(self) -> Global___IncomingCallPush:
         """IncomingCallPush"""
 
-    @property
+    @_builtins.property
     def sd_topic_event(self) -> Global___SdTopicEvent:
         """Sd topic event"""
 
-    @property
+    @_builtins.property
     def follow_event(self) -> Global___FollowEvent:
         """follower list"""
 
-    @property
+    @_builtins.property
     def channel_app_event(self) -> Global___ChannelAppEvent:
         """channel app event"""
 
-    @property
+    @_builtins.property
     def user_status_event(self) -> Global___UserStatusEvent:
         """User custom status event"""
 
-    @property
+    @_builtins.property
     def remove_friend(self) -> Global___RemoveFriend:
         """remove friend"""
 
-    @property
-    def webhook_event(self) -> api.api_pb2.Webhook:
+    @_builtins.property
+    def webhook_event(self) -> _api_pb2.Webhook:
         """webhook event"""
 
-    @property
-    def noti_user_channel(self) -> api.api_pb2.NotificationUserChannel:
+    @_builtins.property
+    def noti_user_channel(self) -> _api_pb2.NotificationUserChannel:
         """notification"""
 
-    @property
+    @_builtins.property
     def join_channel_app_data(self) -> Global___JoinChannelAppData:
         """join channel app"""
 
-    @property
+    @_builtins.property
     def canvas_event(self) -> Global___ChannelCanvas:
         """channel canvas"""
 
-    @property
+    @_builtins.property
     def unpin_message_event(self) -> Global___UnpinMessageEvent:
         """unpin message"""
 
-    @property
+    @_builtins.property
     def category_event(self) -> Global___CategoryEvent:
         """category event"""
 
-    @property
+    @_builtins.property
     def handle_participant_meet_state_event(self) -> Global___HandleParticipantMeetStateEvent:
         """handle join/leave channel voice"""
 
-    @property
+    @_builtins.property
     def delete_account_event(self) -> Global___DeleteAccountEvent:
         """delete acc"""
 
-    @property
+    @_builtins.property
     def ephemeral_message_send(self) -> Global___EphemeralMessageSend:
         """ephemeral message send"""
 
-    @property
+    @_builtins.property
     def block_friend(self) -> Global___BlockFriend:
         """block friend"""
 
-    @property
+    @_builtins.property
     def voice_reaction_send(self) -> Global___VoiceReactionSend:
         """voice reaction message"""
 
-    @property
+    @_builtins.property
     def mark_as_read(self) -> Global___MarkAsRead:
         """Mark As Read"""
 
-    @property
+    @_builtins.property
     def list_data_socket(self) -> Global___ListDataSocket:
         """list socket data"""
 
-    @property
+    @_builtins.property
     def quick_menu_event(self) -> Global___QuickMenuDataEvent:
         """quick menu event"""
 
-    @property
+    @_builtins.property
     def un_block_friend(self) -> Global___UnblockFriend:
         """unblock friend"""
 
-    @property
+    @_builtins.property
     def meet_participant_event(self) -> Global___MeetParticipantEvent:
         """mezon meet participant event"""
 
-    @property
+    @_builtins.property
     def transfer_ownership_event(self) -> Global___TransferOwnershipEvent:
         """tranfer ownership event"""
 
-    @property
+    @_builtins.property
     def add_friend(self) -> Global___AddFriend:
         """Add friend event"""
 
-    @property
+    @_builtins.property
     def ban_user_event(self) -> Global___BannedUserEvent:
         """Ban channel user"""
 
-    @property
+    @_builtins.property
     def active_archived_thread(self) -> Global___ActiveArchivedThread:
         """Active archive thread"""
 
-    @property
+    @_builtins.property
     def allow_anonymous_event(self) -> Global___AllowAnonymousEvent:
         """Config Allow Anonymous"""
 
-    @property
+    @_builtins.property
     def update_localcache_event(self) -> Global___UpdateLocalCacheEvent:
         """Message sending to another server for update localcache"""
 
     def __init__(
         self,
         *,
-        cid: builtins.str = ...,
+        cid: _builtins.str = ...,
         channel: Global___Channel | None = ...,
         clan_join: Global___ClanJoin | None = ...,
         channel_join: Global___ChannelJoin | None = ...,
         channel_leave: Global___ChannelLeave | None = ...,
-        channel_message: api.api_pb2.ChannelMessage | None = ...,
+        channel_message: _api_pb2.ChannelMessage | None = ...,
         channel_message_ack: Global___ChannelMessageAck | None = ...,
         channel_message_send: Global___ChannelMessageSend | None = ...,
         channel_message_update: Global___ChannelMessageUpdate | None = ...,
@@ -515,7 +514,7 @@ class Envelope(google.protobuf.message.Message):
         channel_presence_event: Global___ChannelPresenceEvent | None = ...,
         error: Global___Error | None = ...,
         notifications: Global___Notifications | None = ...,
-        rpc: api.api_pb2.Rpc | None = ...,
+        rpc: _api_pb2.Rpc | None = ...,
         status: Global___Status | None = ...,
         status_follow: Global___StatusFollow | None = ...,
         status_presence_event: Global___StatusPresenceEvent | None = ...,
@@ -527,7 +526,7 @@ class Envelope(google.protobuf.message.Message):
         pong: Global___Pong | None = ...,
         message_typing_event: Global___MessageTypingEvent | None = ...,
         last_seen_message_event: Global___LastSeenMessageEvent | None = ...,
-        message_reaction_event: api.api_pb2.MessageReaction | None = ...,
+        message_reaction_event: _api_pb2.MessageReaction | None = ...,
         voice_joined_event: Global___VoiceJoinedEvent | None = ...,
         voice_leaved_event: Global___VoiceLeavedEvent | None = ...,
         voice_started_event: Global___VoiceStartedEvent | None = ...,
@@ -545,10 +544,10 @@ class Envelope(google.protobuf.message.Message):
         check_name_existed_event: Global___CheckNameExistedEvent | None = ...,
         user_profile_updated_event: Global___UserProfileUpdatedEvent | None = ...,
         add_clan_user_event: Global___AddClanUserEvent | None = ...,
-        clan_event_created: api.api_pb2.CreateEventRequest | None = ...,
+        clan_event_created: _api_pb2.CreateEventRequest | None = ...,
         role_assign_event: Global___RoleAssignedEvent | None = ...,
         clan_deleted_event: Global___ClanDeletedEvent | None = ...,
-        give_coffee_event: api.api_pb2.GiveCoffeeEvent | None = ...,
+        give_coffee_event: _api_pb2.GiveCoffeeEvent | None = ...,
         sticker_create_event: Global___StickerCreateEvent | None = ...,
         sticker_update_event: Global___StickerUpdateEvent | None = ...,
         sticker_delete_event: Global___StickerDeleteEvent | None = ...,
@@ -560,7 +559,7 @@ class Envelope(google.protobuf.message.Message):
         streaming_ended_event: Global___StreamingEndedEvent | None = ...,
         permission_set_event: Global___PermissionSetEvent | None = ...,
         permission_changed_event: Global___PermissionChangedEvent | None = ...,
-        token_sent_event: api.api_pb2.TokenSentEvent | None = ...,
+        token_sent_event: _api_pb2.TokenSentEvent | None = ...,
         message_button_clicked: Global___MessageButtonClicked | None = ...,
         unmute_event: Global___UnmuteEvent | None = ...,
         webrtc_signaling_fwd: Global___WebrtcSignalingFwd | None = ...,
@@ -572,8 +571,8 @@ class Envelope(google.protobuf.message.Message):
         channel_app_event: Global___ChannelAppEvent | None = ...,
         user_status_event: Global___UserStatusEvent | None = ...,
         remove_friend: Global___RemoveFriend | None = ...,
-        webhook_event: api.api_pb2.Webhook | None = ...,
-        noti_user_channel: api.api_pb2.NotificationUserChannel | None = ...,
+        webhook_event: _api_pb2.Webhook | None = ...,
+        noti_user_channel: _api_pb2.NotificationUserChannel | None = ...,
         join_channel_app_data: Global___JoinChannelAppData | None = ...,
         canvas_event: Global___ChannelCanvas | None = ...,
         unpin_message_event: Global___UnpinMessageEvent | None = ...,
@@ -595,975 +594,967 @@ class Envelope(google.protobuf.message.Message):
         allow_anonymous_event: Global___AllowAnonymousEvent | None = ...,
         update_localcache_event: Global___UpdateLocalCacheEvent | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "update_localcache_event", b"update_localcache_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "update_localcache_event", b"update_localcache_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "update_localcache_event", b"update_localcache_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "update_localcache_event", b"update_localcache_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-    _WhichOneofReturnType_message: typing_extensions.TypeAlias = typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread", "allow_anonymous_event", "update_localcache_event"]
-    _WhichOneofArgType_message: typing_extensions.TypeAlias = typing.Literal["message", b"message"]
+    _WhichOneofReturnType_message: _TypeAlias = _typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread", "allow_anonymous_event", "update_localcache_event"]  # noqa: Y015
+    _WhichOneofArgType_message: _TypeAlias = _typing.Literal["message", b"message"]  # noqa: Y015
     def WhichOneof(self, oneof_group: _WhichOneofArgType_message) -> _WhichOneofReturnType_message | None: ...
 
-Global___Envelope: typing_extensions.TypeAlias = Envelope
+Global___Envelope: _TypeAlias = Envelope  # noqa: Y015
 
-@typing.final
-class UpdateLocalCacheEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateLocalCacheEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_IDS_FIELD_NUMBER: builtins.int
-    CHANNEL_IDS_FIELD_NUMBER: builtins.int
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def channel_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    CHANNEL_IDS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def channel_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        channel_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        channel_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_ids", b"channel_ids", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_ids", b"channel_ids", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateLocalCacheEvent: typing_extensions.TypeAlias = UpdateLocalCacheEvent
+Global___UpdateLocalCacheEvent: _TypeAlias = UpdateLocalCacheEvent  # noqa: Y015
 
-@typing.final
-class FollowEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class FollowEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
     def __init__(
         self,
     ) -> None: ...
 
-Global___FollowEvent: typing_extensions.TypeAlias = FollowEvent
+Global___FollowEvent: _TypeAlias = FollowEvent  # noqa: Y015
 
-@typing.final
-class BannedUserEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class BannedUserEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_IDS_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    BANNER_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    BAN_TIME_FIELD_NUMBER: builtins.int
-    action: builtins.int
-    banner_id: builtins.str
-    channel_id: builtins.str
-    clan_id: builtins.str
-    ban_time: builtins.int
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    BANNER_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    BAN_TIME_FIELD_NUMBER: _builtins.int
+    action: _builtins.int
+    banner_id: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
+    ban_time: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        action: builtins.int = ...,
-        banner_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        ban_time: builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        action: _builtins.int = ...,
+        banner_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        ban_time: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "ban_time", b"ban_time", "banner_id", b"banner_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "ban_time", b"ban_time", "banner_id", b"banner_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BannedUserEvent: typing_extensions.TypeAlias = BannedUserEvent
+Global___BannedUserEvent: _TypeAlias = BannedUserEvent  # noqa: Y015
 
-@typing.final
-class ChannelCanvas(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelCanvas(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    EDITOR_ID_FIELD_NUMBER: builtins.int
-    IS_DEFAULT_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    EDITOR_ID_FIELD_NUMBER: _builtins.int
+    IS_DEFAULT_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    title: builtins.str
+    title: _builtins.str
     """title"""
-    content: builtins.str
+    content: _builtins.str
     """content"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator"""
-    editor_id: builtins.str
+    editor_id: _builtins.int
     """editor"""
-    is_default: builtins.bool
+    is_default: _builtins.bool
     """is default"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel_id"""
-    status: builtins.int
+    status: _builtins.int
     """status"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        title: builtins.str = ...,
-        content: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        editor_id: builtins.str = ...,
-        is_default: builtins.bool = ...,
-        channel_id: builtins.str = ...,
-        status: builtins.int = ...,
+        id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        content: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        editor_id: _builtins.int = ...,
+        is_default: _builtins.bool = ...,
+        channel_id: _builtins.int = ...,
+        status: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "content", b"content", "creator_id", b"creator_id", "editor_id", b"editor_id", "id", b"id", "is_default", b"is_default", "status", b"status", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "content", b"content", "creator_id", b"creator_id", "editor_id", b"editor_id", "id", b"id", "is_default", b"is_default", "status", b"status", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelCanvas: typing_extensions.TypeAlias = ChannelCanvas
+Global___ChannelCanvas: _TypeAlias = ChannelCanvas  # noqa: Y015
 
-@typing.final
-class IncomingCallPush(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class IncomingCallPush(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    RECEIVER_ID_FIELD_NUMBER: builtins.int
-    JSON_DATA_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CALLER_ID_FIELD_NUMBER: builtins.int
-    receiver_id: builtins.str
-    json_data: builtins.str
-    channel_id: builtins.str
-    caller_id: builtins.str
+    RECEIVER_ID_FIELD_NUMBER: _builtins.int
+    JSON_DATA_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CALLER_ID_FIELD_NUMBER: _builtins.int
+    receiver_id: _builtins.int
+    json_data: _builtins.str
+    channel_id: _builtins.int
+    caller_id: _builtins.int
     def __init__(
         self,
         *,
-        receiver_id: builtins.str = ...,
-        json_data: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        caller_id: builtins.str = ...,
+        receiver_id: _builtins.int = ...,
+        json_data: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        caller_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "json_data", b"json_data", "receiver_id", b"receiver_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "json_data", b"json_data", "receiver_id", b"receiver_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___IncomingCallPush: typing_extensions.TypeAlias = IncomingCallPush
+Global___IncomingCallPush: _TypeAlias = IncomingCallPush  # noqa: Y015
 
-@typing.final
-class WebrtcSignalingFwd(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebrtcSignalingFwd(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    RECEIVER_ID_FIELD_NUMBER: builtins.int
-    DATA_TYPE_FIELD_NUMBER: builtins.int
-    JSON_DATA_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CALLER_ID_FIELD_NUMBER: builtins.int
-    receiver_id: builtins.str
-    data_type: builtins.int
-    json_data: builtins.str
-    channel_id: builtins.str
-    caller_id: builtins.str
+    RECEIVER_ID_FIELD_NUMBER: _builtins.int
+    DATA_TYPE_FIELD_NUMBER: _builtins.int
+    JSON_DATA_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CALLER_ID_FIELD_NUMBER: _builtins.int
+    receiver_id: _builtins.int
+    data_type: _builtins.int
+    json_data: _builtins.str
+    channel_id: _builtins.int
+    caller_id: _builtins.int
     def __init__(
         self,
         *,
-        receiver_id: builtins.str = ...,
-        data_type: builtins.int = ...,
-        json_data: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        caller_id: builtins.str = ...,
+        receiver_id: _builtins.int = ...,
+        data_type: _builtins.int = ...,
+        json_data: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        caller_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "data_type", b"data_type", "json_data", b"json_data", "receiver_id", b"receiver_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "data_type", b"data_type", "json_data", b"json_data", "receiver_id", b"receiver_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebrtcSignalingFwd: typing_extensions.TypeAlias = WebrtcSignalingFwd
+Global___WebrtcSignalingFwd: _TypeAlias = WebrtcSignalingFwd  # noqa: Y015
 
-@typing.final
-class SFUSignalingFwd(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SFUSignalingFwd(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    DATA_TYPE_FIELD_NUMBER: builtins.int
-    JSON_DATA_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    channel_id: builtins.str
-    data_type: builtins.int
-    json_data: builtins.str
-    user_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    DATA_TYPE_FIELD_NUMBER: _builtins.int
+    JSON_DATA_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    data_type: _builtins.int
+    json_data: _builtins.str
+    user_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        data_type: builtins.int = ...,
-        json_data: builtins.str = ...,
-        user_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        data_type: _builtins.int = ...,
+        json_data: _builtins.str = ...,
+        user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "data_type", b"data_type", "json_data", b"json_data", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "data_type", b"data_type", "json_data", b"json_data", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SFUSignalingFwd: typing_extensions.TypeAlias = SFUSignalingFwd
+Global___SFUSignalingFwd: _TypeAlias = SFUSignalingFwd  # noqa: Y015
 
-@typing.final
-class AddClanUserEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AddClanUserEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    USER_FIELD_NUMBER: builtins.int
-    INVITOR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    USER_FIELD_NUMBER: _builtins.int
+    INVITOR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """the clan id"""
-    invitor: builtins.str
+    invitor: _builtins.str
     """inviter"""
-    @property
+    @_builtins.property
     def user(self) -> Global___UserProfileRedis:
         """the user"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
         user: Global___UserProfileRedis | None = ...,
-        invitor: builtins.str = ...,
+        invitor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["user", b"user"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "invitor", b"invitor", "user", b"user"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["user", b"user"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "invitor", b"invitor", "user", b"user"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddClanUserEvent: typing_extensions.TypeAlias = AddClanUserEvent
+Global___AddClanUserEvent: _TypeAlias = AddClanUserEvent  # noqa: Y015
 
-@typing.final
-class RoleAssignedEvent(google.protobuf.message.Message):
+@_typing.final
+class RoleAssignedEvent(_message.Message):
     """On role assign"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLANID_FIELD_NUMBER: builtins.int
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_ASSIGNED_FIELD_NUMBER: builtins.int
-    USER_IDS_REMOVED_FIELD_NUMBER: builtins.int
-    ClanId: builtins.str
+    CLANID_FIELD_NUMBER: _builtins.int
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_ASSIGNED_FIELD_NUMBER: _builtins.int
+    USER_IDS_REMOVED_FIELD_NUMBER: _builtins.int
+    ClanId: _builtins.str
     """The clan of this role"""
-    role_id: builtins.str
+    role_id: _builtins.int
     """Role ID"""
-    @property
-    def user_ids_assigned(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids_assigned(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """UserIds Assigned"""
 
-    @property
-    def user_ids_removed(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids_removed(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """UserIds Removed"""
 
     def __init__(
         self,
         *,
-        ClanId: builtins.str = ...,
-        role_id: builtins.str = ...,
-        user_ids_assigned: collections.abc.Iterable[builtins.str] | None = ...,
-        user_ids_removed: collections.abc.Iterable[builtins.str] | None = ...,
+        ClanId: _builtins.str = ...,
+        role_id: _builtins.int = ...,
+        user_ids_assigned: _abc.Iterable[_builtins.int] | None = ...,
+        user_ids_removed: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["ClanId", b"ClanId", "role_id", b"role_id", "user_ids_assigned", b"user_ids_assigned", "user_ids_removed", b"user_ids_removed"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["ClanId", b"ClanId", "role_id", b"role_id", "user_ids_assigned", b"user_ids_assigned", "user_ids_removed", b"user_ids_removed"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RoleAssignedEvent: typing_extensions.TypeAlias = RoleAssignedEvent
+Global___RoleAssignedEvent: _TypeAlias = RoleAssignedEvent  # noqa: Y015
 
-@typing.final
-class PermissionRoleChannel(google.protobuf.message.Message):
+@_typing.final
+class PermissionRoleChannel(_message.Message):
     """Permission role channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PERMISSION_ID_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    permission_id: builtins.str
+    PERMISSION_ID_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    permission_id: _builtins.int
     """Permission id"""
-    active: builtins.bool
+    active: _builtins.bool
     """active"""
     def __init__(
         self,
         *,
-        permission_id: builtins.str = ...,
-        active: builtins.bool = ...,
+        permission_id: _builtins.int = ...,
+        active: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "permission_id", b"permission_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "permission_id", b"permission_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionRoleChannel: typing_extensions.TypeAlias = PermissionRoleChannel
+Global___PermissionRoleChannel: _TypeAlias = PermissionRoleChannel  # noqa: Y015
 
-@typing.final
-class HashtagDm(google.protobuf.message.Message):
+@_typing.final
+class HashtagDm(_message.Message):
     """hashtagDM"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    MEETING_CODE_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    MEETING_CODE_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """The channel id."""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """The channel lable"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """The clan of this channel"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """The clan name"""
-    meeting_code: builtins.str
+    meeting_code: _builtins.str
     """"""
-    type: builtins.int
+    type: _builtins.int
     """"""
-    channel_private: builtins.int
+    channel_private: _builtins.int
     """"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        meeting_code: builtins.str = ...,
-        type: builtins.int = ...,
-        channel_private: builtins.int = ...,
-        parent_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        meeting_code: _builtins.str = ...,
+        type: _builtins.int = ...,
+        channel_private: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___HashtagDm: typing_extensions.TypeAlias = HashtagDm
+Global___HashtagDm: _TypeAlias = HashtagDm  # noqa: Y015
 
-@typing.final
-class ChannelDescription(google.protobuf.message.Message):
+@_typing.final
+class ChannelDescription(_message.Message):
     """Channel description record"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    MEETING_CODE_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    LAST_SENT_MESSAGE_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    MEETING_CODE_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    LAST_SENT_MESSAGE_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan of this channel"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel this message belongs to."""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """The channel lable"""
-    channel_private: builtins.int
+    channel_private: _builtins.int
     """The channel private"""
-    meeting_code: builtins.str
+    meeting_code: _builtins.str
     """meeting code"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """"""
-    @property
-    def type(self) -> google.protobuf.wrappers_pb2.Int32Value:
+    @_builtins.property
+    def type(self) -> _wrappers_pb2.Int32Value:
         """The channel type."""
 
-    @property
-    def last_sent_message(self) -> api.api_pb2.ChannelMessageHeader:
+    @_builtins.property
+    def last_sent_message(self) -> _api_pb2.ChannelMessageHeader:
         """"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        type: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        channel_label: builtins.str = ...,
-        channel_private: builtins.int = ...,
-        meeting_code: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        last_sent_message: api.api_pb2.ChannelMessageHeader | None = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        type: _wrappers_pb2.Int32Value | None = ...,
+        channel_label: _builtins.str = ...,
+        channel_private: _builtins.int = ...,
+        meeting_code: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
+        parent_id: _builtins.int = ...,
+        last_sent_message: _api_pb2.ChannelMessageHeader | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_sent_message", b"last_sent_message", "type", b"type"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["last_sent_message", b"last_sent_message", "type", b"type"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelDescription: typing_extensions.TypeAlias = ChannelDescription
+Global___ChannelDescription: _TypeAlias = ChannelDescription  # noqa: Y015
 
-@typing.final
-class ClanEmoji(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanEmoji(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    SRC_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    src: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    SRC_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    src: _builtins.str
     """src url"""
-    shortname: builtins.str
+    shortname: _builtins.str
     """shortname"""
-    category: builtins.str
+    category: _builtins.str
     """category"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan_id"""
-    logo: builtins.str
+    logo: _builtins.str
     """clan logo"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan name"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        src: builtins.str = ...,
-        shortname: builtins.str = ...,
-        category: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        logo: builtins.str = ...,
-        clan_name: builtins.str = ...,
+        id: _builtins.int = ...,
+        src: _builtins.str = ...,
+        shortname: _builtins.str = ...,
+        category: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        logo: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "id", b"id", "logo", b"logo", "shortname", b"shortname", "src", b"src"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "id", b"id", "logo", b"logo", "shortname", b"shortname", "src", b"src"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanEmoji: typing_extensions.TypeAlias = ClanEmoji
+Global___ClanEmoji: _TypeAlias = ClanEmoji  # noqa: Y015
 
-@typing.final
-class Channel(google.protobuf.message.Message):
+@_typing.final
+class Channel(_message.Message):
     """A realtime chat channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    PRESENCES_FIELD_NUMBER: builtins.int
-    SELF_FIELD_NUMBER: builtins.int
-    CHANEL_LABEL_FIELD_NUMBER: builtins.int
-    CLAN_LOGO_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    PRESENCES_FIELD_NUMBER: _builtins.int
+    SELF_FIELD_NUMBER: _builtins.int
+    CHANEL_LABEL_FIELD_NUMBER: _builtins.int
+    CLAN_LOGO_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """The ID of the channel."""
-    chanel_label: builtins.str
+    chanel_label: _builtins.str
     """The name of the chat room, or an empty string if this message was not sent through a chat room."""
-    clan_logo: builtins.str
+    clan_logo: _builtins.str
     """The clan logo"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """The category name"""
-    @property
-    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    @_builtins.property
+    def presences(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """The users currently in the channel."""
 
-    @property
+    @_builtins.property
     def self(self) -> Global___UserPresence:
         """A reference to the current user's presence in the channel."""
 
     def __init__(
         self_,  # pyright: ignore[reportSelfClsParameterName]
         *,
-        id: builtins.str = ...,
-        presences: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        id: _builtins.int = ...,
+        presences: _abc.Iterable[Global___UserPresence] | None = ...,
         self: Global___UserPresence | None = ...,
-        chanel_label: builtins.str = ...,
-        clan_logo: builtins.str = ...,
-        category_name: builtins.str = ...,
+        chanel_label: _builtins.str = ...,
+        clan_logo: _builtins.str = ...,
+        category_name: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["self", b"self"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_name", b"category_name", "chanel_label", b"chanel_label", "clan_logo", b"clan_logo", "id", b"id", "presences", b"presences", "self", b"self"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["self", b"self"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "chanel_label", b"chanel_label", "clan_logo", b"clan_logo", "id", b"id", "presences", b"presences", "self", b"self"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Channel: typing_extensions.TypeAlias = Channel
+Global___Channel: _TypeAlias = Channel  # noqa: Y015
 
-@typing.final
-class ClanJoin(google.protobuf.message.Message):
+@_typing.final
+class ClanJoin(_message.Message):
     """Join operation for a realtime chat channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The id of channel or group"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanJoin: typing_extensions.TypeAlias = ClanJoin
+Global___ClanJoin: _TypeAlias = ClanJoin  # noqa: Y015
 
-@typing.final
-class ChannelJoin(google.protobuf.message.Message):
+@_typing.final
+class ChannelJoin(_message.Message):
     """Join operation for a realtime chat channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The id of channel or group"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """channel type"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        is_public: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_type: _builtins.int = ...,
+        is_public: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelJoin: typing_extensions.TypeAlias = ChannelJoin
+Global___ChannelJoin: _TypeAlias = ChannelJoin  # noqa: Y015
 
-@typing.final
-class ChannelLeave(google.protobuf.message.Message):
+@_typing.final
+class ChannelLeave(_message.Message):
     """Leave a realtime channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The ID of the channel to leave."""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """channel type"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public channel"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        is_public: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_type: _builtins.int = ...,
+        is_public: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelLeave: typing_extensions.TypeAlias = ChannelLeave
+Global___ChannelLeave: _TypeAlias = ChannelLeave  # noqa: Y015
 
-@typing.final
-class ChannelMessageAck(google.protobuf.message.Message):
+@_typing.final
+class ChannelMessageAck(_message.Message):
     """A receipt reply from a channel message send operation."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CODE_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    PERSISTENT_FIELD_NUMBER: builtins.int
-    CLAN_LOGO_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CODE_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    PERSISTENT_FIELD_NUMBER: _builtins.int
+    CLAN_LOGO_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """The channel the message was sent to."""
-    message_id: builtins.str
+    message_id: _builtins.int
     """The unique ID assigned to the message."""
-    code: builtins.int
+    code: _builtins.int
     """The code representing a message type or category."""
-    username: builtins.str
+    username: _builtins.str
     """Username of the message sender."""
-    clan_logo: builtins.str
+    create_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
+    update_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was last updated."""
+    clan_logo: _builtins.str
     """The clan logo"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """The category name"""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
-
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was last updated."""
-
-    @property
-    def persistent(self) -> google.protobuf.wrappers_pb2.BoolValue:
+    @_builtins.property
+    def persistent(self) -> _wrappers_pb2.BoolValue:
         """True if the message was persisted to the channel's history, false otherwise."""
 
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        code: builtins.int = ...,
-        username: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        persistent: google.protobuf.wrappers_pb2.BoolValue | None = ...,
-        clan_logo: builtins.str = ...,
-        category_name: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        code: _builtins.int = ...,
+        username: _builtins.str = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        persistent: _wrappers_pb2.BoolValue | None = ...,
+        clan_logo: _builtins.str = ...,
+        category_name: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "persistent", b"persistent", "update_time", b"update_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "code", b"code", "create_time", b"create_time", "message_id", b"message_id", "persistent", b"persistent", "update_time", b"update_time", "username", b"username"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["persistent", b"persistent"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "code", b"code", "create_time_seconds", b"create_time_seconds", "message_id", b"message_id", "persistent", b"persistent", "update_time_seconds", b"update_time_seconds", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelMessageAck: typing_extensions.TypeAlias = ChannelMessageAck
+Global___ChannelMessageAck: _TypeAlias = ChannelMessageAck  # noqa: Y015
 
-@typing.final
-class EphemeralMessageSend(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class EphemeralMessageSend(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_FIELD_NUMBER: builtins.int
-    RECEIVER_ID_FIELD_NUMBER: builtins.int
-    receiver_id: builtins.str
-    @property
+    MESSAGE_FIELD_NUMBER: _builtins.int
+    RECEIVER_ID_FIELD_NUMBER: _builtins.int
+    receiver_id: _builtins.int
+    @_builtins.property
     def message(self) -> Global___ChannelMessageSend: ...
     def __init__(
         self,
         *,
         message: Global___ChannelMessageSend | None = ...,
-        receiver_id: builtins.str = ...,
+        receiver_id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["message", b"message"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["message", b"message", "receiver_id", b"receiver_id"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["message", b"message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["message", b"message", "receiver_id", b"receiver_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EphemeralMessageSend: typing_extensions.TypeAlias = EphemeralMessageSend
+Global___EphemeralMessageSend: _TypeAlias = EphemeralMessageSend  # noqa: Y015
 
-@typing.final
-class QuickMenuDataEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class QuickMenuDataEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MENU_NAME_FIELD_NUMBER: builtins.int
-    MESSAGE_FIELD_NUMBER: builtins.int
-    menu_name: builtins.str
-    @property
+    MENU_NAME_FIELD_NUMBER: _builtins.int
+    MESSAGE_FIELD_NUMBER: _builtins.int
+    menu_name: _builtins.str
+    @_builtins.property
     def message(self) -> Global___ChannelMessageSend: ...
     def __init__(
         self,
         *,
-        menu_name: builtins.str = ...,
+        menu_name: _builtins.str = ...,
         message: Global___ChannelMessageSend | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["message", b"message"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["menu_name", b"menu_name", "message", b"message"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["message", b"message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["menu_name", b"menu_name", "message", b"message"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___QuickMenuDataEvent: typing_extensions.TypeAlias = QuickMenuDataEvent
+Global___QuickMenuDataEvent: _TypeAlias = QuickMenuDataEvent  # noqa: Y015
 
-@typing.final
-class VoiceReactionSend(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class VoiceReactionSend(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    EMOJIS_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    MEDIA_TYPE_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    EMOJIS_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    MEDIA_TYPE_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """channel_id"""
-    sender_id: builtins.str
+    sender_id: _builtins.int
     """sender id"""
-    media_type: builtins.int
+    media_type: _builtins.int
     """type"""
-    @property
-    def emojis(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def emojis(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """list emoji"""
 
     def __init__(
         self,
         *,
-        emojis: collections.abc.Iterable[builtins.str] | None = ...,
-        channel_id: builtins.str = ...,
-        sender_id: builtins.str = ...,
-        media_type: builtins.int = ...,
+        emojis: _abc.Iterable[_builtins.str] | None = ...,
+        channel_id: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+        media_type: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "emojis", b"emojis", "media_type", b"media_type", "sender_id", b"sender_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "emojis", b"emojis", "media_type", b"media_type", "sender_id", b"sender_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___VoiceReactionSend: typing_extensions.TypeAlias = VoiceReactionSend
+Global___VoiceReactionSend: _TypeAlias = VoiceReactionSend  # noqa: Y015
 
-@typing.final
-class MarkAsRead(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class MarkAsRead(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """channel id"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category_id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MarkAsRead: typing_extensions.TypeAlias = MarkAsRead
+Global___MarkAsRead: _TypeAlias = MarkAsRead  # noqa: Y015
 
-@typing.final
-class ChannelMessageSend(google.protobuf.message.Message):
+@_typing.final
+class ChannelMessageSend(_message.Message):
     """Send a message to a realtime channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    MENTIONS_FIELD_NUMBER: builtins.int
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    REFERENCES_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    ANONYMOUS_MESSAGE_FIELD_NUMBER: builtins.int
-    MENTION_EVERYONE_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    CODE_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    REFERENCES_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    ANONYMOUS_MESSAGE_FIELD_NUMBER: _builtins.int
+    MENTION_EVERYONE_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    CODE_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan that channel belong to."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel to sent to."""
-    content: builtins.str
+    content: _builtins.str
     """Message content."""
-    mode: builtins.int
+    mode: _builtins.int
     """Mode"""
-    anonymous_message: builtins.bool
+    anonymous_message: _builtins.bool
     """anonymous message"""
-    mention_everyone: builtins.bool
+    mention_everyone: _builtins.bool
     """mention everyone"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """clan avatar"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
-    code: builtins.int
+    code: _builtins.int
     """code"""
-    topic_id: builtins.str
+    topic_id: _builtins.int
     """topic id"""
-    id: builtins.str
+    id: _builtins.int
     """message id"""
-    @property
-    def mentions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageMention]:
+    @_builtins.property
+    def mentions(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageMention]:
         """Message mention"""
 
-    @property
-    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageAttachment]:
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageAttachment]:
         """Message attachment"""
 
-    @property
-    def references(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageRef]:
+    @_builtins.property
+    def references(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageRef]:
         """Message reference"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        content: builtins.str = ...,
-        mentions: collections.abc.Iterable[api.api_pb2.MessageMention] | None = ...,
-        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment] | None = ...,
-        references: collections.abc.Iterable[api.api_pb2.MessageRef] | None = ...,
-        mode: builtins.int = ...,
-        anonymous_message: builtins.bool = ...,
-        mention_everyone: builtins.bool = ...,
-        avatar: builtins.str = ...,
-        is_public: builtins.bool = ...,
-        code: builtins.int = ...,
-        topic_id: builtins.str = ...,
-        id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        content: _builtins.str = ...,
+        mentions: _abc.Iterable[_api_pb2.MessageMention] | None = ...,
+        attachments: _abc.Iterable[_api_pb2.MessageAttachment] | None = ...,
+        references: _abc.Iterable[_api_pb2.MessageRef] | None = ...,
+        mode: _builtins.int = ...,
+        anonymous_message: _builtins.bool = ...,
+        mention_everyone: _builtins.bool = ...,
+        avatar: _builtins.str = ...,
+        is_public: _builtins.bool = ...,
+        code: _builtins.int = ...,
+        topic_id: _builtins.int = ...,
+        id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["anonymous_message", b"anonymous_message", "attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "code", b"code", "content", b"content", "id", b"id", "is_public", b"is_public", "mention_everyone", b"mention_everyone", "mentions", b"mentions", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["anonymous_message", b"anonymous_message", "attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "code", b"code", "content", b"content", "id", b"id", "is_public", b"is_public", "mention_everyone", b"mention_everyone", "mentions", b"mentions", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelMessageSend: typing_extensions.TypeAlias = ChannelMessageSend
+Global___ChannelMessageSend: _TypeAlias = ChannelMessageSend  # noqa: Y015
 
-@typing.final
-class ChannelMessageUpdate(google.protobuf.message.Message):
+@_typing.final
+class ChannelMessageUpdate(_message.Message):
     """Update a message previously sent to a realtime channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    MENTIONS_FIELD_NUMBER: builtins.int
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    HIDE_EDITTED_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    IS_UPDATE_MSG_TOPIC_FIELD_NUMBER: builtins.int
-    OLD_MENTIONS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    HIDE_EDITTED_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    IS_UPDATE_MSG_TOPIC_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan that channel belong to."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel the message was sent to."""
-    message_id: builtins.str
+    message_id: _builtins.int
     """The ID assigned to the message to update."""
-    content: builtins.str
+    content: _builtins.str
     """New message content."""
-    mode: builtins.int
+    mode: _builtins.int
     """The mode"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
-    hide_editted: builtins.bool
+    hide_editted: _builtins.bool
     """hide editted"""
-    topic_id: builtins.str
+    topic_id: _builtins.int
     """topic id"""
-    is_update_msg_topic: builtins.bool
+    is_update_msg_topic: _builtins.bool
     """update message topic"""
-    old_mentions: builtins.str
-    """old mentions"""
-    @property
-    def mentions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageMention]:
+    @_builtins.property
+    def mentions(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageMention]:
         """The mentions"""
 
-    @property
-    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageAttachment]:
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageAttachment]:
         """Message attachment"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        content: builtins.str = ...,
-        mentions: collections.abc.Iterable[api.api_pb2.MessageMention] | None = ...,
-        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment] | None = ...,
-        mode: builtins.int = ...,
-        is_public: builtins.bool = ...,
-        hide_editted: builtins.bool = ...,
-        topic_id: builtins.str = ...,
-        is_update_msg_topic: builtins.bool = ...,
-        old_mentions: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        content: _builtins.str = ...,
+        mentions: _abc.Iterable[_api_pb2.MessageMention] | None = ...,
+        attachments: _abc.Iterable[_api_pb2.MessageAttachment] | None = ...,
+        mode: _builtins.int = ...,
+        is_public: _builtins.bool = ...,
+        hide_editted: _builtins.bool = ...,
+        topic_id: _builtins.int = ...,
+        is_update_msg_topic: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "hide_editted", b"hide_editted", "is_public", b"is_public", "is_update_msg_topic", b"is_update_msg_topic", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "old_mentions", b"old_mentions", "topic_id", b"topic_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "hide_editted", b"hide_editted", "is_public", b"is_public", "is_update_msg_topic", b"is_update_msg_topic", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelMessageUpdate: typing_extensions.TypeAlias = ChannelMessageUpdate
+Global___ChannelMessageUpdate: _TypeAlias = ChannelMessageUpdate  # noqa: Y015
 
-@typing.final
-class ChannelMessageRemove(google.protobuf.message.Message):
+@_typing.final
+class ChannelMessageRemove(_message.Message):
     """Remove a message previously sent to a realtime channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    HAS_ATTACHMENT_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    MENTIONS_FIELD_NUMBER: builtins.int
-    REFERENCES_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    HAS_ATTACHMENT_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    REFERENCES_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan that channel belong to."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel the message was sent to."""
-    message_id: builtins.str
+    message_id: _builtins.int
     """The ID assigned to the message to update."""
-    mode: builtins.int
+    mode: _builtins.int
     """The mode"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
-    has_attachment: builtins.bool
+    has_attachment: _builtins.bool
     """has_attachments."""
-    topic_id: builtins.str
+    topic_id: _builtins.int
     """"""
-    mentions: builtins.str
+    mentions: _builtins.bytes
     """Message mention"""
-    references: builtins.str
+    references: _builtins.bytes
     """Message reference"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        mode: builtins.int = ...,
-        is_public: builtins.bool = ...,
-        has_attachment: builtins.bool = ...,
-        topic_id: builtins.str = ...,
-        mentions: builtins.str = ...,
-        references: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        mode: _builtins.int = ...,
+        is_public: _builtins.bool = ...,
+        has_attachment: _builtins.bool = ...,
+        topic_id: _builtins.int = ...,
+        mentions: _builtins.bytes = ...,
+        references: _builtins.bytes = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "has_attachment", b"has_attachment", "is_public", b"is_public", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "has_attachment", b"has_attachment", "is_public", b"is_public", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelMessageRemove: typing_extensions.TypeAlias = ChannelMessageRemove
+Global___ChannelMessageRemove: _TypeAlias = ChannelMessageRemove  # noqa: Y015
 
-@typing.final
-class ChannelPresenceEvent(google.protobuf.message.Message):
+@_typing.final
+class ChannelPresenceEvent(_message.Message):
     """A set of joins and leaves on a particular channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    JOINS_FIELD_NUMBER: builtins.int
-    LEAVES_FIELD_NUMBER: builtins.int
-    CLAN_LOGO_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    JOINS_FIELD_NUMBER: _builtins.int
+    LEAVES_FIELD_NUMBER: _builtins.int
+    CLAN_LOGO_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """The channel identifier this event is for."""
-    clan_logo: builtins.str
+    clan_logo: _builtins.str
     """The clan logo"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """The category name"""
-    mode: builtins.int
+    mode: _builtins.int
     """The mode"""
-    @property
-    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    @_builtins.property
+    def joins(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences joining the channel as part of this event, if any."""
 
-    @property
-    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    @_builtins.property
+    def leaves(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences leaving the channel as part of this event, if any."""
 
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        joins: collections.abc.Iterable[Global___UserPresence] | None = ...,
-        leaves: collections.abc.Iterable[Global___UserPresence] | None = ...,
-        clan_logo: builtins.str = ...,
-        category_name: builtins.str = ...,
-        mode: builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        joins: _abc.Iterable[Global___UserPresence] | None = ...,
+        leaves: _abc.Iterable[Global___UserPresence] | None = ...,
+        clan_logo: _builtins.str = ...,
+        category_name: _builtins.str = ...,
+        mode: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "joins", b"joins", "leaves", b"leaves", "mode", b"mode"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "joins", b"joins", "leaves", b"leaves", "mode", b"mode"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelPresenceEvent: typing_extensions.TypeAlias = ChannelPresenceEvent
+Global___ChannelPresenceEvent: _TypeAlias = ChannelPresenceEvent  # noqa: Y015
 
-@typing.final
-class Error(google.protobuf.message.Message):
+@_typing.final
+class Error(_message.Message):
     """A logical error which may occur on the server."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
     class _Code:
-        ValueType = typing.NewType("ValueType", builtins.int)
-        V: typing_extensions.TypeAlias = ValueType
+        ValueType = _typing.NewType("ValueType", _builtins.int)
+        V: _TypeAlias = ValueType  # noqa: Y015
 
-    class _CodeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Error._Code.ValueType], builtins.type):
-        DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+    class _CodeEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[Error._Code.ValueType], _builtins.type):
+        DESCRIPTOR: _descriptor.EnumDescriptor
         RUNTIME_EXCEPTION: Error._Code.ValueType  # 0
         """An unexpected result from the server."""
         UNRECOGNIZED_PAYLOAD: Error._Code.ValueType  # 1
@@ -1601,1158 +1592,1154 @@ class Error(google.protobuf.message.Message):
     RUNTIME_FUNCTION_EXCEPTION: Error.Code.ValueType  # 7
     """The runtime function executed with an error."""
 
-    @typing.final
-    class ContextEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class ContextEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.str
-        value: builtins.str
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
         def __init__(
             self,
             *,
-            key: builtins.str = ...,
-            value: builtins.str = ...,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["key", b"key", "value", b"value"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    CODE_FIELD_NUMBER: builtins.int
-    MESSAGE_FIELD_NUMBER: builtins.int
-    CONTEXT_FIELD_NUMBER: builtins.int
-    code: builtins.int
+    CODE_FIELD_NUMBER: _builtins.int
+    MESSAGE_FIELD_NUMBER: _builtins.int
+    CONTEXT_FIELD_NUMBER: _builtins.int
+    code: _builtins.int
     """The error code which should be one of "Error.Code" enums."""
-    message: builtins.str
+    message: _builtins.str
     """A message in English to help developers debug the response."""
-    @property
-    def context(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    @_builtins.property
+    def context(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]:
         """Additional error details which may be different for each response."""
 
     def __init__(
         self,
         *,
-        code: builtins.int = ...,
-        message: builtins.str = ...,
-        context: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
+        code: _builtins.int = ...,
+        message: _builtins.str = ...,
+        context: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["code", b"code", "context", b"context", "message", b"message"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["code", b"code", "context", b"context", "message", b"message"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Error: typing_extensions.TypeAlias = Error
+Global___Error: _TypeAlias = Error  # noqa: Y015
 
-@typing.final
-class Notifications(google.protobuf.message.Message):
+@_typing.final
+class Notifications(_message.Message):
     """A collection of zero or more notifications."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    NOTIFICATIONS_FIELD_NUMBER: builtins.int
-    @property
-    def notifications(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.Notification]:
+    NOTIFICATIONS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def notifications(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.Notification]:
         """Collection of notifications."""
 
     def __init__(
         self,
         *,
-        notifications: collections.abc.Iterable[api.api_pb2.Notification] | None = ...,
+        notifications: _abc.Iterable[_api_pb2.Notification] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["notifications", b"notifications"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["notifications", b"notifications"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Notifications: typing_extensions.TypeAlias = Notifications
+Global___Notifications: _TypeAlias = Notifications  # noqa: Y015
 
-@typing.final
-class AddFriend(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AddFriend(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """user id"""
-    username: builtins.str
+    username: _builtins.str
     """username"""
-    display_name: builtins.str
+    display_name: _builtins.str
     """display name"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """avatar"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        username: builtins.str = ...,
-        display_name: builtins.str = ...,
-        avatar: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        avatar: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "display_name", b"display_name", "user_id", b"user_id", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "display_name", b"display_name", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddFriend: typing_extensions.TypeAlias = AddFriend
+Global___AddFriend: _TypeAlias = AddFriend  # noqa: Y015
 
-@typing.final
-class RemoveFriend(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RemoveFriend(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
+        user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RemoveFriend: typing_extensions.TypeAlias = RemoveFriend
+Global___RemoveFriend: _TypeAlias = RemoveFriend  # noqa: Y015
 
-@typing.final
-class BlockFriend(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class BlockFriend(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
+        user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BlockFriend: typing_extensions.TypeAlias = BlockFriend
+Global___BlockFriend: _TypeAlias = BlockFriend  # noqa: Y015
 
-@typing.final
-class UnblockFriend(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UnblockFriend(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    USER_STATUS_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    USER_STATUS_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """"""
-    username: builtins.str
+    username: _builtins.str
     """"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """"""
-    display_name: builtins.str
+    display_name: _builtins.str
     """"""
-    status: builtins.str
+    status: _builtins.str
     """"""
-    user_status: builtins.str
+    user_status: _builtins.str
     """"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        username: builtins.str = ...,
-        avatar: builtins.str = ...,
-        display_name: builtins.str = ...,
-        status: builtins.str = ...,
-        user_status: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        status: _builtins.str = ...,
+        user_status: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "display_name", b"display_name", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "display_name", b"display_name", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UnblockFriend: typing_extensions.TypeAlias = UnblockFriend
+Global___UnblockFriend: _TypeAlias = UnblockFriend  # noqa: Y015
 
-@typing.final
-class Ping(google.protobuf.message.Message):
+@_typing.final
+class Ping(_message.Message):
     """Application-level heartbeat and connection check."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
     def __init__(
         self,
     ) -> None: ...
 
-Global___Ping: typing_extensions.TypeAlias = Ping
+Global___Ping: _TypeAlias = Ping  # noqa: Y015
 
-@typing.final
-class Pong(google.protobuf.message.Message):
+@_typing.final
+class Pong(_message.Message):
     """Application-level heartbeat and connection check response."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
     def __init__(
         self,
     ) -> None: ...
 
-Global___Pong: typing_extensions.TypeAlias = Pong
+Global___Pong: _TypeAlias = Pong  # noqa: Y015
 
-@typing.final
-class Status(google.protobuf.message.Message):
+@_typing.final
+class Status(_message.Message):
     """A snapshot of statuses for some set of users."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PRESENCES_FIELD_NUMBER: builtins.int
-    @property
-    def presences(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    PRESENCES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def presences(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """User statuses."""
 
     def __init__(
         self,
         *,
-        presences: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        presences: _abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["presences", b"presences"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["presences", b"presences"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Status: typing_extensions.TypeAlias = Status
+Global___Status: _TypeAlias = Status  # noqa: Y015
 
-@typing.final
-class StatusFollow(google.protobuf.message.Message):
+@_typing.final
+class StatusFollow(_message.Message):
     """Start receiving status updates for some set of users."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_IDS_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    USERNAMES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """User IDs to follow."""
 
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def usernames(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """Usernames to follow."""
 
     def __init__(
         self,
         *,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        usernames: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["user_ids", b"user_ids", "usernames", b"usernames"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_ids", b"user_ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StatusFollow: typing_extensions.TypeAlias = StatusFollow
+Global___StatusFollow: _TypeAlias = StatusFollow  # noqa: Y015
 
-@typing.final
-class StatusPresenceEvent(google.protobuf.message.Message):
+@_typing.final
+class StatusPresenceEvent(_message.Message):
     """A batch of status updates for a given user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    JOINS_FIELD_NUMBER: builtins.int
-    LEAVES_FIELD_NUMBER: builtins.int
-    @property
-    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    JOINS_FIELD_NUMBER: _builtins.int
+    LEAVES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def joins(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """New statuses for the user."""
 
-    @property
-    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    @_builtins.property
+    def leaves(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Previous statuses for the user."""
 
     def __init__(
         self,
         *,
-        joins: collections.abc.Iterable[Global___UserPresence] | None = ...,
-        leaves: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        joins: _abc.Iterable[Global___UserPresence] | None = ...,
+        leaves: _abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["joins", b"joins", "leaves", b"leaves"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["joins", b"joins", "leaves", b"leaves"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StatusPresenceEvent: typing_extensions.TypeAlias = StatusPresenceEvent
+Global___StatusPresenceEvent: _TypeAlias = StatusPresenceEvent  # noqa: Y015
 
-@typing.final
-class LastPinMessageEvent(google.protobuf.message.Message):
+@_typing.final
+class LastPinMessageEvent(_message.Message):
     """Last pin message by user"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    TIMESTAMP_SECONDS_FIELD_NUMBER: builtins.int
-    OPERATION_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_AVATAR_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_USERNAME_FIELD_NUMBER: builtins.int
-    MESSAGE_CONTENT_FIELD_NUMBER: builtins.int
-    MESSAGE_ATTACHMENT_FIELD_NUMBER: builtins.int
-    MESSAGE_CREATED_TIME_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    TIMESTAMP_SECONDS_FIELD_NUMBER: _builtins.int
+    OPERATION_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_AVATAR_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_USERNAME_FIELD_NUMBER: _builtins.int
+    MESSAGE_CONTENT_FIELD_NUMBER: _builtins.int
+    MESSAGE_ATTACHMENT_FIELD_NUMBER: _builtins.int
+    MESSAGE_CREATED_TIME_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The unique ID of this channel."""
-    message_id: builtins.str
+    message_id: _builtins.int
     """The unique ID of this message."""
-    mode: builtins.int
+    mode: _builtins.int
     """The stream mode"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """The UserID"""
-    timestamp_seconds: builtins.int
+    timestamp_seconds: _builtins.int
     """The timestamp"""
-    operation: builtins.int
+    operation: _builtins.int
     """operation"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
-    message_sender_avatar: builtins.str
+    message_sender_avatar: _builtins.str
     """avatar"""
-    message_sender_id: builtins.str
+    message_sender_id: _builtins.str
     """message sender id"""
-    message_sender_username: builtins.str
+    message_sender_username: _builtins.str
     """message sender username"""
-    message_content: builtins.str
+    message_content: _builtins.str
     """message content"""
-    message_attachment: builtins.str
+    message_attachment: _builtins.str
     """attachment"""
-    message_created_time: builtins.str
+    message_created_time: _builtins.str
     """create time"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        mode: builtins.int = ...,
-        user_id: builtins.str = ...,
-        timestamp_seconds: builtins.int = ...,
-        operation: builtins.int = ...,
-        is_public: builtins.bool = ...,
-        message_sender_avatar: builtins.str = ...,
-        message_sender_id: builtins.str = ...,
-        message_sender_username: builtins.str = ...,
-        message_content: builtins.str = ...,
-        message_attachment: builtins.str = ...,
-        message_created_time: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        mode: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        timestamp_seconds: _builtins.int = ...,
+        operation: _builtins.int = ...,
+        is_public: _builtins.bool = ...,
+        message_sender_avatar: _builtins.str = ...,
+        message_sender_id: _builtins.str = ...,
+        message_sender_username: _builtins.str = ...,
+        message_content: _builtins.str = ...,
+        message_attachment: _builtins.str = ...,
+        message_created_time: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "message_attachment", b"message_attachment", "message_content", b"message_content", "message_created_time", b"message_created_time", "message_id", b"message_id", "message_sender_avatar", b"message_sender_avatar", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "mode", b"mode", "operation", b"operation", "timestamp_seconds", b"timestamp_seconds", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "message_attachment", b"message_attachment", "message_content", b"message_content", "message_created_time", b"message_created_time", "message_id", b"message_id", "message_sender_avatar", b"message_sender_avatar", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "mode", b"mode", "operation", b"operation", "timestamp_seconds", b"timestamp_seconds", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LastPinMessageEvent: typing_extensions.TypeAlias = LastPinMessageEvent
+Global___LastPinMessageEvent: _TypeAlias = LastPinMessageEvent  # noqa: Y015
 
-@typing.final
-class LastSeenMessageEvent(google.protobuf.message.Message):
+@_typing.final
+class LastSeenMessageEvent(_message.Message):
     """Last seen message by user"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    TIMESTAMP_SECONDS_FIELD_NUMBER: builtins.int
-    BADGE_COUNT_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    TIMESTAMP_SECONDS_FIELD_NUMBER: _builtins.int
+    BADGE_COUNT_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The unique ID of this channel."""
-    message_id: builtins.str
+    message_id: _builtins.int
     """The unique ID of this message."""
-    mode: builtins.int
+    mode: _builtins.int
     """The stream mode"""
-    timestamp_seconds: builtins.int
+    timestamp_seconds: _builtins.int
     """The timestamp"""
-    badge_count: builtins.int
+    badge_count: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        mode: builtins.int = ...,
-        timestamp_seconds: builtins.int = ...,
-        badge_count: builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        mode: _builtins.int = ...,
+        timestamp_seconds: _builtins.int = ...,
+        badge_count: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["badge_count", b"badge_count", "channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id", "mode", b"mode", "timestamp_seconds", b"timestamp_seconds"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["badge_count", b"badge_count", "channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id", "mode", b"mode", "timestamp_seconds", b"timestamp_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LastSeenMessageEvent: typing_extensions.TypeAlias = LastSeenMessageEvent
+Global___LastSeenMessageEvent: _TypeAlias = LastSeenMessageEvent  # noqa: Y015
 
-@typing.final
-class MessageTypingEvent(google.protobuf.message.Message):
+@_typing.final
+class MessageTypingEvent(_message.Message):
     """Message typing event data"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    SENDER_USERNAME_FIELD_NUMBER: builtins.int
-    SENDER_DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    SENDER_USERNAME_FIELD_NUMBER: _builtins.int
+    SENDER_DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """* The channel this message belongs to."""
-    sender_id: builtins.str
+    sender_id: _builtins.int
     """* Message sender, usually a user ID."""
-    mode: builtins.int
+    mode: _builtins.int
     """mode"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
-    sender_username: builtins.str
+    sender_username: _builtins.str
     """sender username"""
-    sender_display_name: builtins.str
+    sender_display_name: _builtins.str
     """sender display name"""
-    topic_id: builtins.str
+    topic_id: _builtins.int
     """topic id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        sender_id: builtins.str = ...,
-        mode: builtins.int = ...,
-        is_public: builtins.bool = ...,
-        sender_username: builtins.str = ...,
-        sender_display_name: builtins.str = ...,
-        topic_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+        mode: _builtins.int = ...,
+        is_public: _builtins.bool = ...,
+        sender_username: _builtins.str = ...,
+        sender_display_name: _builtins.str = ...,
+        topic_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "mode", b"mode", "sender_display_name", b"sender_display_name", "sender_id", b"sender_id", "sender_username", b"sender_username", "topic_id", b"topic_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "mode", b"mode", "sender_display_name", b"sender_display_name", "sender_id", b"sender_id", "sender_username", b"sender_username", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MessageTypingEvent: typing_extensions.TypeAlias = MessageTypingEvent
+Global___MessageTypingEvent: _TypeAlias = MessageTypingEvent  # noqa: Y015
 
-@typing.final
-class VoiceLeavedEvent(google.protobuf.message.Message):
+@_typing.final
+class VoiceLeavedEvent(_message.Message):
     """Voice Joined event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    VOICE_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    VOICE_USER_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    VOICE_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    VOICE_USER_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.str
     """id voice"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """The unique identifier of the chat clan."""
-    voice_channel_id: builtins.str
+    voice_channel_id: _builtins.int
     """voice channel name"""
-    voice_user_id: builtins.str
+    voice_user_id: _builtins.int
     """voice user_id"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        voice_channel_id: builtins.str = ...,
-        voice_user_id: builtins.str = ...,
+        id: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        voice_channel_id: _builtins.int = ...,
+        voice_user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id", "voice_user_id", b"voice_user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id", "voice_user_id", b"voice_user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___VoiceLeavedEvent: typing_extensions.TypeAlias = VoiceLeavedEvent
+Global___VoiceLeavedEvent: _TypeAlias = VoiceLeavedEvent  # noqa: Y015
 
-@typing.final
-class VoiceJoinedEvent(google.protobuf.message.Message):
+@_typing.final
+class VoiceJoinedEvent(_message.Message):
     """Voice Joined event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    PARTICIPANT_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    VOICE_CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    VOICE_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    LAST_SCREENSHOT_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    PARTICIPANT_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    VOICE_CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    VOICE_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    LAST_SCREENSHOT_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """* The unique identifier of the chat clan."""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """The channel name"""
-    id: builtins.str
+    id: _builtins.str
     """id voice"""
-    participant: builtins.str
+    participant: _builtins.str
     """voice participant"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user id"""
-    voice_channel_label: builtins.str
+    voice_channel_label: _builtins.str
     """voice channel label"""
-    voice_channel_id: builtins.str
+    voice_channel_id: _builtins.int
     """voice channel id"""
-    last_screenshot: builtins.str
+    last_screenshot: _builtins.str
     """last screenshot"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        id: builtins.str = ...,
-        participant: builtins.str = ...,
-        user_id: builtins.str = ...,
-        voice_channel_label: builtins.str = ...,
-        voice_channel_id: builtins.str = ...,
-        last_screenshot: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        id: _builtins.str = ...,
+        participant: _builtins.str = ...,
+        user_id: _builtins.int = ...,
+        voice_channel_label: _builtins.str = ...,
+        voice_channel_id: _builtins.int = ...,
+        last_screenshot: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "last_screenshot", b"last_screenshot", "participant", b"participant", "user_id", b"user_id", "voice_channel_id", b"voice_channel_id", "voice_channel_label", b"voice_channel_label"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "last_screenshot", b"last_screenshot", "participant", b"participant", "user_id", b"user_id", "voice_channel_id", b"voice_channel_id", "voice_channel_label", b"voice_channel_label"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___VoiceJoinedEvent: typing_extensions.TypeAlias = VoiceJoinedEvent
+Global___VoiceJoinedEvent: _TypeAlias = VoiceJoinedEvent  # noqa: Y015
 
-@typing.final
-class VoiceStartedEvent(google.protobuf.message.Message):
+@_typing.final
+class VoiceStartedEvent(_message.Message):
     """Voice start event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    VOICE_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    VOICE_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.str
     """id voice"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """The unique identifier of the chat clan."""
-    voice_channel_id: builtins.str
+    voice_channel_id: _builtins.int
     """voice channel name"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        voice_channel_id: builtins.str = ...,
+        id: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        voice_channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___VoiceStartedEvent: typing_extensions.TypeAlias = VoiceStartedEvent
+Global___VoiceStartedEvent: _TypeAlias = VoiceStartedEvent  # noqa: Y015
 
-@typing.final
-class VoiceEndedEvent(google.protobuf.message.Message):
+@_typing.final
+class VoiceEndedEvent(_message.Message):
     """Voice start event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    VOICE_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    VOICE_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id voice"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """The unique identifier of the chat clan."""
-    voice_channel_id: builtins.str
+    voice_channel_id: _builtins.str
     """voice channel name"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        voice_channel_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        voice_channel_id: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___VoiceEndedEvent: typing_extensions.TypeAlias = VoiceEndedEvent
+Global___VoiceEndedEvent: _TypeAlias = VoiceEndedEvent  # noqa: Y015
 
-@typing.final
-class StreamingLeavedEvent(google.protobuf.message.Message):
+@_typing.final
+class StreamingLeavedEvent(_message.Message):
     """Streaming Joined event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    STREAMING_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    STREAMING_USER_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    STREAMING_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    STREAMING_USER_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """The unique identifier of the chat clan."""
-    streaming_channel_id: builtins.str
+    streaming_channel_id: _builtins.str
     """streaming channel name"""
-    streaming_user_id: builtins.str
+    streaming_user_id: _builtins.str
     """streaming user_id"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        streaming_channel_id: builtins.str = ...,
-        streaming_user_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        streaming_channel_id: _builtins.str = ...,
+        streaming_user_id: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id", "streaming_channel_id", b"streaming_channel_id", "streaming_user_id", b"streaming_user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "streaming_channel_id", b"streaming_channel_id", "streaming_user_id", b"streaming_user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamingLeavedEvent: typing_extensions.TypeAlias = StreamingLeavedEvent
+Global___StreamingLeavedEvent: _TypeAlias = StreamingLeavedEvent  # noqa: Y015
 
-@typing.final
-class StreamingJoinedEvent(google.protobuf.message.Message):
+@_typing.final
+class StreamingJoinedEvent(_message.Message):
     """Streaming Joined event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    PARTICIPANT_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    STREAMING_CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    STREAMING_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    PARTICIPANT_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    STREAMING_CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    STREAMING_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """* The unique identifier of the chat clan."""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """The channel name"""
-    id: builtins.str
+    id: _builtins.int
     """id streaming"""
-    participant: builtins.str
+    participant: _builtins.str
     """streaming participant"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user id"""
-    streaming_channel_label: builtins.str
+    streaming_channel_label: _builtins.str
     """streaming channel label"""
-    streaming_channel_id: builtins.str
+    streaming_channel_id: _builtins.int
     """streaming channel id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        id: builtins.str = ...,
-        participant: builtins.str = ...,
-        user_id: builtins.str = ...,
-        streaming_channel_label: builtins.str = ...,
-        streaming_channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        id: _builtins.int = ...,
+        participant: _builtins.str = ...,
+        user_id: _builtins.int = ...,
+        streaming_channel_label: _builtins.str = ...,
+        streaming_channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "participant", b"participant", "streaming_channel_id", b"streaming_channel_id", "streaming_channel_label", b"streaming_channel_label", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "participant", b"participant", "streaming_channel_id", b"streaming_channel_id", "streaming_channel_label", b"streaming_channel_label", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamingJoinedEvent: typing_extensions.TypeAlias = StreamingJoinedEvent
+Global___StreamingJoinedEvent: _TypeAlias = StreamingJoinedEvent  # noqa: Y015
 
-@typing.final
-class StreamingStartedEvent(google.protobuf.message.Message):
+@_typing.final
+class StreamingStartedEvent(_message.Message):
     """Streaming start event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    STREAMING_URL_FIELD_NUMBER: builtins.int
-    IS_STREAMING_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    STREAMING_URL_FIELD_NUMBER: _builtins.int
+    IS_STREAMING_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    streaming_url: builtins.str
+    streaming_url: _builtins.str
     """stream url"""
-    is_streaming: builtins.bool
+    is_streaming: _builtins.bool
     """status"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        streaming_url: builtins.str = ...,
-        is_streaming: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        streaming_url: _builtins.str = ...,
+        is_streaming: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_streaming", b"is_streaming", "streaming_url", b"streaming_url"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_streaming", b"is_streaming", "streaming_url", b"streaming_url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamingStartedEvent: typing_extensions.TypeAlias = StreamingStartedEvent
+Global___StreamingStartedEvent: _TypeAlias = StreamingStartedEvent  # noqa: Y015
 
-@typing.final
-class StreamingEndedEvent(google.protobuf.message.Message):
+@_typing.final
+class StreamingEndedEvent(_message.Message):
     """Streaming start event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamingEndedEvent: typing_extensions.TypeAlias = StreamingEndedEvent
+Global___StreamingEndedEvent: _TypeAlias = StreamingEndedEvent  # noqa: Y015
 
-@typing.final
-class ChannelCreatedEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelCreatedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    APP_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_AVATAR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_AVATAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """parent id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """channel label"""
-    channel_private: builtins.int
+    channel_private: _builtins.int
     """channel private"""
-    status: builtins.int
+    channel_type: _builtins.int
+    """channel type"""
+    status: _builtins.int
     """status"""
-    app_id: builtins.str
+    app_id: _builtins.int
     """app id"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan_name"""
-    channel_avatar: builtins.str
+    channel_avatar: _builtins.str
     """channel avatar"""
-    @property
-    def channel_type(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """channel type"""
-
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        channel_private: builtins.int = ...,
-        channel_type: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        status: builtins.int = ...,
-        app_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        channel_avatar: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
+        channel_private: _builtins.int = ...,
+        channel_type: _builtins.int = ...,
+        status: _builtins.int = ...,
+        app_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        channel_avatar: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_type", b"channel_type"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "parent_id", b"parent_id", "status", b"status"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "parent_id", b"parent_id", "status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelCreatedEvent: typing_extensions.TypeAlias = ChannelCreatedEvent
+Global___ChannelCreatedEvent: _TypeAlias = ChannelCreatedEvent  # noqa: Y015
 
-@typing.final
-class CategoryEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CategoryEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    creator_id: builtins.str
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    creator_id: _builtins.int
     """Category creator"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """the Clan that category belong to"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """Category name"""
-    id: builtins.str
+    id: _builtins.int
     """"""
-    status: builtins.int
+    status: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        creator_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        category_name: builtins.str = ...,
-        id: builtins.str = ...,
-        status: builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        category_name: _builtins.str = ...,
+        id: _builtins.int = ...,
+        status: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_name", b"category_name", "clan_id", b"clan_id", "creator_id", b"creator_id", "id", b"id", "status", b"status"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "clan_id", b"clan_id", "creator_id", b"creator_id", "id", b"id", "status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CategoryEvent: typing_extensions.TypeAlias = CategoryEvent
+Global___CategoryEvent: _TypeAlias = CategoryEvent  # noqa: Y015
 
-@typing.final
-class RoleEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RoleEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    USER_ADD_IDS_FIELD_NUMBER: builtins.int
-    USER_REMOVE_IDS_FIELD_NUMBER: builtins.int
-    ACTIVE_PERMISSION_IDS_FIELD_NUMBER: builtins.int
-    REMOVE_PERMISSION_IDS_FIELD_NUMBER: builtins.int
-    status: builtins.int
-    user_id: builtins.str
-    @property
-    def role(self) -> api.api_pb2.Role: ...
-    @property
-    def user_add_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def user_remove_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def active_permission_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def remove_permission_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    ROLE_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USER_ADD_IDS_FIELD_NUMBER: _builtins.int
+    USER_REMOVE_IDS_FIELD_NUMBER: _builtins.int
+    ACTIVE_PERMISSION_IDS_FIELD_NUMBER: _builtins.int
+    REMOVE_PERMISSION_IDS_FIELD_NUMBER: _builtins.int
+    status: _builtins.int
+    user_id: _builtins.int
+    @_builtins.property
+    def role(self) -> _api_pb2.Role: ...
+    @_builtins.property
+    def user_add_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def user_remove_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def active_permission_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def remove_permission_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        role: api.api_pb2.Role | None = ...,
-        status: builtins.int = ...,
-        user_id: builtins.str = ...,
-        user_add_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        user_remove_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        active_permission_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        remove_permission_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        role: _api_pb2.Role | None = ...,
+        status: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        user_add_ids: _abc.Iterable[_builtins.int] | None = ...,
+        user_remove_ids: _abc.Iterable[_builtins.int] | None = ...,
+        active_permission_ids: _abc.Iterable[_builtins.int] | None = ...,
+        remove_permission_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["role", b"role"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active_permission_ids", b"active_permission_ids", "remove_permission_ids", b"remove_permission_ids", "role", b"role", "status", b"status", "user_add_ids", b"user_add_ids", "user_id", b"user_id", "user_remove_ids", b"user_remove_ids"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["role", b"role"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_permission_ids", b"active_permission_ids", "remove_permission_ids", b"remove_permission_ids", "role", b"role", "status", b"status", "user_add_ids", b"user_add_ids", "user_id", b"user_id", "user_remove_ids", b"user_remove_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RoleEvent: typing_extensions.TypeAlias = RoleEvent
+Global___RoleEvent: _TypeAlias = RoleEvent  # noqa: Y015
 
-@typing.final
-class ChannelDeletedEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelDeletedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    DELETOR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    DELETOR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """parent id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    deletor: builtins.str
+    deletor: _builtins.str
     """deletor"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        deletor: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        deletor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "deletor", b"deletor", "parent_id", b"parent_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "deletor", b"deletor", "parent_id", b"parent_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelDeletedEvent: typing_extensions.TypeAlias = ChannelDeletedEvent
+Global___ChannelDeletedEvent: _TypeAlias = ChannelDeletedEvent  # noqa: Y015
 
-@typing.final
-class ClanDeletedEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanDeletedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    DELETOR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    DELETOR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    deletor: builtins.str
+    deletor: _builtins.int
     """deletor"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        deletor: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        deletor: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "deletor", b"deletor"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "deletor", b"deletor"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanDeletedEvent: typing_extensions.TypeAlias = ClanDeletedEvent
+Global___ClanDeletedEvent: _TypeAlias = ClanDeletedEvent  # noqa: Y015
 
-@typing.final
-class StickerCreateEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class StickerCreateEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    SOURCE_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    STICKER_ID_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    SOURCE_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    STICKER_ID_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    source: builtins.str
+    source: _builtins.str
     """source"""
-    shortname: builtins.str
+    shortname: _builtins.str
     """shortname"""
-    category: builtins.str
+    category: _builtins.str
     """category"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator_id"""
-    sticker_id: builtins.str
+    sticker_id: _builtins.int
     """sticker id"""
-    logo: builtins.str
+    logo: _builtins.str
     """logo"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan name"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        source: builtins.str = ...,
-        shortname: builtins.str = ...,
-        category: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        sticker_id: builtins.str = ...,
-        logo: builtins.str = ...,
-        clan_name: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        source: _builtins.str = ...,
+        shortname: _builtins.str = ...,
+        category: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        sticker_id: _builtins.int = ...,
+        logo: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "logo", b"logo", "shortname", b"shortname", "source", b"source", "sticker_id", b"sticker_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "logo", b"logo", "shortname", b"shortname", "source", b"source", "sticker_id", b"sticker_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StickerCreateEvent: typing_extensions.TypeAlias = StickerCreateEvent
+Global___StickerCreateEvent: _TypeAlias = StickerCreateEvent  # noqa: Y015
 
-@typing.final
-class StickerUpdateEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class StickerUpdateEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    STICKER_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    shortname: builtins.str
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    STICKER_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    shortname: _builtins.str
     """shortname"""
-    sticker_id: builtins.str
+    sticker_id: _builtins.int
     """sticker id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user id update"""
     def __init__(
         self,
         *,
-        shortname: builtins.str = ...,
-        sticker_id: builtins.str = ...,
-        user_id: builtins.str = ...,
+        shortname: _builtins.str = ...,
+        sticker_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["shortname", b"shortname", "sticker_id", b"sticker_id", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["shortname", b"shortname", "sticker_id", b"sticker_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StickerUpdateEvent: typing_extensions.TypeAlias = StickerUpdateEvent
+Global___StickerUpdateEvent: _TypeAlias = StickerUpdateEvent  # noqa: Y015
 
-@typing.final
-class StickerDeleteEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class StickerDeleteEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    STICKER_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    sticker_id: builtins.str
+    STICKER_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    sticker_id: _builtins.int
     """sticker id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user id delete"""
     def __init__(
         self,
         *,
-        sticker_id: builtins.str = ...,
-        user_id: builtins.str = ...,
+        sticker_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["sticker_id", b"sticker_id", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["sticker_id", b"sticker_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StickerDeleteEvent: typing_extensions.TypeAlias = StickerDeleteEvent
+Global___StickerDeleteEvent: _TypeAlias = StickerDeleteEvent  # noqa: Y015
 
-@typing.final
-class ChannelUpdatedEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelUpdatedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    MEETING_CODE_FIELD_NUMBER: builtins.int
-    IS_ERROR_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    APP_ID_FIELD_NUMBER: builtins.int
-    E2EE_FIELD_NUMBER: builtins.int
-    TOPIC_FIELD_NUMBER: builtins.int
-    AGE_RESTRICTED_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    COUNT_MESS_UNREAD_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    ROLE_IDS_FIELD_NUMBER: builtins.int
-    CHANNEL_AVATAR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    MEETING_CODE_FIELD_NUMBER: _builtins.int
+    IS_ERROR_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    E2EE_FIELD_NUMBER: _builtins.int
+    TOPIC_FIELD_NUMBER: _builtins.int
+    AGE_RESTRICTED_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    COUNT_MESS_UNREAD_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    ROLE_IDS_FIELD_NUMBER: _builtins.int
+    CHANNEL_AVATAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """parent id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """channel label"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """channel type"""
-    status: builtins.int
+    status: _builtins.int
     """status"""
-    meeting_code: builtins.str
+    meeting_code: _builtins.str
     """meeting code"""
-    is_error: builtins.bool
+    is_error: _builtins.bool
     """error"""
-    channel_private: builtins.bool
+    channel_private: _builtins.bool
     """channel private"""
-    app_id: builtins.str
+    app_id: _builtins.int
     """app url"""
-    e2ee: builtins.int
+    e2ee: _builtins.int
     """e2ee"""
-    topic: builtins.str
+    topic: _builtins.str
     """topic"""
-    age_restricted: builtins.int
+    age_restricted: _builtins.int
     """"""
-    active: builtins.int
+    active: _builtins.int
     """"""
-    count_mess_unread: builtins.int
+    count_mess_unread: _builtins.int
     """count message unread"""
-    channel_avatar: builtins.str
+    channel_avatar: _builtins.str
     """"""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to add."""
 
-    @property
-    def role_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def role_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """This is the role that needs to be added to the channel"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        status: builtins.int = ...,
-        meeting_code: builtins.str = ...,
-        is_error: builtins.bool = ...,
-        channel_private: builtins.bool = ...,
-        app_id: builtins.str = ...,
-        e2ee: builtins.int = ...,
-        topic: builtins.str = ...,
-        age_restricted: builtins.int = ...,
-        active: builtins.int = ...,
-        count_mess_unread: builtins.int = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        role_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        channel_avatar: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
+        channel_type: _builtins.int = ...,
+        status: _builtins.int = ...,
+        meeting_code: _builtins.str = ...,
+        is_error: _builtins.bool = ...,
+        channel_private: _builtins.bool = ...,
+        app_id: _builtins.int = ...,
+        e2ee: _builtins.int = ...,
+        topic: _builtins.str = ...,
+        age_restricted: _builtins.int = ...,
+        active: _builtins.int = ...,
+        count_mess_unread: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        role_ids: _abc.Iterable[_builtins.int] | None = ...,
+        channel_avatar: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "count_mess_unread", b"count_mess_unread", "creator_id", b"creator_id", "e2ee", b"e2ee", "is_error", b"is_error", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "role_ids", b"role_ids", "status", b"status", "topic", b"topic", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "count_mess_unread", b"count_mess_unread", "creator_id", b"creator_id", "e2ee", b"e2ee", "is_error", b"is_error", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "role_ids", b"role_ids", "status", b"status", "topic", b"topic", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelUpdatedEvent: typing_extensions.TypeAlias = ChannelUpdatedEvent
+Global___ChannelUpdatedEvent: _TypeAlias = ChannelUpdatedEvent  # noqa: Y015
 
-@typing.final
-class StatusUnfollow(google.protobuf.message.Message):
+@_typing.final
+class StatusUnfollow(_message.Message):
     """Stop receiving status updates for some set of users."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_IDS_FIELD_NUMBER: builtins.int
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """Users to unfollow."""
 
     def __init__(
         self,
         *,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StatusUnfollow: typing_extensions.TypeAlias = StatusUnfollow
+Global___StatusUnfollow: _TypeAlias = StatusUnfollow  # noqa: Y015
 
-@typing.final
-class StatusUpdate(google.protobuf.message.Message):
+@_typing.final
+class StatusUpdate(_message.Message):
     """Set the user's own status."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    STATUS_FIELD_NUMBER: builtins.int
-    @property
-    def status(self) -> google.protobuf.wrappers_pb2.StringValue:
+    STATUS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def status(self) -> _wrappers_pb2.StringValue:
         """Status string to set, if not present the user will appear offline."""
 
     def __init__(
         self,
         *,
-        status: google.protobuf.wrappers_pb2.StringValue | None = ...,
+        status: _wrappers_pb2.StringValue | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["status", b"status"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["status", b"status"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["status", b"status"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StatusUpdate: typing_extensions.TypeAlias = StatusUpdate
+Global___StatusUpdate: _TypeAlias = StatusUpdate  # noqa: Y015
 
-@typing.final
-class Stream(google.protobuf.message.Message):
+@_typing.final
+class Stream(_message.Message):
     """Represents identifying information for a stream."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MODE_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    LABEL_FIELD_NUMBER: builtins.int
-    mode: builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LABEL_FIELD_NUMBER: _builtins.int
+    mode: _builtins.int
     """Mode identifies the type of stream."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """Subject is the primary identifier, if any."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """Subcontext is a secondary identifier, if any."""
-    label: builtins.str
+    label: _builtins.str
     """The label is an arbitrary identifying string, if the stream has one."""
     def __init__(
         self,
         *,
-        mode: builtins.int = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        label: builtins.str = ...,
+        mode: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        label: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "label", b"label", "mode", b"mode"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "label", b"label", "mode", b"mode"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Stream: typing_extensions.TypeAlias = Stream
+Global___Stream: _TypeAlias = Stream  # noqa: Y015
 
-@typing.final
-class StreamData(google.protobuf.message.Message):
+@_typing.final
+class StreamData(_message.Message):
     """A data message delivered over a stream."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    STREAM_FIELD_NUMBER: builtins.int
-    SENDER_FIELD_NUMBER: builtins.int
-    DATA_FIELD_NUMBER: builtins.int
-    RELIABLE_FIELD_NUMBER: builtins.int
-    data: builtins.str
+    STREAM_FIELD_NUMBER: _builtins.int
+    SENDER_FIELD_NUMBER: _builtins.int
+    DATA_FIELD_NUMBER: _builtins.int
+    RELIABLE_FIELD_NUMBER: _builtins.int
+    data: _builtins.str
     """Arbitrary contents of the data message."""
-    reliable: builtins.bool
+    reliable: _builtins.bool
     """True if this data was delivered reliably, false otherwise."""
-    @property
+    @_builtins.property
     def stream(self) -> Global___Stream:
         """The stream this data message relates to."""
 
-    @property
+    @_builtins.property
     def sender(self) -> Global___UserPresence:
         """The sender, if any."""
 
@@ -2761,1389 +2748,1393 @@ class StreamData(google.protobuf.message.Message):
         *,
         stream: Global___Stream | None = ...,
         sender: Global___UserPresence | None = ...,
-        data: builtins.str = ...,
-        reliable: builtins.bool = ...,
+        data: _builtins.str = ...,
+        reliable: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["sender", b"sender", "stream", b"stream"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["data", b"data", "reliable", b"reliable", "sender", b"sender", "stream", b"stream"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["sender", b"sender", "stream", b"stream"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["data", b"data", "reliable", b"reliable", "sender", b"sender", "stream", b"stream"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamData: typing_extensions.TypeAlias = StreamData
+Global___StreamData: _TypeAlias = StreamData  # noqa: Y015
 
-@typing.final
-class StreamPresenceEvent(google.protobuf.message.Message):
+@_typing.final
+class StreamPresenceEvent(_message.Message):
     """A set of joins and leaves on a particular stream."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    STREAM_FIELD_NUMBER: builtins.int
-    JOINS_FIELD_NUMBER: builtins.int
-    LEAVES_FIELD_NUMBER: builtins.int
-    @property
+    STREAM_FIELD_NUMBER: _builtins.int
+    JOINS_FIELD_NUMBER: _builtins.int
+    LEAVES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
     def stream(self) -> Global___Stream:
         """The stream this event relates to."""
 
-    @property
-    def joins(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    @_builtins.property
+    def joins(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences joining the stream as part of this event, if any."""
 
-    @property
-    def leaves(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
+    @_builtins.property
+    def leaves(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserPresence]:
         """Presences leaving the stream as part of this event, if any."""
 
     def __init__(
         self,
         *,
         stream: Global___Stream | None = ...,
-        joins: collections.abc.Iterable[Global___UserPresence] | None = ...,
-        leaves: collections.abc.Iterable[Global___UserPresence] | None = ...,
+        joins: _abc.Iterable[Global___UserPresence] | None = ...,
+        leaves: _abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["stream", b"stream"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["joins", b"joins", "leaves", b"leaves", "stream", b"stream"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["stream", b"stream"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["joins", b"joins", "leaves", b"leaves", "stream", b"stream"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamPresenceEvent: typing_extensions.TypeAlias = StreamPresenceEvent
+Global___StreamPresenceEvent: _TypeAlias = StreamPresenceEvent  # noqa: Y015
 
-@typing.final
-class UserPresence(google.protobuf.message.Message):
+@_typing.final
+class UserPresence(_message.Message):
     """A user session associated to a stream, usually through a list operation or a join/leave event."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    SESSION_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    IS_MOBILE_FIELD_NUMBER: builtins.int
-    USER_STATUS_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    SESSION_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    IS_MOBILE_FIELD_NUMBER: _builtins.int
+    USER_STATUS_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """The user this presence belongs to."""
-    session_id: builtins.str
+    session_id: _builtins.str
     """A unique session ID identifying the particular connection, because the user may have many."""
-    username: builtins.str
+    username: _builtins.str
     """The username for display purposes."""
-    is_mobile: builtins.bool
+    is_mobile: _builtins.bool
     """"""
-    user_status: builtins.str
+    user_status: _builtins.str
     """user_status"""
-    @property
-    def status(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def status(self) -> _wrappers_pb2.StringValue:
         """A user-set status message for this stream, if applicable."""
 
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        session_id: builtins.str = ...,
-        username: builtins.str = ...,
-        status: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        is_mobile: builtins.bool = ...,
-        user_status: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        session_id: _builtins.str = ...,
+        username: _builtins.str = ...,
+        status: _wrappers_pb2.StringValue | None = ...,
+        is_mobile: _builtins.bool = ...,
+        user_status: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["status", b"status"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["is_mobile", b"is_mobile", "session_id", b"session_id", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["status", b"status"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["is_mobile", b"is_mobile", "session_id", b"session_id", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserPresence: typing_extensions.TypeAlias = UserPresence
+Global___UserPresence: _TypeAlias = UserPresence  # noqa: Y015
 
-@typing.final
-class CustomStatusEvent(google.protobuf.message.Message):
+@_typing.final
+class CustomStatusEvent(_message.Message):
     """A custom status presence"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    TIME_RESET_FIELD_NUMBER: builtins.int
-    NO_CLEAR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    TIME_RESET_FIELD_NUMBER: _builtins.int
+    NO_CLEAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """the clan id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """the user id"""
-    username: builtins.str
+    username: _builtins.str
     """username"""
-    status: builtins.str
+    status: _builtins.str
     """the status"""
-    time_reset: builtins.int
+    time_reset: _builtins.int
     """time reset"""
-    no_clear: builtins.bool
+    no_clear: _builtins.bool
     """no clear"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        username: builtins.str = ...,
-        status: builtins.str = ...,
-        time_reset: builtins.int = ...,
-        no_clear: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        status: _builtins.str = ...,
+        time_reset: _builtins.int = ...,
+        no_clear: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "no_clear", b"no_clear", "status", b"status", "time_reset", b"time_reset", "user_id", b"user_id", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "no_clear", b"no_clear", "status", b"status", "time_reset", b"time_reset", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CustomStatusEvent: typing_extensions.TypeAlias = CustomStatusEvent
+Global___CustomStatusEvent: _TypeAlias = CustomStatusEvent  # noqa: Y015
 
-@typing.final
-class UserChannelAdded(google.protobuf.message.Message):
+@_typing.final
+class UserChannelAdded(_message.Message):
     """A event when user is added to channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_DESC_FIELD_NUMBER: builtins.int
-    USERS_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CALLER_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECOND_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    status: builtins.str
+    CHANNEL_DESC_FIELD_NUMBER: _builtins.int
+    USERS_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CALLER_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    status: _builtins.str
     """the custom status"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """the clan id"""
-    create_time_second: builtins.int
+    create_time_seconds: _builtins.int
     """"""
-    active: builtins.int
+    active: _builtins.int
     """"""
-    @property
-    def channel_desc(self) -> api.api_pb2.ChannelDescription:
+    @_builtins.property
+    def channel_desc(self) -> _api_pb2.ChannelDescription:
         """the channel id"""
 
-    @property
-    def users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserProfileRedis]:
+    @_builtins.property
+    def users(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserProfileRedis]:
         """the user"""
 
-    @property
+    @_builtins.property
     def caller(self) -> Global___UserProfileRedis:
         """"""
 
     def __init__(
         self,
         *,
-        channel_desc: api.api_pb2.ChannelDescription | None = ...,
-        users: collections.abc.Iterable[Global___UserProfileRedis] | None = ...,
-        status: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        channel_desc: _api_pb2.ChannelDescription | None = ...,
+        users: _abc.Iterable[Global___UserProfileRedis] | None = ...,
+        status: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
         caller: Global___UserProfileRedis | None = ...,
-        create_time_second: builtins.int = ...,
-        active: builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        active: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["caller", b"caller", "channel_desc", b"channel_desc"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "caller", b"caller", "channel_desc", b"channel_desc", "clan_id", b"clan_id", "create_time_second", b"create_time_second", "status", b"status", "users", b"users"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["caller", b"caller", "channel_desc", b"channel_desc"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "caller", b"caller", "channel_desc", b"channel_desc", "clan_id", b"clan_id", "create_time_seconds", b"create_time_seconds", "status", b"status", "users", b"users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserChannelAdded: typing_extensions.TypeAlias = UserChannelAdded
+Global___UserChannelAdded: _TypeAlias = UserChannelAdded  # noqa: Y015
 
-@typing.final
-class UserChannelRemoved(google.protobuf.message.Message):
+@_typing.final
+class UserChannelRemoved(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    BADGE_COUNTS_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    BADGE_COUNTS_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """the channel id"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """the channel type"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """the clan_id"""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """the user"""
 
-    @property
-    def badge_counts(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.int]: ...
+    @_builtins.property
+    def badge_counts(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        channel_type: builtins.int = ...,
-        clan_id: builtins.str = ...,
-        badge_counts: collections.abc.Iterable[builtins.int] | None = ...,
+        channel_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        channel_type: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        badge_counts: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["badge_counts", b"badge_counts", "channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["badge_counts", b"badge_counts", "channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserChannelRemoved: typing_extensions.TypeAlias = UserChannelRemoved
+Global___UserChannelRemoved: _TypeAlias = UserChannelRemoved  # noqa: Y015
 
-@typing.final
-class UserClanRemoved(google.protobuf.message.Message):
+@_typing.final
+class UserClanRemoved(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """the clan id"""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """the user"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        clan_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserClanRemoved: typing_extensions.TypeAlias = UserClanRemoved
+Global___UserClanRemoved: _TypeAlias = UserClanRemoved  # noqa: Y015
 
-@typing.final
-class ClanUpdatedEvent(google.protobuf.message.Message):
+@_typing.final
+class ClanUpdatedEvent(_message.Message):
     """clan updated event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    BANNER_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    IS_ONBOARDING_FIELD_NUMBER: builtins.int
-    WELCOME_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ONBOARDING_BANNER_FIELD_NUMBER: builtins.int
-    COMMUNITY_BANNER_FIELD_NUMBER: builtins.int
-    IS_COMMUNITY_FIELD_NUMBER: builtins.int
-    ABOUT_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    PREVENT_ANONYMOUS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    BANNER_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    IS_ONBOARDING_FIELD_NUMBER: _builtins.int
+    WELCOME_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ONBOARDING_BANNER_FIELD_NUMBER: _builtins.int
+    COMMUNITY_BANNER_FIELD_NUMBER: _builtins.int
+    IS_COMMUNITY_FIELD_NUMBER: _builtins.int
+    ABOUT_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    PREVENT_ANONYMOUS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan name"""
-    logo: builtins.str
+    logo: _builtins.str
     """logo"""
-    banner: builtins.str
+    banner: _builtins.str
     """banner"""
-    status: builtins.int
+    status: _builtins.int
     """status"""
-    is_onboarding: builtins.bool
+    is_onboarding: _builtins.bool
     """is onboarding"""
-    welcome_channel_id: builtins.str
+    welcome_channel_id: _builtins.int
     """welcome channel id"""
-    onboarding_banner: builtins.str
+    onboarding_banner: _builtins.str
     """onboarding_banner."""
-    community_banner: builtins.str
+    community_banner: _builtins.str
     """community banner"""
-    is_community: builtins.bool
+    is_community: _builtins.bool
     """is community"""
-    about: builtins.str
+    about: _builtins.str
     """about"""
-    description: builtins.str
+    description: _builtins.str
     """description"""
-    prevent_anonymous: builtins.bool
+    prevent_anonymous: _builtins.bool
     """prevent anonymous"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        logo: builtins.str = ...,
-        banner: builtins.str = ...,
-        status: builtins.int = ...,
-        is_onboarding: builtins.bool = ...,
-        welcome_channel_id: builtins.str = ...,
-        onboarding_banner: builtins.str = ...,
-        community_banner: builtins.str = ...,
-        is_community: builtins.bool = ...,
-        about: builtins.str = ...,
-        description: builtins.str = ...,
-        prevent_anonymous: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        logo: _builtins.str = ...,
+        banner: _builtins.str = ...,
+        status: _builtins.int = ...,
+        is_onboarding: _builtins.bool = ...,
+        welcome_channel_id: _builtins.int = ...,
+        onboarding_banner: _builtins.str = ...,
+        community_banner: _builtins.str = ...,
+        is_community: _builtins.bool = ...,
+        about: _builtins.str = ...,
+        description: _builtins.str = ...,
+        prevent_anonymous: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanUpdatedEvent: typing_extensions.TypeAlias = ClanUpdatedEvent
+Global___ClanUpdatedEvent: _TypeAlias = ClanUpdatedEvent  # noqa: Y015
 
-@typing.final
-class ClanProfileUpdatedEvent(google.protobuf.message.Message):
+@_typing.final
+class ClanProfileUpdatedEvent(_message.Message):
     """clan profile updated event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    CLAN_NICK_FIELD_NUMBER: builtins.int
-    CLAN_AVATAR_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NICK_FIELD_NUMBER: _builtins.int
+    CLAN_AVATAR_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """the user id"""
-    clan_nick: builtins.str
+    clan_nick: _builtins.str
     """the clan_nick"""
-    clan_avatar: builtins.str
+    clan_avatar: _builtins.str
     """the avatar"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """the clan_id"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        clan_nick: builtins.str = ...,
-        clan_avatar: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        clan_nick: _builtins.str = ...,
+        clan_avatar: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanProfileUpdatedEvent: typing_extensions.TypeAlias = ClanProfileUpdatedEvent
+Global___ClanProfileUpdatedEvent: _TypeAlias = ClanProfileUpdatedEvent  # noqa: Y015
 
-@typing.final
-class UserProfileUpdatedEvent(google.protobuf.message.Message):
+@_typing.final
+class UserProfileUpdatedEvent(_message.Message):
     """user profile updated event"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    ABOUT_ME_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ENCRYPT_PRIVATE_KEY_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    ABOUT_ME_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ENCRYPT_PRIVATE_KEY_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """the user id"""
-    display_name: builtins.str
+    display_name: _builtins.str
     """the display_name"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """the avatar"""
-    about_me: builtins.str
+    about_me: _builtins.str
     """the about_me"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """the channel_id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """the clan_id"""
-    encrypt_private_key: builtins.str
+    encrypt_private_key: _builtins.str
     """the encrypt_private_key"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        display_name: builtins.str = ...,
-        avatar: builtins.str = ...,
-        about_me: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        encrypt_private_key: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        display_name: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        about_me: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        encrypt_private_key: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about_me", b"about_me", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "encrypt_private_key", b"encrypt_private_key", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about_me", b"about_me", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "encrypt_private_key", b"encrypt_private_key", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserProfileUpdatedEvent: typing_extensions.TypeAlias = UserProfileUpdatedEvent
+Global___UserProfileUpdatedEvent: _TypeAlias = UserProfileUpdatedEvent  # noqa: Y015
 
-@typing.final
-class ConfirmLinkMezonOTPData(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ConfirmLinkMezonOTPData(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TYPE_FIELD_NUMBER: builtins.int
-    VALUE_FIELD_NUMBER: builtins.int
-    type: builtins.int
-    value: builtins.str
+    TYPE_FIELD_NUMBER: _builtins.int
+    VALUE_FIELD_NUMBER: _builtins.int
+    type: _builtins.int
+    value: _builtins.str
     def __init__(
         self,
         *,
-        type: builtins.int = ...,
-        value: builtins.str = ...,
+        type: _builtins.int = ...,
+        value: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["type", b"type", "value", b"value"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["type", b"type", "value", b"value"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ConfirmLinkMezonOTPData: typing_extensions.TypeAlias = ConfirmLinkMezonOTPData
+Global___ConfirmLinkMezonOTPData: _TypeAlias = ConfirmLinkMezonOTPData  # noqa: Y015
 
-@typing.final
-class UserProfileRedis(google.protobuf.message.Message):
+@_typing.final
+class UserProfileRedis(_message.Message):
     """A event when user is added to channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    USER_STATUS_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    ONLINE_FIELD_NUMBER: builtins.int
-    FCM_TOKENS_FIELD_NUMBER: builtins.int
-    JOINED_CLANS_FIELD_NUMBER: builtins.int
-    APP_TOKEN_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECOND_FIELD_NUMBER: builtins.int
-    APP_URL_FIELD_NUMBER: builtins.int
-    IS_BOT_FIELD_NUMBER: builtins.int
-    VOIP_TOKEN_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    USER_STATUS_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    ONLINE_FIELD_NUMBER: _builtins.int
+    FCM_TOKENS_FIELD_NUMBER: _builtins.int
+    JOINED_CLANS_FIELD_NUMBER: _builtins.int
+    APP_TOKEN_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECOND_FIELD_NUMBER: _builtins.int
+    APP_URL_FIELD_NUMBER: _builtins.int
+    IS_BOT_FIELD_NUMBER: _builtins.int
+    VOIP_TOKEN_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """User IDs to follow."""
-    username: builtins.str
+    username: _builtins.str
     """Username to follow."""
-    avatar: builtins.str
+    avatar: _builtins.str
     """Avatar to follow."""
-    display_name: builtins.str
+    display_name: _builtins.str
     """Display name"""
-    user_status: builtins.str
+    user_status: _builtins.str
     """user status"""
-    status: builtins.str
+    status: _builtins.str
     """status online, offline, invisible, idle, do not disturb"""
-    online: builtins.bool
+    online: _builtins.bool
     """isOnline"""
-    app_token: builtins.str
+    app_token: _builtins.str
     """app token"""
-    create_time_second: builtins.int
+    create_time_second: _builtins.int
     """create time"""
-    app_url: builtins.str
+    app_url: _builtins.str
     """app url"""
-    is_bot: builtins.bool
+    is_bot: _builtins.bool
     """is bot"""
-    voip_token: builtins.str
+    voip_token: _builtins.str
     """for call DM iOS"""
-    @property
-    def fcm_tokens(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___FCMTokens]:
+    @_builtins.property
+    def fcm_tokens(self) -> _containers.RepeatedCompositeFieldContainer[Global___FCMTokens]:
         """FCM token"""
 
-    @property
-    def joined_clans(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def joined_clans(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """clans"""
 
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        username: builtins.str = ...,
-        avatar: builtins.str = ...,
-        display_name: builtins.str = ...,
-        user_status: builtins.str = ...,
-        status: builtins.str = ...,
-        online: builtins.bool = ...,
-        fcm_tokens: collections.abc.Iterable[Global___FCMTokens] | None = ...,
-        joined_clans: collections.abc.Iterable[builtins.str] | None = ...,
-        app_token: builtins.str = ...,
-        create_time_second: builtins.int = ...,
-        app_url: builtins.str = ...,
-        is_bot: builtins.bool = ...,
-        voip_token: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        user_status: _builtins.str = ...,
+        status: _builtins.str = ...,
+        online: _builtins.bool = ...,
+        fcm_tokens: _abc.Iterable[Global___FCMTokens] | None = ...,
+        joined_clans: _abc.Iterable[_builtins.int] | None = ...,
+        app_token: _builtins.str = ...,
+        create_time_second: _builtins.int = ...,
+        app_url: _builtins.str = ...,
+        is_bot: _builtins.bool = ...,
+        voip_token: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["app_token", b"app_token", "app_url", b"app_url", "avatar", b"avatar", "create_time_second", b"create_time_second", "display_name", b"display_name", "fcm_tokens", b"fcm_tokens", "is_bot", b"is_bot", "joined_clans", b"joined_clans", "online", b"online", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username", "voip_token", b"voip_token"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_token", b"app_token", "app_url", b"app_url", "avatar", b"avatar", "create_time_second", b"create_time_second", "display_name", b"display_name", "fcm_tokens", b"fcm_tokens", "is_bot", b"is_bot", "joined_clans", b"joined_clans", "online", b"online", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username", "voip_token", b"voip_token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserProfileRedis: typing_extensions.TypeAlias = UserProfileRedis
+Global___UserProfileRedis: _TypeAlias = UserProfileRedis  # noqa: Y015
 
-@typing.final
-class FCMTokens(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class FCMTokens(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    DEVICE_ID_FIELD_NUMBER: builtins.int
-    TOKEN_ID_FIELD_NUMBER: builtins.int
-    PLATFORM_FIELD_NUMBER: builtins.int
-    device_id: builtins.str
+    DEVICE_ID_FIELD_NUMBER: _builtins.int
+    TOKEN_ID_FIELD_NUMBER: _builtins.int
+    PLATFORM_FIELD_NUMBER: _builtins.int
+    device_id: _builtins.str
     """deviceID to follow."""
-    token_id: builtins.str
+    token_id: _builtins.str
     """tokenID to follow."""
-    platform: builtins.str
+    platform: _builtins.str
     """platform to follow."""
     def __init__(
         self,
         *,
-        device_id: builtins.str = ...,
-        token_id: builtins.str = ...,
-        platform: builtins.str = ...,
+        device_id: _builtins.str = ...,
+        token_id: _builtins.str = ...,
+        platform: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["device_id", b"device_id", "platform", b"platform", "token_id", b"token_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["device_id", b"device_id", "platform", b"platform", "token_id", b"token_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___FCMTokens: typing_extensions.TypeAlias = FCMTokens
+Global___FCMTokens: _TypeAlias = FCMTokens  # noqa: Y015
 
-@typing.final
-class CheckNameExistedEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CheckNameExistedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    NAME_FIELD_NUMBER: builtins.int
-    CONDITION_ID_FIELD_NUMBER: builtins.int
-    EXIST_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    name: builtins.str
+    NAME_FIELD_NUMBER: _builtins.int
+    CONDITION_ID_FIELD_NUMBER: _builtins.int
+    EXIST_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    name: _builtins.str
     """name"""
-    condition_id: builtins.str
+    condition_id: _builtins.int
     """condition_id"""
-    exist: builtins.bool
+    exist: _builtins.bool
     """is exist"""
-    type: builtins.int
+    type: _builtins.int
     """type check"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        name: builtins.str = ...,
-        condition_id: builtins.str = ...,
-        exist: builtins.bool = ...,
-        type: builtins.int = ...,
-        clan_id: builtins.str = ...,
+        name: _builtins.str = ...,
+        condition_id: _builtins.int = ...,
+        exist: _builtins.bool = ...,
+        type: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "condition_id", b"condition_id", "exist", b"exist", "name", b"name", "type", b"type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "condition_id", b"condition_id", "exist", b"exist", "name", b"name", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CheckNameExistedEvent: typing_extensions.TypeAlias = CheckNameExistedEvent
+Global___CheckNameExistedEvent: _TypeAlias = CheckNameExistedEvent  # noqa: Y015
 
-@typing.final
-class NotificationChannelCategorySetting(google.protobuf.message.Message):
+@_typing.final
+class NotificationChannelCategorySetting(_message.Message):
     """Notification setting record"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CHANNEL_CATEGORY_LABEL_FIELD_NUMBER: builtins.int
-    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_CATEGORY_TITLE_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_CATEGORY_LABEL_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_CATEGORY_TITLE_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Notification id"""
-    channel_category_label: builtins.str
+    channel_category_label: _builtins.str
     """"""
-    notification_setting_type: builtins.int
+    notification_setting_type: _builtins.int
     """Notification title"""
-    channel_category_title: builtins.str
+    channel_category_title: _builtins.str
     """"""
-    action: builtins.int
+    action: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        channel_category_label: builtins.str = ...,
-        notification_setting_type: builtins.int = ...,
-        channel_category_title: builtins.str = ...,
-        action: builtins.int = ...,
+        id: _builtins.int = ...,
+        channel_category_label: _builtins.str = ...,
+        notification_setting_type: _builtins.int = ...,
+        channel_category_title: _builtins.str = ...,
+        action: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "channel_category_label", b"channel_category_label", "channel_category_title", b"channel_category_title", "id", b"id", "notification_setting_type", b"notification_setting_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_category_label", b"channel_category_label", "channel_category_title", b"channel_category_title", "id", b"id", "notification_setting_type", b"notification_setting_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationChannelCategorySetting: typing_extensions.TypeAlias = NotificationChannelCategorySetting
+Global___NotificationChannelCategorySetting: _TypeAlias = NotificationChannelCategorySetting  # noqa: Y015
 
-@typing.final
-class EventEmoji(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class EventEmoji(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    SHORT_NAME_FIELD_NUMBER: builtins.int
-    SOURCE_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    IS_FOR_SALE_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    clan_id: builtins.str
-    short_name: builtins.str
-    source: builtins.str
-    category: builtins.str
-    action: builtins.int
-    user_id: builtins.str
-    logo: builtins.str
-    clan_name: builtins.str
-    is_for_sale: builtins.bool
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    SHORT_NAME_FIELD_NUMBER: _builtins.int
+    SOURCE_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    IS_FOR_SALE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    clan_id: _builtins.int
+    short_name: _builtins.str
+    source: _builtins.str
+    category: _builtins.str
+    action: _builtins.int
+    user_id: _builtins.int
+    logo: _builtins.str
+    clan_name: _builtins.str
+    is_for_sale: _builtins.bool
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        short_name: builtins.str = ...,
-        source: builtins.str = ...,
-        category: builtins.str = ...,
-        action: builtins.int = ...,
-        user_id: builtins.str = ...,
-        logo: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        is_for_sale: builtins.bool = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        short_name: _builtins.str = ...,
+        source: _builtins.str = ...,
+        category: _builtins.str = ...,
+        action: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        logo: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
+        is_for_sale: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "short_name", b"short_name", "source", b"source", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "short_name", b"short_name", "source", b"source", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EventEmoji: typing_extensions.TypeAlias = EventEmoji
+Global___EventEmoji: _TypeAlias = EventEmoji  # noqa: Y015
 
-@typing.final
-class PermissionSetEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class PermissionSetEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CALLER_FIELD_NUMBER: builtins.int
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    PERMISSION_UPDATES_FIELD_NUMBER: builtins.int
-    caller: builtins.str
-    role_id: builtins.str
-    user_id: builtins.str
-    channel_id: builtins.str
-    @property
-    def permission_updates(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
+    CALLER_FIELD_NUMBER: _builtins.int
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    PERMISSION_UPDATES_FIELD_NUMBER: _builtins.int
+    caller: _builtins.str
+    role_id: _builtins.int
+    user_id: _builtins.int
+    channel_id: _builtins.int
+    @_builtins.property
+    def permission_updates(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.PermissionUpdate]: ...
     def __init__(
         self,
         *,
-        caller: builtins.str = ...,
-        role_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        permission_updates: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
+        caller: _builtins.str = ...,
+        role_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        permission_updates: _abc.Iterable[_api_pb2.PermissionUpdate] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["caller", b"caller", "channel_id", b"channel_id", "permission_updates", b"permission_updates", "role_id", b"role_id", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["caller", b"caller", "channel_id", b"channel_id", "permission_updates", b"permission_updates", "role_id", b"role_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionSetEvent: typing_extensions.TypeAlias = PermissionSetEvent
+Global___PermissionSetEvent: _TypeAlias = PermissionSetEvent  # noqa: Y015
 
-@typing.final
-class PermissionChangedEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class PermissionChangedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ADD_PERMISSIONS_FIELD_NUMBER: builtins.int
-    REMOVE_PERMISSIONS_FIELD_NUMBER: builtins.int
-    DEFAULT_PERMISSIONS_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
-    channel_id: builtins.str
-    @property
-    def add_permissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
-    @property
-    def remove_permissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
-    @property
-    def default_permissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.PermissionUpdate]: ...
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ADD_PERMISSIONS_FIELD_NUMBER: _builtins.int
+    REMOVE_PERMISSIONS_FIELD_NUMBER: _builtins.int
+    DEFAULT_PERMISSIONS_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
+    channel_id: _builtins.int
+    @_builtins.property
+    def add_permissions(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.PermissionUpdate]: ...
+    @_builtins.property
+    def remove_permissions(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.PermissionUpdate]: ...
+    @_builtins.property
+    def default_permissions(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.PermissionUpdate]: ...
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        add_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
-        remove_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
-        default_permissions: collections.abc.Iterable[api.api_pb2.PermissionUpdate] | None = ...,
+        user_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        add_permissions: _abc.Iterable[_api_pb2.PermissionUpdate] | None = ...,
+        remove_permissions: _abc.Iterable[_api_pb2.PermissionUpdate] | None = ...,
+        default_permissions: _abc.Iterable[_api_pb2.PermissionUpdate] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["add_permissions", b"add_permissions", "channel_id", b"channel_id", "default_permissions", b"default_permissions", "remove_permissions", b"remove_permissions", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["add_permissions", b"add_permissions", "channel_id", b"channel_id", "default_permissions", b"default_permissions", "remove_permissions", b"remove_permissions", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionChangedEvent: typing_extensions.TypeAlias = PermissionChangedEvent
+Global___PermissionChangedEvent: _TypeAlias = PermissionChangedEvent  # noqa: Y015
 
-@typing.final
-class MessageButtonClicked(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class MessageButtonClicked(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    BUTTON_ID_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    EXTRA_DATA_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
-    channel_id: builtins.str
-    button_id: builtins.str
-    sender_id: builtins.str
-    user_id: builtins.str
-    extra_data: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    BUTTON_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    EXTRA_DATA_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    button_id: _builtins.str
+    sender_id: _builtins.int
+    user_id: _builtins.int
+    extra_data: _builtins.str
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        button_id: builtins.str = ...,
-        sender_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        extra_data: builtins.str = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        button_id: _builtins.str = ...,
+        sender_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        extra_data: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["button_id", b"button_id", "channel_id", b"channel_id", "extra_data", b"extra_data", "message_id", b"message_id", "sender_id", b"sender_id", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["button_id", b"button_id", "channel_id", b"channel_id", "extra_data", b"extra_data", "message_id", b"message_id", "sender_id", b"sender_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MessageButtonClicked: typing_extensions.TypeAlias = MessageButtonClicked
+Global___MessageButtonClicked: _TypeAlias = MessageButtonClicked  # noqa: Y015
 
-@typing.final
-class UnmuteEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UnmuteEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """channel id"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UnmuteEvent: typing_extensions.TypeAlias = UnmuteEvent
+Global___UnmuteEvent: _TypeAlias = UnmuteEvent  # noqa: Y015
 
-@typing.final
-class ListActivity(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListActivity(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ACTS_FIELD_NUMBER: builtins.int
-    @property
-    def acts(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.UserActivity]: ...
+    ACTS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def acts(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.UserActivity]: ...
     def __init__(
         self,
         *,
-        acts: collections.abc.Iterable[api.api_pb2.UserActivity] | None = ...,
+        acts: _abc.Iterable[_api_pb2.UserActivity] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["acts", b"acts"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["acts", b"acts"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListActivity: typing_extensions.TypeAlias = ListActivity
+Global___ListActivity: _TypeAlias = ListActivity  # noqa: Y015
 
-@typing.final
-class DropdownBoxSelected(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DropdownBoxSelected(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    SELECTBOX_ID_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    VALUES_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
-    channel_id: builtins.str
-    selectbox_id: builtins.str
-    sender_id: builtins.str
-    user_id: builtins.str
-    @property
-    def values(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    SELECTBOX_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    VALUES_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    selectbox_id: _builtins.str
+    sender_id: _builtins.int
+    user_id: _builtins.int
+    @_builtins.property
+    def values(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        selectbox_id: builtins.str = ...,
-        sender_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        values: collections.abc.Iterable[builtins.str] | None = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        selectbox_id: _builtins.str = ...,
+        sender_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        values: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "selectbox_id", b"selectbox_id", "sender_id", b"sender_id", "user_id", b"user_id", "values", b"values"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "selectbox_id", b"selectbox_id", "sender_id", b"sender_id", "user_id", b"user_id", "values", b"values"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DropdownBoxSelected: typing_extensions.TypeAlias = DropdownBoxSelected
+Global___DropdownBoxSelected: _TypeAlias = DropdownBoxSelected  # noqa: Y015
 
-@typing.final
-class SdTopicEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SdTopicEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    LAST_SENT_MESSAGE_FIELD_NUMBER: builtins.int
-    MESSAGE_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    clan_id: builtins.str
-    channel_id: builtins.str
-    message_id: builtins.str
-    user_id: builtins.str
-    @property
-    def last_sent_message(self) -> api.api_pb2.ChannelMessageHeader: ...
-    @property
-    def message(self) -> api.api_pb2.ChannelMessage: ...
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    LAST_SENT_MESSAGE_FIELD_NUMBER: _builtins.int
+    MESSAGE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    message_id: _builtins.int
+    user_id: _builtins.int
+    @_builtins.property
+    def last_sent_message(self) -> _api_pb2.ChannelMessageHeader: ...
+    @_builtins.property
+    def message(self) -> _api_pb2.ChannelMessage: ...
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        last_sent_message: api.api_pb2.ChannelMessageHeader | None = ...,
-        message: api.api_pb2.ChannelMessage | None = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        last_sent_message: _api_pb2.ChannelMessageHeader | None = ...,
+        message: _api_pb2.ChannelMessage | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_sent_message", b"last_sent_message", "message", b"message"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "last_sent_message", b"last_sent_message", "message", b"message", "message_id", b"message_id", "user_id", b"user_id"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["last_sent_message", b"last_sent_message", "message", b"message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "last_sent_message", b"last_sent_message", "message", b"message", "message_id", b"message_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SdTopicEvent: typing_extensions.TypeAlias = SdTopicEvent
+Global___SdTopicEvent: _TypeAlias = SdTopicEvent  # noqa: Y015
 
-@typing.final
-class ChannelAppEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelAppEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
-    username: builtins.str
-    clan_id: builtins.str
-    channel_id: builtins.str
-    action: builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
+    username: _builtins.str
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    action: _builtins.int
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        username: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        action: builtins.int = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        action: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_id", b"user_id", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelAppEvent: typing_extensions.TypeAlias = ChannelAppEvent
+Global___ChannelAppEvent: _TypeAlias = ChannelAppEvent  # noqa: Y015
 
-@typing.final
-class UserStatusEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserStatusEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    CUSTOM_STATUS_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
-    custom_status: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CUSTOM_STATUS_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
+    custom_status: _builtins.str
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        custom_status: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        custom_status: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["custom_status", b"custom_status", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["custom_status", b"custom_status", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserStatusEvent: typing_extensions.TypeAlias = UserStatusEvent
+Global___UserStatusEvent: _TypeAlias = UserStatusEvent  # noqa: Y015
 
-@typing.final
-class JoinChannelAppData(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class JoinChannelAppData(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    HASH_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
-    username: builtins.str
-    hash: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    HASH_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
+    username: _builtins.str
+    hash: _builtins.str
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        username: builtins.str = ...,
-        hash: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        hash: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["hash", b"hash", "user_id", b"user_id", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["hash", b"hash", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___JoinChannelAppData: typing_extensions.TypeAlias = JoinChannelAppData
+Global___JoinChannelAppData: _TypeAlias = JoinChannelAppData  # noqa: Y015
 
-@typing.final
-class UnpinMessageEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UnpinMessageEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    message_id: builtins.str
-    channel_id: builtins.str
-    clan_id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "message_id", b"message_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "message_id", b"message_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UnpinMessageEvent: typing_extensions.TypeAlias = UnpinMessageEvent
+Global___UnpinMessageEvent: _TypeAlias = UnpinMessageEvent  # noqa: Y015
 
-@typing.final
-class HandleParticipantMeetStateEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class HandleParticipantMeetStateEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    ROOM_NAME_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    display_name: builtins.str
+    display_name: _builtins.str
     """display name"""
-    state: builtins.int
+    state: _builtins.int
     """state (0: join, 1: leave)"""
-    room_name: builtins.str
+    room_name: _builtins.str
     """room name"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        display_name: builtins.str = ...,
-        state: builtins.int = ...,
-        room_name: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        display_name: _builtins.str = ...,
+        state: _builtins.int = ...,
+        room_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "room_name", b"room_name", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "room_name", b"room_name", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___HandleParticipantMeetStateEvent: typing_extensions.TypeAlias = HandleParticipantMeetStateEvent
+Global___HandleParticipantMeetStateEvent: _TypeAlias = HandleParticipantMeetStateEvent  # noqa: Y015
 
-@typing.final
-class DeleteAccountEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DeleteAccountEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """user id"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
+        user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteAccountEvent: typing_extensions.TypeAlias = DeleteAccountEvent
+Global___DeleteAccountEvent: _TypeAlias = DeleteAccountEvent  # noqa: Y015
 
-@typing.final
-class ListDataSocket(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListDataSocket(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    API_NAME_FIELD_NUMBER: builtins.int
-    LIST_CLAN_REQ_FIELD_NUMBER: builtins.int
-    CLAN_DESC_LIST_FIELD_NUMBER: builtins.int
-    LIST_THREAD_REQ_FIELD_NUMBER: builtins.int
-    CHANNEL_DESC_LIST_FIELD_NUMBER: builtins.int
-    LIST_CHANNEL_USERS_UC_REQ_FIELD_NUMBER: builtins.int
-    CHANNEL_USERS_UC_LIST_FIELD_NUMBER: builtins.int
-    LIST_CHANNEL_DETAIL_REQ_FIELD_NUMBER: builtins.int
-    CHANNEL_DESC_FIELD_NUMBER: builtins.int
-    LIST_CHANNEL_REQ_FIELD_NUMBER: builtins.int
-    LIST_CHANNEL_MESSAGE_REQ_FIELD_NUMBER: builtins.int
-    CHANNEL_MESSAGE_LIST_FIELD_NUMBER: builtins.int
-    LIST_CHANNEL_USERS_REQ_FIELD_NUMBER: builtins.int
-    VOICE_USER_LIST_FIELD_NUMBER: builtins.int
-    CHANNEL_USER_LIST_FIELD_NUMBER: builtins.int
-    LIST_CHANNEL_ATTACHMENT_REQ_FIELD_NUMBER: builtins.int
-    CHANNEL_ATTACHMENT_LIST_FIELD_NUMBER: builtins.int
-    HASHTAG_DM_REQ_FIELD_NUMBER: builtins.int
-    HASHTAG_DM_LIST_FIELD_NUMBER: builtins.int
-    CHANNEL_SETTING_REQ_FIELD_NUMBER: builtins.int
-    CHANNEL_SETTING_LIST_FIELD_NUMBER: builtins.int
-    FAVORITE_CHANNEL_REQ_FIELD_NUMBER: builtins.int
-    FAVORITE_CHANNEL_LIST_FIELD_NUMBER: builtins.int
-    SEARCH_THREAD_REQ_FIELD_NUMBER: builtins.int
-    NOTIFICATION_CHANNEL_FIELD_NUMBER: builtins.int
-    NOTIFICAION_USER_CHANNEL_FIELD_NUMBER: builtins.int
-    NOTIFICATION_CATEGORY_FIELD_NUMBER: builtins.int
-    NOTIFICATION_CLAN_FIELD_NUMBER: builtins.int
-    NOTIFICATION_SETTING_FIELD_NUMBER: builtins.int
-    NOTIFICATION_MESSAGE_FIELD_NUMBER: builtins.int
-    NOTI_CHANNEL_CAT_SETTING_LIST_FIELD_NUMBER: builtins.int
-    LIST_NOTIFICATION_REQ_FIELD_NUMBER: builtins.int
-    NOTIFICATION_LIST_FIELD_NUMBER: builtins.int
-    STICKER_LIST_FIELD_NUMBER: builtins.int
-    EMOJI_RECENT_LIST_FIELD_NUMBER: builtins.int
-    CLAN_WEBHOOK_REQ_FIELD_NUMBER: builtins.int
-    CLAN_WEBHOOK_LIST_FIELD_NUMBER: builtins.int
-    WEBHOOK_LIST_REQ_FIELD_NUMBER: builtins.int
-    WEBHOOK_LIST_FIELD_NUMBER: builtins.int
-    PERMISSION_LIST_REQ_FIELD_NUMBER: builtins.int
-    PERMISSION_LIST_FIELD_NUMBER: builtins.int
-    ROLE_USER_REQ_FIELD_NUMBER: builtins.int
-    ROLE_USER_LIST_FIELD_NUMBER: builtins.int
-    PERMISSION_USER_REQ_FIELD_NUMBER: builtins.int
-    ROLE_LIST_FIELD_NUMBER: builtins.int
-    ROLE_LIST_EVENT_REQ_FIELD_NUMBER: builtins.int
-    ROLE_EVENT_LIST_FIELD_NUMBER: builtins.int
-    USER_PERMISSION_REQ_FIELD_NUMBER: builtins.int
-    USER_PERMISSION_LIST_FIELD_NUMBER: builtins.int
-    PERMISSION_ROLE_REQ_FIELD_NUMBER: builtins.int
-    PERMISSION_ROLE_LIST_FIELD_NUMBER: builtins.int
-    EMOJI_LIST_FIELD_NUMBER: builtins.int
-    LIST_FRIEND_REQ_FIELD_NUMBER: builtins.int
-    FRIEND_LIST_FIELD_NUMBER: builtins.int
-    LIST_APPS_REQ_FIELD_NUMBER: builtins.int
-    CHANNEL_APPS_LIST_FIELD_NUMBER: builtins.int
-    USER_ACTIVITY_LIST_FIELD_NUMBER: builtins.int
-    LIST_CLAN_USER_REQ_FIELD_NUMBER: builtins.int
-    CLAN_USER_LIST_FIELD_NUMBER: builtins.int
-    LIST_EVENT_REQ_FIELD_NUMBER: builtins.int
-    EVENT_LIST_FIELD_NUMBER: builtins.int
-    LIST_CATEGORY_REQ_FIELD_NUMBER: builtins.int
-    CATEGORY_LIST_FIELD_NUMBER: builtins.int
-    STREAM_USER_LIST_FIELD_NUMBER: builtins.int
-    LIST_UNREAD_MSG_INDICATOR_REQ_FIELD_NUMBER: builtins.int
-    UNREAD_MSG_INDICATOR_FIELD_NUMBER: builtins.int
-    api_name: builtins.str
-    @property
-    def list_clan_req(self) -> api.api_pb2.ListClanDescRequest: ...
-    @property
-    def clan_desc_list(self) -> api.api_pb2.ClanDescList: ...
-    @property
-    def list_thread_req(self) -> api.api_pb2.ListThreadRequest: ...
-    @property
-    def channel_desc_list(self) -> api.api_pb2.ChannelDescList: ...
-    @property
-    def list_channel_users_uc_req(self) -> api.api_pb2.AllUsersAddChannelRequest: ...
-    @property
-    def channel_users_uc_list(self) -> api.api_pb2.AllUsersAddChannelResponse: ...
-    @property
-    def list_channel_detail_req(self) -> api.api_pb2.ListChannelDetailRequest: ...
-    @property
-    def channel_desc(self) -> api.api_pb2.ChannelDescription: ...
-    @property
-    def list_channel_req(self) -> api.api_pb2.ListChannelDescsRequest: ...
-    @property
-    def list_channel_message_req(self) -> api.api_pb2.ListChannelMessagesRequest: ...
-    @property
-    def channel_message_list(self) -> api.api_pb2.ChannelMessageList: ...
-    @property
-    def list_channel_users_req(self) -> api.api_pb2.ListChannelUsersRequest: ...
-    @property
-    def voice_user_list(self) -> api.api_pb2.VoiceChannelUserList: ...
-    @property
-    def channel_user_list(self) -> api.api_pb2.ChannelUserList: ...
-    @property
-    def list_channel_attachment_req(self) -> api.api_pb2.ListChannelAttachmentRequest: ...
-    @property
-    def channel_attachment_list(self) -> api.api_pb2.ChannelAttachmentList: ...
-    @property
-    def hashtag_dm_req(self) -> api.api_pb2.HashtagDmListRequest: ...
-    @property
-    def hashtag_dm_list(self) -> api.api_pb2.HashtagDmList: ...
-    @property
-    def channel_setting_req(self) -> api.api_pb2.ChannelSettingListRequest: ...
-    @property
-    def channel_setting_list(self) -> api.api_pb2.ChannelSettingListResponse: ...
-    @property
-    def favorite_channel_req(self) -> api.api_pb2.ListFavoriteChannelRequest: ...
-    @property
-    def favorite_channel_list(self) -> api.api_pb2.ListFavoriteChannelResponse: ...
-    @property
-    def search_thread_req(self) -> api.api_pb2.SearchThreadRequest: ...
-    @property
-    def notification_channel(self) -> api.api_pb2.NotificationChannel: ...
-    @property
-    def notificaion_user_channel(self) -> api.api_pb2.NotificationUserChannel: ...
-    @property
-    def notification_category(self) -> api.api_pb2.DefaultNotificationCategory: ...
-    @property
-    def notification_clan(self) -> api.api_pb2.NotificationClan: ...
-    @property
-    def notification_setting(self) -> api.api_pb2.NotificationSetting: ...
-    @property
-    def notification_message(self) -> api.api_pb2.NotifiReactMessage: ...
-    @property
-    def noti_channel_cat_setting_list(self) -> api.api_pb2.NotificationChannelCategorySettingList: ...
-    @property
-    def list_notification_req(self) -> api.api_pb2.ListNotificationsRequest: ...
-    @property
-    def notification_list(self) -> api.api_pb2.NotificationList: ...
-    @property
-    def sticker_list(self) -> api.api_pb2.StickerListedResponse: ...
-    @property
-    def emoji_recent_list(self) -> api.api_pb2.EmojiRecentList: ...
-    @property
-    def clan_webhook_req(self) -> api.api_pb2.ListClanWebhookRequest: ...
-    @property
-    def clan_webhook_list(self) -> api.api_pb2.ListClanWebhookResponse: ...
-    @property
-    def webhook_list_req(self) -> api.api_pb2.WebhookListRequest: ...
-    @property
-    def webhook_list(self) -> api.api_pb2.WebhookListResponse: ...
-    @property
-    def permission_list_req(self) -> api.api_pb2.ListPermissionsRequest: ...
-    @property
-    def permission_list(self) -> api.api_pb2.PermissionList: ...
-    @property
-    def role_user_req(self) -> api.api_pb2.ListRoleUsersRequest: ...
-    @property
-    def role_user_list(self) -> api.api_pb2.RoleUserList: ...
-    @property
-    def permission_user_req(self) -> api.api_pb2.ListPermissionOfUsersRequest: ...
-    @property
-    def role_list(self) -> api.api_pb2.RoleList: ...
-    @property
-    def role_list_event_req(self) -> api.api_pb2.RoleListEventRequest: ...
-    @property
-    def role_event_list(self) -> api.api_pb2.RoleListEventResponse: ...
-    @property
-    def user_permission_req(self) -> api.api_pb2.UserPermissionInChannelListRequest: ...
-    @property
-    def user_permission_list(self) -> api.api_pb2.UserPermissionInChannelListResponse: ...
-    @property
-    def permission_role_req(self) -> api.api_pb2.PermissionRoleChannelListEventRequest: ...
-    @property
-    def permission_role_list(self) -> api.api_pb2.PermissionRoleChannelListEventResponse: ...
-    @property
-    def emoji_list(self) -> api.api_pb2.EmojiListedResponse: ...
-    @property
-    def list_friend_req(self) -> api.api_pb2.ListFriendsRequest: ...
-    @property
-    def friend_list(self) -> api.api_pb2.FriendList: ...
-    @property
-    def list_apps_req(self) -> api.api_pb2.ListChannelAppsRequest: ...
-    @property
-    def channel_apps_list(self) -> api.api_pb2.ListChannelAppsResponse: ...
-    @property
-    def user_activity_list(self) -> api.api_pb2.ListUserActivity: ...
-    @property
-    def list_clan_user_req(self) -> api.api_pb2.ListClanUsersRequest: ...
-    @property
-    def clan_user_list(self) -> api.api_pb2.ClanUserList: ...
-    @property
-    def list_event_req(self) -> api.api_pb2.ListEventsRequest: ...
-    @property
-    def event_list(self) -> api.api_pb2.EventList: ...
-    @property
-    def list_category_req(self) -> api.api_pb2.CategoryDesc: ...
-    @property
-    def category_list(self) -> api.api_pb2.CategoryDescList: ...
-    @property
-    def stream_user_list(self) -> api.api_pb2.StreamingChannelUserList: ...
-    @property
-    def list_unread_msg_indicator_req(self) -> api.api_pb2.ListClanUnreadMsgIndicatorRequest: ...
-    @property
-    def unread_msg_indicator(self) -> api.api_pb2.ListClanUnreadMsgIndicatorResponse: ...
+    API_NAME_FIELD_NUMBER: _builtins.int
+    LIST_CLAN_REQ_FIELD_NUMBER: _builtins.int
+    CLAN_DESC_LIST_FIELD_NUMBER: _builtins.int
+    LIST_THREAD_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_DESC_LIST_FIELD_NUMBER: _builtins.int
+    LIST_CHANNEL_USERS_UC_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_USERS_UC_LIST_FIELD_NUMBER: _builtins.int
+    LIST_CHANNEL_DETAIL_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_DESC_FIELD_NUMBER: _builtins.int
+    LIST_CHANNEL_REQ_FIELD_NUMBER: _builtins.int
+    LIST_CHANNEL_MESSAGE_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_MESSAGE_LIST_FIELD_NUMBER: _builtins.int
+    LIST_CHANNEL_USERS_REQ_FIELD_NUMBER: _builtins.int
+    VOICE_USER_LIST_FIELD_NUMBER: _builtins.int
+    CHANNEL_USER_LIST_FIELD_NUMBER: _builtins.int
+    LIST_CHANNEL_ATTACHMENT_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_ATTACHMENT_LIST_FIELD_NUMBER: _builtins.int
+    CHANNEL_SETTING_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_SETTING_LIST_FIELD_NUMBER: _builtins.int
+    FAVORITE_CHANNEL_REQ_FIELD_NUMBER: _builtins.int
+    FAVORITE_CHANNEL_LIST_FIELD_NUMBER: _builtins.int
+    SEARCH_THREAD_REQ_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_CHANNEL_FIELD_NUMBER: _builtins.int
+    NOTIFICAION_USER_CHANNEL_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_CATEGORY_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_CLAN_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_SETTING_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_MESSAGE_FIELD_NUMBER: _builtins.int
+    NOTI_CHANNEL_CAT_SETTING_LIST_FIELD_NUMBER: _builtins.int
+    LIST_NOTIFICATION_REQ_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_LIST_FIELD_NUMBER: _builtins.int
+    STICKER_LIST_FIELD_NUMBER: _builtins.int
+    EMOJI_RECENT_LIST_FIELD_NUMBER: _builtins.int
+    CLAN_WEBHOOK_REQ_FIELD_NUMBER: _builtins.int
+    CLAN_WEBHOOK_LIST_FIELD_NUMBER: _builtins.int
+    WEBHOOK_LIST_REQ_FIELD_NUMBER: _builtins.int
+    WEBHOOK_LIST_FIELD_NUMBER: _builtins.int
+    PERMISSION_LIST_REQ_FIELD_NUMBER: _builtins.int
+    PERMISSION_LIST_FIELD_NUMBER: _builtins.int
+    ROLE_USER_REQ_FIELD_NUMBER: _builtins.int
+    ROLE_USER_LIST_FIELD_NUMBER: _builtins.int
+    PERMISSION_USER_REQ_FIELD_NUMBER: _builtins.int
+    ROLE_LIST_FIELD_NUMBER: _builtins.int
+    ROLE_LIST_EVENT_REQ_FIELD_NUMBER: _builtins.int
+    ROLE_EVENT_LIST_FIELD_NUMBER: _builtins.int
+    USER_PERMISSION_REQ_FIELD_NUMBER: _builtins.int
+    USER_PERMISSION_LIST_FIELD_NUMBER: _builtins.int
+    PERMISSION_ROLE_REQ_FIELD_NUMBER: _builtins.int
+    PERMISSION_ROLE_LIST_FIELD_NUMBER: _builtins.int
+    EMOJI_LIST_FIELD_NUMBER: _builtins.int
+    LIST_FRIEND_REQ_FIELD_NUMBER: _builtins.int
+    FRIEND_LIST_FIELD_NUMBER: _builtins.int
+    LIST_APPS_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_APPS_LIST_FIELD_NUMBER: _builtins.int
+    USER_ACTIVITY_LIST_FIELD_NUMBER: _builtins.int
+    LIST_CLAN_USER_REQ_FIELD_NUMBER: _builtins.int
+    CLAN_USER_LIST_FIELD_NUMBER: _builtins.int
+    LIST_EVENT_REQ_FIELD_NUMBER: _builtins.int
+    EVENT_LIST_FIELD_NUMBER: _builtins.int
+    LIST_CATEGORY_REQ_FIELD_NUMBER: _builtins.int
+    CATEGORY_LIST_FIELD_NUMBER: _builtins.int
+    STREAM_USER_LIST_FIELD_NUMBER: _builtins.int
+    LIST_UNREAD_MSG_INDICATOR_REQ_FIELD_NUMBER: _builtins.int
+    UNREAD_MSG_INDICATOR_FIELD_NUMBER: _builtins.int
+    LIST_CLAN_BADGE_COUNT_REQ_FIELD_NUMBER: _builtins.int
+    CLAN_BADGE_COUNT_FIELD_NUMBER: _builtins.int
+    api_name: _builtins.str
+    @_builtins.property
+    def list_clan_req(self) -> _api_pb2.ListClanDescRequest: ...
+    @_builtins.property
+    def clan_desc_list(self) -> _api_pb2.ClanDescList: ...
+    @_builtins.property
+    def list_thread_req(self) -> _api_pb2.ListThreadRequest: ...
+    @_builtins.property
+    def channel_desc_list(self) -> _api_pb2.ChannelDescList: ...
+    @_builtins.property
+    def list_channel_users_uc_req(self) -> _api_pb2.AllUsersAddChannelRequest: ...
+    @_builtins.property
+    def channel_users_uc_list(self) -> _api_pb2.AllUsersAddChannelResponse: ...
+    @_builtins.property
+    def list_channel_detail_req(self) -> _api_pb2.ListChannelDetailRequest: ...
+    @_builtins.property
+    def channel_desc(self) -> _api_pb2.ChannelDescription: ...
+    @_builtins.property
+    def list_channel_req(self) -> _api_pb2.ListChannelDescsRequest: ...
+    @_builtins.property
+    def list_channel_message_req(self) -> _api_pb2.ListChannelMessagesRequest: ...
+    @_builtins.property
+    def channel_message_list(self) -> _api_pb2.ChannelMessageList: ...
+    @_builtins.property
+    def list_channel_users_req(self) -> _api_pb2.ListChannelUsersRequest: ...
+    @_builtins.property
+    def voice_user_list(self) -> _api_pb2.VoiceChannelUserList: ...
+    @_builtins.property
+    def channel_user_list(self) -> _api_pb2.ChannelUserList: ...
+    @_builtins.property
+    def list_channel_attachment_req(self) -> _api_pb2.ListChannelAttachmentRequest: ...
+    @_builtins.property
+    def channel_attachment_list(self) -> _api_pb2.ChannelAttachmentList: ...
+    @_builtins.property
+    def channel_setting_req(self) -> _api_pb2.ChannelSettingListRequest:
+        """api.HashtagDmListRequest hashtag_dm_req = 18;
+        api.HashtagDmList hashtag_dm_list = 19;
+        """
+
+    @_builtins.property
+    def channel_setting_list(self) -> _api_pb2.ChannelSettingListResponse: ...
+    @_builtins.property
+    def favorite_channel_req(self) -> _api_pb2.ListFavoriteChannelRequest: ...
+    @_builtins.property
+    def favorite_channel_list(self) -> _api_pb2.ListFavoriteChannelResponse: ...
+    @_builtins.property
+    def search_thread_req(self) -> _api_pb2.SearchThreadRequest: ...
+    @_builtins.property
+    def notification_channel(self) -> _api_pb2.NotificationChannel: ...
+    @_builtins.property
+    def notificaion_user_channel(self) -> _api_pb2.NotificationUserChannel: ...
+    @_builtins.property
+    def notification_category(self) -> _api_pb2.DefaultNotificationCategory: ...
+    @_builtins.property
+    def notification_clan(self) -> _api_pb2.NotificationClan: ...
+    @_builtins.property
+    def notification_setting(self) -> _api_pb2.NotificationSetting: ...
+    @_builtins.property
+    def notification_message(self) -> _api_pb2.NotifiReactMessage: ...
+    @_builtins.property
+    def noti_channel_cat_setting_list(self) -> _api_pb2.NotificationChannelCategorySettingList: ...
+    @_builtins.property
+    def list_notification_req(self) -> _api_pb2.ListNotificationsRequest: ...
+    @_builtins.property
+    def notification_list(self) -> _api_pb2.NotificationList: ...
+    @_builtins.property
+    def sticker_list(self) -> _api_pb2.StickerListedResponse: ...
+    @_builtins.property
+    def emoji_recent_list(self) -> _api_pb2.EmojiRecentList: ...
+    @_builtins.property
+    def clan_webhook_req(self) -> _api_pb2.ListClanWebhookRequest: ...
+    @_builtins.property
+    def clan_webhook_list(self) -> _api_pb2.ListClanWebhookResponse: ...
+    @_builtins.property
+    def webhook_list_req(self) -> _api_pb2.WebhookListRequest: ...
+    @_builtins.property
+    def webhook_list(self) -> _api_pb2.WebhookListResponse: ...
+    @_builtins.property
+    def permission_list_req(self) -> _api_pb2.ListPermissionsRequest: ...
+    @_builtins.property
+    def permission_list(self) -> _api_pb2.PermissionList: ...
+    @_builtins.property
+    def role_user_req(self) -> _api_pb2.ListRoleUsersRequest: ...
+    @_builtins.property
+    def role_user_list(self) -> _api_pb2.RoleUserList: ...
+    @_builtins.property
+    def permission_user_req(self) -> _api_pb2.ListPermissionOfUsersRequest: ...
+    @_builtins.property
+    def role_list(self) -> _api_pb2.RoleList: ...
+    @_builtins.property
+    def role_list_event_req(self) -> _api_pb2.RoleListEventRequest: ...
+    @_builtins.property
+    def role_event_list(self) -> _api_pb2.RoleListEventResponse: ...
+    @_builtins.property
+    def user_permission_req(self) -> _api_pb2.UserPermissionInChannelListRequest: ...
+    @_builtins.property
+    def user_permission_list(self) -> _api_pb2.UserPermissionInChannelListResponse: ...
+    @_builtins.property
+    def permission_role_req(self) -> _api_pb2.PermissionRoleChannelListEventRequest: ...
+    @_builtins.property
+    def permission_role_list(self) -> _api_pb2.PermissionRoleChannelListEventResponse: ...
+    @_builtins.property
+    def emoji_list(self) -> _api_pb2.EmojiListedResponse: ...
+    @_builtins.property
+    def list_friend_req(self) -> _api_pb2.ListFriendsRequest: ...
+    @_builtins.property
+    def friend_list(self) -> _api_pb2.FriendList: ...
+    @_builtins.property
+    def list_apps_req(self) -> _api_pb2.ListChannelAppsRequest: ...
+    @_builtins.property
+    def channel_apps_list(self) -> _api_pb2.ListChannelAppsResponse: ...
+    @_builtins.property
+    def user_activity_list(self) -> _api_pb2.ListUserActivity: ...
+    @_builtins.property
+    def list_clan_user_req(self) -> _api_pb2.ListClanUsersRequest: ...
+    @_builtins.property
+    def clan_user_list(self) -> _api_pb2.ClanUserList: ...
+    @_builtins.property
+    def list_event_req(self) -> _api_pb2.ListEventsRequest: ...
+    @_builtins.property
+    def event_list(self) -> _api_pb2.EventList: ...
+    @_builtins.property
+    def list_category_req(self) -> _api_pb2.CategoryDesc: ...
+    @_builtins.property
+    def category_list(self) -> _api_pb2.CategoryDescList: ...
+    @_builtins.property
+    def stream_user_list(self) -> _api_pb2.StreamingChannelUserList: ...
+    @_builtins.property
+    def list_unread_msg_indicator_req(self) -> _api_pb2.ListClanUnreadMsgIndicatorRequest: ...
+    @_builtins.property
+    def unread_msg_indicator(self) -> _api_pb2.ListClanUnreadMsgIndicatorResponse: ...
+    @_builtins.property
+    def list_clan_badge_count_req(self) -> _api_pb2.ListClanBadgeCountRequest: ...
+    @_builtins.property
+    def clan_badge_count(self) -> _api_pb2.ListClanBadgeCountResponse: ...
     def __init__(
         self,
         *,
-        api_name: builtins.str = ...,
-        list_clan_req: api.api_pb2.ListClanDescRequest | None = ...,
-        clan_desc_list: api.api_pb2.ClanDescList | None = ...,
-        list_thread_req: api.api_pb2.ListThreadRequest | None = ...,
-        channel_desc_list: api.api_pb2.ChannelDescList | None = ...,
-        list_channel_users_uc_req: api.api_pb2.AllUsersAddChannelRequest | None = ...,
-        channel_users_uc_list: api.api_pb2.AllUsersAddChannelResponse | None = ...,
-        list_channel_detail_req: api.api_pb2.ListChannelDetailRequest | None = ...,
-        channel_desc: api.api_pb2.ChannelDescription | None = ...,
-        list_channel_req: api.api_pb2.ListChannelDescsRequest | None = ...,
-        list_channel_message_req: api.api_pb2.ListChannelMessagesRequest | None = ...,
-        channel_message_list: api.api_pb2.ChannelMessageList | None = ...,
-        list_channel_users_req: api.api_pb2.ListChannelUsersRequest | None = ...,
-        voice_user_list: api.api_pb2.VoiceChannelUserList | None = ...,
-        channel_user_list: api.api_pb2.ChannelUserList | None = ...,
-        list_channel_attachment_req: api.api_pb2.ListChannelAttachmentRequest | None = ...,
-        channel_attachment_list: api.api_pb2.ChannelAttachmentList | None = ...,
-        hashtag_dm_req: api.api_pb2.HashtagDmListRequest | None = ...,
-        hashtag_dm_list: api.api_pb2.HashtagDmList | None = ...,
-        channel_setting_req: api.api_pb2.ChannelSettingListRequest | None = ...,
-        channel_setting_list: api.api_pb2.ChannelSettingListResponse | None = ...,
-        favorite_channel_req: api.api_pb2.ListFavoriteChannelRequest | None = ...,
-        favorite_channel_list: api.api_pb2.ListFavoriteChannelResponse | None = ...,
-        search_thread_req: api.api_pb2.SearchThreadRequest | None = ...,
-        notification_channel: api.api_pb2.NotificationChannel | None = ...,
-        notificaion_user_channel: api.api_pb2.NotificationUserChannel | None = ...,
-        notification_category: api.api_pb2.DefaultNotificationCategory | None = ...,
-        notification_clan: api.api_pb2.NotificationClan | None = ...,
-        notification_setting: api.api_pb2.NotificationSetting | None = ...,
-        notification_message: api.api_pb2.NotifiReactMessage | None = ...,
-        noti_channel_cat_setting_list: api.api_pb2.NotificationChannelCategorySettingList | None = ...,
-        list_notification_req: api.api_pb2.ListNotificationsRequest | None = ...,
-        notification_list: api.api_pb2.NotificationList | None = ...,
-        sticker_list: api.api_pb2.StickerListedResponse | None = ...,
-        emoji_recent_list: api.api_pb2.EmojiRecentList | None = ...,
-        clan_webhook_req: api.api_pb2.ListClanWebhookRequest | None = ...,
-        clan_webhook_list: api.api_pb2.ListClanWebhookResponse | None = ...,
-        webhook_list_req: api.api_pb2.WebhookListRequest | None = ...,
-        webhook_list: api.api_pb2.WebhookListResponse | None = ...,
-        permission_list_req: api.api_pb2.ListPermissionsRequest | None = ...,
-        permission_list: api.api_pb2.PermissionList | None = ...,
-        role_user_req: api.api_pb2.ListRoleUsersRequest | None = ...,
-        role_user_list: api.api_pb2.RoleUserList | None = ...,
-        permission_user_req: api.api_pb2.ListPermissionOfUsersRequest | None = ...,
-        role_list: api.api_pb2.RoleList | None = ...,
-        role_list_event_req: api.api_pb2.RoleListEventRequest | None = ...,
-        role_event_list: api.api_pb2.RoleListEventResponse | None = ...,
-        user_permission_req: api.api_pb2.UserPermissionInChannelListRequest | None = ...,
-        user_permission_list: api.api_pb2.UserPermissionInChannelListResponse | None = ...,
-        permission_role_req: api.api_pb2.PermissionRoleChannelListEventRequest | None = ...,
-        permission_role_list: api.api_pb2.PermissionRoleChannelListEventResponse | None = ...,
-        emoji_list: api.api_pb2.EmojiListedResponse | None = ...,
-        list_friend_req: api.api_pb2.ListFriendsRequest | None = ...,
-        friend_list: api.api_pb2.FriendList | None = ...,
-        list_apps_req: api.api_pb2.ListChannelAppsRequest | None = ...,
-        channel_apps_list: api.api_pb2.ListChannelAppsResponse | None = ...,
-        user_activity_list: api.api_pb2.ListUserActivity | None = ...,
-        list_clan_user_req: api.api_pb2.ListClanUsersRequest | None = ...,
-        clan_user_list: api.api_pb2.ClanUserList | None = ...,
-        list_event_req: api.api_pb2.ListEventsRequest | None = ...,
-        event_list: api.api_pb2.EventList | None = ...,
-        list_category_req: api.api_pb2.CategoryDesc | None = ...,
-        category_list: api.api_pb2.CategoryDescList | None = ...,
-        stream_user_list: api.api_pb2.StreamingChannelUserList | None = ...,
-        list_unread_msg_indicator_req: api.api_pb2.ListClanUnreadMsgIndicatorRequest | None = ...,
-        unread_msg_indicator: api.api_pb2.ListClanUnreadMsgIndicatorResponse | None = ...,
+        api_name: _builtins.str = ...,
+        list_clan_req: _api_pb2.ListClanDescRequest | None = ...,
+        clan_desc_list: _api_pb2.ClanDescList | None = ...,
+        list_thread_req: _api_pb2.ListThreadRequest | None = ...,
+        channel_desc_list: _api_pb2.ChannelDescList | None = ...,
+        list_channel_users_uc_req: _api_pb2.AllUsersAddChannelRequest | None = ...,
+        channel_users_uc_list: _api_pb2.AllUsersAddChannelResponse | None = ...,
+        list_channel_detail_req: _api_pb2.ListChannelDetailRequest | None = ...,
+        channel_desc: _api_pb2.ChannelDescription | None = ...,
+        list_channel_req: _api_pb2.ListChannelDescsRequest | None = ...,
+        list_channel_message_req: _api_pb2.ListChannelMessagesRequest | None = ...,
+        channel_message_list: _api_pb2.ChannelMessageList | None = ...,
+        list_channel_users_req: _api_pb2.ListChannelUsersRequest | None = ...,
+        voice_user_list: _api_pb2.VoiceChannelUserList | None = ...,
+        channel_user_list: _api_pb2.ChannelUserList | None = ...,
+        list_channel_attachment_req: _api_pb2.ListChannelAttachmentRequest | None = ...,
+        channel_attachment_list: _api_pb2.ChannelAttachmentList | None = ...,
+        channel_setting_req: _api_pb2.ChannelSettingListRequest | None = ...,
+        channel_setting_list: _api_pb2.ChannelSettingListResponse | None = ...,
+        favorite_channel_req: _api_pb2.ListFavoriteChannelRequest | None = ...,
+        favorite_channel_list: _api_pb2.ListFavoriteChannelResponse | None = ...,
+        search_thread_req: _api_pb2.SearchThreadRequest | None = ...,
+        notification_channel: _api_pb2.NotificationChannel | None = ...,
+        notificaion_user_channel: _api_pb2.NotificationUserChannel | None = ...,
+        notification_category: _api_pb2.DefaultNotificationCategory | None = ...,
+        notification_clan: _api_pb2.NotificationClan | None = ...,
+        notification_setting: _api_pb2.NotificationSetting | None = ...,
+        notification_message: _api_pb2.NotifiReactMessage | None = ...,
+        noti_channel_cat_setting_list: _api_pb2.NotificationChannelCategorySettingList | None = ...,
+        list_notification_req: _api_pb2.ListNotificationsRequest | None = ...,
+        notification_list: _api_pb2.NotificationList | None = ...,
+        sticker_list: _api_pb2.StickerListedResponse | None = ...,
+        emoji_recent_list: _api_pb2.EmojiRecentList | None = ...,
+        clan_webhook_req: _api_pb2.ListClanWebhookRequest | None = ...,
+        clan_webhook_list: _api_pb2.ListClanWebhookResponse | None = ...,
+        webhook_list_req: _api_pb2.WebhookListRequest | None = ...,
+        webhook_list: _api_pb2.WebhookListResponse | None = ...,
+        permission_list_req: _api_pb2.ListPermissionsRequest | None = ...,
+        permission_list: _api_pb2.PermissionList | None = ...,
+        role_user_req: _api_pb2.ListRoleUsersRequest | None = ...,
+        role_user_list: _api_pb2.RoleUserList | None = ...,
+        permission_user_req: _api_pb2.ListPermissionOfUsersRequest | None = ...,
+        role_list: _api_pb2.RoleList | None = ...,
+        role_list_event_req: _api_pb2.RoleListEventRequest | None = ...,
+        role_event_list: _api_pb2.RoleListEventResponse | None = ...,
+        user_permission_req: _api_pb2.UserPermissionInChannelListRequest | None = ...,
+        user_permission_list: _api_pb2.UserPermissionInChannelListResponse | None = ...,
+        permission_role_req: _api_pb2.PermissionRoleChannelListEventRequest | None = ...,
+        permission_role_list: _api_pb2.PermissionRoleChannelListEventResponse | None = ...,
+        emoji_list: _api_pb2.EmojiListedResponse | None = ...,
+        list_friend_req: _api_pb2.ListFriendsRequest | None = ...,
+        friend_list: _api_pb2.FriendList | None = ...,
+        list_apps_req: _api_pb2.ListChannelAppsRequest | None = ...,
+        channel_apps_list: _api_pb2.ListChannelAppsResponse | None = ...,
+        user_activity_list: _api_pb2.ListUserActivity | None = ...,
+        list_clan_user_req: _api_pb2.ListClanUsersRequest | None = ...,
+        clan_user_list: _api_pb2.ClanUserList | None = ...,
+        list_event_req: _api_pb2.ListEventsRequest | None = ...,
+        event_list: _api_pb2.EventList | None = ...,
+        list_category_req: _api_pb2.CategoryDesc | None = ...,
+        category_list: _api_pb2.CategoryDescList | None = ...,
+        stream_user_list: _api_pb2.StreamingChannelUserList | None = ...,
+        list_unread_msg_indicator_req: _api_pb2.ListClanUnreadMsgIndicatorRequest | None = ...,
+        unread_msg_indicator: _api_pb2.ListClanUnreadMsgIndicatorResponse | None = ...,
+        list_clan_badge_count_req: _api_pb2.ListClanBadgeCountRequest | None = ...,
+        clan_badge_count: _api_pb2.ListClanBadgeCountResponse | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "hashtag_dm_list", b"hashtag_dm_list", "hashtag_dm_req", b"hashtag_dm_req", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["api_name", b"api_name", "category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "hashtag_dm_list", b"hashtag_dm_list", "hashtag_dm_req", b"hashtag_dm_req", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_badge_count", b"clan_badge_count", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_badge_count_req", b"list_clan_badge_count_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_name", b"api_name", "category_list", b"category_list", "channel_apps_list", b"channel_apps_list", "channel_attachment_list", b"channel_attachment_list", "channel_desc", b"channel_desc", "channel_desc_list", b"channel_desc_list", "channel_message_list", b"channel_message_list", "channel_setting_list", b"channel_setting_list", "channel_setting_req", b"channel_setting_req", "channel_user_list", b"channel_user_list", "channel_users_uc_list", b"channel_users_uc_list", "clan_badge_count", b"clan_badge_count", "clan_desc_list", b"clan_desc_list", "clan_user_list", b"clan_user_list", "clan_webhook_list", b"clan_webhook_list", "clan_webhook_req", b"clan_webhook_req", "emoji_list", b"emoji_list", "emoji_recent_list", b"emoji_recent_list", "event_list", b"event_list", "favorite_channel_list", b"favorite_channel_list", "favorite_channel_req", b"favorite_channel_req", "friend_list", b"friend_list", "list_apps_req", b"list_apps_req", "list_category_req", b"list_category_req", "list_channel_attachment_req", b"list_channel_attachment_req", "list_channel_detail_req", b"list_channel_detail_req", "list_channel_message_req", b"list_channel_message_req", "list_channel_req", b"list_channel_req", "list_channel_users_req", b"list_channel_users_req", "list_channel_users_uc_req", b"list_channel_users_uc_req", "list_clan_badge_count_req", b"list_clan_badge_count_req", "list_clan_req", b"list_clan_req", "list_clan_user_req", b"list_clan_user_req", "list_event_req", b"list_event_req", "list_friend_req", b"list_friend_req", "list_notification_req", b"list_notification_req", "list_thread_req", b"list_thread_req", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "noti_channel_cat_setting_list", b"noti_channel_cat_setting_list", "notificaion_user_channel", b"notificaion_user_channel", "notification_category", b"notification_category", "notification_channel", b"notification_channel", "notification_clan", b"notification_clan", "notification_list", b"notification_list", "notification_message", b"notification_message", "notification_setting", b"notification_setting", "permission_list", b"permission_list", "permission_list_req", b"permission_list_req", "permission_role_list", b"permission_role_list", "permission_role_req", b"permission_role_req", "permission_user_req", b"permission_user_req", "role_event_list", b"role_event_list", "role_list", b"role_list", "role_list_event_req", b"role_list_event_req", "role_user_list", b"role_user_list", "role_user_req", b"role_user_req", "search_thread_req", b"search_thread_req", "sticker_list", b"sticker_list", "stream_user_list", b"stream_user_list", "unread_msg_indicator", b"unread_msg_indicator", "user_activity_list", b"user_activity_list", "user_permission_list", b"user_permission_list", "user_permission_req", b"user_permission_req", "voice_user_list", b"voice_user_list", "webhook_list", b"webhook_list", "webhook_list_req", b"webhook_list_req"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListDataSocket: typing_extensions.TypeAlias = ListDataSocket
+Global___ListDataSocket: _TypeAlias = ListDataSocket  # noqa: Y015
 
-@typing.final
-class MeetParticipantEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class MeetParticipantEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USERNAME_FIELD_NUMBER: builtins.int
-    ROOM_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    username: builtins.str
-    room_name: builtins.str
-    channel_id: builtins.str
-    clan_id: builtins.str
-    action: builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    username: _builtins.str
+    room_name: _builtins.str
+    channel_id: _builtins.int
+    clan_id: _builtins.int
+    action: _builtins.int
     def __init__(
         self,
         *,
-        username: builtins.str = ...,
-        room_name: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        action: builtins.int = ...,
+        username: _builtins.str = ...,
+        room_name: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        action: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MeetParticipantEvent: typing_extensions.TypeAlias = MeetParticipantEvent
+Global___MeetParticipantEvent: _TypeAlias = MeetParticipantEvent  # noqa: Y015
 
-@typing.final
-class TransferOwnershipEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class TransferOwnershipEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    PREV_OWNER_FIELD_NUMBER: builtins.int
-    CURR_OWNER_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    prev_owner: builtins.str
-    curr_owner: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    PREV_OWNER_FIELD_NUMBER: _builtins.int
+    CURR_OWNER_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    prev_owner: _builtins.int
+    curr_owner: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        prev_owner: builtins.str = ...,
-        curr_owner: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        prev_owner: _builtins.int = ...,
+        curr_owner: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "curr_owner", b"curr_owner", "prev_owner", b"prev_owner"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "curr_owner", b"curr_owner", "prev_owner", b"prev_owner"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___TransferOwnershipEvent: typing_extensions.TypeAlias = TransferOwnershipEvent
+Global___TransferOwnershipEvent: _TypeAlias = TransferOwnershipEvent  # noqa: Y015
 
-@typing.final
-class ActiveArchivedThread(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ActiveArchivedThread(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    channel_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ActiveArchivedThread: typing_extensions.TypeAlias = ActiveArchivedThread
+Global___ActiveArchivedThread: _TypeAlias = ActiveArchivedThread  # noqa: Y015
 
-@typing.final
-class AllowAnonymousEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AllowAnonymousEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ALLOW_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    allow: builtins.bool
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ALLOW_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    allow: _builtins.bool
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        allow: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        allow: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["allow", b"allow", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["allow", b"allow", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AllowAnonymousEvent: typing_extensions.TypeAlias = AllowAnonymousEvent
+Global___AllowAnonymousEvent: _TypeAlias = AllowAnonymousEvent  # noqa: Y015
 
-@typing.final
-class FcmDataPayload(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class FcmDataPayload(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    COMMAND_TYPE_FIELD_NUMBER: builtins.int
-    RECEIVER_ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    BODY_FIELD_NUMBER: builtins.int
-    USER_ROLE_IDS_FIELD_NUMBER: builtins.int
-    USER_SENT_IDS_FIELD_NUMBER: builtins.int
-    PRIORITY_FIELD_NUMBER: builtins.int
-    MESSAGE_FIELD_NUMBER: builtins.int
-    IS_E2EE_FIELD_NUMBER: builtins.int
-    IS_DM_FIELD_NUMBER: builtins.int
-    MENTION_HERE_FIELD_NUMBER: builtins.int
-    MENTIONS_FIELD_NUMBER: builtins.int
-    REFERENCES_FIELD_NUMBER: builtins.int
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    command_type: builtins.int
-    receiver_id: builtins.str
-    title: builtins.str
-    body: builtins.str
-    priority: builtins.int
-    is_e2ee: builtins.bool
-    is_dm: builtins.bool
-    mention_here: builtins.bool
-    @property
-    def user_role_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def user_sent_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def message(self) -> api.api_pb2.ChannelMessage: ...
-    @property
-    def mentions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageMention]: ...
-    @property
-    def references(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageRef]: ...
-    @property
-    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[api.api_pb2.MessageAttachment]: ...
+    COMMAND_TYPE_FIELD_NUMBER: _builtins.int
+    RECEIVER_ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    BODY_FIELD_NUMBER: _builtins.int
+    USER_ROLE_IDS_FIELD_NUMBER: _builtins.int
+    USER_SENT_IDS_FIELD_NUMBER: _builtins.int
+    PRIORITY_FIELD_NUMBER: _builtins.int
+    MESSAGE_FIELD_NUMBER: _builtins.int
+    IS_E2EE_FIELD_NUMBER: _builtins.int
+    IS_DM_FIELD_NUMBER: _builtins.int
+    MENTION_HERE_FIELD_NUMBER: _builtins.int
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    REFERENCES_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    command_type: _builtins.int
+    receiver_id: _builtins.int
+    title: _builtins.str
+    body: _builtins.bytes
+    priority: _builtins.int
+    is_e2ee: _builtins.bool
+    is_dm: _builtins.bool
+    mention_here: _builtins.bool
+    @_builtins.property
+    def user_role_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def user_sent_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def message(self) -> _api_pb2.ChannelMessage: ...
+    @_builtins.property
+    def mentions(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageMention]: ...
+    @_builtins.property
+    def references(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageRef]: ...
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageAttachment]: ...
     def __init__(
         self,
         *,
-        command_type: builtins.int = ...,
-        receiver_id: builtins.str = ...,
-        title: builtins.str = ...,
-        body: builtins.str = ...,
-        user_role_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        user_sent_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        priority: builtins.int = ...,
-        message: api.api_pb2.ChannelMessage | None = ...,
-        is_e2ee: builtins.bool = ...,
-        is_dm: builtins.bool = ...,
-        mention_here: builtins.bool = ...,
-        mentions: collections.abc.Iterable[api.api_pb2.MessageMention] | None = ...,
-        references: collections.abc.Iterable[api.api_pb2.MessageRef] | None = ...,
-        attachments: collections.abc.Iterable[api.api_pb2.MessageAttachment] | None = ...,
+        command_type: _builtins.int = ...,
+        receiver_id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        body: _builtins.bytes = ...,
+        user_role_ids: _abc.Iterable[_builtins.int] | None = ...,
+        user_sent_ids: _abc.Iterable[_builtins.int] | None = ...,
+        priority: _builtins.int = ...,
+        message: _api_pb2.ChannelMessage | None = ...,
+        is_e2ee: _builtins.bool = ...,
+        is_dm: _builtins.bool = ...,
+        mention_here: _builtins.bool = ...,
+        mentions: _abc.Iterable[_api_pb2.MessageMention] | None = ...,
+        references: _abc.Iterable[_api_pb2.MessageRef] | None = ...,
+        attachments: _abc.Iterable[_api_pb2.MessageAttachment] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["message", b"message"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachments", b"attachments", "body", b"body", "command_type", b"command_type", "is_dm", b"is_dm", "is_e2ee", b"is_e2ee", "mention_here", b"mention_here", "mentions", b"mentions", "message", b"message", "priority", b"priority", "receiver_id", b"receiver_id", "references", b"references", "title", b"title", "user_role_ids", b"user_role_ids", "user_sent_ids", b"user_sent_ids"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["message", b"message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "body", b"body", "command_type", b"command_type", "is_dm", b"is_dm", "is_e2ee", b"is_e2ee", "mention_here", b"mention_here", "mentions", b"mentions", "message", b"message", "priority", b"priority", "receiver_id", b"receiver_id", "references", b"references", "title", b"title", "user_role_ids", b"user_role_ids", "user_sent_ids", b"user_sent_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___FcmDataPayload: typing_extensions.TypeAlias = FcmDataPayload
+Global___FcmDataPayload: _TypeAlias = FcmDataPayload  # noqa: Y015

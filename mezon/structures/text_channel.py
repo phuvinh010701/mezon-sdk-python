@@ -64,24 +64,24 @@ class TextChannel:
             socket_manager: Socket manager for sending messages
             message_db: Database for message caching
         """
-        self.id: Optional[str] = init_channel_data.channel_id
+        self.id: Optional[int] = init_channel_data.channel_id
         self.name: Optional[str] = init_channel_data.channel_label
         self.channel_type: Optional[int] = init_channel_data.type
         self.is_private: bool = bool(init_channel_data.channel_private)
-        self.category_id: str = init_channel_data.category_id or ""
+        self.category_id: int = init_channel_data.category_id or 0
         self.category_name: str = init_channel_data.category_name or ""
-        self.parent_id: str = init_channel_data.parent_id or ""
+        self.parent_id: int = init_channel_data.parent_id or 0
         self.meeting_code: str = init_channel_data.meeting_code or ""
         self.clan = clan
 
-        self.messages: CacheManager[str, Message] = CacheManager(
+        self.messages: CacheManager[int, Message] = CacheManager(
             fetcher=self.message_fetcher, max_size=200
         )
 
         self.socket_manager = socket_manager
         self.message_db = message_db
 
-    async def message_fetcher(self, message_id: str) -> "Message":
+    async def message_fetcher(self, message_id: int) -> "Message":
         message_data = await self.message_db.get_message_by_id(message_id, self.id)
         if not message_data:
             raise ValueError(f"Message {message_id} not found on channel {self.id}!")
@@ -94,7 +94,7 @@ class TextChannel:
         attachments: Optional[list[ApiMessageAttachment]] = None,
         mention_everyone: Optional[bool] = None,
         anonymous_message: Optional[bool] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
         code: Optional[int] = None,
     ) -> ChannelMessageAck:
         """
@@ -129,14 +129,14 @@ class TextChannel:
 
     async def send_ephemeral(
         self,
-        receiver_id: str,
+        receiver_id: int,
         content: Any,
-        reference_message_id: Optional[str] = None,
+        reference_message_id: Optional[int] = None,
         mentions: Optional[list[ApiMessageMention]] = None,
         attachments: Optional[list[ApiMessageAttachment]] = None,
         mention_everyone: Optional[bool] = None,
         anonymous_message: Optional[bool] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
         code: int = TypeMessage.EPHEMERAL,
     ) -> Any:
         """
