@@ -499,35 +499,6 @@ class MezonApi:
         else:
             return ApiRoleListEventResponse.model_validate(response)
 
-    async def list_transaction_detail(
-        self,
-        bearer_token: str,
-        transaction_id: str,
-        options: Optional[dict[str, Any]] = None,
-    ) -> Any:
-        """
-        Get transaction detail by ID.
-
-        Args:
-            bearer_token: Bearer token for authentication
-            transaction_id: Transaction ID to retrieve
-            options: Additional query parameters
-
-        Returns:
-            Any: Transaction detail response
-        """
-        headers = build_headers(bearer_token=bearer_token)
-        query_params = options if options else {}
-
-        response = await self.call_api(
-            method="GET",
-            url_path=f"/v2/transaction/{transaction_id}",
-            query_params=query_params,
-            body=None,
-            headers=headers,
-        )
-        return response
-
     async def add_quick_menu_access(
         self,
         bearer_token: str,
