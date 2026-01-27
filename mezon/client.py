@@ -39,8 +39,6 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
-    ApiAuthenticateLogoutRequest,
-    ApiAuthenticateRefreshRequest,
     ApiSentTokenRequest,
     ChannelMessageRaw,
     UserInitData,
@@ -152,11 +150,11 @@ class MezonClient:
         self.zk_api_url = zk_api_url
         self.login_url = f"{use_ssl and 'https' or 'http'}://{host}:{port}"
         self.timeout_ms = timeout
-        self.clans: CacheManager[str, Clan] = CacheManager(None, max_size=1000)
-        self.channels: CacheManager[str, TextChannel] = CacheManager(
+        self.clans: CacheManager[int, Clan] = CacheManager(None, max_size=1000)
+        self.channels: CacheManager[int, TextChannel] = CacheManager(
             self.get_channel_from_id, max_size=1000
         )
-        self.users: CacheManager[str, User] = CacheManager(
+        self.users: CacheManager[int, User] = CacheManager(
             self.get_user_from_id, max_size=1000
         )
 
@@ -453,7 +451,7 @@ class MezonClient:
 
         self.event_manager.on(event_name, wrapper)
 
-    async def get_channel_from_id(self, channel_id: str) -> TextChannel:
+    async def get_channel_from_id(self, channel_id: int) -> TextChannel:
         """
         Get a channel by ID, creating necessary clan objects if needed.
 
@@ -475,9 +473,7 @@ class MezonClient:
             session.token, channel_id
         )
 
-        clan_id = channel_detail.clan_id
-        if not clan_id:
-            raise ValueError(f"Channel {channel_id} has no clan_id!")
+        clan_id = channel_detail.clan_id or 0
 
         clan = self.clans.get(clan_id)
         if not clan:
@@ -516,14 +512,14 @@ class MezonClient:
         self.channels.set(channel_id, channel)
         return channel
 
-    async def get_user_from_id(self, user_id: str) -> User:
+    async def get_user_from_id(self, user_id: int) -> User:
         dm_channel = await self.channel_manager.create_dm_channel(user_id)
         if not dm_channel or not dm_channel.channel_id:
             raise ValueError(f"User {user_id} not found in this clan {self.client_id}!")
 
         user = User(
             user_init_data=UserInitData(
-                id=user_id,
+                sender_id=user_id,
                 dm_channel_id=dm_channel.channel_id,
             ),
             socket_manager=self.socket_manager,
@@ -549,24 +545,37 @@ class MezonClient:
             return None
 
         payload = {
-            "channel_id": "0",
-            "clan_id": body.get("clan_id", "0"),
-            "menu_type": body.get("menu_type", 1),
-            "action_msg": body.get("action_msg"),
+            "channel_id": int(body.get("channel_id", 0)),
+            "clan_id": int(body.get("clan_id", 0)),
+            "menu_type": int(body.get("menu_type", 1)),
+            "action_msg": body.get("action_msg", ""),
             "background": body.get("background", ""),
-            "menu_name": body.get("menu_name"),
-            "id": menu_id,
-            "bot_id": self.client_id,
+            "menu_name": body.get("menu_name", ""),
+            "id": int(menu_id),
+            "bot_id": int(self.client_id) if self.client_id else 0,
         }
 
         return await self.api_client.add_quick_menu_access(session.token, payload)
 
-    async def delete_quick_menu_access(self, bot_id: str | None = None) -> Any:
+    async def delete_quick_menu_access(
+        self,
+        id: int | None = None,
+        clan_id: int | None = None,
+        bot_id: int | None = None,
+        menu_name: str | None = None,
+        background: str | None = None,
+        action_msg: str | None = None,
+    ) -> Any:
         """
         Delete a quick menu access entry.
 
         Args:
-            bot_id (str | None): The bot ID to delete. Defaults to this client's ID.
+            id: Menu ID to delete.
+            clan_id: Clan ID.
+            bot_id: Bot ID. Defaults to this client's ID.
+            menu_name: Menu name.
+            background: Background image URL.
+            action_msg: Action message.
 
         Returns:
             Any: The API response or None if session is unavailable.
@@ -576,7 +585,41 @@ class MezonClient:
             return None
 
         return await self.api_client.delete_quick_menu_access(
-            session.token, bot_id or self.client_id
+            bearer_token=session.token,
+            id=id,
+            clan_id=clan_id,
+            bot_id=bot_id or int(self.client_id) if self.client_id else None,
+            menu_name=menu_name,
+            background=background,
+            action_msg=action_msg,
+        )
+
+    async def list_quick_menu_access(
+        self,
+        bot_id: int | None = None,
+        channel_id: int | None = None,
+        menu_type: int | None = None,
+    ) -> Any:
+        """
+        List quick menu access items.
+
+        Args:
+            bot_id: Bot ID to filter. Defaults to this client's ID.
+            channel_id: Channel ID to filter.
+            menu_type: Menu type to filter.
+
+        Returns:
+            Any: List of quick menu access items or None if session is unavailable.
+        """
+        session = self.session_manager.get_session()
+        if not session:
+            return None
+
+        return await self.api_client.list_quick_menu_access(
+            bearer_token=session.token,
+            bot_id=bot_id or int(self.client_id) if self.client_id else None,
+            channel_id=channel_id,
+            menu_type=menu_type,
         )
 
     async def get_list_friends(
@@ -603,12 +646,12 @@ class MezonClient:
             session.token, limit, state, cursor
         )
 
-    async def accept_friend(self, user_id: str, username: str) -> Any:
+    async def accept_friend(self, user_id: int, username: str) -> Any:
         """
         Accept a friend request from a user.
 
         Args:
-            user_id (str): The ID of the user to accept.
+            user_id (int): The ID of the user to accept.
             username (str): The username of the user to accept.
 
         Returns:
@@ -723,7 +766,7 @@ class MezonClient:
                 self.users.set(user_id, user)
 
         sender_dm_channel = (
-            all_dm_channels.get(message.sender_id, "") if all_dm_channels else ""
+            all_dm_channels.get(message.sender_id, 0) if all_dm_channels else 0
         )
         user_data = UserInitData.from_protobuf(message, sender_dm_channel)
 
@@ -1281,35 +1324,6 @@ class MezonClient:
 
         logger.info("Session refreshed successfully")
         return new_session
-
-    async def logout(self) -> bool:
-        """
-        Log out the current session and invalidate tokens.
-
-        Returns:
-            bool: True if logout was successful
-        """
-
-        session = self.session_manager.get_session()
-
-        logout_request = ApiAuthenticateLogoutRequest(
-            token=session.token,
-            refresh_token=session.refresh_token or "",
-        )
-
-        self._is_hard_disconnect = True
-
-        try:
-            await self.api_client.mezon_authenticate_logout(
-                bearer_token=session.token,
-                body=logout_request,
-            )
-            await self.close_socket()
-            logger.info("Logged out successfully")
-            return True
-        except Exception as err:
-            logger.error(f"Logout failed: {err}")
-            return False
 
     def _setup_reconnect_handlers(self) -> None:
         """

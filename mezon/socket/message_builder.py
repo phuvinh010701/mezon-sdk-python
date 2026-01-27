@@ -131,7 +131,7 @@ class ChannelMessageBuilder:
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
         code: Optional[int] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
     ) -> None:
         """
         Set optional fields on the channel message.
@@ -158,8 +158,8 @@ class ChannelMessageBuilder:
     @classmethod
     def build(
         cls,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
         content: Any,
@@ -170,7 +170,7 @@ class ChannelMessageBuilder:
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
         code: Optional[int] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
     ) -> realtime_pb2.ChannelMessageSend:
         """
         Build a complete ChannelMessageSend protobuf message.
@@ -228,9 +228,9 @@ class EphemeralMessageBuilder:
 
     @staticmethod
     def build(
-        receiver_id: str,
-        clan_id: str,
-        channel_id: str,
+        receiver_id: int,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
         content: Any,
@@ -241,7 +241,7 @@ class EphemeralMessageBuilder:
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
         code: Optional[int] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
     ) -> realtime_pb2.EphemeralMessageSend:
         """
         Build a complete EphemeralMessageSend protobuf message.
@@ -276,7 +276,7 @@ class ChannelMessageUpdateBuilder:
     def _set_optional_fields(
         message: realtime_pb2.ChannelMessageUpdate,
         hide_editted: Optional[bool] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
         is_update_msg_topic: Optional[bool] = None,
     ) -> None:
         """
@@ -299,16 +299,16 @@ class ChannelMessageUpdateBuilder:
     @classmethod
     def build(
         cls,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
+        message_id: int,
         content: Any,
         mentions: Optional[list[ApiMessageMention]] = None,
         attachments: Optional[list[ApiMessageAttachment]] = None,
         hide_editted: Optional[bool] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
         is_update_msg_topic: Optional[bool] = None,
     ) -> realtime_pb2.ChannelMessageUpdate:
         """
@@ -363,16 +363,16 @@ class MessageReactionBuilder:
 
     @staticmethod
     def build(
-        id: str,
-        clan_id: str,
-        channel_id: str,
+        id: int,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
-        emoji_id: str,
+        message_id: int,
+        emoji_id: int,
         emoji: str,
         count: int,
-        message_sender_id: str,
+        message_sender_id: int,
         action_delete: bool,
     ) -> api_pb2.MessageReaction:
         """
@@ -396,13 +396,13 @@ class MessageReactionBuilder:
         """
 
         return api_pb2.MessageReaction(
-            id=id,
+            id=id or 0,
             clan_id=clan_id,
             channel_id=channel_id,
             mode=mode,
             is_public=is_public,
             message_id=message_id,
-            emoji_id=emoji_id,
+            emoji_id=emoji_id or 0,
             emoji=emoji,
             count=count,
             message_sender_id=message_sender_id,

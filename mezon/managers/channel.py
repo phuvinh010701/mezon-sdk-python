@@ -25,7 +25,7 @@ class ChannelManager:
         self.api_client = api_client
         self.socket_manager = socket_manager
         self.session_manager = session_manager
-        self.all_dm_channels: Optional[dict[str, str]] = None
+        self.all_dm_channels: Optional[dict[int, int]] = None
 
     async def init_all_dm_channels(self, session_token: str) -> None:
         """
@@ -59,7 +59,7 @@ class ChannelManager:
 
         self.all_dm_channels = dm_mapping
 
-    def get_all_dm_channels(self) -> Optional[dict[str, str]]:
+    def get_all_dm_channels(self) -> Optional[dict[int, int]]:
         """
         Get all cached DM channels.
 
@@ -68,7 +68,7 @@ class ChannelManager:
         """
         return self.all_dm_channels
 
-    async def create_dm_channel(self, user_id: str) -> ApiChannelDescription:
+    async def create_dm_channel(self, user_id: int) -> ApiChannelDescription:
         """
         Create a DM channel for a user.
 
@@ -81,9 +81,9 @@ class ChannelManager:
         channel_dm_desc = await self.api_client.create_channel_desc(
             token=self.session_manager.get_session().token,
             request=ApiCreateChannelDescRequest(
-                clan_id="",
-                channel_id="0",
-                category_id="0",
+                clan_id=0,
+                channel_id=0,
+                category_id=0,
                 type=ChannelType.CHANNEL_TYPE_DM,
                 user_ids=[user_id],
                 channel_private=1,

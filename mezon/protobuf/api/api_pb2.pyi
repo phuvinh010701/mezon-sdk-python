@@ -19,31 +19,30 @@ limitations under the License.
 The Mezon server RPC protocol for games and apps.
 """
 
-import builtins
-import collections.abc
-import google.protobuf.descriptor
-import google.protobuf.internal.containers
-import google.protobuf.internal.enum_type_wrapper
-import google.protobuf.message
-import google.protobuf.struct_pb2
-import google.protobuf.timestamp_pb2
-import google.protobuf.wrappers_pb2
+from collections import abc as _abc
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from google.protobuf import struct_pb2 as _struct_pb2
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+import builtins as _builtins
 import sys
-import typing
+import typing as _typing
 
 if sys.version_info >= (3, 10):
-    import typing as typing_extensions
+    from typing import TypeAlias as _TypeAlias
 else:
-    import typing_extensions
+    from typing_extensions import TypeAlias as _TypeAlias
 
-DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
+DESCRIPTOR: _descriptor.FileDescriptor
 
 class _StoreProvider:
-    ValueType = typing.NewType("ValueType", builtins.int)
-    V: typing_extensions.TypeAlias = ValueType
+    ValueType = _typing.NewType("ValueType", _builtins.int)
+    V: _TypeAlias = ValueType  # noqa: Y015
 
-class _StoreProviderEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_StoreProvider.ValueType], builtins.type):
-    DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+class _StoreProviderEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[_StoreProvider.ValueType], _builtins.type):
+    DESCRIPTOR: _descriptor.EnumDescriptor
     APPLE_APP_STORE: _StoreProvider.ValueType  # 0
     """Apple App Store"""
     GOOGLE_PLAY_STORE: _StoreProvider.ValueType  # 1
@@ -64,14 +63,14 @@ HUAWEI_APP_GALLERY: StoreProvider.ValueType  # 2
 """Huawei App Gallery"""
 FACEBOOK_INSTANT_STORE: StoreProvider.ValueType  # 3
 """Facebook Instant Store"""
-Global___StoreProvider: typing_extensions.TypeAlias = StoreProvider
+Global___StoreProvider: _TypeAlias = StoreProvider  # noqa: Y015
 
 class _StoreEnvironment:
-    ValueType = typing.NewType("ValueType", builtins.int)
-    V: typing_extensions.TypeAlias = ValueType
+    ValueType = _typing.NewType("ValueType", _builtins.int)
+    V: _TypeAlias = ValueType  # noqa: Y015
 
-class _StoreEnvironmentEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_StoreEnvironment.ValueType], builtins.type):
-    DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+class _StoreEnvironmentEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[_StoreEnvironment.ValueType], _builtins.type):
+    DESCRIPTOR: _descriptor.EnumDescriptor
     UNKNOWN: _StoreEnvironment.ValueType  # 0
     """Unknown environment."""
     SANDBOX: _StoreEnvironment.ValueType  # 1
@@ -88,14 +87,14 @@ SANDBOX: StoreEnvironment.ValueType  # 1
 """Sandbox/test environment."""
 PRODUCTION: StoreEnvironment.ValueType  # 2
 """Production environment."""
-Global___StoreEnvironment: typing_extensions.TypeAlias = StoreEnvironment
+Global___StoreEnvironment: _TypeAlias = StoreEnvironment  # noqa: Y015
 
 class _Operator:
-    ValueType = typing.NewType("ValueType", builtins.int)
-    V: typing_extensions.TypeAlias = ValueType
+    ValueType = _typing.NewType("ValueType", _builtins.int)
+    V: _TypeAlias = ValueType  # noqa: Y015
 
-class _OperatorEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_Operator.ValueType], builtins.type):
-    DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+class _OperatorEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[_Operator.ValueType], _builtins.type):
+    DESCRIPTOR: _descriptor.EnumDescriptor
     NO_OVERRIDE: _Operator.ValueType  # 0
     """Do not override the leaderboard operator."""
     BEST: _Operator.ValueType  # 1
@@ -120,1018 +119,988 @@ INCREMENT: Operator.ValueType  # 3
 """Override the leaderboard operator with INCREMENT."""
 DECREMENT: Operator.ValueType  # 4
 """Override the leaderboard operator with DECREMENT."""
-Global___Operator: typing_extensions.TypeAlias = Operator
+Global___Operator: _TypeAlias = Operator  # noqa: Y015
 
-@typing.final
-class Account(google.protobuf.message.Message):
+@_typing.final
+class Account(_message.Message):
     """A user with additional account details. Always the current user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_FIELD_NUMBER: builtins.int
-    EMAIL_FIELD_NUMBER: builtins.int
-    QR_CODE_FIELD_NUMBER: builtins.int
-    VERIFY_TIME_FIELD_NUMBER: builtins.int
-    DISABLE_TIME_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    SPLASH_SCREEN_FIELD_NUMBER: builtins.int
-    ENCRYPT_PRIVATE_KEY_FIELD_NUMBER: builtins.int
-    PASSWORD_SETTED_FIELD_NUMBER: builtins.int
-    email: builtins.str
+    USER_FIELD_NUMBER: _builtins.int
+    EMAIL_FIELD_NUMBER: _builtins.int
+    QR_CODE_FIELD_NUMBER: _builtins.int
+    VERIFY_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    DISABLE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    SPLASH_SCREEN_FIELD_NUMBER: _builtins.int
+    ENCRYPT_PRIVATE_KEY_FIELD_NUMBER: _builtins.int
+    PASSWORD_SETTED_FIELD_NUMBER: _builtins.int
+    email: _builtins.str
     """The email address of the user."""
-    qr_code: builtins.str
+    qr_code: _builtins.str
     """The qr code in the user's account."""
-    logo: builtins.str
+    verify_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user's email was verified."""
+    disable_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user's account was disabled/banned."""
+    logo: _builtins.str
     """Logo url"""
-    splash_screen: builtins.str
+    splash_screen: _builtins.str
     """Splash screen url"""
-    encrypt_private_key: builtins.str
+    encrypt_private_key: _builtins.str
     """E2ee encrypt private key"""
-    password_setted: builtins.bool
+    password_setted: _builtins.bool
     """password is setted"""
-    @property
+    @_builtins.property
     def user(self) -> Global___User:
         """The user object."""
-
-    @property
-    def verify_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user's email was verified."""
-
-    @property
-    def disable_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user's account was disabled/banned."""
 
     def __init__(
         self,
         *,
         user: Global___User | None = ...,
-        email: builtins.str = ...,
-        qr_code: builtins.str = ...,
-        verify_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        disable_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        logo: builtins.str = ...,
-        splash_screen: builtins.str = ...,
-        encrypt_private_key: builtins.str = ...,
-        password_setted: builtins.bool = ...,
+        email: _builtins.str = ...,
+        qr_code: _builtins.str = ...,
+        verify_time_seconds: _builtins.int = ...,
+        disable_time_seconds: _builtins.int = ...,
+        logo: _builtins.str = ...,
+        splash_screen: _builtins.str = ...,
+        encrypt_private_key: _builtins.str = ...,
+        password_setted: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["disable_time", b"disable_time", "user", b"user", "verify_time", b"verify_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["disable_time", b"disable_time", "email", b"email", "encrypt_private_key", b"encrypt_private_key", "logo", b"logo", "password_setted", b"password_setted", "qr_code", b"qr_code", "splash_screen", b"splash_screen", "user", b"user", "verify_time", b"verify_time"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["user", b"user"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["disable_time_seconds", b"disable_time_seconds", "email", b"email", "encrypt_private_key", b"encrypt_private_key", "logo", b"logo", "password_setted", b"password_setted", "qr_code", b"qr_code", "splash_screen", b"splash_screen", "user", b"user", "verify_time_seconds", b"verify_time_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Account: typing_extensions.TypeAlias = Account
+Global___Account: _TypeAlias = Account  # noqa: Y015
 
-@typing.final
-class AccountRefresh(google.protobuf.message.Message):
+@_typing.final
+class AccountRefresh(_message.Message):
     """Obtain a new authentication token using a refresh token."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class VarsEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class VarsEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.str
-        value: builtins.str
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
         def __init__(
             self,
             *,
-            key: builtins.str = ...,
-            value: builtins.str = ...,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["key", b"key", "value", b"value"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    TOKEN_FIELD_NUMBER: builtins.int
-    VARS_FIELD_NUMBER: builtins.int
-    token: builtins.str
+    TOKEN_FIELD_NUMBER: _builtins.int
+    VARS_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
     """Refresh token."""
-    @property
-    def vars(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    @_builtins.property
+    def vars(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]:
         """Extra information that will be bundled in the session token."""
 
     def __init__(
         self,
         *,
-        token: builtins.str = ...,
-        vars: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
+        token: _builtins.str = ...,
+        vars: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["token", b"token", "vars", b"vars"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["token", b"token", "vars", b"vars"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AccountRefresh: typing_extensions.TypeAlias = AccountRefresh
+Global___AccountRefresh: _TypeAlias = AccountRefresh  # noqa: Y015
 
-@typing.final
-class AddFriendsRequest(google.protobuf.message.Message):
+@_typing.final
+class AddFriendsRequest(_message.Message):
     """Add one or more friends to the current user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    IDS_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    @property
-    def ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    IDS_FIELD_NUMBER: _builtins.int
+    USERNAMES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The account id of a user."""
 
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def usernames(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """The account username of a user."""
 
     def __init__(
         self,
         *,
-        ids: collections.abc.Iterable[builtins.str] | None = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
+        ids: _abc.Iterable[_builtins.int] | None = ...,
+        usernames: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["ids", b"ids", "usernames", b"usernames"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["ids", b"ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddFriendsRequest: typing_extensions.TypeAlias = AddFriendsRequest
+Global___AddFriendsRequest: _TypeAlias = AddFriendsRequest  # noqa: Y015
 
-@typing.final
-class AddFriendsResponse(google.protobuf.message.Message):
+@_typing.final
+class AddFriendsResponse(_message.Message):
     """Add one or more friends to the current user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    IDS_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    @property
-    def ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    IDS_FIELD_NUMBER: _builtins.int
+    USERNAMES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The account id of a user."""
 
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def usernames(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """The account username of a user."""
 
     def __init__(
         self,
         *,
-        ids: collections.abc.Iterable[builtins.str] | None = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
+        ids: _abc.Iterable[_builtins.int] | None = ...,
+        usernames: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["ids", b"ids", "usernames", b"usernames"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["ids", b"ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddFriendsResponse: typing_extensions.TypeAlias = AddFriendsResponse
+Global___AddFriendsResponse: _TypeAlias = AddFriendsResponse  # noqa: Y015
 
-@typing.final
-class AddGroupUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class AddGroupUsersRequest(_message.Message):
     """Add users to a group."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GROUP_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    group_id: builtins.str
+    GROUP_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    group_id: _builtins.int
     """The group to add users to."""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to add."""
 
     def __init__(
         self,
         *,
-        group_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        group_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddGroupUsersRequest: typing_extensions.TypeAlias = AddGroupUsersRequest
+Global___AddGroupUsersRequest: _TypeAlias = AddGroupUsersRequest  # noqa: Y015
 
-@typing.final
-class SessionRefreshRequest(google.protobuf.message.Message):
+@_typing.final
+class SessionRefreshRequest(_message.Message):
     """Authenticate against the server with a refresh token."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class VarsEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class VarsEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.str
-        value: builtins.str
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
         def __init__(
             self,
             *,
-            key: builtins.str = ...,
-            value: builtins.str = ...,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["key", b"key", "value", b"value"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    TOKEN_FIELD_NUMBER: builtins.int
-    VARS_FIELD_NUMBER: builtins.int
-    IS_REMEMBER_FIELD_NUMBER: builtins.int
-    token: builtins.str
+    TOKEN_FIELD_NUMBER: _builtins.int
+    VARS_FIELD_NUMBER: _builtins.int
+    IS_REMEMBER_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
     """Refresh token."""
-    @property
-    def vars(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    is_remember: _builtins.bool
+    """Whether to enable "Remember Me" for extended session duration."""
+    @_builtins.property
+    def vars(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]:
         """Extra information that will be bundled in the session token."""
-
-    @property
-    def is_remember(self) -> google.protobuf.wrappers_pb2.BoolValue:
-        """Whether to enable "Remember Me" for extended session duration."""
 
     def __init__(
         self,
         *,
-        token: builtins.str = ...,
-        vars: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
-        is_remember: google.protobuf.wrappers_pb2.BoolValue | None = ...,
+        token: _builtins.str = ...,
+        vars: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
+        is_remember: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["is_remember", b"is_remember"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["is_remember", b"is_remember", "token", b"token", "vars", b"vars"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["is_remember", b"is_remember", "token", b"token", "vars", b"vars"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SessionRefreshRequest: typing_extensions.TypeAlias = SessionRefreshRequest
+Global___SessionRefreshRequest: _TypeAlias = SessionRefreshRequest  # noqa: Y015
 
-@typing.final
-class SessionLogoutRequest(google.protobuf.message.Message):
+@_typing.final
+class SessionLogoutRequest(_message.Message):
     """Log out a session, invalidate a refresh token, or log out all sessions/refresh tokens for a user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TOKEN_FIELD_NUMBER: builtins.int
-    REFRESH_TOKEN_FIELD_NUMBER: builtins.int
-    DEVICE_ID_FIELD_NUMBER: builtins.int
-    FCM_TOKEN_FIELD_NUMBER: builtins.int
-    PLATFORM_FIELD_NUMBER: builtins.int
-    token: builtins.str
+    TOKEN_FIELD_NUMBER: _builtins.int
+    REFRESH_TOKEN_FIELD_NUMBER: _builtins.int
+    DEVICE_ID_FIELD_NUMBER: _builtins.int
+    FCM_TOKEN_FIELD_NUMBER: _builtins.int
+    PLATFORM_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
     """Session token to log out."""
-    refresh_token: builtins.str
+    refresh_token: _builtins.str
     """Refresh token to invalidate."""
-    device_id: builtins.str
+    device_id: _builtins.str
     """Device Id"""
-    fcm_token: builtins.str
+    fcm_token: _builtins.str
     """FCM token from firebase"""
-    platform: builtins.str
+    platform: _builtins.str
     """platform"""
     def __init__(
         self,
         *,
-        token: builtins.str = ...,
-        refresh_token: builtins.str = ...,
-        device_id: builtins.str = ...,
-        fcm_token: builtins.str = ...,
-        platform: builtins.str = ...,
+        token: _builtins.str = ...,
+        refresh_token: _builtins.str = ...,
+        device_id: _builtins.str = ...,
+        fcm_token: _builtins.str = ...,
+        platform: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["device_id", b"device_id", "fcm_token", b"fcm_token", "platform", b"platform", "refresh_token", b"refresh_token", "token", b"token"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["device_id", b"device_id", "fcm_token", b"fcm_token", "platform", b"platform", "refresh_token", b"refresh_token", "token", b"token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SessionLogoutRequest: typing_extensions.TypeAlias = SessionLogoutRequest
+Global___SessionLogoutRequest: _TypeAlias = SessionLogoutRequest  # noqa: Y015
 
-@typing.final
-class IsBannedResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class IsBannedResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    IS_BANNED_FIELD_NUMBER: builtins.int
-    EXPIRED_BAN_TIME_FIELD_NUMBER: builtins.int
-    is_banned: builtins.bool
-    expired_ban_time: builtins.int
+    IS_BANNED_FIELD_NUMBER: _builtins.int
+    EXPIRED_BAN_TIME_FIELD_NUMBER: _builtins.int
+    is_banned: _builtins.bool
+    expired_ban_time: _builtins.int
     def __init__(
         self,
         *,
-        is_banned: builtins.bool = ...,
-        expired_ban_time: builtins.int = ...,
+        is_banned: _builtins.bool = ...,
+        expired_ban_time: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["expired_ban_time", b"expired_ban_time", "is_banned", b"is_banned"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["expired_ban_time", b"expired_ban_time", "is_banned", b"is_banned"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___IsBannedResponse: typing_extensions.TypeAlias = IsBannedResponse
+Global___IsBannedResponse: _TypeAlias = IsBannedResponse  # noqa: Y015
 
-@typing.final
-class IsBannedRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class IsBannedRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___IsBannedRequest: typing_extensions.TypeAlias = IsBannedRequest
+Global___IsBannedRequest: _TypeAlias = IsBannedRequest  # noqa: Y015
 
-@typing.final
-class BanGroupUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class BanGroupUsersRequest(_message.Message):
     """Ban users from a group."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GROUP_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    group_id: builtins.str
+    GROUP_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    group_id: _builtins.int
     """The group to ban users from."""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to ban."""
 
     def __init__(
         self,
         *,
-        group_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        group_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BanGroupUsersRequest: typing_extensions.TypeAlias = BanGroupUsersRequest
+Global___BanGroupUsersRequest: _TypeAlias = BanGroupUsersRequest  # noqa: Y015
 
-@typing.final
-class BlockFriendsRequest(google.protobuf.message.Message):
+@_typing.final
+class BlockFriendsRequest(_message.Message):
     """Block one or more friends for the current user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    IDS_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    @property
-    def ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    IDS_FIELD_NUMBER: _builtins.int
+    USERNAMES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The account id of a user."""
 
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def usernames(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """The account username of a user."""
 
     def __init__(
         self,
         *,
-        ids: collections.abc.Iterable[builtins.str] | None = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
+        ids: _abc.Iterable[_builtins.int] | None = ...,
+        usernames: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["ids", b"ids", "usernames", b"usernames"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["ids", b"ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BlockFriendsRequest: typing_extensions.TypeAlias = BlockFriendsRequest
+Global___BlockFriendsRequest: _TypeAlias = BlockFriendsRequest  # noqa: Y015
 
-@typing.final
-class ChannelMessage(google.protobuf.message.Message):
+@_typing.final
+class ChannelMessage(_message.Message):
     """A message sent on a channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CODE_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CLAN_LOGO_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    CLAN_NICK_FIELD_NUMBER: builtins.int
-    CLAN_AVATAR_FIELD_NUMBER: builtins.int
-    REACTIONS_FIELD_NUMBER: builtins.int
-    MENTIONS_FIELD_NUMBER: builtins.int
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    REFERENCES_FIELD_NUMBER: builtins.int
-    REFERENCED_MESSAGE_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECONDS_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_SECONDS_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    HIDE_EDITTED_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CODE_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CLAN_LOGO_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    CLAN_NICK_FIELD_NUMBER: _builtins.int
+    CLAN_AVATAR_FIELD_NUMBER: _builtins.int
+    REACTIONS_FIELD_NUMBER: _builtins.int
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    REFERENCES_FIELD_NUMBER: _builtins.int
+    REFERENCED_MESSAGE_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    HIDE_EDITTED_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan this message belong to."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel this message belongs to."""
-    message_id: builtins.str
+    message_id: _builtins.int
     """The unique ID of this message."""
-    code: builtins.int
+    code: _builtins.int
     """The code representing a message type or category."""
-    sender_id: builtins.str
+    sender_id: _builtins.int
     """Message sender, usually a user ID."""
-    username: builtins.str
+    username: _builtins.str
     """The username of the message sender, if any."""
-    avatar: builtins.str
+    avatar: _builtins.str
     """The avatar of user who send message"""
-    content: builtins.str
+    content: _builtins.str
     """The content payload."""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """The name of the chat room, or an empty string if this message was not sent through a chat room."""
-    clan_logo: builtins.str
+    clan_logo: _builtins.str
     """The clan logo"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """The category name"""
-    display_name: builtins.str
+    display_name: _builtins.str
     """The clan nick name"""
-    clan_nick: builtins.str
+    clan_nick: _builtins.str
     """The clan nick name"""
-    clan_avatar: builtins.str
+    clan_avatar: _builtins.str
     """The clan avatar"""
-    reactions: builtins.str
+    reactions: _builtins.bytes
     """Emoji reaction"""
-    mentions: builtins.str
+    mentions: _builtins.bytes
     """Message mention"""
-    attachments: builtins.str
+    attachments: _builtins.bytes
     """Message attachment"""
-    references: builtins.str
+    references: _builtins.bytes
     """Message reference"""
-    referenced_message: builtins.str
+    referenced_message: _builtins.bytes
     """referenced message"""
-    create_time_seconds: builtins.int
+    create_time_seconds: _builtins.int
     """create time in ms"""
-    update_time_seconds: builtins.int
+    update_time_seconds: _builtins.int
     """update time in ms"""
-    mode: builtins.int
+    mode: _builtins.int
     """channel mode"""
-    hide_editted: builtins.bool
+    hide_editted: _builtins.bool
     """hide editted"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
-    topic_id: builtins.str
+    topic_id: _builtins.int
     """topic"""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
-
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was last updated."""
-
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        code: builtins.int = ...,
-        sender_id: builtins.str = ...,
-        username: builtins.str = ...,
-        avatar: builtins.str = ...,
-        content: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        channel_label: builtins.str = ...,
-        clan_logo: builtins.str = ...,
-        category_name: builtins.str = ...,
-        display_name: builtins.str = ...,
-        clan_nick: builtins.str = ...,
-        clan_avatar: builtins.str = ...,
-        reactions: builtins.str = ...,
-        mentions: builtins.str = ...,
-        attachments: builtins.str = ...,
-        references: builtins.str = ...,
-        referenced_message: builtins.str = ...,
-        create_time_seconds: builtins.int = ...,
-        update_time_seconds: builtins.int = ...,
-        mode: builtins.int = ...,
-        hide_editted: builtins.bool = ...,
-        is_public: builtins.bool = ...,
-        topic_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        code: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        content: _builtins.str = ...,
+        channel_label: _builtins.str = ...,
+        clan_logo: _builtins.str = ...,
+        category_name: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        clan_nick: _builtins.str = ...,
+        clan_avatar: _builtins.str = ...,
+        reactions: _builtins.bytes = ...,
+        mentions: _builtins.bytes = ...,
+        attachments: _builtins.bytes = ...,
+        references: _builtins.bytes = ...,
+        referenced_message: _builtins.bytes = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        mode: _builtins.int = ...,
+        hide_editted: _builtins.bool = ...,
+        is_public: _builtins.bool = ...,
+        topic_id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "update_time", b"update_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachments", b"attachments", "avatar", b"avatar", "category_name", b"category_name", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_logo", b"clan_logo", "clan_nick", b"clan_nick", "code", b"code", "content", b"content", "create_time", b"create_time", "create_time_seconds", b"create_time_seconds", "display_name", b"display_name", "hide_editted", b"hide_editted", "is_public", b"is_public", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "reactions", b"reactions", "referenced_message", b"referenced_message", "references", b"references", "sender_id", b"sender_id", "topic_id", b"topic_id", "update_time", b"update_time", "update_time_seconds", b"update_time_seconds", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "avatar", b"avatar", "category_name", b"category_name", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_logo", b"clan_logo", "clan_nick", b"clan_nick", "code", b"code", "content", b"content", "create_time_seconds", b"create_time_seconds", "display_name", b"display_name", "hide_editted", b"hide_editted", "is_public", b"is_public", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "reactions", b"reactions", "referenced_message", b"referenced_message", "references", b"references", "sender_id", b"sender_id", "topic_id", b"topic_id", "update_time_seconds", b"update_time_seconds", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelMessage: typing_extensions.TypeAlias = ChannelMessage
+Global___ChannelMessage: _TypeAlias = ChannelMessage  # noqa: Y015
 
-@typing.final
-class MessageMention(google.protobuf.message.Message):
+@_typing.final
+class MessageMention(_message.Message):
     """Mention to message"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    ROLENAME_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    S_FIELD_NUMBER: builtins.int
-    E_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    ROLENAME_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    S_FIELD_NUMBER: _builtins.int
+    E_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Mention id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """mention user id"""
-    username: builtins.str
+    username: _builtins.str
     """mention username"""
-    role_id: builtins.str
+    role_id: _builtins.int
     """role id"""
-    rolename: builtins.str
+    rolename: _builtins.str
     """role name"""
-    s: builtins.int
+    create_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
+    s: _builtins.int
     """start position from text"""
-    e: builtins.int
+    e: _builtins.int
     """end position from text"""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
-
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        username: builtins.str = ...,
-        role_id: builtins.str = ...,
-        rolename: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        s: builtins.int = ...,
-        e: builtins.int = ...,
+        id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        role_id: _builtins.int = ...,
+        rolename: _builtins.str = ...,
+        create_time_seconds: _builtins.int = ...,
+        s: _builtins.int = ...,
+        e: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "e", b"e", "id", b"id", "role_id", b"role_id", "rolename", b"rolename", "s", b"s", "user_id", b"user_id", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["create_time_seconds", b"create_time_seconds", "e", b"e", "id", b"id", "role_id", b"role_id", "rolename", b"rolename", "s", b"s", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MessageMention: typing_extensions.TypeAlias = MessageMention
+Global___MessageMention: _TypeAlias = MessageMention  # noqa: Y015
 
-@typing.final
-class NotificationInfo(google.protobuf.message.Message):
+@_typing.final
+class NotificationInfo(_message.Message):
     """Mention to message"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USERNAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CLAN_NICK_FIELD_NUMBER: builtins.int
-    CLAN_AVATAR_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    CLAN_LOGO_FIELD_NUMBER: builtins.int
-    CHANNEL_FIELD_NUMBER: builtins.int
-    username: builtins.str
+    USERNAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CLAN_NICK_FIELD_NUMBER: _builtins.int
+    CLAN_AVATAR_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    CLAN_LOGO_FIELD_NUMBER: _builtins.int
+    CHANNEL_FIELD_NUMBER: _builtins.int
+    username: _builtins.str
     """username"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """avatar"""
-    clan_nick: builtins.str
+    clan_nick: _builtins.str
     """clan nick name"""
-    clan_avatar: builtins.str
+    clan_avatar: _builtins.str
     """clan avatar"""
-    display_name: builtins.str
+    display_name: _builtins.str
     """display name"""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """channel label"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """channel type"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """category name"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan name"""
-    clan_logo: builtins.str
+    clan_logo: _builtins.str
     """clan logo"""
-    @property
+    @_builtins.property
     def channel(self) -> Global___ChannelDescription:
         """"""
 
     def __init__(
         self,
         *,
-        username: builtins.str = ...,
-        avatar: builtins.str = ...,
-        clan_nick: builtins.str = ...,
-        clan_avatar: builtins.str = ...,
-        display_name: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        category_name: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        clan_logo: builtins.str = ...,
+        username: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        clan_nick: _builtins.str = ...,
+        clan_avatar: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        channel_label: _builtins.str = ...,
+        channel_type: _builtins.int = ...,
+        category_name: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
+        clan_logo: _builtins.str = ...,
         channel: Global___ChannelDescription | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel", b"channel"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "category_name", b"category_name", "channel", b"channel", "channel_label", b"channel_label", "channel_type", b"channel_type", "clan_avatar", b"clan_avatar", "clan_logo", b"clan_logo", "clan_name", b"clan_name", "clan_nick", b"clan_nick", "display_name", b"display_name", "username", b"username"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["channel", b"channel"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "category_name", b"category_name", "channel", b"channel", "channel_label", b"channel_label", "channel_type", b"channel_type", "clan_avatar", b"clan_avatar", "clan_logo", b"clan_logo", "clan_name", b"clan_name", "clan_nick", b"clan_nick", "display_name", b"display_name", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationInfo: typing_extensions.TypeAlias = NotificationInfo
+Global___NotificationInfo: _TypeAlias = NotificationInfo  # noqa: Y015
 
-@typing.final
-class MessageReaction(google.protobuf.message.Message):
+@_typing.final
+class MessageReaction(_message.Message):
     """Emoji reaction by user"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    EMOJI_ID_FIELD_NUMBER: builtins.int
-    EMOJI_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    SENDER_NAME_FIELD_NUMBER: builtins.int
-    SENDER_AVATAR_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    COUNT_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    MODE_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_ID_FIELD_NUMBER: builtins.int
-    IS_PUBLIC_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    EMOJI_RECENT_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    EMOJI_ID_FIELD_NUMBER: _builtins.int
+    EMOJI_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    SENDER_NAME_FIELD_NUMBER: _builtins.int
+    SENDER_AVATAR_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    COUNT_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_ID_FIELD_NUMBER: _builtins.int
+    IS_PUBLIC_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    EMOJI_RECENT_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Reaction id"""
-    emoji_id: builtins.str
+    emoji_id: _builtins.int
     """An emoji id"""
-    emoji: builtins.str
+    emoji: _builtins.str
     """An emoji shortname"""
-    sender_id: builtins.str
+    sender_id: _builtins.int
     """User react to message"""
-    sender_name: builtins.str
+    sender_name: _builtins.str
     """Sender name"""
-    sender_avatar: builtins.str
+    sender_avatar: _builtins.str
     """avatar"""
-    action: builtins.bool
+    action: _builtins.bool
     """Action reaction delete or add"""
-    count: builtins.int
+    count: _builtins.int
     """count of emoji"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    message_id: builtins.str
+    message_id: _builtins.int
     """message id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
-    mode: builtins.int
+    mode: _builtins.int
     """mode"""
-    message_sender_id: builtins.str
+    message_sender_id: _builtins.int
     """message sender id"""
-    is_public: builtins.bool
+    is_public: _builtins.bool
     """is public"""
-    topic_id: builtins.str
+    topic_id: _builtins.int
     """topic id"""
-    emoji_recent_id: builtins.str
+    emoji_recent_id: _builtins.int
     """emoji_recent_id"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        emoji_id: builtins.str = ...,
-        emoji: builtins.str = ...,
-        sender_id: builtins.str = ...,
-        sender_name: builtins.str = ...,
-        sender_avatar: builtins.str = ...,
-        action: builtins.bool = ...,
-        count: builtins.int = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        mode: builtins.int = ...,
-        message_sender_id: builtins.str = ...,
-        is_public: builtins.bool = ...,
-        topic_id: builtins.str = ...,
-        emoji_recent_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        emoji_id: _builtins.int = ...,
+        emoji: _builtins.str = ...,
+        sender_id: _builtins.int = ...,
+        sender_name: _builtins.str = ...,
+        sender_avatar: _builtins.str = ...,
+        action: _builtins.bool = ...,
+        count: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        mode: _builtins.int = ...,
+        message_sender_id: _builtins.int = ...,
+        is_public: _builtins.bool = ...,
+        topic_id: _builtins.int = ...,
+        emoji_recent_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "count", b"count", "emoji", b"emoji", "emoji_id", b"emoji_id", "emoji_recent_id", b"emoji_recent_id", "id", b"id", "is_public", b"is_public", "message_id", b"message_id", "message_sender_id", b"message_sender_id", "mode", b"mode", "sender_avatar", b"sender_avatar", "sender_id", b"sender_id", "sender_name", b"sender_name", "topic_id", b"topic_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "count", b"count", "emoji", b"emoji", "emoji_id", b"emoji_id", "emoji_recent_id", b"emoji_recent_id", "id", b"id", "is_public", b"is_public", "message_id", b"message_id", "message_sender_id", b"message_sender_id", "mode", b"mode", "sender_avatar", b"sender_avatar", "sender_id", b"sender_id", "sender_name", b"sender_name", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MessageReaction: typing_extensions.TypeAlias = MessageReaction
+Global___MessageReaction: _TypeAlias = MessageReaction  # noqa: Y015
 
-@typing.final
-class MessageAttachment(google.protobuf.message.Message):
+@_typing.final
+class MessageAttachment(_message.Message):
     """Message attachment"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FILENAME_FIELD_NUMBER: builtins.int
-    SIZE_FIELD_NUMBER: builtins.int
-    URL_FIELD_NUMBER: builtins.int
-    FILETYPE_FIELD_NUMBER: builtins.int
-    WIDTH_FIELD_NUMBER: builtins.int
-    HEIGHT_FIELD_NUMBER: builtins.int
-    THUMBNAIL_FIELD_NUMBER: builtins.int
-    DURATION_FIELD_NUMBER: builtins.int
-    filename: builtins.str
+    FILENAME_FIELD_NUMBER: _builtins.int
+    SIZE_FIELD_NUMBER: _builtins.int
+    URL_FIELD_NUMBER: _builtins.int
+    FILETYPE_FIELD_NUMBER: _builtins.int
+    WIDTH_FIELD_NUMBER: _builtins.int
+    HEIGHT_FIELD_NUMBER: _builtins.int
+    THUMBNAIL_FIELD_NUMBER: _builtins.int
+    DURATION_FIELD_NUMBER: _builtins.int
+    filename: _builtins.str
     """Attachment file name"""
-    size: builtins.int
+    size: _builtins.int
     """Attachment file size"""
-    url: builtins.str
+    url: _builtins.str
     """Attachment url"""
-    filetype: builtins.str
+    filetype: _builtins.str
     """Attachment file type"""
-    width: builtins.int
+    width: _builtins.int
     """Attachment width"""
-    height: builtins.int
+    height: _builtins.int
     """Attachment width"""
-    thumbnail: builtins.str
+    thumbnail: _builtins.str
     """thumbnail"""
-    duration: builtins.int
+    duration: _builtins.int
     """duration for video"""
     def __init__(
         self,
         *,
-        filename: builtins.str = ...,
-        size: builtins.int = ...,
-        url: builtins.str = ...,
-        filetype: builtins.str = ...,
-        width: builtins.int = ...,
-        height: builtins.int = ...,
-        thumbnail: builtins.str = ...,
-        duration: builtins.int = ...,
+        filename: _builtins.str = ...,
+        size: _builtins.int = ...,
+        url: _builtins.str = ...,
+        filetype: _builtins.str = ...,
+        width: _builtins.int = ...,
+        height: _builtins.int = ...,
+        thumbnail: _builtins.str = ...,
+        duration: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["duration", b"duration", "filename", b"filename", "filetype", b"filetype", "height", b"height", "size", b"size", "thumbnail", b"thumbnail", "url", b"url", "width", b"width"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["duration", b"duration", "filename", b"filename", "filetype", b"filetype", "height", b"height", "size", b"size", "thumbnail", b"thumbnail", "url", b"url", "width", b"width"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MessageAttachment: typing_extensions.TypeAlias = MessageAttachment
+Global___MessageAttachment: _TypeAlias = MessageAttachment  # noqa: Y015
 
-@typing.final
-class MessageRef(google.protobuf.message.Message):
+@_typing.final
+class MessageRef(_message.Message):
     """Message reference"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_REF_ID_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    HAS_ATTACHMENT_FIELD_NUMBER: builtins.int
-    REF_TYPE_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_USERNAME_FIELD_NUMBER: builtins.int
-    MESAGES_SENDER_AVATAR_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_CLAN_NICK_FIELD_NUMBER: builtins.int
-    MESSAGE_SENDER_DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_REF_ID_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    HAS_ATTACHMENT_FIELD_NUMBER: _builtins.int
+    REF_TYPE_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_USERNAME_FIELD_NUMBER: _builtins.int
+    MESAGES_SENDER_AVATAR_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_CLAN_NICK_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
     """A message source"""
-    message_ref_id: builtins.str
+    message_ref_id: _builtins.int
     """A message reference to"""
-    content: builtins.str
+    content: _builtins.str
     """content reference"""
-    has_attachment: builtins.bool
+    has_attachment: _builtins.bool
     """has attachment"""
-    ref_type: builtins.int
+    ref_type: _builtins.int
     """Reference type. 0: reply"""
-    message_sender_id: builtins.str
+    message_sender_id: _builtins.int
     """original message sender"""
-    message_sender_username: builtins.str
+    message_sender_username: _builtins.str
     """original message sendre username"""
-    mesages_sender_avatar: builtins.str
+    mesages_sender_avatar: _builtins.str
     """original message sender avatar"""
-    message_sender_clan_nick: builtins.str
+    message_sender_clan_nick: _builtins.str
     """original sender clan nick name"""
-    message_sender_display_name: builtins.str
+    message_sender_display_name: _builtins.str
     """original sender display name"""
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        message_ref_id: builtins.str = ...,
-        content: builtins.str = ...,
-        has_attachment: builtins.bool = ...,
-        ref_type: builtins.int = ...,
-        message_sender_id: builtins.str = ...,
-        message_sender_username: builtins.str = ...,
-        mesages_sender_avatar: builtins.str = ...,
-        message_sender_clan_nick: builtins.str = ...,
-        message_sender_display_name: builtins.str = ...,
+        message_id: _builtins.int = ...,
+        message_ref_id: _builtins.int = ...,
+        content: _builtins.str = ...,
+        has_attachment: _builtins.bool = ...,
+        ref_type: _builtins.int = ...,
+        message_sender_id: _builtins.int = ...,
+        message_sender_username: _builtins.str = ...,
+        mesages_sender_avatar: _builtins.str = ...,
+        message_sender_clan_nick: _builtins.str = ...,
+        message_sender_display_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["content", b"content", "has_attachment", b"has_attachment", "mesages_sender_avatar", b"mesages_sender_avatar", "message_id", b"message_id", "message_ref_id", b"message_ref_id", "message_sender_clan_nick", b"message_sender_clan_nick", "message_sender_display_name", b"message_sender_display_name", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "ref_type", b"ref_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["content", b"content", "has_attachment", b"has_attachment", "mesages_sender_avatar", b"mesages_sender_avatar", "message_id", b"message_id", "message_ref_id", b"message_ref_id", "message_sender_clan_nick", b"message_sender_clan_nick", "message_sender_display_name", b"message_sender_display_name", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "ref_type", b"ref_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MessageRef: typing_extensions.TypeAlias = MessageRef
+Global___MessageRef: _TypeAlias = MessageRef  # noqa: Y015
 
-@typing.final
-class MessageDeleted(google.protobuf.message.Message):
+@_typing.final
+class MessageDeleted(_message.Message):
     """Message reference"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    DELETOR_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    DELETOR_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
     """A deleted message source"""
-    deletor: builtins.str
+    deletor: _builtins.str
     """Who delete it"""
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        deletor: builtins.str = ...,
+        message_id: _builtins.int = ...,
+        deletor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["deletor", b"deletor", "message_id", b"message_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["deletor", b"deletor", "message_id", b"message_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MessageDeleted: typing_extensions.TypeAlias = MessageDeleted
+Global___MessageDeleted: _TypeAlias = MessageDeleted  # noqa: Y015
 
-@typing.final
-class ChannelMessageList(google.protobuf.message.Message):
+@_typing.final
+class ChannelMessageList(_message.Message):
     """A list of channel messages, usually a result of a list operation."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGES_FIELD_NUMBER: builtins.int
-    LAST_SEEN_MESSAGE_FIELD_NUMBER: builtins.int
-    LAST_SENT_MESSAGE_FIELD_NUMBER: builtins.int
-    @property
-    def messages(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ChannelMessage]:
+    MESSAGES_FIELD_NUMBER: _builtins.int
+    LAST_SEEN_MESSAGE_FIELD_NUMBER: _builtins.int
+    LAST_SENT_MESSAGE_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def messages(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelMessage]:
         """A list of messages."""
 
-    @property
+    @_builtins.property
     def last_seen_message(self) -> Global___ChannelMessageHeader:
         """last seen message id by user"""
 
-    @property
+    @_builtins.property
     def last_sent_message(self) -> Global___ChannelMessageHeader:
         """last sent message id"""
 
     def __init__(
         self,
         *,
-        messages: collections.abc.Iterable[Global___ChannelMessage] | None = ...,
+        messages: _abc.Iterable[Global___ChannelMessage] | None = ...,
         last_seen_message: Global___ChannelMessageHeader | None = ...,
         last_sent_message: Global___ChannelMessageHeader | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message", "messages", b"messages"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message", "messages", b"messages"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelMessageList: typing_extensions.TypeAlias = ChannelMessageList
+Global___ChannelMessageList: _TypeAlias = ChannelMessageList  # noqa: Y015
 
-@typing.final
-class CreateGroupRequest(google.protobuf.message.Message):
+@_typing.final
+class CreateGroupRequest(_message.Message):
     """Create a group with the current user as owner."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    NAME_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    LANG_TAG_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    OPEN_FIELD_NUMBER: builtins.int
-    MAX_COUNT_FIELD_NUMBER: builtins.int
-    name: builtins.str
+    NAME_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    LANG_TAG_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    OPEN_FIELD_NUMBER: _builtins.int
+    MAX_COUNT_FIELD_NUMBER: _builtins.int
+    name: _builtins.str
     """A unique name for the group."""
-    description: builtins.str
+    description: _builtins.str
     """A description for the group."""
-    lang_tag: builtins.str
+    lang_tag: _builtins.str
     """The language expected to be a tag which follows the BCP-47 spec."""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """A URL for an avatar image."""
-    open: builtins.bool
+    open: _builtins.bool
     """Mark a group as open or not where only admins can accept members."""
-    max_count: builtins.int
+    max_count: _builtins.int
     """Maximum number of group members."""
     def __init__(
         self,
         *,
-        name: builtins.str = ...,
-        description: builtins.str = ...,
-        lang_tag: builtins.str = ...,
-        avatar_url: builtins.str = ...,
-        open: builtins.bool = ...,
-        max_count: builtins.int = ...,
+        name: _builtins.str = ...,
+        description: _builtins.str = ...,
+        lang_tag: _builtins.str = ...,
+        avatar_url: _builtins.str = ...,
+        open: _builtins.bool = ...,
+        max_count: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "description", b"description", "lang_tag", b"lang_tag", "max_count", b"max_count", "name", b"name", "open", b"open"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "description", b"description", "lang_tag", b"lang_tag", "max_count", b"max_count", "name", b"name", "open", b"open"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateGroupRequest: typing_extensions.TypeAlias = CreateGroupRequest
+Global___CreateGroupRequest: _TypeAlias = CreateGroupRequest  # noqa: Y015
 
-@typing.final
-class DeleteFriendsRequest(google.protobuf.message.Message):
+@_typing.final
+class DeleteFriendsRequest(_message.Message):
     """Delete one or more friends for the current user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    IDS_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    @property
-    def ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    IDS_FIELD_NUMBER: _builtins.int
+    USERNAMES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The account id of a user."""
 
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def usernames(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """The account username of a user."""
 
     def __init__(
         self,
         *,
-        ids: collections.abc.Iterable[builtins.str] | None = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
+        ids: _abc.Iterable[_builtins.int] | None = ...,
+        usernames: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["ids", b"ids", "usernames", b"usernames"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["ids", b"ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteFriendsRequest: typing_extensions.TypeAlias = DeleteFriendsRequest
+Global___DeleteFriendsRequest: _TypeAlias = DeleteFriendsRequest  # noqa: Y015
 
-@typing.final
-class DeleteGroupRequest(google.protobuf.message.Message):
+@_typing.final
+class DeleteGroupRequest(_message.Message):
     """Delete a group the user has access to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GROUP_ID_FIELD_NUMBER: builtins.int
-    group_id: builtins.str
+    GROUP_ID_FIELD_NUMBER: _builtins.int
+    group_id: _builtins.int
     """The id of a group."""
     def __init__(
         self,
         *,
-        group_id: builtins.str = ...,
+        group_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["group_id", b"group_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["group_id", b"group_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteGroupRequest: typing_extensions.TypeAlias = DeleteGroupRequest
+Global___DeleteGroupRequest: _TypeAlias = DeleteGroupRequest  # noqa: Y015
 
-@typing.final
-class DeleteNotificationsRequest(google.protobuf.message.Message):
+@_typing.final
+class DeleteNotificationsRequest(_message.Message):
     """Delete one or more notifications for the current user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    IDS_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    category: builtins.int
+    IDS_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    category: _builtins.int
     """The category of notifications."""
-    @property
-    def ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The id of notifications."""
 
     def __init__(
         self,
         *,
-        ids: collections.abc.Iterable[builtins.str] | None = ...,
-        category: builtins.int = ...,
+        ids: _abc.Iterable[_builtins.int] | None = ...,
+        category: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "ids", b"ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "ids", b"ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteNotificationsRequest: typing_extensions.TypeAlias = DeleteNotificationsRequest
+Global___DeleteNotificationsRequest: _TypeAlias = DeleteNotificationsRequest  # noqa: Y015
 
-@typing.final
-class Event(google.protobuf.message.Message):
+@_typing.final
+class Event(_message.Message):
     """Represents an event to be passed through the server to registered event handlers."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class PropertiesEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class PropertiesEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.str
-        value: builtins.str
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
         def __init__(
             self,
             *,
-            key: builtins.str = ...,
-            value: builtins.str = ...,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["key", b"key", "value", b"value"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    NAME_FIELD_NUMBER: builtins.int
-    PROPERTIES_FIELD_NUMBER: builtins.int
-    TIMESTAMP_FIELD_NUMBER: builtins.int
-    EXTERNAL_FIELD_NUMBER: builtins.int
-    name: builtins.str
+    NAME_FIELD_NUMBER: _builtins.int
+    PROPERTIES_FIELD_NUMBER: _builtins.int
+    TIMESTAMP_SECONDS_FIELD_NUMBER: _builtins.int
+    EXTERNAL_FIELD_NUMBER: _builtins.int
+    name: _builtins.str
     """An event name, type, category, or identifier."""
-    external: builtins.bool
+    timestamp_seconds: _builtins.int
+    """The time when the event was triggered."""
+    external: _builtins.bool
     """True if the event came directly from a client call, false otherwise."""
-    @property
-    def properties(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    @_builtins.property
+    def properties(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]:
         """Arbitrary event property values."""
-
-    @property
-    def timestamp(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The time when the event was triggered."""
 
     def __init__(
         self,
         *,
-        name: builtins.str = ...,
-        properties: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
-        timestamp: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        external: builtins.bool = ...,
+        name: _builtins.str = ...,
+        properties: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
+        timestamp_seconds: _builtins.int = ...,
+        external: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["timestamp", b"timestamp"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["external", b"external", "name", b"name", "properties", b"properties", "timestamp", b"timestamp"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["external", b"external", "name", b"name", "properties", b"properties", "timestamp_seconds", b"timestamp_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Event: typing_extensions.TypeAlias = Event
+Global___Event: _TypeAlias = Event  # noqa: Y015
 
-@typing.final
-class Friend(google.protobuf.message.Message):
+@_typing.final
+class Friend(_message.Message):
     """A friend of a user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
     class _State:
-        ValueType = typing.NewType("ValueType", builtins.int)
-        V: typing_extensions.TypeAlias = ValueType
+        ValueType = _typing.NewType("ValueType", _builtins.int)
+        V: _TypeAlias = ValueType  # noqa: Y015
 
-    class _StateEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[Friend._State.ValueType], builtins.type):
-        DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+    class _StateEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[Friend._State.ValueType], _builtins.type):
+        DESCRIPTOR: _descriptor.EnumDescriptor
         FRIEND: Friend._State.ValueType  # 0
         """The user is a friend of the current user."""
         INVITE_SENT: Friend._State.ValueType  # 1
@@ -1153,8059 +1122,7573 @@ class Friend(google.protobuf.message.Message):
     BLOCKED: Friend.State.ValueType  # 3
     """The current user has blocked this user."""
 
-    USER_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    SOURCE_ID_FIELD_NUMBER: builtins.int
-    state: builtins.int
+    USER_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    SOURCE_ID_FIELD_NUMBER: _builtins.int
+    state: _builtins.int
     """The friend status.
     one of "Friend.State".
     """
-    source_id: builtins.str
+    update_time_seconds: _builtins.int
+    """Time of the latest relationship update."""
+    source_id: _builtins.int
     """source id"""
-    @property
+    @_builtins.property
     def user(self) -> Global___User:
         """The user object."""
-
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """Time of the latest relationship update."""
 
     def __init__(
         self,
         *,
         user: Global___User | None = ...,
-        state: builtins.int = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        source_id: builtins.str = ...,
+        state: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        source_id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["update_time", b"update_time", "user", b"user"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["source_id", b"source_id", "state", b"state", "update_time", b"update_time", "user", b"user"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["user", b"user"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["source_id", b"source_id", "state", b"state", "update_time_seconds", b"update_time_seconds", "user", b"user"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Friend: typing_extensions.TypeAlias = Friend
+Global___Friend: _TypeAlias = Friend  # noqa: Y015
 
-@typing.final
-class FriendList(google.protobuf.message.Message):
+@_typing.final
+class FriendList(_message.Message):
     """A collection of zero or more friends of the user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FRIENDS_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    FRIENDS_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    cursor: _builtins.str
     """Cursor for the next page of results, if any."""
-    @property
-    def friends(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___Friend]:
+    @_builtins.property
+    def friends(self) -> _containers.RepeatedCompositeFieldContainer[Global___Friend]:
         """The Friend objects."""
 
     def __init__(
         self,
         *,
-        friends: collections.abc.Iterable[Global___Friend] | None = ...,
-        cursor: builtins.str = ...,
+        friends: _abc.Iterable[Global___Friend] | None = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "friends", b"friends"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "friends", b"friends"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___FriendList: typing_extensions.TypeAlias = FriendList
+Global___FriendList: _TypeAlias = FriendList  # noqa: Y015
 
-@typing.final
-class UpdateUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateUsersRequest(_message.Message):
     """Fetch a batch of zero or more users from the server."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    display_name: builtins.str
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    display_name: _builtins.str
     """The account username of a user."""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """The avarar_url of a user."""
     def __init__(
         self,
         *,
-        display_name: builtins.str = ...,
-        avatar_url: builtins.str = ...,
+        display_name: _builtins.str = ...,
+        avatar_url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "display_name", b"display_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "display_name", b"display_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateUsersRequest: typing_extensions.TypeAlias = UpdateUsersRequest
+Global___UpdateUsersRequest: _TypeAlias = UpdateUsersRequest  # noqa: Y015
 
-@typing.final
-class ChannelUserList(google.protobuf.message.Message):
+@_typing.final
+class ChannelUserList(_message.Message):
     """A list of users belonging to a channel, along with their role."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class ChannelUser(google.protobuf.message.Message):
+    @_typing.final
+    class ChannelUser(_message.Message):
         """A single user-role pair."""
 
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+        DESCRIPTOR: _descriptor.Descriptor
 
-        USER_ID_FIELD_NUMBER: builtins.int
-        ROLE_ID_FIELD_NUMBER: builtins.int
-        ID_FIELD_NUMBER: builtins.int
-        THREAD_ID_FIELD_NUMBER: builtins.int
-        CLAN_NICK_FIELD_NUMBER: builtins.int
-        CLAN_AVATAR_FIELD_NUMBER: builtins.int
-        CLAN_ID_FIELD_NUMBER: builtins.int
-        ADDED_BY_FIELD_NUMBER: builtins.int
-        IS_BANNED_FIELD_NUMBER: builtins.int
-        EXPIRED_BAN_TIME_FIELD_NUMBER: builtins.int
-        user_id: builtins.str
+        USER_ID_FIELD_NUMBER: _builtins.int
+        ROLE_ID_FIELD_NUMBER: _builtins.int
+        ID_FIELD_NUMBER: _builtins.int
+        THREAD_ID_FIELD_NUMBER: _builtins.int
+        CLAN_NICK_FIELD_NUMBER: _builtins.int
+        CLAN_AVATAR_FIELD_NUMBER: _builtins.int
+        CLAN_ID_FIELD_NUMBER: _builtins.int
+        ADDED_BY_FIELD_NUMBER: _builtins.int
+        IS_BANNED_FIELD_NUMBER: _builtins.int
+        EXPIRED_BAN_TIME_FIELD_NUMBER: _builtins.int
+        user_id: _builtins.int
         """User."""
-        id: builtins.str
+        id: _builtins.int
         """Id"""
-        thread_id: builtins.str
+        thread_id: _builtins.int
         """thread id"""
-        clan_nick: builtins.str
+        clan_nick: _builtins.str
         """clan nick name"""
-        clan_avatar: builtins.str
+        clan_avatar: _builtins.str
         """clan avatar"""
-        clan_id: builtins.str
+        clan_id: _builtins.int
         """clan Id"""
-        added_by: builtins.str
+        added_by: _builtins.int
         """added by"""
-        is_banned: builtins.bool
+        is_banned: _builtins.bool
         """is banned"""
-        expired_ban_time: builtins.int
+        expired_ban_time: _builtins.int
         """expired time"""
-        @property
-        def role_id(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+        @_builtins.property
+        def role_id(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
             """Their relationship to the role."""
 
         def __init__(
             self,
             *,
-            user_id: builtins.str = ...,
-            role_id: collections.abc.Iterable[builtins.str] | None = ...,
-            id: builtins.str = ...,
-            thread_id: builtins.str = ...,
-            clan_nick: builtins.str = ...,
-            clan_avatar: builtins.str = ...,
-            clan_id: builtins.str = ...,
-            added_by: builtins.str = ...,
-            is_banned: builtins.bool = ...,
-            expired_ban_time: builtins.int = ...,
+            user_id: _builtins.int = ...,
+            role_id: _abc.Iterable[_builtins.int] | None = ...,
+            id: _builtins.int = ...,
+            thread_id: _builtins.int = ...,
+            clan_nick: _builtins.str = ...,
+            clan_avatar: _builtins.str = ...,
+            clan_id: _builtins.int = ...,
+            added_by: _builtins.int = ...,
+            is_banned: _builtins.bool = ...,
+            expired_ban_time: _builtins.int = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["added_by", b"added_by", "clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "expired_ban_time", b"expired_ban_time", "id", b"id", "is_banned", b"is_banned", "role_id", b"role_id", "thread_id", b"thread_id", "user_id", b"user_id"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["added_by", b"added_by", "clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "expired_ban_time", b"expired_ban_time", "id", b"id", "is_banned", b"is_banned", "role_id", b"role_id", "thread_id", b"thread_id", "user_id", b"user_id"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    CHANNEL_USERS_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    CHANNEL_USERS_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    cursor: _builtins.str
     """Cursor for the next page of results, if any."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    @property
-    def channel_users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ChannelUserList.ChannelUser]:
+    @_builtins.property
+    def channel_users(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelUserList.ChannelUser]:
         """User-role pairs for a channel."""
 
     def __init__(
         self,
         *,
-        channel_users: collections.abc.Iterable[Global___ChannelUserList.ChannelUser] | None = ...,
-        cursor: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        channel_users: _abc.Iterable[Global___ChannelUserList.ChannelUser] | None = ...,
+        cursor: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_users", b"channel_users", "cursor", b"cursor"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_users", b"channel_users", "cursor", b"cursor"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelUserList: typing_extensions.TypeAlias = ChannelUserList
+Global___ChannelUserList: _TypeAlias = ChannelUserList  # noqa: Y015
 
-@typing.final
-class VoiceChannelUser(google.protobuf.message.Message):
+@_typing.final
+class VoiceChannelUser(_message.Message):
     """A list of users belonging to a channel, along with their role."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    PARTICIPANT_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    PARTICIPANT_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """voice user join id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """User for a channel."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    participant: builtins.str
+    participant: _builtins.str
     """participant"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        participant: builtins.str = ...,
+        id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        participant: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "id", b"id", "participant", b"participant", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "id", b"id", "participant", b"participant", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___VoiceChannelUser: typing_extensions.TypeAlias = VoiceChannelUser
+Global___VoiceChannelUser: _TypeAlias = VoiceChannelUser  # noqa: Y015
 
-@typing.final
-class VoiceChannelUserList(google.protobuf.message.Message):
+@_typing.final
+class VoiceChannelUserList(_message.Message):
     """A list of users belonging to a channel, along with their role."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    VOICE_CHANNEL_USERS_FIELD_NUMBER: builtins.int
-    @property
-    def voice_channel_users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___VoiceChannelUser]:
+    VOICE_CHANNEL_USERS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def voice_channel_users(self) -> _containers.RepeatedCompositeFieldContainer[Global___VoiceChannelUser]:
         """list of voice channel user"""
 
     def __init__(
         self,
         *,
-        voice_channel_users: collections.abc.Iterable[Global___VoiceChannelUser] | None = ...,
+        voice_channel_users: _abc.Iterable[Global___VoiceChannelUser] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["voice_channel_users", b"voice_channel_users"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["voice_channel_users", b"voice_channel_users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___VoiceChannelUserList: typing_extensions.TypeAlias = VoiceChannelUserList
+Global___VoiceChannelUserList: _TypeAlias = VoiceChannelUserList  # noqa: Y015
 
-@typing.final
-class ChannelAttachment(google.protobuf.message.Message):
+@_typing.final
+class ChannelAttachment(_message.Message):
     """channel attachment"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    FILENAME_FIELD_NUMBER: builtins.int
-    FILETYPE_FIELD_NUMBER: builtins.int
-    FILESIZE_FIELD_NUMBER: builtins.int
-    URL_FIELD_NUMBER: builtins.int
-    UPLOADER_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    WIDTH_FIELD_NUMBER: builtins.int
-    HEIGHT_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    FILENAME_FIELD_NUMBER: _builtins.int
+    FILETYPE_FIELD_NUMBER: _builtins.int
+    FILESIZE_FIELD_NUMBER: _builtins.int
+    URL_FIELD_NUMBER: _builtins.int
+    UPLOADER_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    WIDTH_FIELD_NUMBER: _builtins.int
+    HEIGHT_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """url attachment"""
-    filename: builtins.str
+    filename: _builtins.str
     """file name"""
-    filetype: builtins.str
+    filetype: _builtins.str
     """filetype"""
-    filesize: builtins.str
+    filesize: _builtins.str
     """size"""
-    url: builtins.str
+    url: _builtins.str
     """url"""
-    uploader: builtins.str
+    uploader: _builtins.int
     """uploader"""
-    message_id: builtins.str
+    create_time_seconds: _builtins.int
+    """timestamp"""
+    message_id: _builtins.int
     """message id."""
-    width: builtins.int
+    width: _builtins.int
     """width"""
-    height: builtins.int
+    height: _builtins.int
     """height"""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the group was created."""
-
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        filename: builtins.str = ...,
-        filetype: builtins.str = ...,
-        filesize: builtins.str = ...,
-        url: builtins.str = ...,
-        uploader: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        message_id: builtins.str = ...,
-        width: builtins.int = ...,
-        height: builtins.int = ...,
+        id: _builtins.int = ...,
+        filename: _builtins.str = ...,
+        filetype: _builtins.str = ...,
+        filesize: _builtins.str = ...,
+        url: _builtins.str = ...,
+        uploader: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        width: _builtins.int = ...,
+        height: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "filename", b"filename", "filesize", b"filesize", "filetype", b"filetype", "height", b"height", "id", b"id", "message_id", b"message_id", "uploader", b"uploader", "url", b"url", "width", b"width"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["create_time_seconds", b"create_time_seconds", "filename", b"filename", "filesize", b"filesize", "filetype", b"filetype", "height", b"height", "id", b"id", "message_id", b"message_id", "uploader", b"uploader", "url", b"url", "width", b"width"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelAttachment: typing_extensions.TypeAlias = ChannelAttachment
+Global___ChannelAttachment: _TypeAlias = ChannelAttachment  # noqa: Y015
 
-@typing.final
-class ChannelAttachmentList(google.protobuf.message.Message):
+@_typing.final
+class ChannelAttachmentList(_message.Message):
     """channel attachment list"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    @property
-    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ChannelAttachment]:
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelAttachment]:
         """list attachment"""
 
     def __init__(
         self,
         *,
-        attachments: collections.abc.Iterable[Global___ChannelAttachment] | None = ...,
+        attachments: _abc.Iterable[Global___ChannelAttachment] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachments", b"attachments"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelAttachmentList: typing_extensions.TypeAlias = ChannelAttachmentList
+Global___ChannelAttachmentList: _TypeAlias = ChannelAttachmentList  # noqa: Y015
 
-@typing.final
-class ClanUserList(google.protobuf.message.Message):
+@_typing.final
+class ClanUserList(_message.Message):
     """A list of users belonging to a clan, along with their role."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class ClanUser(google.protobuf.message.Message):
+    @_typing.final
+    class ClanUser(_message.Message):
         """A single user-role pair."""
 
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+        DESCRIPTOR: _descriptor.Descriptor
 
-        USER_FIELD_NUMBER: builtins.int
-        ROLE_ID_FIELD_NUMBER: builtins.int
-        CLAN_NICK_FIELD_NUMBER: builtins.int
-        CLAN_AVATAR_FIELD_NUMBER: builtins.int
-        CLAN_ID_FIELD_NUMBER: builtins.int
-        clan_nick: builtins.str
+        USER_FIELD_NUMBER: _builtins.int
+        ROLE_ID_FIELD_NUMBER: _builtins.int
+        CLAN_NICK_FIELD_NUMBER: _builtins.int
+        CLAN_AVATAR_FIELD_NUMBER: _builtins.int
+        CLAN_ID_FIELD_NUMBER: _builtins.int
+        clan_nick: _builtins.str
         """from the `nick_name` field in the `clan_desc_profile` table."""
-        clan_avatar: builtins.str
+        clan_avatar: _builtins.str
         """from the `avatar_url` field in the `clan_desc_profile` table."""
-        clan_id: builtins.str
+        clan_id: _builtins.int
         """"""
-        @property
+        @_builtins.property
         def user(self) -> Global___User:
             """User."""
 
-        @property
-        def role_id(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+        @_builtins.property
+        def role_id(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
             """Their relationship to the role."""
 
         def __init__(
             self,
             *,
             user: Global___User | None = ...,
-            role_id: collections.abc.Iterable[builtins.str] | None = ...,
-            clan_nick: builtins.str = ...,
-            clan_avatar: builtins.str = ...,
-            clan_id: builtins.str = ...,
+            role_id: _abc.Iterable[_builtins.int] | None = ...,
+            clan_nick: _builtins.str = ...,
+            clan_avatar: _builtins.str = ...,
+            clan_id: _builtins.int = ...,
         ) -> None: ...
-        _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["user", b"user"]
-        def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "role_id", b"role_id", "user", b"user"]
+        _HasFieldArgType: _TypeAlias = _typing.Literal["user", b"user"]  # noqa: Y015
+        def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "role_id", b"role_id", "user", b"user"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    CLAN_USERS_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    CLAN_USERS_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    cursor: _builtins.str
     """Cursor for the next page of results, if any."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
-    @property
-    def clan_users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ClanUserList.ClanUser]:
+    @_builtins.property
+    def clan_users(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanUserList.ClanUser]:
         """User-role pairs for a clan."""
 
     def __init__(
         self,
         *,
-        clan_users: collections.abc.Iterable[Global___ClanUserList.ClanUser] | None = ...,
-        cursor: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        clan_users: _abc.Iterable[Global___ClanUserList.ClanUser] | None = ...,
+        cursor: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "clan_users", b"clan_users", "cursor", b"cursor"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "clan_users", b"clan_users", "cursor", b"cursor"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanUserList: typing_extensions.TypeAlias = ClanUserList
+Global___ClanUserList: _TypeAlias = ClanUserList  # noqa: Y015
 
-@typing.final
-class RegistFcmDeviceTokenRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RegistFcmDeviceTokenRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TOKEN_FIELD_NUMBER: builtins.int
-    DEVICE_ID_FIELD_NUMBER: builtins.int
-    PLATFORM_FIELD_NUMBER: builtins.int
-    VOIP_TOKEN_FIELD_NUMBER: builtins.int
-    token: builtins.str
+    TOKEN_FIELD_NUMBER: _builtins.int
+    DEVICE_ID_FIELD_NUMBER: _builtins.int
+    PLATFORM_FIELD_NUMBER: _builtins.int
+    VOIP_TOKEN_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
     """The token"""
-    device_id: builtins.str
+    device_id: _builtins.str
     """"""
-    platform: builtins.str
+    platform: _builtins.str
     """"""
-    voip_token: builtins.str
+    voip_token: _builtins.str
     """voip token for IOS"""
     def __init__(
         self,
         *,
-        token: builtins.str = ...,
-        device_id: builtins.str = ...,
-        platform: builtins.str = ...,
-        voip_token: builtins.str = ...,
+        token: _builtins.str = ...,
+        device_id: _builtins.str = ...,
+        platform: _builtins.str = ...,
+        voip_token: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["device_id", b"device_id", "platform", b"platform", "token", b"token", "voip_token", b"voip_token"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["device_id", b"device_id", "platform", b"platform", "token", b"token", "voip_token", b"voip_token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RegistFcmDeviceTokenRequest: typing_extensions.TypeAlias = RegistFcmDeviceTokenRequest
+Global___RegistFcmDeviceTokenRequest: _TypeAlias = RegistFcmDeviceTokenRequest  # noqa: Y015
 
-@typing.final
-class RegistFcmDeviceTokenResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RegistFcmDeviceTokenResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TOKEN_FIELD_NUMBER: builtins.int
-    DEVICE_ID_FIELD_NUMBER: builtins.int
-    PLATFORM_FIELD_NUMBER: builtins.int
-    token: builtins.str
+    TOKEN_FIELD_NUMBER: _builtins.int
+    DEVICE_ID_FIELD_NUMBER: _builtins.int
+    PLATFORM_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
     """The token"""
-    device_id: builtins.str
+    device_id: _builtins.int
     """"""
-    platform: builtins.str
+    platform: _builtins.str
     """"""
     def __init__(
         self,
         *,
-        token: builtins.str = ...,
-        device_id: builtins.str = ...,
-        platform: builtins.str = ...,
+        token: _builtins.str = ...,
+        device_id: _builtins.int = ...,
+        platform: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["device_id", b"device_id", "platform", b"platform", "token", b"token"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["device_id", b"device_id", "platform", b"platform", "token", b"token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RegistFcmDeviceTokenResponse: typing_extensions.TypeAlias = RegistFcmDeviceTokenResponse
+Global___RegistFcmDeviceTokenResponse: _TypeAlias = RegistFcmDeviceTokenResponse  # noqa: Y015
 
-@typing.final
-class ListChannelMessagesRequest(google.protobuf.message.Message):
+@_typing.final
+class ListChannelMessagesRequest(_message.Message):
     """List a channel's message history."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    DIRECTION_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    DIRECTION_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """the clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel ID to list from."""
-    message_id: builtins.str
+    message_id: _builtins.int
     """The current message ID."""
-    topic_id: builtins.str
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    direction: _builtins.int
+    """True if listing should be older messages to newer, false if reverse."""
+    topic_id: _builtins.int
     """"""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def direction(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """True if listing should be older messages to newer, false if reverse."""
-
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        direction: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        topic_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        direction: _builtins.int = ...,
+        topic_id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["direction", b"direction", "limit", b"limit"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "direction", b"direction", "limit", b"limit", "message_id", b"message_id", "topic_id", b"topic_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "direction", b"direction", "limit", b"limit", "message_id", b"message_id", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListChannelMessagesRequest: typing_extensions.TypeAlias = ListChannelMessagesRequest
+Global___ListChannelMessagesRequest: _TypeAlias = ListChannelMessagesRequest  # noqa: Y015
 
-@typing.final
-class ListFriendsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListFriendsRequest(_message.Message):
     """List friends for a user."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The friend state to list."""
+    cursor: _builtins.str
     """An optional next page cursor."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The friend state to list."""
-
     def __init__(
         self,
         *,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListFriendsRequest: typing_extensions.TypeAlias = ListFriendsRequest
+Global___ListFriendsRequest: _TypeAlias = ListFriendsRequest  # noqa: Y015
 
-@typing.final
-class ListGroupsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListGroupsRequest(_message.Message):
     """List groups based on given filters."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    NAME_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    LANG_TAG_FIELD_NUMBER: builtins.int
-    MEMBERS_FIELD_NUMBER: builtins.int
-    OPEN_FIELD_NUMBER: builtins.int
-    name: builtins.str
+    NAME_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    LANG_TAG_FIELD_NUMBER: _builtins.int
+    MEMBERS_FIELD_NUMBER: _builtins.int
+    OPEN_FIELD_NUMBER: _builtins.int
+    name: _builtins.str
     """List groups that contain this value in their names."""
-    cursor: builtins.str
+    cursor: _builtins.str
     """Optional pagination cursor."""
-    lang_tag: builtins.str
+    limit: _builtins.int
+    """Max number of groups to return. Between 1 and 100."""
+    lang_tag: _builtins.str
     """Language tag filter"""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of groups to return. Between 1 and 100."""
-
-    @property
-    def members(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Number of group members"""
-
-    @property
-    def open(self) -> google.protobuf.wrappers_pb2.BoolValue:
-        """Optional Open/Closed filter."""
-
+    members: _builtins.int
+    """Number of group members"""
+    open: _builtins.bool
+    """Optional Open/Closed filter."""
     def __init__(
         self,
         *,
-        name: builtins.str = ...,
-        cursor: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        lang_tag: builtins.str = ...,
-        members: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        open: google.protobuf.wrappers_pb2.BoolValue | None = ...,
+        name: _builtins.str = ...,
+        cursor: _builtins.str = ...,
+        limit: _builtins.int = ...,
+        lang_tag: _builtins.str = ...,
+        members: _builtins.int = ...,
+        open: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "members", b"members", "open", b"open"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "lang_tag", b"lang_tag", "limit", b"limit", "members", b"members", "name", b"name", "open", b"open"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "lang_tag", b"lang_tag", "limit", b"limit", "members", b"members", "name", b"name", "open", b"open"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListGroupsRequest: typing_extensions.TypeAlias = ListGroupsRequest
+Global___ListGroupsRequest: _TypeAlias = ListGroupsRequest  # noqa: Y015
 
-@typing.final
-class ListGroupUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class ListGroupUsersRequest(_message.Message):
     """List all users that are part of a group."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GROUP_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    group_id: builtins.str
+    GROUP_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    group_id: _builtins.int
     """The group ID to list from."""
-    cursor: builtins.str
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The group user state to list."""
+    cursor: _builtins.str
     """An optional next page cursor."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The group user state to list."""
-
     def __init__(
         self,
         *,
-        group_id: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        group_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "group_id", b"group_id", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "group_id", b"group_id", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListGroupUsersRequest: typing_extensions.TypeAlias = ListGroupUsersRequest
+Global___ListGroupUsersRequest: _TypeAlias = ListGroupUsersRequest  # noqa: Y015
 
-@typing.final
-class ListChannelUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class ListChannelUsersRequest(_message.Message):
     """List all users that are part of a channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel ID to list from."""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """The channel type"""
-    cursor: builtins.str
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The group user state to list."""
+    cursor: _builtins.str
     """An optional next page cursor."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The group user state to list."""
-
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_type: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "cursor", b"cursor", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "cursor", b"cursor", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListChannelUsersRequest: typing_extensions.TypeAlias = ListChannelUsersRequest
+Global___ListChannelUsersRequest: _TypeAlias = ListChannelUsersRequest  # noqa: Y015
 
-@typing.final
-class ListChannelAttachmentRequest(google.protobuf.message.Message):
+@_typing.final
+class ListChannelAttachmentRequest(_message.Message):
     """List all attachments that are part of a channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    FILE_TYPE_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    BEFORE_FIELD_NUMBER: builtins.int
-    AFTER_FIELD_NUMBER: builtins.int
-    AROUND_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    FILE_TYPE_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    BEFORE_FIELD_NUMBER: _builtins.int
+    AFTER_FIELD_NUMBER: _builtins.int
+    AROUND_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel ID to list from."""
-    file_type: builtins.str
+    file_type: _builtins.str
     """The channel type"""
-    before: builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The group user state to list."""
+    before: _builtins.int
     """An optional previous id for page."""
-    after: builtins.int
+    after: _builtins.int
     """An optional next id for page."""
-    around: builtins.int
+    around: _builtins.int
     """An optional around id for page."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The group user state to list."""
-
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        file_type: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        before: builtins.int = ...,
-        after: builtins.int = ...,
-        around: builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        file_type: _builtins.str = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        before: _builtins.int = ...,
+        after: _builtins.int = ...,
+        around: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["after", b"after", "around", b"around", "before", b"before", "channel_id", b"channel_id", "clan_id", b"clan_id", "file_type", b"file_type", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["after", b"after", "around", b"around", "before", b"before", "channel_id", b"channel_id", "clan_id", b"clan_id", "file_type", b"file_type", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListChannelAttachmentRequest: typing_extensions.TypeAlias = ListChannelAttachmentRequest
+Global___ListChannelAttachmentRequest: _TypeAlias = ListChannelAttachmentRequest  # noqa: Y015
 
-@typing.final
-class ListClanUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class ListClanUsersRequest(_message.Message):
     """List all users that are part of a clan."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan ID to list from."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListClanUsersRequest: typing_extensions.TypeAlias = ListClanUsersRequest
+Global___ListClanUsersRequest: _TypeAlias = ListClanUsersRequest  # noqa: Y015
 
-@typing.final
-class ListNotificationsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListNotificationsRequest(_message.Message):
     """Get a list of unexpired notifications."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    NOTIFICATION_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    DIRECTION_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    LIMIT_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    DIRECTION_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
+    """The number of notifications to get. Between 1 and 100."""
+    clan_id: _builtins.int
     """The clan id"""
-    notification_id: builtins.str
+    notification_id: _builtins.int
     """The current notification Id."""
-    category: builtins.int
+    category: _builtins.int
     """The category (1: mentions, 2: mesages, 3: for you)."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The number of notifications to get. Between 1 and 100."""
-
-    @property
-    def direction(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """True if listing should be older notifications to newer, false if reverse."""
-
+    direction: _builtins.int
+    """True if listing should be older notifications to newer, false if reverse."""
     def __init__(
         self,
         *,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        clan_id: builtins.str = ...,
-        notification_id: builtins.str = ...,
-        category: builtins.int = ...,
-        direction: google.protobuf.wrappers_pb2.Int32Value | None = ...,
+        limit: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        notification_id: _builtins.int = ...,
+        category: _builtins.int = ...,
+        direction: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["direction", b"direction", "limit", b"limit"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "direction", b"direction", "limit", b"limit", "notification_id", b"notification_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "direction", b"direction", "limit", b"limit", "notification_id", b"notification_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListNotificationsRequest: typing_extensions.TypeAlias = ListNotificationsRequest
+Global___ListNotificationsRequest: _TypeAlias = ListNotificationsRequest  # noqa: Y015
 
-@typing.final
-class ListUserGroupsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListUserGroupsRequest(_message.Message):
     """List the groups a user is part of, and their relationship to each."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """ID of the user."""
-    cursor: builtins.str
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The user group state to list."""
+    cursor: _builtins.str
     """An optional next page cursor."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The user group state to list."""
-
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListUserGroupsRequest: typing_extensions.TypeAlias = ListUserGroupsRequest
+Global___ListUserGroupsRequest: _TypeAlias = ListUserGroupsRequest  # noqa: Y015
 
-@typing.final
-class Notification(google.protobuf.message.Message):
+@_typing.final
+class Notification(_message.Message):
     """A notification in the server."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    SUBJECT_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    CODE_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    PERSISTENT_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    CHANNEL_FIELD_NUMBER: builtins.int
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    SUBJECT_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    CODE_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    PERSISTENT_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    CHANNEL_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """ID of the Notification."""
-    subject: builtins.str
+    subject: _builtins.str
     """Subject of the notification."""
-    content: builtins.str
+    content: _builtins.bytes
     """Content of the notification in JSON."""
-    code: builtins.int
+    code: _builtins.int
     """Category code for this notification."""
-    sender_id: builtins.str
+    sender_id: _builtins.int
     """ID of the sender, if a user. Otherwise 'null'."""
-    persistent: builtins.bool
+    create_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the notification was created."""
+    persistent: _builtins.bool
     """True if this notification was persisted to the database."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """ID of clan"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """ID of channel"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """mode of"""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """"""
-    topic_id: builtins.str
+    topic_id: _builtins.int
     """"""
-    category: builtins.int
+    category: _builtins.int
     """category."""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the notification was created."""
-
-    @property
+    @_builtins.property
     def channel(self) -> Global___ChannelDescription:
         """"""
 
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        subject: builtins.str = ...,
-        content: builtins.str = ...,
-        code: builtins.int = ...,
-        sender_id: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        persistent: builtins.bool = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        avatar_url: builtins.str = ...,
+        id: _builtins.int = ...,
+        subject: _builtins.str = ...,
+        content: _builtins.bytes = ...,
+        code: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        persistent: _builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_type: _builtins.int = ...,
+        avatar_url: _builtins.str = ...,
         channel: Global___ChannelDescription | None = ...,
-        topic_id: builtins.str = ...,
-        category: builtins.int = ...,
+        topic_id: _builtins.int = ...,
+        category: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel", b"channel", "create_time", b"create_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "category", b"category", "channel", b"channel", "channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "code", b"code", "content", b"content", "create_time", b"create_time", "id", b"id", "persistent", b"persistent", "sender_id", b"sender_id", "subject", b"subject", "topic_id", b"topic_id"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["channel", b"channel"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "category", b"category", "channel", b"channel", "channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "code", b"code", "content", b"content", "create_time_seconds", b"create_time_seconds", "id", b"id", "persistent", b"persistent", "sender_id", b"sender_id", "subject", b"subject", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Notification: typing_extensions.TypeAlias = Notification
+Global___Notification: _TypeAlias = Notification  # noqa: Y015
 
-@typing.final
-class EmojiRecent(google.protobuf.message.Message):
+@_typing.final
+class EmojiRecent(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    EMOJI_RECENTS_ID_FIELD_NUMBER: builtins.int
-    EMOJI_ID_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    emoji_recents_id: builtins.str
+    EMOJI_RECENTS_ID_FIELD_NUMBER: _builtins.int
+    EMOJI_ID_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    emoji_recents_id: _builtins.int
     """ID of the emoji."""
-    emoji_id: builtins.str
+    emoji_id: _builtins.int
     """"""
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the emoji was created."""
-
+    update_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the emoji was created."""
     def __init__(
         self,
         *,
-        emoji_recents_id: builtins.str = ...,
-        emoji_id: builtins.str = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        emoji_recents_id: _builtins.int = ...,
+        emoji_id: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["update_time", b"update_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["emoji_id", b"emoji_id", "emoji_recents_id", b"emoji_recents_id", "update_time", b"update_time"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["emoji_id", b"emoji_id", "emoji_recents_id", b"emoji_recents_id", "update_time_seconds", b"update_time_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EmojiRecent: typing_extensions.TypeAlias = EmojiRecent
+Global___EmojiRecent: _TypeAlias = EmojiRecent  # noqa: Y015
 
-@typing.final
-class EmojiRecentList(google.protobuf.message.Message):
+@_typing.final
+class EmojiRecentList(_message.Message):
     """A collection of zero or more notifications."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    EMOJI_RECENTS_FIELD_NUMBER: builtins.int
-    @property
-    def emoji_recents(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___EmojiRecent]:
+    EMOJI_RECENTS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def emoji_recents(self) -> _containers.RepeatedCompositeFieldContainer[Global___EmojiRecent]:
         """Collection of emojiRecents."""
 
     def __init__(
         self,
         *,
-        emoji_recents: collections.abc.Iterable[Global___EmojiRecent] | None = ...,
+        emoji_recents: _abc.Iterable[Global___EmojiRecent] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["emoji_recents", b"emoji_recents"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["emoji_recents", b"emoji_recents"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EmojiRecentList: typing_extensions.TypeAlias = EmojiRecentList
+Global___EmojiRecentList: _TypeAlias = EmojiRecentList  # noqa: Y015
 
-@typing.final
-class NotificationList(google.protobuf.message.Message):
+@_typing.final
+class NotificationList(_message.Message):
     """A collection of zero or more notifications."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    NOTIFICATIONS_FIELD_NUMBER: builtins.int
-    CACHEABLE_CURSOR_FIELD_NUMBER: builtins.int
-    cacheable_cursor: builtins.str
+    NOTIFICATIONS_FIELD_NUMBER: _builtins.int
+    CACHEABLE_CURSOR_FIELD_NUMBER: _builtins.int
+    cacheable_cursor: _builtins.str
     """Use this cursor to paginate notifications. Cache this to catch up to new notifications."""
-    @property
-    def notifications(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___Notification]:
+    @_builtins.property
+    def notifications(self) -> _containers.RepeatedCompositeFieldContainer[Global___Notification]:
         """Collection of notifications."""
 
     def __init__(
         self,
         *,
-        notifications: collections.abc.Iterable[Global___Notification] | None = ...,
-        cacheable_cursor: builtins.str = ...,
+        notifications: _abc.Iterable[Global___Notification] | None = ...,
+        cacheable_cursor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cacheable_cursor", b"cacheable_cursor", "notifications", b"notifications"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cacheable_cursor", b"cacheable_cursor", "notifications", b"notifications"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationList: typing_extensions.TypeAlias = NotificationList
+Global___NotificationList: _TypeAlias = NotificationList  # noqa: Y015
 
-@typing.final
-class PromoteGroupUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class PromoteGroupUsersRequest(_message.Message):
     """Promote a set of users in a group to the next role up."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GROUP_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    group_id: builtins.str
+    GROUP_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    group_id: _builtins.int
     """The group ID to promote in."""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to promote."""
 
     def __init__(
         self,
         *,
-        group_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        group_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PromoteGroupUsersRequest: typing_extensions.TypeAlias = PromoteGroupUsersRequest
+Global___PromoteGroupUsersRequest: _TypeAlias = PromoteGroupUsersRequest  # noqa: Y015
 
-@typing.final
-class DemoteGroupUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class DemoteGroupUsersRequest(_message.Message):
     """Demote a set of users in a group to the next role down."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GROUP_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    group_id: builtins.str
+    GROUP_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    group_id: _builtins.int
     """The group ID to demote in."""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to demote."""
 
     def __init__(
         self,
         *,
-        group_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        group_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["group_id", b"group_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DemoteGroupUsersRequest: typing_extensions.TypeAlias = DemoteGroupUsersRequest
+Global___DemoteGroupUsersRequest: _TypeAlias = DemoteGroupUsersRequest  # noqa: Y015
 
-@typing.final
-class Rpc(google.protobuf.message.Message):
+@_typing.final
+class Rpc(_message.Message):
     """Execute an Lua function on the server."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    PAYLOAD_FIELD_NUMBER: builtins.int
-    HTTP_KEY_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    PAYLOAD_FIELD_NUMBER: _builtins.int
+    HTTP_KEY_FIELD_NUMBER: _builtins.int
+    id: _builtins.str
     """The identifier of the function."""
-    payload: builtins.str
+    payload: _builtins.str
     """The payload of the function which must be a JSON object."""
-    http_key: builtins.str
+    http_key: _builtins.str
     """The authentication key used when executed as a non-client HTTP request."""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        payload: builtins.str = ...,
-        http_key: builtins.str = ...,
+        id: _builtins.str = ...,
+        payload: _builtins.str = ...,
+        http_key: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["http_key", b"http_key", "id", b"id", "payload", b"payload"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["http_key", b"http_key", "id", b"id", "payload", b"payload"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Rpc: typing_extensions.TypeAlias = Rpc
+Global___Rpc: _TypeAlias = Rpc  # noqa: Y015
 
-@typing.final
-class Session(google.protobuf.message.Message):
+@_typing.final
+class Session(_message.Message):
     """A user's session used to authenticate messages."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CREATED_FIELD_NUMBER: builtins.int
-    TOKEN_FIELD_NUMBER: builtins.int
-    REFRESH_TOKEN_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    IS_REMEMBER_FIELD_NUMBER: builtins.int
-    API_URL_FIELD_NUMBER: builtins.int
-    ID_TOKEN_FIELD_NUMBER: builtins.int
-    created: builtins.bool
+    CREATED_FIELD_NUMBER: _builtins.int
+    TOKEN_FIELD_NUMBER: _builtins.int
+    REFRESH_TOKEN_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    IS_REMEMBER_FIELD_NUMBER: _builtins.int
+    API_URL_FIELD_NUMBER: _builtins.int
+    ID_TOKEN_FIELD_NUMBER: _builtins.int
+    created: _builtins.bool
     """True if the corresponding account was just created, false otherwise."""
-    token: builtins.str
+    token: _builtins.str
     """Authentication credentials."""
-    refresh_token: builtins.str
+    refresh_token: _builtins.str
     """Refresh token that can be used for session token renewal."""
-    user_id: builtins.str
+    user_id: _builtins.int
     """User id"""
-    is_remember: builtins.bool
+    is_remember: _builtins.bool
     """Whether to enable "Remember Me" for extended session duration."""
-    api_url: builtins.str
+    api_url: _builtins.str
     """api url"""
-    id_token: builtins.str
+    id_token: _builtins.str
     """id token for zklogin"""
     def __init__(
         self,
         *,
-        created: builtins.bool = ...,
-        token: builtins.str = ...,
-        refresh_token: builtins.str = ...,
-        user_id: builtins.str = ...,
-        is_remember: builtins.bool = ...,
-        api_url: builtins.str = ...,
-        id_token: builtins.str = ...,
+        created: _builtins.bool = ...,
+        token: _builtins.str = ...,
+        refresh_token: _builtins.str = ...,
+        user_id: _builtins.int = ...,
+        is_remember: _builtins.bool = ...,
+        api_url: _builtins.str = ...,
+        id_token: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["api_url", b"api_url", "created", b"created", "id_token", b"id_token", "is_remember", b"is_remember", "refresh_token", b"refresh_token", "token", b"token", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_url", b"api_url", "created", b"created", "id_token", b"id_token", "is_remember", b"is_remember", "refresh_token", b"refresh_token", "token", b"token", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Session: typing_extensions.TypeAlias = Session
+Global___Session: _TypeAlias = Session  # noqa: Y015
 
-@typing.final
-class UpdateUsernameRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateUsernameRequest(_message.Message):
     """Update username"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USERNAME_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    username: builtins.str
-    display_name: builtins.str
+    USERNAME_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    username: _builtins.str
+    display_name: _builtins.str
     def __init__(
         self,
         *,
-        username: builtins.str = ...,
-        display_name: builtins.str = ...,
+        username: _builtins.str = ...,
+        display_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["display_name", b"display_name", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["display_name", b"display_name", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateUsernameRequest: typing_extensions.TypeAlias = UpdateUsernameRequest
+Global___UpdateUsernameRequest: _TypeAlias = UpdateUsernameRequest  # noqa: Y015
 
-@typing.final
-class UpdateAccountRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateAccountRequest(_message.Message):
     """Update a user's account details."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    LANG_TAG_FIELD_NUMBER: builtins.int
-    LOCATION_FIELD_NUMBER: builtins.int
-    TIMEZONE_FIELD_NUMBER: builtins.int
-    ABOUT_ME_FIELD_NUMBER: builtins.int
-    DOB_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    SPLASH_SCREEN_FIELD_NUMBER: builtins.int
-    ENCRYPT_PRIVATE_KEY_FIELD_NUMBER: builtins.int
-    EMAIL_FIELD_NUMBER: builtins.int
-    encrypt_private_key: builtins.str
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    LANG_TAG_FIELD_NUMBER: _builtins.int
+    LOCATION_FIELD_NUMBER: _builtins.int
+    TIMEZONE_FIELD_NUMBER: _builtins.int
+    ABOUT_ME_FIELD_NUMBER: _builtins.int
+    DOB_SECONDS_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    SPLASH_SCREEN_FIELD_NUMBER: _builtins.int
+    ENCRYPT_PRIVATE_KEY_FIELD_NUMBER: _builtins.int
+    EMAIL_FIELD_NUMBER: _builtins.int
+    dob_seconds: _builtins.int
+    """date of birth"""
+    encrypt_private_key: _builtins.str
     """e2ee encrypt private key"""
-    @property
-    def display_name(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def display_name(self) -> _wrappers_pb2.StringValue:
         """The display name of the user."""
 
-    @property
-    def avatar_url(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def avatar_url(self) -> _wrappers_pb2.StringValue:
         """A URL for an avatar image."""
 
-    @property
-    def lang_tag(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def lang_tag(self) -> _wrappers_pb2.StringValue:
         """The language expected to be a tag which follows the BCP-47 spec."""
 
-    @property
-    def location(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def location(self) -> _wrappers_pb2.StringValue:
         """The location set by the user."""
 
-    @property
-    def timezone(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def timezone(self) -> _wrappers_pb2.StringValue:
         """The timezone set by the user."""
 
-    @property
-    def about_me(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def about_me(self) -> _wrappers_pb2.StringValue:
         """update about me"""
 
-    @property
-    def dob(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """date of birth"""
-
-    @property
-    def logo(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def logo(self) -> _wrappers_pb2.StringValue:
         """logo url"""
 
-    @property
-    def splash_screen(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def splash_screen(self) -> _wrappers_pb2.StringValue:
         """splash screen"""
 
-    @property
-    def email(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def email(self) -> _wrappers_pb2.StringValue:
         """The email of the user's account."""
 
     def __init__(
         self,
         *,
-        display_name: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        avatar_url: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        lang_tag: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        location: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        timezone: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        about_me: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        dob: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        logo: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        splash_screen: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        encrypt_private_key: builtins.str = ...,
-        email: google.protobuf.wrappers_pb2.StringValue | None = ...,
+        display_name: _wrappers_pb2.StringValue | None = ...,
+        avatar_url: _wrappers_pb2.StringValue | None = ...,
+        lang_tag: _wrappers_pb2.StringValue | None = ...,
+        location: _wrappers_pb2.StringValue | None = ...,
+        timezone: _wrappers_pb2.StringValue | None = ...,
+        about_me: _wrappers_pb2.StringValue | None = ...,
+        dob_seconds: _builtins.int = ...,
+        logo: _wrappers_pb2.StringValue | None = ...,
+        splash_screen: _wrappers_pb2.StringValue | None = ...,
+        encrypt_private_key: _builtins.str = ...,
+        email: _wrappers_pb2.StringValue | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["about_me", b"about_me", "avatar_url", b"avatar_url", "display_name", b"display_name", "dob", b"dob", "email", b"email", "lang_tag", b"lang_tag", "location", b"location", "logo", b"logo", "splash_screen", b"splash_screen", "timezone", b"timezone"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about_me", b"about_me", "avatar_url", b"avatar_url", "display_name", b"display_name", "dob", b"dob", "email", b"email", "encrypt_private_key", b"encrypt_private_key", "lang_tag", b"lang_tag", "location", b"location", "logo", b"logo", "splash_screen", b"splash_screen", "timezone", b"timezone"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["about_me", b"about_me", "avatar_url", b"avatar_url", "display_name", b"display_name", "email", b"email", "lang_tag", b"lang_tag", "location", b"location", "logo", b"logo", "splash_screen", b"splash_screen", "timezone", b"timezone"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about_me", b"about_me", "avatar_url", b"avatar_url", "display_name", b"display_name", "dob_seconds", b"dob_seconds", "email", b"email", "encrypt_private_key", b"encrypt_private_key", "lang_tag", b"lang_tag", "location", b"location", "logo", b"logo", "splash_screen", b"splash_screen", "timezone", b"timezone"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateAccountRequest: typing_extensions.TypeAlias = UpdateAccountRequest
+Global___UpdateAccountRequest: _TypeAlias = UpdateAccountRequest  # noqa: Y015
 
-@typing.final
-class UpdateGroupRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateGroupRequest(_message.Message):
     """Update fields in a given group."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GROUP_ID_FIELD_NUMBER: builtins.int
-    NAME_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    LANG_TAG_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    OPEN_FIELD_NUMBER: builtins.int
-    group_id: builtins.str
+    GROUP_ID_FIELD_NUMBER: _builtins.int
+    NAME_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    LANG_TAG_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    OPEN_FIELD_NUMBER: _builtins.int
+    group_id: _builtins.int
     """The ID of the group to update."""
-    @property
-    def name(self) -> google.protobuf.wrappers_pb2.StringValue:
+    open: _builtins.bool
+    """Open is true if anyone should be allowed to join, or false if joins must be approved by a group admin."""
+    @_builtins.property
+    def name(self) -> _wrappers_pb2.StringValue:
         """Name."""
 
-    @property
-    def description(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def description(self) -> _wrappers_pb2.StringValue:
         """Description string."""
 
-    @property
-    def lang_tag(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def lang_tag(self) -> _wrappers_pb2.StringValue:
         """Lang tag."""
 
-    @property
-    def avatar_url(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def avatar_url(self) -> _wrappers_pb2.StringValue:
         """Avatar URL."""
 
-    @property
-    def open(self) -> google.protobuf.wrappers_pb2.BoolValue:
-        """Open is true if anyone should be allowed to join, or false if joins must be approved by a group admin."""
-
     def __init__(
         self,
         *,
-        group_id: builtins.str = ...,
-        name: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        description: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        lang_tag: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        avatar_url: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        open: google.protobuf.wrappers_pb2.BoolValue | None = ...,
+        group_id: _builtins.int = ...,
+        name: _wrappers_pb2.StringValue | None = ...,
+        description: _wrappers_pb2.StringValue | None = ...,
+        lang_tag: _wrappers_pb2.StringValue | None = ...,
+        avatar_url: _wrappers_pb2.StringValue | None = ...,
+        open: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "description", b"description", "lang_tag", b"lang_tag", "name", b"name", "open", b"open"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "description", b"description", "group_id", b"group_id", "lang_tag", b"lang_tag", "name", b"name", "open", b"open"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "description", b"description", "lang_tag", b"lang_tag", "name", b"name"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "description", b"description", "group_id", b"group_id", "lang_tag", b"lang_tag", "name", b"name", "open", b"open"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateGroupRequest: typing_extensions.TypeAlias = UpdateGroupRequest
+Global___UpdateGroupRequest: _TypeAlias = UpdateGroupRequest  # noqa: Y015
 
-@typing.final
-class UpdateCategoryDescRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateCategoryDescRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    category_id: builtins.str
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    category_id: _builtins.int
     """The ID of the group to update."""
-    category_name: builtins.str
-    clan_id: builtins.str
+    category_name: _builtins.str
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        category_id: builtins.str = ...,
-        category_name: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        category_id: _builtins.int = ...,
+        category_name: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "category_name", b"category_name", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "category_name", b"category_name", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateCategoryDescRequest: typing_extensions.TypeAlias = UpdateCategoryDescRequest
+Global___UpdateCategoryDescRequest: _TypeAlias = UpdateCategoryDescRequest  # noqa: Y015
 
-@typing.final
-class User(google.protobuf.message.Message):
+@_typing.final
+class User(_message.Message):
     """A user in the server."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    LANG_TAG_FIELD_NUMBER: builtins.int
-    LOCATION_FIELD_NUMBER: builtins.int
-    TIMEZONE_FIELD_NUMBER: builtins.int
-    USER_STATUS_FIELD_NUMBER: builtins.int
-    ONLINE_FIELD_NUMBER: builtins.int
-    PHONE_NUMBER_FIELD_NUMBER: builtins.int
-    EDGE_COUNT_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    ABOUT_ME_FIELD_NUMBER: builtins.int
-    JOIN_TIME_FIELD_NUMBER: builtins.int
-    IS_MOBILE_FIELD_NUMBER: builtins.int
-    DOB_FIELD_NUMBER: builtins.int
-    MEZON_ID_FIELD_NUMBER: builtins.int
-    LIST_NICK_NAMES_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    LANG_TAG_FIELD_NUMBER: _builtins.int
+    LOCATION_FIELD_NUMBER: _builtins.int
+    TIMEZONE_FIELD_NUMBER: _builtins.int
+    USER_STATUS_FIELD_NUMBER: _builtins.int
+    ONLINE_FIELD_NUMBER: _builtins.int
+    PHONE_NUMBER_FIELD_NUMBER: _builtins.int
+    EDGE_COUNT_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    ABOUT_ME_FIELD_NUMBER: _builtins.int
+    JOIN_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    IS_MOBILE_FIELD_NUMBER: _builtins.int
+    DOB_SECONDS_FIELD_NUMBER: _builtins.int
+    MEZON_ID_FIELD_NUMBER: _builtins.int
+    LIST_NICK_NAMES_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """The id of the user's account."""
-    username: builtins.str
+    username: _builtins.str
     """The username of the user's account."""
-    display_name: builtins.str
+    display_name: _builtins.str
     """The display name of the user."""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """A URL for an avatar image."""
-    lang_tag: builtins.str
+    lang_tag: _builtins.str
     """The language expected to be a tag which follows the BCP-47 spec."""
-    location: builtins.str
+    location: _builtins.str
     """The location set by the user."""
-    timezone: builtins.str
+    timezone: _builtins.str
     """The timezone set by the user."""
-    user_status: builtins.str
+    user_status: _builtins.str
     """custom status"""
-    online: builtins.bool
+    online: _builtins.bool
     """Indicates whether the user is currently online."""
-    phone_number: builtins.str
+    phone_number: _builtins.str
     """The phone number"""
-    edge_count: builtins.int
+    edge_count: _builtins.int
     """Number of related edges to this user."""
-    about_me: builtins.str
+    create_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user was created."""
+    update_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user was last updated."""
+    about_me: _builtins.str
     """About me"""
-    is_mobile: builtins.bool
+    join_time_seconds: _builtins.int
+    """Join time"""
+    is_mobile: _builtins.bool
     """Platform"""
-    mezon_id: builtins.str
+    dob_seconds: _builtins.int
+    """dob"""
+    mezon_id: _builtins.str
     """Mezone id"""
-    status: builtins.str
+    status: _builtins.str
     """online, offline, invisible, idle, do not disturb"""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user was created."""
-
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the user was last updated."""
-
-    @property
-    def join_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """Join time"""
-
-    @property
-    def dob(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """dob"""
-
-    @property
-    def list_nick_names(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def list_nick_names(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """list clan nick name"""
 
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        username: builtins.str = ...,
-        display_name: builtins.str = ...,
-        avatar_url: builtins.str = ...,
-        lang_tag: builtins.str = ...,
-        location: builtins.str = ...,
-        timezone: builtins.str = ...,
-        user_status: builtins.str = ...,
-        online: builtins.bool = ...,
-        phone_number: builtins.str = ...,
-        edge_count: builtins.int = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        about_me: builtins.str = ...,
-        join_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        is_mobile: builtins.bool = ...,
-        dob: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        mezon_id: builtins.str = ...,
-        list_nick_names: collections.abc.Iterable[builtins.str] | None = ...,
-        status: builtins.str = ...,
+        id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        avatar_url: _builtins.str = ...,
+        lang_tag: _builtins.str = ...,
+        location: _builtins.str = ...,
+        timezone: _builtins.str = ...,
+        user_status: _builtins.str = ...,
+        online: _builtins.bool = ...,
+        phone_number: _builtins.str = ...,
+        edge_count: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        about_me: _builtins.str = ...,
+        join_time_seconds: _builtins.int = ...,
+        is_mobile: _builtins.bool = ...,
+        dob_seconds: _builtins.int = ...,
+        mezon_id: _builtins.str = ...,
+        list_nick_names: _abc.Iterable[_builtins.str] | None = ...,
+        status: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "dob", b"dob", "join_time", b"join_time", "update_time", b"update_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about_me", b"about_me", "avatar_url", b"avatar_url", "create_time", b"create_time", "display_name", b"display_name", "dob", b"dob", "edge_count", b"edge_count", "id", b"id", "is_mobile", b"is_mobile", "join_time", b"join_time", "lang_tag", b"lang_tag", "list_nick_names", b"list_nick_names", "location", b"location", "mezon_id", b"mezon_id", "online", b"online", "phone_number", b"phone_number", "status", b"status", "timezone", b"timezone", "update_time", b"update_time", "user_status", b"user_status", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about_me", b"about_me", "avatar_url", b"avatar_url", "create_time_seconds", b"create_time_seconds", "display_name", b"display_name", "dob_seconds", b"dob_seconds", "edge_count", b"edge_count", "id", b"id", "is_mobile", b"is_mobile", "join_time_seconds", b"join_time_seconds", "lang_tag", b"lang_tag", "list_nick_names", b"list_nick_names", "location", b"location", "mezon_id", b"mezon_id", "online", b"online", "phone_number", b"phone_number", "status", b"status", "timezone", b"timezone", "update_time_seconds", b"update_time_seconds", "user_status", b"user_status", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___User: typing_extensions.TypeAlias = User
+Global___User: _TypeAlias = User  # noqa: Y015
 
-@typing.final
-class Users(google.protobuf.message.Message):
+@_typing.final
+class Users(_message.Message):
     """A collection of zero or more users."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USERS_FIELD_NUMBER: builtins.int
-    @property
-    def users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___User]:
+    USERS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def users(self) -> _containers.RepeatedCompositeFieldContainer[Global___User]:
         """The User objects."""
 
     def __init__(
         self,
         *,
-        users: collections.abc.Iterable[Global___User] | None = ...,
+        users: _abc.Iterable[Global___User] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["users", b"users"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["users", b"users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Users: typing_extensions.TypeAlias = Users
+Global___Users: _TypeAlias = Users  # noqa: Y015
 
-@typing.final
-class ClanDescProfile(google.protobuf.message.Message):
+@_typing.final
+class ClanDescProfile(_message.Message):
     """Clan profile information"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    NICK_NAME_FIELD_NUMBER: builtins.int
-    PROFILE_BANNER_FIELD_NUMBER: builtins.int
-    PROFILE_THEME_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    NICK_NAME_FIELD_NUMBER: _builtins.int
+    PROFILE_BANNER_FIELD_NUMBER: _builtins.int
+    PROFILE_THEME_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """Clan id"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """Clan creator"""
-    nick_name: builtins.str
+    nick_name: _builtins.str
     """Clan nick name"""
-    profile_banner: builtins.str
+    profile_banner: _builtins.str
     """Clan profile banner"""
-    profile_theme: builtins.str
+    profile_theme: _builtins.str
     """Clan profile theme"""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """Clan profile avatar"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        nick_name: builtins.str = ...,
-        profile_banner: builtins.str = ...,
-        profile_theme: builtins.str = ...,
-        avatar_url: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        nick_name: _builtins.str = ...,
+        profile_banner: _builtins.str = ...,
+        profile_theme: _builtins.str = ...,
+        avatar_url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "clan_id", b"clan_id", "creator_id", b"creator_id", "nick_name", b"nick_name", "profile_banner", b"profile_banner", "profile_theme", b"profile_theme"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "clan_id", b"clan_id", "creator_id", b"creator_id", "nick_name", b"nick_name", "profile_banner", b"profile_banner", "profile_theme", b"profile_theme"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanDescProfile: typing_extensions.TypeAlias = ClanDescProfile
+Global___ClanDescProfile: _TypeAlias = ClanDescProfile  # noqa: Y015
 
-@typing.final
-class UpdateClanDescProfileRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateClanDescProfileRequest(_message.Message):
     """Update Clan profile information"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    NICK_NAME_FIELD_NUMBER: builtins.int
-    PROFILE_BANNER_FIELD_NUMBER: builtins.int
-    PROFILE_THEME_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    NICK_NAME_FIELD_NUMBER: _builtins.int
+    PROFILE_BANNER_FIELD_NUMBER: _builtins.int
+    PROFILE_THEME_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """Clan id"""
-    nick_name: builtins.str
+    nick_name: _builtins.str
     """Clan nick name"""
-    profile_banner: builtins.str
+    profile_banner: _builtins.str
     """Clan profile banner"""
-    profile_theme: builtins.str
+    profile_theme: _builtins.str
     """Clan profile theme"""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """Clan profile avatar"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        nick_name: builtins.str = ...,
-        profile_banner: builtins.str = ...,
-        profile_theme: builtins.str = ...,
-        avatar_url: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        nick_name: _builtins.str = ...,
+        profile_banner: _builtins.str = ...,
+        profile_theme: _builtins.str = ...,
+        avatar_url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "clan_id", b"clan_id", "nick_name", b"nick_name", "profile_banner", b"profile_banner", "profile_theme", b"profile_theme"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "clan_id", b"clan_id", "nick_name", b"nick_name", "profile_banner", b"profile_banner", "profile_theme", b"profile_theme"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateClanDescProfileRequest: typing_extensions.TypeAlias = UpdateClanDescProfileRequest
+Global___UpdateClanDescProfileRequest: _TypeAlias = UpdateClanDescProfileRequest  # noqa: Y015
 
-@typing.final
-class ClanDescProfileRequest(google.protobuf.message.Message):
+@_typing.final
+class ClanDescProfileRequest(_message.Message):
     """Clan profile information"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """Clan id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanDescProfileRequest: typing_extensions.TypeAlias = ClanDescProfileRequest
+Global___ClanDescProfileRequest: _TypeAlias = ClanDescProfileRequest  # noqa: Y015
 
-@typing.final
-class ClanDesc(google.protobuf.message.Message):
+@_typing.final
+class ClanDesc(_message.Message):
     """Clan information"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    BANNER_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    BADGE_COUNT_FIELD_NUMBER: builtins.int
-    IS_ONBOARDING_FIELD_NUMBER: builtins.int
-    WELCOME_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ONBOARDING_BANNER_FIELD_NUMBER: builtins.int
-    CLAN_ORDER_FIELD_NUMBER: builtins.int
-    IS_COMMUNITY_FIELD_NUMBER: builtins.int
-    COMMUNITY_BANNER_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    ABOUT_FIELD_NUMBER: builtins.int
-    SHORT_URL_FIELD_NUMBER: builtins.int
-    PREVENT_ANONYMOUS_FIELD_NUMBER: builtins.int
-    HAS_UNREAD_MESSAGE_FIELD_NUMBER: builtins.int
-    creator_id: builtins.str
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    BANNER_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    BADGE_COUNT_FIELD_NUMBER: _builtins.int
+    IS_ONBOARDING_FIELD_NUMBER: _builtins.int
+    WELCOME_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ONBOARDING_BANNER_FIELD_NUMBER: _builtins.int
+    CLAN_ORDER_FIELD_NUMBER: _builtins.int
+    IS_COMMUNITY_FIELD_NUMBER: _builtins.int
+    COMMUNITY_BANNER_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    ABOUT_FIELD_NUMBER: _builtins.int
+    SHORT_URL_FIELD_NUMBER: _builtins.int
+    PREVENT_ANONYMOUS_FIELD_NUMBER: _builtins.int
+    HAS_UNREAD_MESSAGE_FIELD_NUMBER: _builtins.int
+    creator_id: _builtins.int
     """Clan creator"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """Clan name"""
-    logo: builtins.str
+    logo: _builtins.str
     """Clan logo"""
-    banner: builtins.str
+    banner: _builtins.str
     """Clan banner"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """Clan id"""
-    status: builtins.int
+    status: _builtins.int
     """Clan status"""
-    badge_count: builtins.int
+    badge_count: _builtins.int
     """Badge count"""
-    is_onboarding: builtins.bool
+    is_onboarding: _builtins.bool
     """Is onboarding."""
-    welcome_channel_id: builtins.str
+    welcome_channel_id: _builtins.int
     """Welcome channel id."""
-    onboarding_banner: builtins.str
+    onboarding_banner: _builtins.str
     """Onboarding_banner."""
-    clan_order: builtins.int
+    clan_order: _builtins.int
     """clan order"""
-    is_community: builtins.bool
+    is_community: _builtins.bool
     """is community"""
-    community_banner: builtins.str
+    community_banner: _builtins.str
     """community banner"""
-    description: builtins.str
+    description: _builtins.str
     """description"""
-    about: builtins.str
+    about: _builtins.str
     """about"""
-    short_url: builtins.str
+    short_url: _builtins.str
     """short_url"""
-    prevent_anonymous: builtins.bool
+    prevent_anonymous: _builtins.bool
     """prevent anonymous"""
-    has_unread_message: builtins.bool
+    has_unread_message: _builtins.bool
     """has unread message"""
     def __init__(
         self,
         *,
-        creator_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        logo: builtins.str = ...,
-        banner: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        status: builtins.int = ...,
-        badge_count: builtins.int = ...,
-        is_onboarding: builtins.bool = ...,
-        welcome_channel_id: builtins.str = ...,
-        onboarding_banner: builtins.str = ...,
-        clan_order: builtins.int = ...,
-        is_community: builtins.bool = ...,
-        community_banner: builtins.str = ...,
-        description: builtins.str = ...,
-        about: builtins.str = ...,
-        short_url: builtins.str = ...,
-        prevent_anonymous: builtins.bool = ...,
-        has_unread_message: builtins.bool = ...,
+        creator_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        logo: _builtins.str = ...,
+        banner: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        status: _builtins.int = ...,
+        badge_count: _builtins.int = ...,
+        is_onboarding: _builtins.bool = ...,
+        welcome_channel_id: _builtins.int = ...,
+        onboarding_banner: _builtins.str = ...,
+        clan_order: _builtins.int = ...,
+        is_community: _builtins.bool = ...,
+        community_banner: _builtins.str = ...,
+        description: _builtins.str = ...,
+        about: _builtins.str = ...,
+        short_url: _builtins.str = ...,
+        prevent_anonymous: _builtins.bool = ...,
+        has_unread_message: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about", b"about", "badge_count", b"badge_count", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "clan_order", b"clan_order", "community_banner", b"community_banner", "creator_id", b"creator_id", "description", b"description", "has_unread_message", b"has_unread_message", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "short_url", b"short_url", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "badge_count", b"badge_count", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "clan_order", b"clan_order", "community_banner", b"community_banner", "creator_id", b"creator_id", "description", b"description", "has_unread_message", b"has_unread_message", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "short_url", b"short_url", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanDesc: typing_extensions.TypeAlias = ClanDesc
+Global___ClanDesc: _TypeAlias = ClanDesc  # noqa: Y015
 
-@typing.final
-class CreateClanDescRequest(google.protobuf.message.Message):
+@_typing.final
+class CreateClanDescRequest(_message.Message):
     """Clan information"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    BANNER_FIELD_NUMBER: builtins.int
-    clan_name: builtins.str
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    BANNER_FIELD_NUMBER: _builtins.int
+    clan_name: _builtins.str
     """Clan name"""
-    logo: builtins.str
+    logo: _builtins.str
     """Clan logo"""
-    banner: builtins.str
+    banner: _builtins.str
     """Clan banner"""
     def __init__(
         self,
         *,
-        clan_name: builtins.str = ...,
-        logo: builtins.str = ...,
-        banner: builtins.str = ...,
+        clan_name: _builtins.str = ...,
+        logo: _builtins.str = ...,
+        banner: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["banner", b"banner", "clan_name", b"clan_name", "logo", b"logo"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["banner", b"banner", "clan_name", b"clan_name", "logo", b"logo"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateClanDescRequest: typing_extensions.TypeAlias = CreateClanDescRequest
+Global___CreateClanDescRequest: _TypeAlias = CreateClanDescRequest  # noqa: Y015
 
-@typing.final
-class UpdateClanDescRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateClanDescRequest(_message.Message):
     """Update Clan information"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    BANNER_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    IS_ONBOARDING_FIELD_NUMBER: builtins.int
-    WELCOME_CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ONBOARDING_BANNER_FIELD_NUMBER: builtins.int
-    IS_COMMUNITY_FIELD_NUMBER: builtins.int
-    COMMUNITY_BANNER_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    ABOUT_FIELD_NUMBER: builtins.int
-    SHORT_URL_FIELD_NUMBER: builtins.int
-    PREVENT_ANONYMOUS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    clan_name: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    BANNER_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    IS_ONBOARDING_FIELD_NUMBER: _builtins.int
+    WELCOME_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ONBOARDING_BANNER_FIELD_NUMBER: _builtins.int
+    IS_COMMUNITY_FIELD_NUMBER: _builtins.int
+    COMMUNITY_BANNER_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    ABOUT_FIELD_NUMBER: _builtins.int
+    SHORT_URL_FIELD_NUMBER: _builtins.int
+    PREVENT_ANONYMOUS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    clan_name: _builtins.str
     """Clan name"""
-    status: builtins.int
+    status: _builtins.int
     """Clan status"""
-    welcome_channel_id: builtins.str
+    welcome_channel_id: _builtins.int
     """Welcome channel id."""
-    prevent_anonymous: builtins.bool
+    prevent_anonymous: _builtins.bool
     """Prevent anonymous"""
-    @property
-    def logo(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def logo(self) -> _wrappers_pb2.StringValue:
         """Clan logo"""
 
-    @property
-    def banner(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def banner(self) -> _wrappers_pb2.StringValue:
         """Clan banner"""
 
-    @property
-    def is_onboarding(self) -> google.protobuf.wrappers_pb2.BoolValue:
+    @_builtins.property
+    def is_onboarding(self) -> _wrappers_pb2.BoolValue:
         """Is onboarding."""
 
-    @property
-    def onboarding_banner(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def onboarding_banner(self) -> _wrappers_pb2.StringValue:
         """Onboarding_banner."""
 
-    @property
-    def is_community(self) -> google.protobuf.wrappers_pb2.BoolValue:
+    @_builtins.property
+    def is_community(self) -> _wrappers_pb2.BoolValue:
         """Enable community."""
 
-    @property
-    def community_banner(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def community_banner(self) -> _wrappers_pb2.StringValue:
         """Community banner."""
 
-    @property
-    def description(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def description(self) -> _wrappers_pb2.StringValue:
         """string description"""
 
-    @property
-    def about(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def about(self) -> _wrappers_pb2.StringValue:
         """About"""
 
-    @property
-    def short_url(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def short_url(self) -> _wrappers_pb2.StringValue:
         """Short url for community"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        logo: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        banner: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        status: builtins.int = ...,
-        is_onboarding: google.protobuf.wrappers_pb2.BoolValue | None = ...,
-        welcome_channel_id: builtins.str = ...,
-        onboarding_banner: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        is_community: google.protobuf.wrappers_pb2.BoolValue | None = ...,
-        community_banner: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        description: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        about: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        short_url: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        prevent_anonymous: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        logo: _wrappers_pb2.StringValue | None = ...,
+        banner: _wrappers_pb2.StringValue | None = ...,
+        status: _builtins.int = ...,
+        is_onboarding: _wrappers_pb2.BoolValue | None = ...,
+        welcome_channel_id: _builtins.int = ...,
+        onboarding_banner: _wrappers_pb2.StringValue | None = ...,
+        is_community: _wrappers_pb2.BoolValue | None = ...,
+        community_banner: _wrappers_pb2.StringValue | None = ...,
+        description: _wrappers_pb2.StringValue | None = ...,
+        about: _wrappers_pb2.StringValue | None = ...,
+        short_url: _wrappers_pb2.StringValue | None = ...,
+        prevent_anonymous: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["about", b"about", "banner", b"banner", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "short_url", b"short_url"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "short_url", b"short_url", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "banner", b"banner", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "short_url", b"short_url"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "short_url", b"short_url", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateClanDescRequest: typing_extensions.TypeAlias = UpdateClanDescRequest
+Global___UpdateClanDescRequest: _TypeAlias = UpdateClanDescRequest  # noqa: Y015
 
-@typing.final
-class DeleteClanDescRequest(google.protobuf.message.Message):
+@_typing.final
+class DeleteClanDescRequest(_message.Message):
     """Delete a clan the user has access to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_DESC_ID_FIELD_NUMBER: builtins.int
-    clan_desc_id: builtins.str
+    CLAN_DESC_ID_FIELD_NUMBER: _builtins.int
+    clan_desc_id: _builtins.int
     """The id of a group."""
     def __init__(
         self,
         *,
-        clan_desc_id: builtins.str = ...,
+        clan_desc_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_desc_id", b"clan_desc_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_desc_id", b"clan_desc_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteClanDescRequest: typing_extensions.TypeAlias = DeleteClanDescRequest
+Global___DeleteClanDescRequest: _TypeAlias = DeleteClanDescRequest  # noqa: Y015
 
-@typing.final
-class ListClanDescRequest(google.protobuf.message.Message):
+@_typing.final
+class ListClanDescRequest(_message.Message):
     """List (and optionally filter) channels."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The friend state to list."""
+    cursor: _builtins.str
     """Cursor to start from"""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The friend state to list."""
-
     def __init__(
         self,
         *,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListClanDescRequest: typing_extensions.TypeAlias = ListClanDescRequest
+Global___ListClanDescRequest: _TypeAlias = ListClanDescRequest  # noqa: Y015
 
-@typing.final
-class ListClanUnreadMsgIndicatorRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListClanUnreadMsgIndicatorRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListClanUnreadMsgIndicatorRequest: typing_extensions.TypeAlias = ListClanUnreadMsgIndicatorRequest
+Global___ListClanUnreadMsgIndicatorRequest: _TypeAlias = ListClanUnreadMsgIndicatorRequest  # noqa: Y015
 
-@typing.final
-class ListClanUnreadMsgIndicatorResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListClanUnreadMsgIndicatorResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    HAS_UNREAD_MESSAGE_FIELD_NUMBER: builtins.int
-    has_unread_message: builtins.bool
+    HAS_UNREAD_MESSAGE_FIELD_NUMBER: _builtins.int
+    has_unread_message: _builtins.bool
     def __init__(
         self,
         *,
-        has_unread_message: builtins.bool = ...,
+        has_unread_message: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["has_unread_message", b"has_unread_message"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["has_unread_message", b"has_unread_message"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListClanUnreadMsgIndicatorResponse: typing_extensions.TypeAlias = ListClanUnreadMsgIndicatorResponse
+Global___ListClanUnreadMsgIndicatorResponse: _TypeAlias = ListClanUnreadMsgIndicatorResponse  # noqa: Y015
 
-@typing.final
-class ClanDescList(google.protobuf.message.Message):
+@_typing.final
+class ClanDescList(_message.Message):
     """A list of clan"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLANDESC_FIELD_NUMBER: builtins.int
-    @property
-    def clandesc(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ClanDesc]:
+    CLANDESC_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def clandesc(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanDesc]:
         """A list of channel."""
 
     def __init__(
         self,
         *,
-        clandesc: collections.abc.Iterable[Global___ClanDesc] | None = ...,
+        clandesc: _abc.Iterable[Global___ClanDesc] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clandesc", b"clandesc"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clandesc", b"clandesc"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanDescList: typing_extensions.TypeAlias = ClanDescList
+Global___ClanDescList: _TypeAlias = ClanDescList  # noqa: Y015
 
-@typing.final
-class LinkInviteUserRequest(google.protobuf.message.Message):
+@_typing.final
+class LinkInviteUserRequest(_message.Message):
     """Add link invite users to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    EXPIRY_TIME_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    EXPIRY_TIME_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """id clan to add link to ."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """id channel to add link to."""
-    expiry_time: builtins.int
+    expiry_time: _builtins.int
     """expiry time"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        expiry_time: builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        expiry_time: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "expiry_time", b"expiry_time"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "expiry_time", b"expiry_time"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LinkInviteUserRequest: typing_extensions.TypeAlias = LinkInviteUserRequest
+Global___LinkInviteUserRequest: _TypeAlias = LinkInviteUserRequest  # noqa: Y015
 
-@typing.final
-class InviteUserRequest(google.protobuf.message.Message):
+@_typing.final
+class InviteUserRequest(_message.Message):
     """Add link invite users to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    INVITE_ID_FIELD_NUMBER: builtins.int
-    invite_id: builtins.str
+    INVITE_ID_FIELD_NUMBER: _builtins.int
+    invite_id: _builtins.int
     """id clan to add link to ."""
     def __init__(
         self,
         *,
-        invite_id: builtins.str = ...,
+        invite_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["invite_id", b"invite_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["invite_id", b"invite_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___InviteUserRequest: typing_extensions.TypeAlias = InviteUserRequest
+Global___InviteUserRequest: _TypeAlias = InviteUserRequest  # noqa: Y015
 
-@typing.final
-class InviteUserRes(google.protobuf.message.Message):
+@_typing.final
+class InviteUserRes(_message.Message):
     """Add link invite users to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    USER_JOINED_FIELD_NUMBER: builtins.int
-    EXPIRY_TIME_FIELD_NUMBER: builtins.int
-    CHANNEL_DESC_FIELD_NUMBER: builtins.int
-    CLAN_LOGO_FIELD_NUMBER: builtins.int
-    MEMBER_COUNT_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    USER_JOINED_FIELD_NUMBER: _builtins.int
+    EXPIRY_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    CHANNEL_DESC_FIELD_NUMBER: _builtins.int
+    CLAN_LOGO_FIELD_NUMBER: _builtins.int
+    MEMBER_COUNT_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """id clan to add link to ."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """id channel to add link to."""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan name"""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """channel name"""
-    user_joined: builtins.bool
+    user_joined: _builtins.bool
     """check user exist"""
-    clan_logo: builtins.str
-    member_count: builtins.int
-    @property
-    def expiry_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """expiry_time"""
-
-    @property
+    expiry_time_seconds: _builtins.int
+    """expiry_time"""
+    clan_logo: _builtins.str
+    member_count: _builtins.int
+    @_builtins.property
     def channel_desc(self) -> Global___ChannelDescription:
         """"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        user_joined: builtins.bool = ...,
-        expiry_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        channel_label: _builtins.str = ...,
+        user_joined: _builtins.bool = ...,
+        expiry_time_seconds: _builtins.int = ...,
         channel_desc: Global___ChannelDescription | None = ...,
-        clan_logo: builtins.str = ...,
-        member_count: builtins.int = ...,
+        clan_logo: _builtins.str = ...,
+        member_count: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_desc", b"channel_desc", "expiry_time", b"expiry_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_desc", b"channel_desc", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "clan_logo", b"clan_logo", "clan_name", b"clan_name", "expiry_time", b"expiry_time", "member_count", b"member_count", "user_joined", b"user_joined"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["channel_desc", b"channel_desc"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_desc", b"channel_desc", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "clan_logo", b"clan_logo", "clan_name", b"clan_name", "expiry_time_seconds", b"expiry_time_seconds", "member_count", b"member_count", "user_joined", b"user_joined"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___InviteUserRes: typing_extensions.TypeAlias = InviteUserRes
+Global___InviteUserRes: _TypeAlias = InviteUserRes  # noqa: Y015
 
-@typing.final
-class JoinClanChannelRequest(google.protobuf.message.Message):
+@_typing.final
+class JoinClanChannelRequest(_message.Message):
     """Add link invite users to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """id clan to add link to ."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """id channel to add link to."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___JoinClanChannelRequest: typing_extensions.TypeAlias = JoinClanChannelRequest
+Global___JoinClanChannelRequest: _TypeAlias = JoinClanChannelRequest  # noqa: Y015
 
-@typing.final
-class LinkInviteUser(google.protobuf.message.Message):
+@_typing.final
+class LinkInviteUser(_message.Message):
     """Add link invite users to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    INVITE_LINK_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    EXPIRY_TIME_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    INVITE_LINK_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    EXPIRY_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """id clan"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """The user to add."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """is clan invite"""
-    invite_link: builtins.str
+    invite_link: _builtins.str
     """link invite"""
-    id: builtins.str
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """create time"""
-
-    @property
-    def expiry_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """expiry time"""
-
+    create_time_seconds: _builtins.int
+    """create time"""
+    expiry_time_seconds: _builtins.int
+    """expiry time"""
+    id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        invite_link: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        expiry_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        invite_link: _builtins.str = ...,
+        create_time_seconds: _builtins.int = ...,
+        expiry_time_seconds: _builtins.int = ...,
+        id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "expiry_time", b"expiry_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "create_time", b"create_time", "creator_id", b"creator_id", "expiry_time", b"expiry_time", "id", b"id", "invite_link", b"invite_link"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "expiry_time_seconds", b"expiry_time_seconds", "id", b"id", "invite_link", b"invite_link"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LinkInviteUser: typing_extensions.TypeAlias = LinkInviteUser
+Global___LinkInviteUser: _TypeAlias = LinkInviteUser  # noqa: Y015
 
-@typing.final
-class ClanProfile(google.protobuf.message.Message):
+@_typing.final
+class ClanProfile(_message.Message):
     """Get clan profile."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    NICK_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ABOUT_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    NICK_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ABOUT_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
     """id user to find user"""
-    nick_name: builtins.str
+    nick_name: _builtins.str
     """name user"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """id avatar"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """id clan"""
-    about: builtins.str
+    about: _builtins.str
     """about clan"""
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        nick_name: builtins.str = ...,
-        avatar: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        about: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        nick_name: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        about: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about", b"about", "avatar", b"avatar", "clan_id", b"clan_id", "nick_name", b"nick_name", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "avatar", b"avatar", "clan_id", b"clan_id", "nick_name", b"nick_name", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanProfile: typing_extensions.TypeAlias = ClanProfile
+Global___ClanProfile: _TypeAlias = ClanProfile  # noqa: Y015
 
-@typing.final
-class ClanProfileRequest(google.protobuf.message.Message):
+@_typing.final
+class ClanProfileRequest(_message.Message):
     """information user by clan requset"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """id clanc"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanProfileRequest: typing_extensions.TypeAlias = ClanProfileRequest
+Global___ClanProfileRequest: _TypeAlias = ClanProfileRequest  # noqa: Y015
 
-@typing.final
-class UpdateClanProfileRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateClanProfileRequest(_message.Message):
     """update nickname user by clan requset"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    NICK_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    NICK_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """id clanc"""
-    @property
-    def nick_name(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def nick_name(self) -> _wrappers_pb2.StringValue:
         """nick_name new"""
 
-    @property
-    def avatar(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def avatar(self) -> _wrappers_pb2.StringValue:
         """avatar"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        nick_name: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        avatar: google.protobuf.wrappers_pb2.StringValue | None = ...,
+        clan_id: _builtins.int = ...,
+        nick_name: _wrappers_pb2.StringValue | None = ...,
+        avatar: _wrappers_pb2.StringValue | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "nick_name", b"nick_name"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "nick_name", b"nick_name"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "nick_name", b"nick_name"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "nick_name", b"nick_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateClanProfileRequest: typing_extensions.TypeAlias = UpdateClanProfileRequest
+Global___UpdateClanProfileRequest: _TypeAlias = UpdateClanProfileRequest  # noqa: Y015
 
-@typing.final
-class UpdateClanOrderRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateClanOrderRequest(_message.Message):
     """Update Clan Order Request"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class ClanOrder(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class ClanOrder(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        ORDER_FIELD_NUMBER: builtins.int
-        CLAN_ID_FIELD_NUMBER: builtins.int
-        order: builtins.int
-        clan_id: builtins.str
+        ORDER_FIELD_NUMBER: _builtins.int
+        CLAN_ID_FIELD_NUMBER: _builtins.int
+        order: _builtins.int
+        clan_id: _builtins.int
         def __init__(
             self,
             *,
-            order: builtins.int = ...,
-            clan_id: builtins.str = ...,
+            order: _builtins.int = ...,
+            clan_id: _builtins.int = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "order", b"order"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "order", b"order"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    CLANS_ORDER_FIELD_NUMBER: builtins.int
-    @property
-    def clans_order(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UpdateClanOrderRequest.ClanOrder]: ...
+    CLANS_ORDER_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def clans_order(self) -> _containers.RepeatedCompositeFieldContainer[Global___UpdateClanOrderRequest.ClanOrder]: ...
     def __init__(
         self,
         *,
-        clans_order: collections.abc.Iterable[Global___UpdateClanOrderRequest.ClanOrder] | None = ...,
+        clans_order: _abc.Iterable[Global___UpdateClanOrderRequest.ClanOrder] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clans_order", b"clans_order"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clans_order", b"clans_order"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateClanOrderRequest: typing_extensions.TypeAlias = UpdateClanOrderRequest
+Global___UpdateClanOrderRequest: _TypeAlias = UpdateClanOrderRequest  # noqa: Y015
 
-@typing.final
-class CategoryDesc(google.protobuf.message.Message):
+@_typing.final
+class CategoryDesc(_message.Message):
     """Category to group the channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ORDER_FIELD_NUMBER: builtins.int
-    creator_id: builtins.str
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ORDER_FIELD_NUMBER: _builtins.int
+    creator_id: _builtins.int
     """Category creator"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """the Clan that category belong to"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """Category name"""
-    category_id: builtins.str
-    category_order: builtins.int
+    category_id: _builtins.int
+    category_order: _builtins.int
     def __init__(
         self,
         *,
-        creator_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        category_name: builtins.str = ...,
-        category_id: builtins.str = ...,
-        category_order: builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        category_name: _builtins.str = ...,
+        category_id: _builtins.int = ...,
+        category_order: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "category_name", b"category_name", "category_order", b"category_order", "clan_id", b"clan_id", "creator_id", b"creator_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "category_name", b"category_name", "category_order", b"category_order", "clan_id", b"clan_id", "creator_id", b"creator_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CategoryDesc: typing_extensions.TypeAlias = CategoryDesc
+Global___CategoryDesc: _TypeAlias = CategoryDesc  # noqa: Y015
 
-@typing.final
-class UpdateCategoryOrderRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateCategoryOrderRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CATEGORIES_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    @property
-    def categories(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___CategoryOrderUpdate]: ...
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORIES_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    @_builtins.property
+    def categories(self) -> _containers.RepeatedCompositeFieldContainer[Global___CategoryOrderUpdate]: ...
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        categories: collections.abc.Iterable[Global___CategoryOrderUpdate] | None = ...,
+        clan_id: _builtins.int = ...,
+        categories: _abc.Iterable[Global___CategoryOrderUpdate] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["categories", b"categories", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["categories", b"categories", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateCategoryOrderRequest: typing_extensions.TypeAlias = UpdateCategoryOrderRequest
+Global___UpdateCategoryOrderRequest: _TypeAlias = UpdateCategoryOrderRequest  # noqa: Y015
 
-@typing.final
-class UpdateRoleOrderRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateRoleOrderRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ROLES_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    @property
-    def roles(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___RoleOrderUpdate]: ...
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ROLES_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    @_builtins.property
+    def roles(self) -> _containers.RepeatedCompositeFieldContainer[Global___RoleOrderUpdate]: ...
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        roles: collections.abc.Iterable[Global___RoleOrderUpdate] | None = ...,
+        clan_id: _builtins.int = ...,
+        roles: _abc.Iterable[Global___RoleOrderUpdate] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "roles", b"roles"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "roles", b"roles"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateRoleOrderRequest: typing_extensions.TypeAlias = UpdateRoleOrderRequest
+Global___UpdateRoleOrderRequest: _TypeAlias = UpdateRoleOrderRequest  # noqa: Y015
 
-@typing.final
-class RoleOrderUpdate(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RoleOrderUpdate(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    ORDER_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
-    order: builtins.int
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    ORDER_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
+    order: _builtins.int
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
-        order: builtins.int = ...,
+        role_id: _builtins.int = ...,
+        order: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["order", b"order", "role_id", b"role_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["order", b"order", "role_id", b"role_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RoleOrderUpdate: typing_extensions.TypeAlias = RoleOrderUpdate
+Global___RoleOrderUpdate: _TypeAlias = RoleOrderUpdate  # noqa: Y015
 
-@typing.final
-class CategoryOrderUpdate(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CategoryOrderUpdate(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    ORDER_FIELD_NUMBER: builtins.int
-    category_id: builtins.str
-    order: builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    ORDER_FIELD_NUMBER: _builtins.int
+    category_id: _builtins.int
+    order: _builtins.int
     def __init__(
         self,
         *,
-        category_id: builtins.str = ...,
-        order: builtins.int = ...,
+        category_id: _builtins.int = ...,
+        order: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "order", b"order"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "order", b"order"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CategoryOrderUpdate: typing_extensions.TypeAlias = CategoryOrderUpdate
+Global___CategoryOrderUpdate: _TypeAlias = CategoryOrderUpdate  # noqa: Y015
 
-@typing.final
-class CreateCategoryDescRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CreateCategoryDescRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    category_name: builtins.str
-    clan_id: builtins.str
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    category_name: _builtins.str
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        category_name: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        category_name: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_name", b"category_name", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateCategoryDescRequest: typing_extensions.TypeAlias = CreateCategoryDescRequest
+Global___CreateCategoryDescRequest: _TypeAlias = CreateCategoryDescRequest  # noqa: Y015
 
-@typing.final
-class DeleteCategoryDescRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DeleteCategoryDescRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_LABEL_FIELD_NUMBER: builtins.int
-    category_id: builtins.str
-    clan_id: builtins.str
-    category_label: builtins.str
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_LABEL_FIELD_NUMBER: _builtins.int
+    category_id: _builtins.int
+    clan_id: _builtins.int
+    category_label: _builtins.str
     def __init__(
         self,
         *,
-        category_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        category_label: builtins.str = ...,
+        category_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        category_label: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "category_label", b"category_label", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "category_label", b"category_label", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteCategoryDescRequest: typing_extensions.TypeAlias = DeleteCategoryDescRequest
+Global___DeleteCategoryDescRequest: _TypeAlias = DeleteCategoryDescRequest  # noqa: Y015
 
-@typing.final
-class CategoryDescList(google.protobuf.message.Message):
+@_typing.final
+class CategoryDescList(_message.Message):
     """A list of clan"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CATEGORYDESC_FIELD_NUMBER: builtins.int
-    @property
-    def categorydesc(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___CategoryDesc]:
+    CATEGORYDESC_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def categorydesc(self) -> _containers.RepeatedCompositeFieldContainer[Global___CategoryDesc]:
         """A list of channel."""
 
     def __init__(
         self,
         *,
-        categorydesc: collections.abc.Iterable[Global___CategoryDesc] | None = ...,
+        categorydesc: _abc.Iterable[Global___CategoryDesc] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["categorydesc", b"categorydesc"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["categorydesc", b"categorydesc"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CategoryDescList: typing_extensions.TypeAlias = CategoryDescList
+Global___CategoryDescList: _TypeAlias = CategoryDescList  # noqa: Y015
 
-@typing.final
-class ListCategoryDescsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListCategoryDescsRequest(_message.Message):
     """List (and optionally filter) channels."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The friend state to list."""
+    cursor: _builtins.str
     """Cursor to start from"""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The friend state to list."""
-
     def __init__(
         self,
         *,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListCategoryDescsRequest: typing_extensions.TypeAlias = ListCategoryDescsRequest
+Global___ListCategoryDescsRequest: _TypeAlias = ListCategoryDescsRequest  # noqa: Y015
 
-@typing.final
-class ChannelMessageHeader(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelMessageHeader(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    TIMESTAMP_SECONDS_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    ATTACHMENT_FIELD_NUMBER: builtins.int
-    REFERENCE_FIELD_NUMBER: builtins.int
-    MENTION_FIELD_NUMBER: builtins.int
-    REACTION_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    TIMESTAMP_SECONDS_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """the message id"""
-    timestamp_seconds: builtins.int
+    timestamp_seconds: _builtins.int
     """the time stamp"""
-    sender_id: builtins.str
+    sender_id: _builtins.int
     """the sender id"""
-    content: builtins.str
+    content: _builtins.str
     """the content"""
-    attachment: builtins.str
-    """the attachment"""
-    reference: builtins.str
-    """the reference"""
-    mention: builtins.str
-    """the mention"""
-    reaction: builtins.str
-    """the reactions"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        timestamp_seconds: builtins.int = ...,
-        sender_id: builtins.str = ...,
-        content: builtins.str = ...,
-        attachment: builtins.str = ...,
-        reference: builtins.str = ...,
-        mention: builtins.str = ...,
-        reaction: builtins.str = ...,
+        id: _builtins.int = ...,
+        timestamp_seconds: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+        content: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachment", b"attachment", "content", b"content", "id", b"id", "mention", b"mention", "reaction", b"reaction", "reference", b"reference", "sender_id", b"sender_id", "timestamp_seconds", b"timestamp_seconds"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["content", b"content", "id", b"id", "sender_id", b"sender_id", "timestamp_seconds", b"timestamp_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelMessageHeader: typing_extensions.TypeAlias = ChannelMessageHeader
+Global___ChannelMessageHeader: _TypeAlias = ChannelMessageHeader  # noqa: Y015
 
-@typing.final
-class ChannelDescriptionOld(google.protobuf.message.Message):
+@_typing.final
+class ChannelDescription(_message.Message):
     """Channel description record"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    AVATARS_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    LAST_SENT_MESSAGE_FIELD_NUMBER: builtins.int
-    LAST_SEEN_MESSAGE_FIELD_NUMBER: builtins.int
-    ONLINES_FIELD_NUMBER: builtins.int
-    MEETING_CODE_FIELD_NUMBER: builtins.int
-    COUNT_MESS_UNREAD_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    LAST_PIN_MESSAGE_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    CREATOR_NAME_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECONDS_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_SECONDS_FIELD_NUMBER: builtins.int
-    DISPLAY_NAMES_FIELD_NUMBER: builtins.int
-    CHANNEL_AVATAR_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    APP_ID_FIELD_NUMBER: builtins.int
-    IS_MUTE_FIELD_NUMBER: builtins.int
-    AGE_RESTRICTED_FIELD_NUMBER: builtins.int
-    TOPIC_FIELD_NUMBER: builtins.int
-    E2EE_FIELD_NUMBER: builtins.int
-    MEMBER_COUNT_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_NAME_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    AVATARS_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    LAST_SENT_MESSAGE_FIELD_NUMBER: _builtins.int
+    LAST_SEEN_MESSAGE_FIELD_NUMBER: _builtins.int
+    ONLINES_FIELD_NUMBER: _builtins.int
+    MEETING_CODE_FIELD_NUMBER: _builtins.int
+    COUNT_MESS_UNREAD_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    LAST_PIN_MESSAGE_FIELD_NUMBER: _builtins.int
+    USERNAMES_FIELD_NUMBER: _builtins.int
+    CREATOR_NAME_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAMES_FIELD_NUMBER: _builtins.int
+    CHANNEL_AVATAR_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    IS_MUTE_FIELD_NUMBER: _builtins.int
+    AGE_RESTRICTED_FIELD_NUMBER: _builtins.int
+    TOPIC_FIELD_NUMBER: _builtins.int
+    E2EE_FIELD_NUMBER: _builtins.int
+    MEMBER_COUNT_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan of this channel"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """The parent channel this message belongs to."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel this message belongs to."""
-    category_id: builtins.str
+    category_id: _builtins.int
     """The category of channel"""
-    category_name: builtins.str
+    category_name: _builtins.str
     """The category name"""
-    creator_id: builtins.str
-    """creator ID."""
-    channel_label: builtins.str
-    """The channel lable"""
-    channel_private: builtins.int
-    """The channel private"""
-    meeting_code: builtins.str
-    """meeting code"""
-    count_mess_unread: builtins.int
-    """count message unread"""
-    active: builtins.int
-    """active channel"""
-    last_pin_message: builtins.str
-    """last pin message"""
-    creator_name: builtins.str
-    """creator name"""
-    create_time_seconds: builtins.int
-    """create time ms"""
-    update_time_seconds: builtins.int
-    """update time ms"""
-    channel_avatar: builtins.str
-    """channel avatar"""
-    clan_name: builtins.str
-    """clan_name"""
-    app_id: builtins.str
-    """app id"""
-    is_mute: builtins.bool
-    """channel all message"""
-    age_restricted: builtins.int
-    """age restricted"""
-    topic: builtins.str
-    """channel description topic"""
-    e2ee: builtins.int
-    """e2ee"""
-    member_count: builtins.int
-    """channel member count"""
-    @property
-    def type(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The channel type."""
-
-    @property
-    def avatars(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
-        """DM avatars"""
-
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
-        """List DM user ids"""
-
-    @property
-    def last_sent_message(self) -> Global___ChannelMessageHeader:
-        """last message id"""
-
-    @property
-    def last_seen_message(self) -> Global___ChannelMessageHeader:
-        """last seen message id"""
-
-    @property
-    def onlines(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.bool]:
-        """DM status"""
-
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
-        """List DM usernames"""
-
-    @property
-    def display_names(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
-        """List DM diplay names"""
-
-    def __init__(
-        self,
-        *,
-        clan_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        category_name: builtins.str = ...,
-        type: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        creator_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        channel_private: builtins.int = ...,
-        avatars: collections.abc.Iterable[builtins.str] | None = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        last_sent_message: Global___ChannelMessageHeader | None = ...,
-        last_seen_message: Global___ChannelMessageHeader | None = ...,
-        onlines: collections.abc.Iterable[builtins.bool] | None = ...,
-        meeting_code: builtins.str = ...,
-        count_mess_unread: builtins.int = ...,
-        active: builtins.int = ...,
-        last_pin_message: builtins.str = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
-        creator_name: builtins.str = ...,
-        create_time_seconds: builtins.int = ...,
-        update_time_seconds: builtins.int = ...,
-        display_names: collections.abc.Iterable[builtins.str] | None = ...,
-        channel_avatar: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        app_id: builtins.str = ...,
-        is_mute: builtins.bool = ...,
-        age_restricted: builtins.int = ...,
-        topic: builtins.str = ...,
-        e2ee: builtins.int = ...,
-        member_count: builtins.int = ...,
-    ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message", "type", b"type"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "avatars", b"avatars", "category_id", b"category_id", "category_name", b"category_name", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "count_mess_unread", b"count_mess_unread", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "creator_name", b"creator_name", "display_names", b"display_names", "e2ee", b"e2ee", "is_mute", b"is_mute", "last_pin_message", b"last_pin_message", "last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "member_count", b"member_count", "onlines", b"onlines", "parent_id", b"parent_id", "topic", b"topic", "type", b"type", "update_time_seconds", b"update_time_seconds", "user_ids", b"user_ids", "usernames", b"usernames"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___ChannelDescriptionOld: typing_extensions.TypeAlias = ChannelDescriptionOld
-
-@typing.final
-class ChannelDescription(google.protobuf.message.Message):
-    """Channel description record"""
-
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_NAME_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    AVATARS_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    LAST_SENT_MESSAGE_FIELD_NUMBER: builtins.int
-    LAST_SEEN_MESSAGE_FIELD_NUMBER: builtins.int
-    ONLINES_FIELD_NUMBER: builtins.int
-    MEETING_CODE_FIELD_NUMBER: builtins.int
-    COUNT_MESS_UNREAD_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    LAST_PIN_MESSAGE_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    CREATOR_NAME_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECONDS_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_SECONDS_FIELD_NUMBER: builtins.int
-    DISPLAY_NAMES_FIELD_NUMBER: builtins.int
-    CHANNEL_AVATAR_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    APP_ID_FIELD_NUMBER: builtins.int
-    IS_MUTE_FIELD_NUMBER: builtins.int
-    AGE_RESTRICTED_FIELD_NUMBER: builtins.int
-    TOPIC_FIELD_NUMBER: builtins.int
-    E2EE_FIELD_NUMBER: builtins.int
-    MEMBER_COUNT_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    """The clan of this channel"""
-    parent_id: builtins.str
-    """The parent channel this message belongs to."""
-    channel_id: builtins.str
-    """The channel this message belongs to."""
-    category_id: builtins.str
-    """The category of channel"""
-    category_name: builtins.str
-    """The category name"""
-    type: builtins.int
+    type: _builtins.int
     """The channel type.
-    google.protobuf.Int32Value type = 6;
+    int32 type = 6;
     """
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator ID."""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """The channel lable"""
-    channel_private: builtins.int
+    channel_private: _builtins.int
     """The channel private"""
-    meeting_code: builtins.str
+    meeting_code: _builtins.str
     """meeting code"""
-    count_mess_unread: builtins.int
+    count_mess_unread: _builtins.int
     """count message unread"""
-    active: builtins.int
+    active: _builtins.int
     """active channel"""
-    last_pin_message: builtins.str
+    last_pin_message: _builtins.str
     """last pin message"""
-    creator_name: builtins.str
+    creator_name: _builtins.str
     """creator name"""
-    create_time_seconds: builtins.int
+    create_time_seconds: _builtins.int
     """create time ms"""
-    update_time_seconds: builtins.int
+    update_time_seconds: _builtins.int
     """update time ms"""
-    channel_avatar: builtins.str
+    channel_avatar: _builtins.str
     """channel avatar"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan_name"""
-    app_id: builtins.str
+    app_id: _builtins.int
     """app id"""
-    is_mute: builtins.bool
+    is_mute: _builtins.bool
     """channel all message"""
-    age_restricted: builtins.int
+    age_restricted: _builtins.int
     """age restricted"""
-    topic: builtins.str
+    topic: _builtins.str
     """channel description topic"""
-    e2ee: builtins.int
+    e2ee: _builtins.int
     """e2ee"""
-    member_count: builtins.int
+    member_count: _builtins.int
     """channel member count"""
-    @property
-    def avatars(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def avatars(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """DM avatars"""
 
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """List DM user ids"""
 
-    @property
+    @_builtins.property
     def last_sent_message(self) -> Global___ChannelMessageHeader:
         """last message id"""
 
-    @property
+    @_builtins.property
     def last_seen_message(self) -> Global___ChannelMessageHeader:
         """last seen message id"""
 
-    @property
-    def onlines(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.bool]:
+    @_builtins.property
+    def onlines(self) -> _containers.RepeatedScalarFieldContainer[_builtins.bool]:
         """DM status"""
 
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def usernames(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """List DM usernames"""
 
-    @property
-    def display_names(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def display_names(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """List DM diplay names"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        category_name: builtins.str = ...,
-        type: builtins.int = ...,
-        creator_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        channel_private: builtins.int = ...,
-        avatars: collections.abc.Iterable[builtins.str] | None = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        clan_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        category_name: _builtins.str = ...,
+        type: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
+        channel_private: _builtins.int = ...,
+        avatars: _abc.Iterable[_builtins.str] | None = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
         last_sent_message: Global___ChannelMessageHeader | None = ...,
         last_seen_message: Global___ChannelMessageHeader | None = ...,
-        onlines: collections.abc.Iterable[builtins.bool] | None = ...,
-        meeting_code: builtins.str = ...,
-        count_mess_unread: builtins.int = ...,
-        active: builtins.int = ...,
-        last_pin_message: builtins.str = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
-        creator_name: builtins.str = ...,
-        create_time_seconds: builtins.int = ...,
-        update_time_seconds: builtins.int = ...,
-        display_names: collections.abc.Iterable[builtins.str] | None = ...,
-        channel_avatar: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        app_id: builtins.str = ...,
-        is_mute: builtins.bool = ...,
-        age_restricted: builtins.int = ...,
-        topic: builtins.str = ...,
-        e2ee: builtins.int = ...,
-        member_count: builtins.int = ...,
+        onlines: _abc.Iterable[_builtins.bool] | None = ...,
+        meeting_code: _builtins.str = ...,
+        count_mess_unread: _builtins.int = ...,
+        active: _builtins.int = ...,
+        last_pin_message: _builtins.str = ...,
+        usernames: _abc.Iterable[_builtins.str] | None = ...,
+        creator_name: _builtins.str = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        display_names: _abc.Iterable[_builtins.str] | None = ...,
+        channel_avatar: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
+        app_id: _builtins.int = ...,
+        is_mute: _builtins.bool = ...,
+        age_restricted: _builtins.int = ...,
+        topic: _builtins.str = ...,
+        e2ee: _builtins.int = ...,
+        member_count: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "avatars", b"avatars", "category_id", b"category_id", "category_name", b"category_name", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "count_mess_unread", b"count_mess_unread", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "creator_name", b"creator_name", "display_names", b"display_names", "e2ee", b"e2ee", "is_mute", b"is_mute", "last_pin_message", b"last_pin_message", "last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "member_count", b"member_count", "onlines", b"onlines", "parent_id", b"parent_id", "topic", b"topic", "type", b"type", "update_time_seconds", b"update_time_seconds", "user_ids", b"user_ids", "usernames", b"usernames"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "avatars", b"avatars", "category_id", b"category_id", "category_name", b"category_name", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "count_mess_unread", b"count_mess_unread", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "creator_name", b"creator_name", "display_names", b"display_names", "e2ee", b"e2ee", "is_mute", b"is_mute", "last_pin_message", b"last_pin_message", "last_seen_message", b"last_seen_message", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "member_count", b"member_count", "onlines", b"onlines", "parent_id", b"parent_id", "topic", b"topic", "type", b"type", "update_time_seconds", b"update_time_seconds", "user_ids", b"user_ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelDescription: typing_extensions.TypeAlias = ChannelDescription
+Global___ChannelDescription: _TypeAlias = ChannelDescription  # noqa: Y015
 
-@typing.final
-class ChannelDescList(google.protobuf.message.Message):
+@_typing.final
+class ChannelDescList(_message.Message):
     """A list of channel description, usually a result of a list operation."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNELDESC_FIELD_NUMBER: builtins.int
-    PAGE_FIELD_NUMBER: builtins.int
-    page: builtins.int
-    """Page thread"""
-    @property
-    def channeldesc(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ChannelDescription]:
+    CHANNELDESC_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def channeldesc(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelDescription]:
         """A list of channel."""
 
     def __init__(
         self,
         *,
-        channeldesc: collections.abc.Iterable[Global___ChannelDescription] | None = ...,
-        page: builtins.int = ...,
+        channeldesc: _abc.Iterable[Global___ChannelDescription] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channeldesc", b"channeldesc", "page", b"page"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channeldesc", b"channeldesc"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelDescList: typing_extensions.TypeAlias = ChannelDescList
+Global___ChannelDescList: _TypeAlias = ChannelDescList  # noqa: Y015
 
-@typing.final
-class ListThreadRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelDescListNoPool(_message.Message):
+    """A list of channel description, usually a result of a list operation."""
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    THREAD_ID_FIELD_NUMBER: builtins.int
-    PAGE_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    """The clan of this channel"""
-    channel_id: builtins.str
-    """channel id"""
-    thread_id: builtins.str
-    """thread id"""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The channel state to list."""
-
-    @property
-    def page(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Number of page"""
+    CHANNELDESC_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    page: _builtins.int
+    """Page thread"""
+    @_builtins.property
+    def channeldesc(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelDescription]:
+        """A list of channel."""
 
     def __init__(
         self,
         *,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        thread_id: builtins.str = ...,
-        page: google.protobuf.wrappers_pb2.Int32Value | None = ...,
+        channeldesc: _abc.Iterable[Global___ChannelDescription] | None = ...,
+        page: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "page", b"page", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "limit", b"limit", "page", b"page", "state", b"state", "thread_id", b"thread_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channeldesc", b"channeldesc", "page", b"page"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListThreadRequest: typing_extensions.TypeAlias = ListThreadRequest
+Global___ChannelDescListNoPool: _TypeAlias = ChannelDescListNoPool  # noqa: Y015
 
-@typing.final
-class ListChannelDescsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListThreadRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    THREAD_ID_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The channel state to list."""
+    clan_id: _builtins.int
+    """The clan of this channel"""
+    channel_id: _builtins.int
+    """channel id"""
+    thread_id: _builtins.int
+    """thread id"""
+    page: _builtins.int
+    """Number of page"""
+    def __init__(
+        self,
+        *,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        thread_id: _builtins.int = ...,
+        page: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "limit", b"limit", "page", b"page", "state", b"state", "thread_id", b"thread_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListThreadRequest: _TypeAlias = ListThreadRequest  # noqa: Y015
+
+@_typing.final
+class ListChannelDescsRequest(_message.Message):
     """List (and optionally filter) channels."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    IS_MOBILE_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    IS_MOBILE_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    state: _builtins.int
+    """The channel state to list."""
+    cursor: _builtins.str
     """Cursor to start from"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """The clan of this channel"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """channel type"""
-    is_mobile: builtins.bool
+    is_mobile: _builtins.bool
     """is mobile"""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def state(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The channel state to list."""
-
     def __init__(
         self,
         *,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        state: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        is_mobile: builtins.bool = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_type: _builtins.int = ...,
+        is_mobile: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "state", b"state"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_type", b"channel_type", "clan_id", b"clan_id", "cursor", b"cursor", "is_mobile", b"is_mobile", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_type", b"channel_type", "clan_id", b"clan_id", "cursor", b"cursor", "is_mobile", b"is_mobile", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListChannelDescsRequest: typing_extensions.TypeAlias = ListChannelDescsRequest
+Global___ListChannelDescsRequest: _TypeAlias = ListChannelDescsRequest  # noqa: Y015
 
-@typing.final
-class ListChannelDetailRequest(google.protobuf.message.Message):
+@_typing.final
+class ListChannelDetailRequest(_message.Message):
     """List channel description detail"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """channel id"""
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListChannelDetailRequest: typing_extensions.TypeAlias = ListChannelDetailRequest
+Global___ListChannelDetailRequest: _TypeAlias = ListChannelDetailRequest  # noqa: Y015
 
-@typing.final
-class AddRoleChannelDescRequest(google.protobuf.message.Message):
+@_typing.final
+class AddRoleChannelDescRequest(_message.Message):
     """Add a role for channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_IDS_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    ROLE_IDS_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """This is a channel that needs more roles"""
-    @property
-    def role_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def role_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """This is the role that needs to be added to the channel"""
 
     def __init__(
         self,
         *,
-        role_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        channel_id: builtins.str = ...,
+        role_ids: _abc.Iterable[_builtins.int] | None = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "role_ids", b"role_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "role_ids", b"role_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddRoleChannelDescRequest: typing_extensions.TypeAlias = AddRoleChannelDescRequest
+Global___AddRoleChannelDescRequest: _TypeAlias = AddRoleChannelDescRequest  # noqa: Y015
 
-@typing.final
-class CreateChannelDescRequest(google.protobuf.message.Message):
+@_typing.final
+class CreateChannelDescRequest(_message.Message):
     """Create a channel within clan."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    APP_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan of this channel"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """The parent channel this message belongs to."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel this message belongs to."""
-    category_id: builtins.str
+    category_id: _builtins.int
     """The category of channel"""
-    channel_label: builtins.str
+    type: _builtins.int
+    """The channel type."""
+    channel_label: _builtins.str
     """The channel lable"""
-    channel_private: builtins.int
+    channel_private: _builtins.int
     """The channel private"""
-    app_id: builtins.str
+    app_id: _builtins.int
     """app url for channel type app"""
-    @property
-    def type(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """The channel type."""
-
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to add."""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        type: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        channel_label: builtins.str = ...,
-        channel_private: builtins.int = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        app_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        type: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
+        channel_private: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        app_id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["type", b"type"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "parent_id", b"parent_id", "type", b"type", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "parent_id", b"parent_id", "type", b"type", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateChannelDescRequest: typing_extensions.TypeAlias = CreateChannelDescRequest
+Global___CreateChannelDescRequest: _TypeAlias = CreateChannelDescRequest  # noqa: Y015
 
-@typing.final
-class DeleteChannelDescRequest(google.protobuf.message.Message):
+@_typing.final
+class DeleteChannelDescRequest(_message.Message):
     """Delete a channel the user has access to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The id of a channel."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteChannelDescRequest: typing_extensions.TypeAlias = DeleteChannelDescRequest
+Global___DeleteChannelDescRequest: _TypeAlias = DeleteChannelDescRequest  # noqa: Y015
 
-@typing.final
-class UpdateChannelDescRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateChannelDescRequest(_message.Message):
     """Update fields in a given channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    APP_ID_FIELD_NUMBER: builtins.int
-    TOPIC_FIELD_NUMBER: builtins.int
-    AGE_RESTRICTED_FIELD_NUMBER: builtins.int
-    E2EE_FIELD_NUMBER: builtins.int
-    CHANNEL_AVATAR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    TOPIC_FIELD_NUMBER: _builtins.int
+    AGE_RESTRICTED_FIELD_NUMBER: _builtins.int
+    E2EE_FIELD_NUMBER: _builtins.int
+    CHANNEL_AVATAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan ID"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The ID of the channel to update."""
-    app_id: builtins.str
+    category_id: _builtins.int
+    """The category of channel"""
+    app_id: _builtins.int
     """app url for channel type app"""
-    topic: builtins.str
+    topic: _builtins.str
     """topic"""
-    age_restricted: builtins.int
+    age_restricted: _builtins.int
     """"""
-    e2ee: builtins.int
+    e2ee: _builtins.int
     """"""
-    @property
-    def channel_label(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def channel_label(self) -> _wrappers_pb2.StringValue:
         """The channel lable"""
 
-    @property
-    def category_id(self) -> google.protobuf.wrappers_pb2.StringValue:
-        """The category of channel"""
-
-    @property
-    def channel_avatar(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def channel_avatar(self) -> _wrappers_pb2.StringValue:
         """channel avatar"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_label: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        category_id: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        app_id: builtins.str = ...,
-        topic: builtins.str = ...,
-        age_restricted: builtins.int = ...,
-        e2ee: builtins.int = ...,
-        channel_avatar: google.protobuf.wrappers_pb2.StringValue | None = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_label: _wrappers_pb2.StringValue | None = ...,
+        category_id: _builtins.int = ...,
+        app_id: _builtins.int = ...,
+        topic: _builtins.str = ...,
+        age_restricted: _builtins.int = ...,
+        e2ee: _builtins.int = ...,
+        channel_avatar: _wrappers_pb2.StringValue | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_label", b"channel_label"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "e2ee", b"e2ee", "topic", b"topic"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["channel_avatar", b"channel_avatar", "channel_label", b"channel_label"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "e2ee", b"e2ee", "topic", b"topic"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateChannelDescRequest: typing_extensions.TypeAlias = UpdateChannelDescRequest
+Global___UpdateChannelDescRequest: _TypeAlias = UpdateChannelDescRequest  # noqa: Y015
 
-@typing.final
-class ChangeChannelPrivateRequest(google.protobuf.message.Message):
+@_typing.final
+class ChangeChannelPrivateRequest(_message.Message):
     """Update fields in a given channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    ROLE_IDS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    ROLE_IDS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan ID"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The ID of the channel to update."""
-    channel_private: builtins.int
+    channel_private: _builtins.int
     """The channel private"""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to add."""
 
-    @property
-    def role_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def role_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """This is the role that needs to be added to the channel"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_private: builtins.int = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        role_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_private: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        role_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_private", b"channel_private", "clan_id", b"clan_id", "role_ids", b"role_ids", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_private", b"channel_private", "clan_id", b"clan_id", "role_ids", b"role_ids", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChangeChannelPrivateRequest: typing_extensions.TypeAlias = ChangeChannelPrivateRequest
+Global___ChangeChannelPrivateRequest: _TypeAlias = ChangeChannelPrivateRequest  # noqa: Y015
 
-@typing.final
-class AddChannelUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class AddChannelUsersRequest(_message.Message):
     """Add users to a channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """The channel to add users to."""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to add."""
 
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        channel_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddChannelUsersRequest: typing_extensions.TypeAlias = AddChannelUsersRequest
+Global___AddChannelUsersRequest: _TypeAlias = AddChannelUsersRequest  # noqa: Y015
 
-@typing.final
-class RemoveChannelUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class RemoveChannelUsersRequest(_message.Message):
     """Kick a set of users from a channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """The channel ID to kick from."""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to kick."""
 
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        channel_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RemoveChannelUsersRequest: typing_extensions.TypeAlias = RemoveChannelUsersRequest
+Global___RemoveChannelUsersRequest: _TypeAlias = RemoveChannelUsersRequest  # noqa: Y015
 
-@typing.final
-class RemoveClanUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class RemoveClanUsersRequest(_message.Message):
     """Kick a set of users from a clan."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan ID to kick from."""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to kick."""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        clan_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RemoveClanUsersRequest: typing_extensions.TypeAlias = RemoveClanUsersRequest
+Global___RemoveClanUsersRequest: _TypeAlias = RemoveClanUsersRequest  # noqa: Y015
 
-@typing.final
-class BanClanUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class BanClanUsersRequest(_message.Message):
     """Ban a set of users from a channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    BAN_TIME_FIELD_NUMBER: builtins.int
-    REASON_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    BAN_TIME_FIELD_NUMBER: _builtins.int
+    REASON_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan ID to kick from."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel ID to ban"""
-    ban_time: builtins.int
+    ban_time: _builtins.int
     """ban time"""
-    reason: builtins.str
+    reason: _builtins.str
     """The reason"""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to kick."""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        ban_time: builtins.int = ...,
-        reason: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        ban_time: _builtins.int = ...,
+        reason: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["ban_time", b"ban_time", "channel_id", b"channel_id", "clan_id", b"clan_id", "reason", b"reason", "user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["ban_time", b"ban_time", "channel_id", b"channel_id", "clan_id", b"clan_id", "reason", b"reason", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BanClanUsersRequest: typing_extensions.TypeAlias = BanClanUsersRequest
+Global___BanClanUsersRequest: _TypeAlias = BanClanUsersRequest  # noqa: Y015
 
-@typing.final
-class BannedUser(google.protobuf.message.Message):
+@_typing.final
+class BannedUser(_message.Message):
     """list banned user"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    BANNED_ID_FIELD_NUMBER: builtins.int
-    BANNER_ID_FIELD_NUMBER: builtins.int
-    BAN_TIME_FIELD_NUMBER: builtins.int
-    REASON_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    BANNED_ID_FIELD_NUMBER: _builtins.int
+    BANNER_ID_FIELD_NUMBER: _builtins.int
+    BAN_TIME_FIELD_NUMBER: _builtins.int
+    REASON_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """The channel ID to ban"""
-    banned_id: builtins.str
+    banned_id: _builtins.int
     """The banned user."""
-    banner_id: builtins.str
+    banner_id: _builtins.int
     """The avatar"""
-    ban_time: builtins.int
+    ban_time: _builtins.int
     """ban time"""
-    reason: builtins.str
+    reason: _builtins.str
     """The reason"""
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        banned_id: builtins.str = ...,
-        banner_id: builtins.str = ...,
-        ban_time: builtins.int = ...,
-        reason: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        banned_id: _builtins.int = ...,
+        banner_id: _builtins.int = ...,
+        ban_time: _builtins.int = ...,
+        reason: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["ban_time", b"ban_time", "banned_id", b"banned_id", "banner_id", b"banner_id", "channel_id", b"channel_id", "reason", b"reason"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["ban_time", b"ban_time", "banned_id", b"banned_id", "banner_id", b"banner_id", "channel_id", b"channel_id", "reason", b"reason"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BannedUser: typing_extensions.TypeAlias = BannedUser
+Global___BannedUser: _TypeAlias = BannedUser  # noqa: Y015
 
-@typing.final
-class BannedUserListRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class BannedUserListRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    channel_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BannedUserListRequest: typing_extensions.TypeAlias = BannedUserListRequest
+Global___BannedUserListRequest: _TypeAlias = BannedUserListRequest  # noqa: Y015
 
-@typing.final
-class BannedUserList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class BannedUserList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    BANNED_USERS_FIELD_NUMBER: builtins.int
-    @property
-    def banned_users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___BannedUser]: ...
+    BANNED_USERS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def banned_users(self) -> _containers.RepeatedCompositeFieldContainer[Global___BannedUser]: ...
     def __init__(
         self,
         *,
-        banned_users: collections.abc.Iterable[Global___BannedUser] | None = ...,
+        banned_users: _abc.Iterable[Global___BannedUser] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["banned_users", b"banned_users"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["banned_users", b"banned_users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___BannedUserList: typing_extensions.TypeAlias = BannedUserList
+Global___BannedUserList: _TypeAlias = BannedUserList  # noqa: Y015
 
-@typing.final
-class LeaveThreadRequest(google.protobuf.message.Message):
+@_typing.final
+class LeaveThreadRequest(_message.Message):
     """Leave a channel."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    channel_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
     """The channel ID to leave."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LeaveThreadRequest: typing_extensions.TypeAlias = LeaveThreadRequest
+Global___LeaveThreadRequest: _TypeAlias = LeaveThreadRequest  # noqa: Y015
 
-@typing.final
-class Role(google.protobuf.message.Message):
+@_typing.final
+class Role(_message.Message):
     """Role record"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    COLOR_FIELD_NUMBER: builtins.int
-    ROLE_ICON_FIELD_NUMBER: builtins.int
-    SLUG_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    DISPLAY_ONLINE_FIELD_NUMBER: builtins.int
-    ALLOW_MENTION_FIELD_NUMBER: builtins.int
-    ROLE_USER_LIST_FIELD_NUMBER: builtins.int
-    PERMISSION_LIST_FIELD_NUMBER: builtins.int
-    ROLE_CHANNEL_ACTIVE_FIELD_NUMBER: builtins.int
-    CHANNEL_IDS_FIELD_NUMBER: builtins.int
-    MAX_LEVEL_PERMISSION_FIELD_NUMBER: builtins.int
-    ORDER_ROLE_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    COLOR_FIELD_NUMBER: _builtins.int
+    ROLE_ICON_FIELD_NUMBER: _builtins.int
+    SLUG_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    DISPLAY_ONLINE_FIELD_NUMBER: _builtins.int
+    ALLOW_MENTION_FIELD_NUMBER: _builtins.int
+    ROLE_USER_LIST_FIELD_NUMBER: _builtins.int
+    PERMISSION_LIST_FIELD_NUMBER: _builtins.int
+    ROLE_CHANNEL_ACTIVE_FIELD_NUMBER: _builtins.int
+    CHANNEL_IDS_FIELD_NUMBER: _builtins.int
+    MAX_LEVEL_PERMISSION_FIELD_NUMBER: _builtins.int
+    ORDER_ROLE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Role id"""
-    title: builtins.str
-    color: builtins.str
-    role_icon: builtins.str
-    slug: builtins.str
-    description: builtins.str
-    creator_id: builtins.str
-    clan_id: builtins.str
-    active: builtins.int
-    display_online: builtins.int
-    allow_mention: builtins.int
-    role_channel_active: builtins.int
-    max_level_permission: builtins.int
-    order_role: builtins.int
-    @property
+    title: _builtins.str
+    color: _builtins.str
+    role_icon: _builtins.str
+    slug: _builtins.str
+    description: _builtins.str
+    creator_id: _builtins.int
+    clan_id: _builtins.int
+    active: _builtins.int
+    display_online: _builtins.int
+    allow_mention: _builtins.int
+    role_channel_active: _builtins.int
+    max_level_permission: _builtins.int
+    order_role: _builtins.int
+    @_builtins.property
     def role_user_list(self) -> Global___RoleUserList: ...
-    @property
+    @_builtins.property
     def permission_list(self) -> Global___PermissionList: ...
-    @property
-    def channel_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    @_builtins.property
+    def channel_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        title: builtins.str = ...,
-        color: builtins.str = ...,
-        role_icon: builtins.str = ...,
-        slug: builtins.str = ...,
-        description: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        active: builtins.int = ...,
-        display_online: builtins.int = ...,
-        allow_mention: builtins.int = ...,
+        id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        color: _builtins.str = ...,
+        role_icon: _builtins.str = ...,
+        slug: _builtins.str = ...,
+        description: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        active: _builtins.int = ...,
+        display_online: _builtins.int = ...,
+        allow_mention: _builtins.int = ...,
         role_user_list: Global___RoleUserList | None = ...,
         permission_list: Global___PermissionList | None = ...,
-        role_channel_active: builtins.int = ...,
-        channel_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        max_level_permission: builtins.int = ...,
-        order_role: builtins.int = ...,
+        role_channel_active: _builtins.int = ...,
+        channel_ids: _abc.Iterable[_builtins.int] | None = ...,
+        max_level_permission: _builtins.int = ...,
+        order_role: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["permission_list", b"permission_list", "role_user_list", b"role_user_list"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "allow_mention", b"allow_mention", "channel_ids", b"channel_ids", "clan_id", b"clan_id", "color", b"color", "creator_id", b"creator_id", "description", b"description", "display_online", b"display_online", "id", b"id", "max_level_permission", b"max_level_permission", "order_role", b"order_role", "permission_list", b"permission_list", "role_channel_active", b"role_channel_active", "role_icon", b"role_icon", "role_user_list", b"role_user_list", "slug", b"slug", "title", b"title"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["permission_list", b"permission_list", "role_user_list", b"role_user_list"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "allow_mention", b"allow_mention", "channel_ids", b"channel_ids", "clan_id", b"clan_id", "color", b"color", "creator_id", b"creator_id", "description", b"description", "display_online", b"display_online", "id", b"id", "max_level_permission", b"max_level_permission", "order_role", b"order_role", "permission_list", b"permission_list", "role_channel_active", b"role_channel_active", "role_icon", b"role_icon", "role_user_list", b"role_user_list", "slug", b"slug", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Role: typing_extensions.TypeAlias = Role
+Global___Role: _TypeAlias = Role  # noqa: Y015
 
-@typing.final
-class EventManagement(google.protobuf.message.Message):
+@_typing.final
+class EventManagement(_message.Message):
     """Event clan"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    START_EVENT_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_VOICE_ID_FIELD_NUMBER: builtins.int
-    ADDRESS_FIELD_NUMBER: builtins.int
-    START_TIME_FIELD_NUMBER: builtins.int
-    END_TIME_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    MAX_PERMISSION_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    EVENT_STATUS_FIELD_NUMBER: builtins.int
-    REPEAT_TYPE_FIELD_NUMBER: builtins.int
-    IS_PRIVATE_FIELD_NUMBER: builtins.int
-    MEET_ROOM_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    title: builtins.str
-    logo: builtins.str
-    description: builtins.str
-    active: builtins.int
-    start_event: builtins.int
-    creator_id: builtins.str
-    clan_id: builtins.str
-    channel_voice_id: builtins.str
-    address: builtins.str
-    max_permission: builtins.int
-    channel_id: builtins.str
-    event_status: builtins.int
-    repeat_type: builtins.int
-    is_private: builtins.bool
-    @property
-    def start_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def end_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
+    ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    START_EVENT_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_VOICE_ID_FIELD_NUMBER: _builtins.int
+    ADDRESS_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    END_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    MAX_PERMISSION_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    EVENT_STATUS_FIELD_NUMBER: _builtins.int
+    REPEAT_TYPE_FIELD_NUMBER: _builtins.int
+    IS_PRIVATE_FIELD_NUMBER: _builtins.int
+    MEET_ROOM_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    title: _builtins.str
+    logo: _builtins.str
+    description: _builtins.str
+    active: _builtins.int
+    start_event: _builtins.int
+    creator_id: _builtins.int
+    clan_id: _builtins.int
+    channel_voice_id: _builtins.int
+    address: _builtins.str
+    start_time_seconds: _builtins.int
+    end_time_seconds: _builtins.int
+    create_time_seconds: _builtins.int
+    max_permission: _builtins.int
+    channel_id: _builtins.int
+    event_status: _builtins.int
+    repeat_type: _builtins.int
+    is_private: _builtins.bool
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
     def meet_room(self) -> Global___GenerateMezonMeetResponse: ...
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        title: builtins.str = ...,
-        logo: builtins.str = ...,
-        description: builtins.str = ...,
-        active: builtins.int = ...,
-        start_event: builtins.int = ...,
-        creator_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_voice_id: builtins.str = ...,
-        address: builtins.str = ...,
-        start_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        end_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        max_permission: builtins.int = ...,
-        channel_id: builtins.str = ...,
-        event_status: builtins.int = ...,
-        repeat_type: builtins.int = ...,
-        is_private: builtins.bool = ...,
+        id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        logo: _builtins.str = ...,
+        description: _builtins.str = ...,
+        active: _builtins.int = ...,
+        start_event: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_voice_id: _builtins.int = ...,
+        address: _builtins.str = ...,
+        start_time_seconds: _builtins.int = ...,
+        end_time_seconds: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        create_time_seconds: _builtins.int = ...,
+        max_permission: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        event_status: _builtins.int = ...,
+        repeat_type: _builtins.int = ...,
+        is_private: _builtins.bool = ...,
         meet_room: Global___GenerateMezonMeetResponse | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "end_time", b"end_time", "meet_room", b"meet_room", "start_time", b"start_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "address", b"address", "channel_id", b"channel_id", "channel_voice_id", b"channel_voice_id", "clan_id", b"clan_id", "create_time", b"create_time", "creator_id", b"creator_id", "description", b"description", "end_time", b"end_time", "event_status", b"event_status", "id", b"id", "is_private", b"is_private", "logo", b"logo", "max_permission", b"max_permission", "meet_room", b"meet_room", "repeat_type", b"repeat_type", "start_event", b"start_event", "start_time", b"start_time", "title", b"title", "user_ids", b"user_ids"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["meet_room", b"meet_room"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "address", b"address", "channel_id", b"channel_id", "channel_voice_id", b"channel_voice_id", "clan_id", b"clan_id", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "description", b"description", "end_time_seconds", b"end_time_seconds", "event_status", b"event_status", "id", b"id", "is_private", b"is_private", "logo", b"logo", "max_permission", b"max_permission", "meet_room", b"meet_room", "repeat_type", b"repeat_type", "start_event", b"start_event", "start_time_seconds", b"start_time_seconds", "title", b"title", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EventManagement: typing_extensions.TypeAlias = EventManagement
+Global___EventManagement: _TypeAlias = EventManagement  # noqa: Y015
 
-@typing.final
-class Permission(google.protobuf.message.Message):
+@_typing.final
+class Permission(_message.Message):
     """Permission record"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    SLUG_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    SCOPE_FIELD_NUMBER: builtins.int
-    LEVEL_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    SLUG_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    SCOPE_FIELD_NUMBER: _builtins.int
+    LEVEL_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Permission id"""
-    title: builtins.str
-    slug: builtins.str
-    description: builtins.str
-    active: builtins.int
-    scope: builtins.int
-    level: builtins.int
+    title: _builtins.str
+    slug: _builtins.str
+    description: _builtins.str
+    active: _builtins.int
+    scope: _builtins.int
+    level: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        title: builtins.str = ...,
-        slug: builtins.str = ...,
-        description: builtins.str = ...,
-        active: builtins.int = ...,
-        scope: builtins.int = ...,
-        level: builtins.int = ...,
+        id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        slug: _builtins.str = ...,
+        description: _builtins.str = ...,
+        active: _builtins.int = ...,
+        scope: _builtins.int = ...,
+        level: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "description", b"description", "id", b"id", "level", b"level", "scope", b"scope", "slug", b"slug", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "description", b"description", "id", b"id", "level", b"level", "scope", b"scope", "slug", b"slug", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Permission: typing_extensions.TypeAlias = Permission
+Global___Permission: _TypeAlias = Permission  # noqa: Y015
 
-@typing.final
-class NotificationSetting(google.protobuf.message.Message):
+@_typing.final
+class NotificationSetting(_message.Message):
     """Notification setting record"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Notification id"""
-    notification_setting_type: builtins.int
+    notification_setting_type: _builtins.int
     """Notification title"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        notification_setting_type: builtins.int = ...,
+        id: _builtins.int = ...,
+        notification_setting_type: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["id", b"id", "notification_setting_type", b"notification_setting_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["id", b"id", "notification_setting_type", b"notification_setting_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationSetting: typing_extensions.TypeAlias = NotificationSetting
+Global___NotificationSetting: _TypeAlias = NotificationSetting  # noqa: Y015
 
-@typing.final
-class DeletePinMessage(google.protobuf.message.Message):
+@_typing.final
+class DeletePinMessage(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """"""
-    message_id: builtins.str
+    message_id: _builtins.int
     """"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "message_id", b"message_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "message_id", b"message_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeletePinMessage: typing_extensions.TypeAlias = DeletePinMessage
+Global___DeletePinMessage: _TypeAlias = DeletePinMessage  # noqa: Y015
 
-@typing.final
-class PinMessage(google.protobuf.message.Message):
+@_typing.final
+class PinMessage(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECONDS_FIELD_NUMBER: builtins.int
-    ATTACHMENT_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    ATTACHMENT_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """"""
-    message_id: builtins.str
+    message_id: _builtins.int
     """"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """"""
-    sender_id: builtins.str
+    sender_id: _builtins.int
     """"""
-    content: builtins.str
+    content: _builtins.str
     """"""
-    username: builtins.str
+    username: _builtins.str
     """"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """"""
-    create_time_seconds: builtins.int
-    """create time in ms"""
-    attachment: builtins.str
+    create_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
+    attachment: _builtins.bytes
     """attachment"""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
-
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        sender_id: builtins.str = ...,
-        content: builtins.str = ...,
-        username: builtins.str = ...,
-        avatar: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        create_time_seconds: builtins.int = ...,
-        attachment: builtins.str = ...,
+        id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+        content: _builtins.str = ...,
+        username: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        create_time_seconds: _builtins.int = ...,
+        attachment: _builtins.bytes = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachment", b"attachment", "avatar", b"avatar", "channel_id", b"channel_id", "content", b"content", "create_time", b"create_time", "create_time_seconds", b"create_time_seconds", "id", b"id", "message_id", b"message_id", "sender_id", b"sender_id", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachment", b"attachment", "avatar", b"avatar", "channel_id", b"channel_id", "content", b"content", "create_time_seconds", b"create_time_seconds", "id", b"id", "message_id", b"message_id", "sender_id", b"sender_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PinMessage: typing_extensions.TypeAlias = PinMessage
+Global___PinMessage: _TypeAlias = PinMessage  # noqa: Y015
 
-@typing.final
-class PinMessagesList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class PinMessagesList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PIN_MESSAGES_LIST_FIELD_NUMBER: builtins.int
-    @property
-    def pin_messages_list(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___PinMessage]: ...
+    PIN_MESSAGES_LIST_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def pin_messages_list(self) -> _containers.RepeatedCompositeFieldContainer[Global___PinMessage]: ...
     def __init__(
         self,
         *,
-        pin_messages_list: collections.abc.Iterable[Global___PinMessage] | None = ...,
+        pin_messages_list: _abc.Iterable[Global___PinMessage] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["pin_messages_list", b"pin_messages_list"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["pin_messages_list", b"pin_messages_list"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PinMessagesList: typing_extensions.TypeAlias = PinMessagesList
+Global___PinMessagesList: _TypeAlias = PinMessagesList  # noqa: Y015
 
-@typing.final
-class NotificationUserChannel(google.protobuf.message.Message):
+@_typing.final
+class NotificationUserChannel(_message.Message):
     """Notification channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: builtins.int
-    TIME_MUTE_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: _builtins.int
+    TIME_MUTE_SECONDS_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Notification id"""
-    notification_setting_type: builtins.int
+    notification_setting_type: _builtins.int
     """"""
-    active: builtins.int
+    time_mute_seconds: _builtins.int
     """"""
-    channel_id: builtins.str
+    active: _builtins.int
     """"""
-    @property
-    def time_mute(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """"""
-
+    channel_id: _builtins.int
+    """"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        notification_setting_type: builtins.int = ...,
-        time_mute: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        active: builtins.int = ...,
-        channel_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        notification_setting_type: _builtins.int = ...,
+        time_mute_seconds: _builtins.int = ...,
+        active: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["time_mute", b"time_mute"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "channel_id", b"channel_id", "id", b"id", "notification_setting_type", b"notification_setting_type", "time_mute", b"time_mute"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "channel_id", b"channel_id", "id", b"id", "notification_setting_type", b"notification_setting_type", "time_mute_seconds", b"time_mute_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationUserChannel: typing_extensions.TypeAlias = NotificationUserChannel
+Global___NotificationUserChannel: _TypeAlias = NotificationUserChannel  # noqa: Y015
 
-@typing.final
-class NotifiReactMessage(google.protobuf.message.Message):
+@_typing.final
+class NotifiReactMessage(_message.Message):
     """Notification channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Notification id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """"""
-    channel_id: builtins.str
-    """"""
-    def __init__(
-        self,
-        *,
-        id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-    ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "id", b"id", "user_id", b"user_id"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___NotifiReactMessage: typing_extensions.TypeAlias = NotifiReactMessage
-
-@typing.final
-class DefaultNotificationClan(google.protobuf.message.Message):
-    """"""
-
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    channel_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "id", b"id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DefaultNotificationClan: typing_extensions.TypeAlias = DefaultNotificationClan
+Global___NotifiReactMessage: _TypeAlias = NotifiReactMessage  # noqa: Y015
 
-@typing.final
-class DefaultNotificationCategory(google.protobuf.message.Message):
+@_typing.final
+class DefaultNotificationClan(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    category_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        category_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DefaultNotificationCategory: typing_extensions.TypeAlias = DefaultNotificationCategory
+Global___DefaultNotificationClan: _TypeAlias = DefaultNotificationClan  # noqa: Y015
 
-@typing.final
-class NotificationChannel(google.protobuf.message.Message):
+@_typing.final
+class DefaultNotificationCategory(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    category_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
+        category_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationChannel: typing_extensions.TypeAlias = NotificationChannel
+Global___DefaultNotificationCategory: _TypeAlias = DefaultNotificationCategory  # noqa: Y015
 
-@typing.final
-class NotificationClan(google.protobuf.message.Message):
+@_typing.final
+class NotificationChannel(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationClan: typing_extensions.TypeAlias = NotificationClan
+Global___NotificationChannel: _TypeAlias = NotificationChannel  # noqa: Y015
 
-@typing.final
-class NotificationSettingList(google.protobuf.message.Message):
+@_typing.final
+class NotificationClan(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    NOTIFICATION_SETTING_FIELD_NUMBER: builtins.int
-    @property
-    def notification_setting(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___NotificationSetting]:
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    """"""
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___NotificationClan: _TypeAlias = NotificationClan  # noqa: Y015
+
+@_typing.final
+class NotificationSettingList(_message.Message):
+    """"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    NOTIFICATION_SETTING_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def notification_setting(self) -> _containers.RepeatedCompositeFieldContainer[Global___NotificationSetting]:
         """A list of notification setting."""
 
     def __init__(
         self,
         *,
-        notification_setting: collections.abc.Iterable[Global___NotificationSetting] | None = ...,
+        notification_setting: _abc.Iterable[Global___NotificationSetting] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["notification_setting", b"notification_setting"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["notification_setting", b"notification_setting"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationSettingList: typing_extensions.TypeAlias = NotificationSettingList
+Global___NotificationSettingList: _TypeAlias = NotificationSettingList  # noqa: Y015
 
-@typing.final
-class SetNotificationRequest(google.protobuf.message.Message):
+@_typing.final
+class SetNotificationRequest(_message.Message):
     """set notification"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_CATEGORY_ID_FIELD_NUMBER: builtins.int
-    NOTIFICATION_TYPE_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    channel_category_id: builtins.str
+    CHANNEL_CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_TYPE_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    channel_category_id: _builtins.int
     """channelId or categoryId"""
-    notification_type: builtins.int
+    notification_type: _builtins.int
     """notification_type"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        channel_category_id: builtins.str = ...,
-        notification_type: builtins.int = ...,
-        clan_id: builtins.str = ...,
+        channel_category_id: _builtins.int = ...,
+        notification_type: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_category_id", b"channel_category_id", "clan_id", b"clan_id", "notification_type", b"notification_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_category_id", b"channel_category_id", "clan_id", b"clan_id", "notification_type", b"notification_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SetNotificationRequest: typing_extensions.TypeAlias = SetNotificationRequest
+Global___SetNotificationRequest: _TypeAlias = SetNotificationRequest  # noqa: Y015
 
-@typing.final
-class PinMessageRequest(google.protobuf.message.Message):
+@_typing.final
+class PinMessageRequest(_message.Message):
     """"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
-    channel_id: builtins.str
-    clan_id: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PinMessageRequest: typing_extensions.TypeAlias = PinMessageRequest
+Global___PinMessageRequest: _TypeAlias = PinMessageRequest  # noqa: Y015
 
-@typing.final
-class SetMuteRequest(google.protobuf.message.Message):
+@_typing.final
+class SetMuteRequest(_message.Message):
     """set notification"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    MUTE_TIME_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    MUTE_TIME_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """channel_id and category_id"""
-    mute_time: builtins.int
-    active: builtins.int
-    clan_id: builtins.str
+    mute_time: _builtins.int
+    active: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        mute_time: builtins.int = ...,
-        active: builtins.int = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        mute_time: _builtins.int = ...,
+        active: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "clan_id", b"clan_id", "id", b"id", "mute_time", b"mute_time"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "clan_id", b"clan_id", "id", b"id", "mute_time", b"mute_time"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SetMuteRequest: typing_extensions.TypeAlias = SetMuteRequest
+Global___SetMuteRequest: _TypeAlias = SetMuteRequest  # noqa: Y015
 
-@typing.final
-class HashtagDmListRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class NotificationChannelCategorySettingList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    @property
-    def user_id(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
-        """user Id"""
-
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
+    NOTIFICATION_CHANNEL_CATEGORY_SETTINGS_LIST_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def notification_channel_category_settings_list(self) -> _containers.RepeatedCompositeFieldContainer[Global___NotificationChannelCategorySetting]: ...
     def __init__(
         self,
         *,
-        user_id: collections.abc.Iterable[builtins.str] | None = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
+        notification_channel_category_settings_list: _abc.Iterable[Global___NotificationChannelCategorySetting] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["notification_channel_category_settings_list", b"notification_channel_category_settings_list"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___HashtagDmListRequest: typing_extensions.TypeAlias = HashtagDmListRequest
+Global___NotificationChannelCategorySettingList: _TypeAlias = NotificationChannelCategorySettingList  # noqa: Y015
 
-@typing.final
-class HashtagDmList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class NotificationChannelCategorySetting(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    HASHTAG_DM_FIELD_NUMBER: builtins.int
-    @property
-    def hashtag_dm(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___HashtagDm]: ...
-    def __init__(
-        self,
-        *,
-        hashtag_dm: collections.abc.Iterable[Global___HashtagDm] | None = ...,
-    ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["hashtag_dm", b"hashtag_dm"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___HashtagDmList: typing_extensions.TypeAlias = HashtagDmList
-
-@typing.final
-class HashtagDm(google.protobuf.message.Message):
-    """hashtagDM"""
-
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    MEETING_CODE_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    """The channel id."""
-    channel_label: builtins.str
-    """The channel lable"""
-    clan_id: builtins.str
-    """The clan of this channel"""
-    clan_name: builtins.str
-    """The clan name"""
-    meeting_code: builtins.str
-    """"""
-    type: builtins.int
-    """"""
-    channel_private: builtins.int
-    """"""
-    parent_id: builtins.str
-    """"""
-    def __init__(
-        self,
-        *,
-        channel_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        meeting_code: builtins.str = ...,
-        type: builtins.int = ...,
-        channel_private: builtins.int = ...,
-        parent_id: builtins.str = ...,
-    ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___HashtagDm: typing_extensions.TypeAlias = HashtagDm
-
-@typing.final
-class NotificationChannelCategorySettingList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    NOTIFICATION_CHANNEL_CATEGORY_SETTINGS_LIST_FIELD_NUMBER: builtins.int
-    @property
-    def notification_channel_category_settings_list(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___NotificationChannelCategorySetting]: ...
-    def __init__(
-        self,
-        *,
-        notification_channel_category_settings_list: collections.abc.Iterable[Global___NotificationChannelCategorySetting] | None = ...,
-    ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["notification_channel_category_settings_list", b"notification_channel_category_settings_list"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___NotificationChannelCategorySettingList: typing_extensions.TypeAlias = NotificationChannelCategorySettingList
-
-@typing.final
-class NotificationChannelCategorySetting(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    ID_FIELD_NUMBER: builtins.int
-    CHANNEL_CATEGORY_LABEL_FIELD_NUMBER: builtins.int
-    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_CATEGORY_TITLE_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_CATEGORY_LABEL_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_SETTING_TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_CATEGORY_TITLE_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """Notification id"""
-    channel_category_label: builtins.str
+    channel_category_label: _builtins.str
     """"""
-    notification_setting_type: builtins.int
+    notification_setting_type: _builtins.int
     """Notification title"""
-    channel_category_title: builtins.str
+    channel_category_title: _builtins.str
     """"""
-    action: builtins.int
+    action: _builtins.int
     """"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        channel_category_label: builtins.str = ...,
-        notification_setting_type: builtins.int = ...,
-        channel_category_title: builtins.str = ...,
-        action: builtins.int = ...,
+        id: _builtins.int = ...,
+        channel_category_label: _builtins.str = ...,
+        notification_setting_type: _builtins.int = ...,
+        channel_category_title: _builtins.str = ...,
+        action: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "channel_category_label", b"channel_category_label", "channel_category_title", b"channel_category_title", "id", b"id", "notification_setting_type", b"notification_setting_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_category_label", b"channel_category_label", "channel_category_title", b"channel_category_title", "id", b"id", "notification_setting_type", b"notification_setting_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___NotificationChannelCategorySetting: typing_extensions.TypeAlias = NotificationChannelCategorySetting
+Global___NotificationChannelCategorySetting: _TypeAlias = NotificationChannelCategorySetting  # noqa: Y015
 
-@typing.final
-class SetDefaultNotificationRequest(google.protobuf.message.Message):
+@_typing.final
+class SetDefaultNotificationRequest(_message.Message):
     """set default notification"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    NOTIFICATION_TYPE_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    notification_type: builtins.int
-    category_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    NOTIFICATION_TYPE_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    notification_type: _builtins.int
+    category_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        notification_type: builtins.int = ...,
-        category_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        notification_type: _builtins.int = ...,
+        category_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "clan_id", b"clan_id", "notification_type", b"notification_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "clan_id", b"clan_id", "notification_type", b"notification_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SetDefaultNotificationRequest: typing_extensions.TypeAlias = SetDefaultNotificationRequest
+Global___SetDefaultNotificationRequest: _TypeAlias = SetDefaultNotificationRequest  # noqa: Y015
 
-@typing.final
-class RoleList(google.protobuf.message.Message):
+@_typing.final
+class RoleList(_message.Message):
     """A list of role description, usually a result of a list operation."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLES_FIELD_NUMBER: builtins.int
-    MAX_LEVEL_PERMISSION_FIELD_NUMBER: builtins.int
-    max_level_permission: builtins.int
+    ROLES_FIELD_NUMBER: _builtins.int
+    MAX_LEVEL_PERMISSION_FIELD_NUMBER: _builtins.int
+    max_level_permission: _builtins.int
     """level permission max"""
-    @property
-    def roles(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___Role]:
+    @_builtins.property
+    def roles(self) -> _containers.RepeatedCompositeFieldContainer[Global___Role]:
         """A list of role."""
 
     def __init__(
         self,
         *,
-        roles: collections.abc.Iterable[Global___Role] | None = ...,
-        max_level_permission: builtins.int = ...,
+        roles: _abc.Iterable[Global___Role] | None = ...,
+        max_level_permission: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["max_level_permission", b"max_level_permission", "roles", b"roles"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["max_level_permission", b"max_level_permission", "roles", b"roles"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RoleList: typing_extensions.TypeAlias = RoleList
+Global___RoleList: _TypeAlias = RoleList  # noqa: Y015
 
-@typing.final
-class EventList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class EventList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    EVENTS_FIELD_NUMBER: builtins.int
-    @property
-    def events(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___EventManagement]:
+    EVENTS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def events(self) -> _containers.RepeatedCompositeFieldContainer[Global___EventManagement]:
         """A list of event."""
 
     def __init__(
         self,
         *,
-        events: collections.abc.Iterable[Global___EventManagement] | None = ...,
+        events: _abc.Iterable[Global___EventManagement] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["events", b"events"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["events", b"events"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EventList: typing_extensions.TypeAlias = EventList
+Global___EventList: _TypeAlias = EventList  # noqa: Y015
 
-@typing.final
-class PermissionList(google.protobuf.message.Message):
+@_typing.final
+class PermissionList(_message.Message):
     """A list of permission description, usually a result of a list operation."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PERMISSIONS_FIELD_NUMBER: builtins.int
-    MAX_LEVEL_PERMISSION_FIELD_NUMBER: builtins.int
-    max_level_permission: builtins.int
+    PERMISSIONS_FIELD_NUMBER: _builtins.int
+    MAX_LEVEL_PERMISSION_FIELD_NUMBER: _builtins.int
+    max_level_permission: _builtins.int
     """level permission max"""
-    @property
-    def permissions(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___Permission]:
+    @_builtins.property
+    def permissions(self) -> _containers.RepeatedCompositeFieldContainer[Global___Permission]:
         """A list of permission."""
 
     def __init__(
         self,
         *,
-        permissions: collections.abc.Iterable[Global___Permission] | None = ...,
-        max_level_permission: builtins.int = ...,
+        permissions: _abc.Iterable[Global___Permission] | None = ...,
+        max_level_permission: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["max_level_permission", b"max_level_permission", "permissions", b"permissions"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["max_level_permission", b"max_level_permission", "permissions", b"permissions"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionList: typing_extensions.TypeAlias = PermissionList
+Global___PermissionList: _TypeAlias = PermissionList  # noqa: Y015
 
-@typing.final
-class ListPermissionsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListPermissionsRequest(_message.Message):
     """List (and optionally filter) permissions."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
+        role_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["role_id", b"role_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["role_id", b"role_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListPermissionsRequest: typing_extensions.TypeAlias = ListPermissionsRequest
+Global___ListPermissionsRequest: _TypeAlias = ListPermissionsRequest  # noqa: Y015
 
-@typing.final
-class ListRoleUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class ListRoleUsersRequest(_message.Message):
     """List (and optionally filter) role-users."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
-    cursor: builtins.str
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    cursor: _builtins.str
     """An optional next page cursor."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        role_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "limit", b"limit", "role_id", b"role_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "limit", b"limit", "role_id", b"role_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListRoleUsersRequest: typing_extensions.TypeAlias = ListRoleUsersRequest
+Global___ListRoleUsersRequest: _TypeAlias = ListRoleUsersRequest  # noqa: Y015
 
-@typing.final
-class ListPermissionOfUsersRequest(google.protobuf.message.Message):
+@_typing.final
+class ListPermissionOfUsersRequest(_message.Message):
     """List Permission Of User In The Clan."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan_id."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel_id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListPermissionOfUsersRequest: typing_extensions.TypeAlias = ListPermissionOfUsersRequest
+Global___ListPermissionOfUsersRequest: _TypeAlias = ListPermissionOfUsersRequest  # noqa: Y015
 
-@typing.final
-class RoleUserList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RoleUserList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class RoleUser(google.protobuf.message.Message):
+    @_typing.final
+    class RoleUser(_message.Message):
         """A single user-role pair."""
 
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+        DESCRIPTOR: _descriptor.Descriptor
 
-        ID_FIELD_NUMBER: builtins.int
-        USERNAME_FIELD_NUMBER: builtins.int
-        DISPLAY_NAME_FIELD_NUMBER: builtins.int
-        AVATAR_URL_FIELD_NUMBER: builtins.int
-        LANG_TAG_FIELD_NUMBER: builtins.int
-        LOCATION_FIELD_NUMBER: builtins.int
-        ONLINE_FIELD_NUMBER: builtins.int
-        id: builtins.str
+        ID_FIELD_NUMBER: _builtins.int
+        USERNAME_FIELD_NUMBER: _builtins.int
+        DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+        AVATAR_URL_FIELD_NUMBER: _builtins.int
+        LANG_TAG_FIELD_NUMBER: _builtins.int
+        LOCATION_FIELD_NUMBER: _builtins.int
+        ONLINE_FIELD_NUMBER: _builtins.int
+        id: _builtins.int
         """The id of the user's account."""
-        username: builtins.str
+        username: _builtins.str
         """The username of the user's account."""
-        display_name: builtins.str
+        display_name: _builtins.str
         """The display name of the user."""
-        avatar_url: builtins.str
+        avatar_url: _builtins.str
         """A URL for an avatar image."""
-        lang_tag: builtins.str
+        lang_tag: _builtins.str
         """The language expected to be a tag which follows the BCP-47 spec."""
-        location: builtins.str
+        location: _builtins.str
         """The location set by the user."""
-        online: builtins.bool
+        online: _builtins.bool
         """The timezone set by the user."""
         def __init__(
             self,
             *,
-            id: builtins.str = ...,
-            username: builtins.str = ...,
-            display_name: builtins.str = ...,
-            avatar_url: builtins.str = ...,
-            lang_tag: builtins.str = ...,
-            location: builtins.str = ...,
-            online: builtins.bool = ...,
+            id: _builtins.int = ...,
+            username: _builtins.str = ...,
+            display_name: _builtins.str = ...,
+            avatar_url: _builtins.str = ...,
+            lang_tag: _builtins.str = ...,
+            location: _builtins.str = ...,
+            online: _builtins.bool = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "display_name", b"display_name", "id", b"id", "lang_tag", b"lang_tag", "location", b"location", "online", b"online", "username", b"username"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "display_name", b"display_name", "id", b"id", "lang_tag", b"lang_tag", "location", b"location", "online", b"online", "username", b"username"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    ROLE_USERS_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    ROLE_USERS_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    cursor: _builtins.str
     """Cursor for the next page of results, if any."""
-    @property
-    def role_users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___RoleUserList.RoleUser]:
+    @_builtins.property
+    def role_users(self) -> _containers.RepeatedCompositeFieldContainer[Global___RoleUserList.RoleUser]:
         """role_users pairs for a clan."""
 
     def __init__(
         self,
         *,
-        role_users: collections.abc.Iterable[Global___RoleUserList.RoleUser] | None = ...,
-        cursor: builtins.str = ...,
+        role_users: _abc.Iterable[Global___RoleUserList.RoleUser] | None = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "role_users", b"role_users"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "role_users", b"role_users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RoleUserList: typing_extensions.TypeAlias = RoleUserList
+Global___RoleUserList: _TypeAlias = RoleUserList  # noqa: Y015
 
-@typing.final
-class UserEventRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserEventRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    EVENT_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    EVENT_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The ID of the clan to be updated."""
-    event_id: builtins.str
+    event_id: _builtins.int
     """The ID of the event to be updated."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        event_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        event_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "event_id", b"event_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "event_id", b"event_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserEventRequest: typing_extensions.TypeAlias = UserEventRequest
+Global___UserEventRequest: _TypeAlias = UserEventRequest  # noqa: Y015
 
-@typing.final
-class ListEventsRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListEventsRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """The clan of this event"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListEventsRequest: typing_extensions.TypeAlias = ListEventsRequest
+Global___ListEventsRequest: _TypeAlias = ListEventsRequest  # noqa: Y015
 
-@typing.final
-class CreateRoleRequest(google.protobuf.message.Message):
+@_typing.final
+class CreateRoleRequest(_message.Message):
     """Create a role within clan."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TITLE_FIELD_NUMBER: builtins.int
-    COLOR_FIELD_NUMBER: builtins.int
-    ROLE_ICON_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    DISPLAY_ONLINE_FIELD_NUMBER: builtins.int
-    ALLOW_MENTION_FIELD_NUMBER: builtins.int
-    MAX_PERMISSION_ID_FIELD_NUMBER: builtins.int
-    ADD_USER_IDS_FIELD_NUMBER: builtins.int
-    ACTIVE_PERMISSION_IDS_FIELD_NUMBER: builtins.int
-    ORDER_ROLE_FIELD_NUMBER: builtins.int
-    title: builtins.str
-    color: builtins.str
-    role_icon: builtins.str
-    description: builtins.str
-    clan_id: builtins.str
-    display_online: builtins.int
-    allow_mention: builtins.int
-    max_permission_id: builtins.str
+    TITLE_FIELD_NUMBER: _builtins.int
+    COLOR_FIELD_NUMBER: _builtins.int
+    ROLE_ICON_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    DISPLAY_ONLINE_FIELD_NUMBER: _builtins.int
+    ALLOW_MENTION_FIELD_NUMBER: _builtins.int
+    MAX_PERMISSION_ID_FIELD_NUMBER: _builtins.int
+    ADD_USER_IDS_FIELD_NUMBER: _builtins.int
+    ACTIVE_PERMISSION_IDS_FIELD_NUMBER: _builtins.int
+    ORDER_ROLE_FIELD_NUMBER: _builtins.int
+    title: _builtins.str
+    color: _builtins.str
+    role_icon: _builtins.str
+    description: _builtins.str
+    clan_id: _builtins.int
+    display_online: _builtins.int
+    allow_mention: _builtins.int
+    max_permission_id: _builtins.int
     """id of permission which has max level permission"""
-    order_role: builtins.int
+    order_role: _builtins.int
     """order role"""
-    @property
-    def add_user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def add_user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to add."""
 
-    @property
-    def active_permission_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def active_permission_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The permissions to add."""
 
     def __init__(
         self,
         *,
-        title: builtins.str = ...,
-        color: builtins.str = ...,
-        role_icon: builtins.str = ...,
-        description: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        display_online: builtins.int = ...,
-        allow_mention: builtins.int = ...,
-        max_permission_id: builtins.str = ...,
-        add_user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        active_permission_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        order_role: builtins.int = ...,
+        title: _builtins.str = ...,
+        color: _builtins.str = ...,
+        role_icon: _builtins.str = ...,
+        description: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        display_online: _builtins.int = ...,
+        allow_mention: _builtins.int = ...,
+        max_permission_id: _builtins.int = ...,
+        add_user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        active_permission_ids: _abc.Iterable[_builtins.int] | None = ...,
+        order_role: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active_permission_ids", b"active_permission_ids", "add_user_ids", b"add_user_ids", "allow_mention", b"allow_mention", "clan_id", b"clan_id", "color", b"color", "description", b"description", "display_online", b"display_online", "max_permission_id", b"max_permission_id", "order_role", b"order_role", "role_icon", b"role_icon", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_permission_ids", b"active_permission_ids", "add_user_ids", b"add_user_ids", "allow_mention", b"allow_mention", "clan_id", b"clan_id", "color", b"color", "description", b"description", "display_online", b"display_online", "max_permission_id", b"max_permission_id", "order_role", b"order_role", "role_icon", b"role_icon", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateRoleRequest: typing_extensions.TypeAlias = CreateRoleRequest
+Global___CreateRoleRequest: _TypeAlias = CreateRoleRequest  # noqa: Y015
 
-@typing.final
-class CreateEventRequest(google.protobuf.message.Message):
+@_typing.final
+class CreateEventRequest(_message.Message):
     """Create a event within clan."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TITLE_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_VOICE_ID_FIELD_NUMBER: builtins.int
-    ADDRESS_FIELD_NUMBER: builtins.int
-    START_TIME_FIELD_NUMBER: builtins.int
-    END_TIME_FIELD_NUMBER: builtins.int
-    EVENT_ID_FIELD_NUMBER: builtins.int
-    EVENT_STATUS_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    REPEAT_TYPE_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    IS_PRIVATE_FIELD_NUMBER: builtins.int
-    MEET_ROOM_FIELD_NUMBER: builtins.int
-    title: builtins.str
-    logo: builtins.str
-    description: builtins.str
-    clan_id: builtins.str
-    channel_voice_id: builtins.str
-    address: builtins.str
-    event_id: builtins.str
-    event_status: builtins.int
-    channel_id: builtins.str
-    action: builtins.int
-    repeat_type: builtins.int
-    creator_id: builtins.str
-    user_id: builtins.str
-    @property
-    def start_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def end_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def is_private(self) -> google.protobuf.wrappers_pb2.BoolValue: ...
-    @property
+    TITLE_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_VOICE_ID_FIELD_NUMBER: _builtins.int
+    ADDRESS_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    END_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    EVENT_ID_FIELD_NUMBER: _builtins.int
+    EVENT_STATUS_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    REPEAT_TYPE_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    IS_PRIVATE_FIELD_NUMBER: _builtins.int
+    MEET_ROOM_FIELD_NUMBER: _builtins.int
+    title: _builtins.str
+    logo: _builtins.str
+    description: _builtins.str
+    clan_id: _builtins.int
+    channel_voice_id: _builtins.int
+    address: _builtins.str
+    start_time_seconds: _builtins.int
+    end_time_seconds: _builtins.int
+    event_id: _builtins.int
+    event_status: _builtins.int
+    channel_id: _builtins.int
+    action: _builtins.int
+    repeat_type: _builtins.int
+    creator_id: _builtins.int
+    user_id: _builtins.int
+    is_private: _builtins.bool
+    @_builtins.property
     def meet_room(self) -> Global___GenerateMezonMeetResponse: ...
     def __init__(
         self,
         *,
-        title: builtins.str = ...,
-        logo: builtins.str = ...,
-        description: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_voice_id: builtins.str = ...,
-        address: builtins.str = ...,
-        start_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        end_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        event_id: builtins.str = ...,
-        event_status: builtins.int = ...,
-        channel_id: builtins.str = ...,
-        action: builtins.int = ...,
-        repeat_type: builtins.int = ...,
-        creator_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        is_private: google.protobuf.wrappers_pb2.BoolValue | None = ...,
+        title: _builtins.str = ...,
+        logo: _builtins.str = ...,
+        description: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_voice_id: _builtins.int = ...,
+        address: _builtins.str = ...,
+        start_time_seconds: _builtins.int = ...,
+        end_time_seconds: _builtins.int = ...,
+        event_id: _builtins.int = ...,
+        event_status: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        action: _builtins.int = ...,
+        repeat_type: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        is_private: _builtins.bool = ...,
         meet_room: Global___GenerateMezonMeetResponse | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["end_time", b"end_time", "is_private", b"is_private", "meet_room", b"meet_room", "start_time", b"start_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "address", b"address", "channel_id", b"channel_id", "channel_voice_id", b"channel_voice_id", "clan_id", b"clan_id", "creator_id", b"creator_id", "description", b"description", "end_time", b"end_time", "event_id", b"event_id", "event_status", b"event_status", "is_private", b"is_private", "logo", b"logo", "meet_room", b"meet_room", "repeat_type", b"repeat_type", "start_time", b"start_time", "title", b"title", "user_id", b"user_id"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["meet_room", b"meet_room"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "address", b"address", "channel_id", b"channel_id", "channel_voice_id", b"channel_voice_id", "clan_id", b"clan_id", "creator_id", b"creator_id", "description", b"description", "end_time_seconds", b"end_time_seconds", "event_id", b"event_id", "event_status", b"event_status", "is_private", b"is_private", "logo", b"logo", "meet_room", b"meet_room", "repeat_type", b"repeat_type", "start_time_seconds", b"start_time_seconds", "title", b"title", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateEventRequest: typing_extensions.TypeAlias = CreateEventRequest
+Global___CreateEventRequest: _TypeAlias = CreateEventRequest  # noqa: Y015
 
-@typing.final
-class UpdateEventRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateEventRequest(_message.Message):
     """update a event within clan."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TITLE_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    EVENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ADDRESS_FIELD_NUMBER: builtins.int
-    START_TIME_FIELD_NUMBER: builtins.int
-    END_TIME_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_VOICE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_OLD_FIELD_NUMBER: builtins.int
-    REPEAT_TYPE_FIELD_NUMBER: builtins.int
-    title: builtins.str
-    logo: builtins.str
-    description: builtins.str
-    event_id: builtins.str
-    channel_id: builtins.str
-    address: builtins.str
-    clan_id: builtins.str
-    creator_id: builtins.str
-    channel_voice_id: builtins.str
-    channel_id_old: builtins.str
-    repeat_type: builtins.int
-    @property
-    def start_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def end_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    TITLE_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    EVENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ADDRESS_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    END_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_VOICE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_OLD_FIELD_NUMBER: _builtins.int
+    REPEAT_TYPE_FIELD_NUMBER: _builtins.int
+    title: _builtins.str
+    logo: _builtins.str
+    description: _builtins.str
+    event_id: _builtins.int
+    channel_id: _builtins.int
+    address: _builtins.str
+    start_time_seconds: _builtins.int
+    end_time_seconds: _builtins.int
+    clan_id: _builtins.int
+    creator_id: _builtins.int
+    channel_voice_id: _builtins.int
+    channel_id_old: _builtins.int
+    repeat_type: _builtins.int
     def __init__(
         self,
         *,
-        title: builtins.str = ...,
-        logo: builtins.str = ...,
-        description: builtins.str = ...,
-        event_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        address: builtins.str = ...,
-        start_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        end_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        clan_id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        channel_voice_id: builtins.str = ...,
-        channel_id_old: builtins.str = ...,
-        repeat_type: builtins.int = ...,
+        title: _builtins.str = ...,
+        logo: _builtins.str = ...,
+        description: _builtins.str = ...,
+        event_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        address: _builtins.str = ...,
+        start_time_seconds: _builtins.int = ...,
+        end_time_seconds: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        channel_voice_id: _builtins.int = ...,
+        channel_id_old: _builtins.int = ...,
+        repeat_type: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["end_time", b"end_time", "start_time", b"start_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["address", b"address", "channel_id", b"channel_id", "channel_id_old", b"channel_id_old", "channel_voice_id", b"channel_voice_id", "clan_id", b"clan_id", "creator_id", b"creator_id", "description", b"description", "end_time", b"end_time", "event_id", b"event_id", "logo", b"logo", "repeat_type", b"repeat_type", "start_time", b"start_time", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["address", b"address", "channel_id", b"channel_id", "channel_id_old", b"channel_id_old", "channel_voice_id", b"channel_voice_id", "clan_id", b"clan_id", "creator_id", b"creator_id", "description", b"description", "end_time_seconds", b"end_time_seconds", "event_id", b"event_id", "logo", b"logo", "repeat_type", b"repeat_type", "start_time_seconds", b"start_time_seconds", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateEventRequest: typing_extensions.TypeAlias = UpdateEventRequest
+Global___UpdateEventRequest: _TypeAlias = UpdateEventRequest  # noqa: Y015
 
-@typing.final
-class DeleteRoleRequest(google.protobuf.message.Message):
+@_typing.final
+class DeleteRoleRequest(_message.Message):
     """Delete a role the user has access to."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ROLE_LABEL_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ROLE_LABEL_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
     """The id of a role."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The id of a channel"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan_id"""
-    role_label: builtins.str
+    role_label: _builtins.str
     """role label"""
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        role_label: builtins.str = ...,
+        role_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        role_label: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "role_id", b"role_id", "role_label", b"role_label"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "role_id", b"role_id", "role_label", b"role_label"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteRoleRequest: typing_extensions.TypeAlias = DeleteRoleRequest
+Global___DeleteRoleRequest: _TypeAlias = DeleteRoleRequest  # noqa: Y015
 
-@typing.final
-class DeleteEventRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DeleteEventRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    EVENT_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    EVENT_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    event_id: builtins.str
+    EVENT_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    EVENT_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    event_id: _builtins.int
     """The id of a event."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator id"""
-    event_label: builtins.str
+    event_label: _builtins.str
     """event label"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
     def __init__(
         self,
         *,
-        event_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        event_label: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        event_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        event_label: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "creator_id", b"creator_id", "event_id", b"event_id", "event_label", b"event_label"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "creator_id", b"creator_id", "event_id", b"event_id", "event_label", b"event_label"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteEventRequest: typing_extensions.TypeAlias = DeleteEventRequest
+Global___DeleteEventRequest: _TypeAlias = DeleteEventRequest  # noqa: Y015
 
-@typing.final
-class UpdateRoleRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateRoleRequest(_message.Message):
     """Update fields in a given role."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    COLOR_FIELD_NUMBER: builtins.int
-    ROLE_ICON_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    DISPLAY_ONLINE_FIELD_NUMBER: builtins.int
-    ALLOW_MENTION_FIELD_NUMBER: builtins.int
-    ADD_USER_IDS_FIELD_NUMBER: builtins.int
-    ACTIVE_PERMISSION_IDS_FIELD_NUMBER: builtins.int
-    REMOVE_USER_IDS_FIELD_NUMBER: builtins.int
-    REMOVE_PERMISSION_IDS_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    MAX_PERMISSION_ID_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    COLOR_FIELD_NUMBER: _builtins.int
+    ROLE_ICON_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    DISPLAY_ONLINE_FIELD_NUMBER: _builtins.int
+    ALLOW_MENTION_FIELD_NUMBER: _builtins.int
+    ADD_USER_IDS_FIELD_NUMBER: _builtins.int
+    ACTIVE_PERMISSION_IDS_FIELD_NUMBER: _builtins.int
+    REMOVE_USER_IDS_FIELD_NUMBER: _builtins.int
+    REMOVE_PERMISSION_IDS_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    MAX_PERMISSION_ID_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
     """The ID of the role to update."""
-    clan_id: builtins.str
+    display_online: _builtins.int
+    allow_mention: _builtins.int
+    clan_id: _builtins.int
     """the clan id"""
-    max_permission_id: builtins.str
+    max_permission_id: _builtins.int
     """id of permission which has max level permission"""
-    @property
-    def title(self) -> google.protobuf.wrappers_pb2.StringValue: ...
-    @property
-    def color(self) -> google.protobuf.wrappers_pb2.StringValue: ...
-    @property
-    def role_icon(self) -> google.protobuf.wrappers_pb2.StringValue: ...
-    @property
-    def description(self) -> google.protobuf.wrappers_pb2.StringValue: ...
-    @property
-    def display_online(self) -> google.protobuf.wrappers_pb2.Int32Value: ...
-    @property
-    def allow_mention(self) -> google.protobuf.wrappers_pb2.Int32Value: ...
-    @property
-    def add_user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def title(self) -> _wrappers_pb2.StringValue: ...
+    @_builtins.property
+    def color(self) -> _wrappers_pb2.StringValue: ...
+    @_builtins.property
+    def role_icon(self) -> _wrappers_pb2.StringValue: ...
+    @_builtins.property
+    def description(self) -> _wrappers_pb2.StringValue: ...
+    @_builtins.property
+    def add_user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to add."""
 
-    @property
-    def active_permission_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def active_permission_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The permissions to add."""
 
-    @property
-    def remove_user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def remove_user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The users to remove."""
 
-    @property
-    def remove_permission_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def remove_permission_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """The permissions to remove."""
 
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
-        title: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        color: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        role_icon: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        description: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        display_online: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        allow_mention: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        add_user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        active_permission_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        remove_user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        remove_permission_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        clan_id: builtins.str = ...,
-        max_permission_id: builtins.str = ...,
+        role_id: _builtins.int = ...,
+        title: _wrappers_pb2.StringValue | None = ...,
+        color: _wrappers_pb2.StringValue | None = ...,
+        role_icon: _wrappers_pb2.StringValue | None = ...,
+        description: _wrappers_pb2.StringValue | None = ...,
+        display_online: _builtins.int = ...,
+        allow_mention: _builtins.int = ...,
+        add_user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        active_permission_ids: _abc.Iterable[_builtins.int] | None = ...,
+        remove_user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        remove_permission_ids: _abc.Iterable[_builtins.int] | None = ...,
+        clan_id: _builtins.int = ...,
+        max_permission_id: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["allow_mention", b"allow_mention", "color", b"color", "description", b"description", "display_online", b"display_online", "role_icon", b"role_icon", "title", b"title"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active_permission_ids", b"active_permission_ids", "add_user_ids", b"add_user_ids", "allow_mention", b"allow_mention", "clan_id", b"clan_id", "color", b"color", "description", b"description", "display_online", b"display_online", "max_permission_id", b"max_permission_id", "remove_permission_ids", b"remove_permission_ids", "remove_user_ids", b"remove_user_ids", "role_icon", b"role_icon", "role_id", b"role_id", "title", b"title"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["color", b"color", "description", b"description", "role_icon", b"role_icon", "title", b"title"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_permission_ids", b"active_permission_ids", "add_user_ids", b"add_user_ids", "allow_mention", b"allow_mention", "clan_id", b"clan_id", "color", b"color", "description", b"description", "display_online", b"display_online", "max_permission_id", b"max_permission_id", "remove_permission_ids", b"remove_permission_ids", "remove_user_ids", b"remove_user_ids", "role_icon", b"role_icon", "role_id", b"role_id", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateRoleRequest: typing_extensions.TypeAlias = UpdateRoleRequest
+Global___UpdateRoleRequest: _TypeAlias = UpdateRoleRequest  # noqa: Y015
 
-@typing.final
-class UpdateRoleChannelRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateRoleChannelRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    PERMISSION_UPDATE_FIELD_NUMBER: builtins.int
-    MAX_PERMISSION_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    ROLE_LABEL_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    PERMISSION_UPDATE_FIELD_NUMBER: _builtins.int
+    MAX_PERMISSION_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    ROLE_LABEL_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
     """The ID of the role to update."""
-    max_permission_id: builtins.str
+    max_permission_id: _builtins.int
     """id of permission which has max level permission"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """The channel_id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """The ID of the role to update."""
-    role_label: builtins.str
+    role_label: _builtins.str
     """Role label"""
-    @property
-    def permission_update(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___PermissionUpdate]:
+    @_builtins.property
+    def permission_update(self) -> _containers.RepeatedCompositeFieldContainer[Global___PermissionUpdate]:
         """The permissions to add."""
 
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
-        permission_update: collections.abc.Iterable[Global___PermissionUpdate] | None = ...,
-        max_permission_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        role_label: builtins.str = ...,
+        role_id: _builtins.int = ...,
+        permission_update: _abc.Iterable[Global___PermissionUpdate] | None = ...,
+        max_permission_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        role_label: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "max_permission_id", b"max_permission_id", "permission_update", b"permission_update", "role_id", b"role_id", "role_label", b"role_label", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "max_permission_id", b"max_permission_id", "permission_update", b"permission_update", "role_id", b"role_id", "role_label", b"role_label", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateRoleChannelRequest: typing_extensions.TypeAlias = UpdateRoleChannelRequest
+Global___UpdateRoleChannelRequest: _TypeAlias = UpdateRoleChannelRequest  # noqa: Y015
 
-@typing.final
-class PermissionUpdate(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class PermissionUpdate(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PERMISSION_ID_FIELD_NUMBER: builtins.int
-    SLUG_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    permission_id: builtins.str
+    PERMISSION_ID_FIELD_NUMBER: _builtins.int
+    SLUG_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    permission_id: _builtins.int
     """permission_id"""
-    slug: builtins.str
+    slug: _builtins.str
     """permission slug"""
-    type: builtins.int
+    type: _builtins.int
     """type set permission"""
     def __init__(
         self,
         *,
-        permission_id: builtins.str = ...,
-        slug: builtins.str = ...,
-        type: builtins.int = ...,
+        permission_id: _builtins.int = ...,
+        slug: _builtins.str = ...,
+        type: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["permission_id", b"permission_id", "slug", b"slug", "type", b"type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["permission_id", b"permission_id", "slug", b"slug", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionUpdate: typing_extensions.TypeAlias = PermissionUpdate
+Global___PermissionUpdate: _TypeAlias = PermissionUpdate  # noqa: Y015
 
-@typing.final
-class UploadAttachmentRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UploadAttachmentRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FILENAME_FIELD_NUMBER: builtins.int
-    FILETYPE_FIELD_NUMBER: builtins.int
-    SIZE_FIELD_NUMBER: builtins.int
-    WIDTH_FIELD_NUMBER: builtins.int
-    HEIGHT_FIELD_NUMBER: builtins.int
-    filename: builtins.str
+    FILENAME_FIELD_NUMBER: _builtins.int
+    FILETYPE_FIELD_NUMBER: _builtins.int
+    SIZE_FIELD_NUMBER: _builtins.int
+    WIDTH_FIELD_NUMBER: _builtins.int
+    HEIGHT_FIELD_NUMBER: _builtins.int
+    filename: _builtins.str
     """The name of file that need to upload"""
-    filetype: builtins.str
+    filetype: _builtins.str
     """The type of file that need to upload"""
-    size: builtins.int
+    size: _builtins.int
     """The size of file that need to upload"""
-    width: builtins.int
+    width: _builtins.int
     """width"""
-    height: builtins.int
+    height: _builtins.int
     """Height"""
     def __init__(
         self,
         *,
-        filename: builtins.str = ...,
-        filetype: builtins.str = ...,
-        size: builtins.int = ...,
-        width: builtins.int = ...,
-        height: builtins.int = ...,
+        filename: _builtins.str = ...,
+        filetype: _builtins.str = ...,
+        size: _builtins.int = ...,
+        width: _builtins.int = ...,
+        height: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["filename", b"filename", "filetype", b"filetype", "height", b"height", "size", b"size", "width", b"width"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["filename", b"filename", "filetype", b"filetype", "height", b"height", "size", b"size", "width", b"width"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UploadAttachmentRequest: typing_extensions.TypeAlias = UploadAttachmentRequest
+Global___UploadAttachmentRequest: _TypeAlias = UploadAttachmentRequest  # noqa: Y015
 
-@typing.final
-class ListMessageMentionRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListMessageMentionRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    FORWARD_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    cursor: builtins.str
+    LIMIT_FIELD_NUMBER: _builtins.int
+    FORWARD_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
+    """Max number of records to return. Between 1 and 100."""
+    forward: _builtins.bool
+    """True if listing should be older messages to newer, false if reverse."""
+    cursor: _builtins.str
     """A pagination cursor, if any."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Max number of records to return. Between 1 and 100."""
-
-    @property
-    def forward(self) -> google.protobuf.wrappers_pb2.BoolValue:
-        """True if listing should be older messages to newer, false if reverse."""
-
     def __init__(
         self,
         *,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        forward: google.protobuf.wrappers_pb2.BoolValue | None = ...,
-        cursor: builtins.str = ...,
+        limit: _builtins.int = ...,
+        forward: _builtins.bool = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["forward", b"forward", "limit", b"limit"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "forward", b"forward", "limit", b"limit"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "forward", b"forward", "limit", b"limit"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListMessageMentionRequest: typing_extensions.TypeAlias = ListMessageMentionRequest
+Global___ListMessageMentionRequest: _TypeAlias = ListMessageMentionRequest  # noqa: Y015
 
-@typing.final
-class UploadAttachment(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UploadAttachment(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FILENAME_FIELD_NUMBER: builtins.int
-    URL_FIELD_NUMBER: builtins.int
-    filename: builtins.str
+    FILENAME_FIELD_NUMBER: _builtins.int
+    URL_FIELD_NUMBER: _builtins.int
+    filename: _builtins.str
     """The name of file that need to upload"""
-    url: builtins.str
+    url: _builtins.str
     """The url"""
     def __init__(
         self,
         *,
-        filename: builtins.str = ...,
-        url: builtins.str = ...,
+        filename: _builtins.str = ...,
+        url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["filename", b"filename", "url", b"url"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["filename", b"filename", "url", b"url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UploadAttachment: typing_extensions.TypeAlias = UploadAttachment
+Global___UploadAttachment: _TypeAlias = UploadAttachment  # noqa: Y015
 
-@typing.final
-class SearchMessageRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SearchMessageRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FILTERS_FIELD_NUMBER: builtins.int
-    FROM_FIELD_NUMBER: builtins.int
-    SIZE_FIELD_NUMBER: builtins.int
-    SORTS_FIELD_NUMBER: builtins.int
-    @property
-    def filters(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___FilterParam]: ...
-    @property
-    def size(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """Page size"""
-
-    @property
-    def sorts(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___SortParam]:
+    FILTERS_FIELD_NUMBER: _builtins.int
+    FROM_FIELD_NUMBER: _builtins.int
+    SIZE_FIELD_NUMBER: _builtins.int
+    SORTS_FIELD_NUMBER: _builtins.int
+    size: _builtins.int
+    """Page size"""
+    @_builtins.property
+    def filters(self) -> _containers.RepeatedCompositeFieldContainer[Global___FilterParam]: ...
+    @_builtins.property
+    def sorts(self) -> _containers.RepeatedCompositeFieldContainer[Global___SortParam]:
         """Sort information"""
 
     def __init__(
         self,
         *,
-        filters: collections.abc.Iterable[Global___FilterParam] | None = ...,
-        size: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        sorts: collections.abc.Iterable[Global___SortParam] | None = ...,
+        filters: _abc.Iterable[Global___FilterParam] | None = ...,
+        size: _builtins.int = ...,
+        sorts: _abc.Iterable[Global___SortParam] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["from", b"from", "size", b"size"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["filters", b"filters", "from", b"from", "size", b"size", "sorts", b"sorts"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["filters", b"filters", "from", b"from", "size", b"size", "sorts", b"sorts"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SearchMessageRequest: typing_extensions.TypeAlias = SearchMessageRequest
+Global___SearchMessageRequest: _TypeAlias = SearchMessageRequest  # noqa: Y015
 
-@typing.final
-class SortParam(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SortParam(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FIELD_NAME_FIELD_NUMBER: builtins.int
-    ORDER_FIELD_NUMBER: builtins.int
-    field_name: builtins.str
+    FIELD_NAME_FIELD_NUMBER: _builtins.int
+    ORDER_FIELD_NUMBER: _builtins.int
+    field_name: _builtins.str
     """Field name to sort by"""
-    order: builtins.str
+    order: _builtins.str
     """Sort order"""
     def __init__(
         self,
         *,
-        field_name: builtins.str = ...,
-        order: builtins.str = ...,
+        field_name: _builtins.str = ...,
+        order: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["field_name", b"field_name", "order", b"order"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["field_name", b"field_name", "order", b"order"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SortParam: typing_extensions.TypeAlias = SortParam
+Global___SortParam: _TypeAlias = SortParam  # noqa: Y015
 
-@typing.final
-class FilterParam(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class FilterParam(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FIELD_NAME_FIELD_NUMBER: builtins.int
-    FIELD_VALUE_FIELD_NUMBER: builtins.int
-    field_name: builtins.str
+    FIELD_NAME_FIELD_NUMBER: _builtins.int
+    FIELD_VALUE_FIELD_NUMBER: _builtins.int
+    field_name: _builtins.str
     """Field name to filter by"""
-    field_value: builtins.str
+    field_value: _builtins.str
     """Filter value"""
     def __init__(
         self,
         *,
-        field_name: builtins.str = ...,
-        field_value: builtins.str = ...,
+        field_name: _builtins.str = ...,
+        field_value: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["field_name", b"field_name", "field_value", b"field_value"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["field_name", b"field_name", "field_value", b"field_value"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___FilterParam: typing_extensions.TypeAlias = FilterParam
+Global___FilterParam: _TypeAlias = FilterParam  # noqa: Y015
 
-@typing.final
-class SearchMessageDocument(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SearchMessageDocument(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    MENTIONS_FIELD_NUMBER: builtins.int
-    REACTIONS_FIELD_NUMBER: builtins.int
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    REFERENCES_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    REACTIONS_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    REFERENCES_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.str
     """The message ID."""
-    channel_id: builtins.str
+    channel_id: _builtins.str
     """The channel ID."""
-    clan_id: builtins.str
+    clan_id: _builtins.str
     """The clan ID."""
-    sender_id: builtins.str
+    sender_id: _builtins.str
     """The user ID of sender."""
-    content: builtins.str
+    content: _builtins.str
     """Message content"""
-    mentions: builtins.str
+    mentions: _builtins.str
     """Mention users"""
-    reactions: builtins.str
+    reactions: _builtins.str
     """Reactions"""
-    references: builtins.str
+    attachments: _builtins.str
+    """Attachment"""
+    references: _builtins.str
     """Reference users"""
-    create_time: builtins.str
+    create_time: _builtins.str
     """Message create time"""
-    update_time: builtins.str
+    update_time: _builtins.str
     """Message update time"""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """Channel name"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """Channel type"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """Clan name"""
-    username: builtins.str
+    username: _builtins.str
     """Sender's username"""
-    display_name: builtins.str
+    display_name: _builtins.str
     """Sender's display name"""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """Sender's avatar URL"""
-    @property
-    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___MessageAttachment]:
-        """Attachment"""
-
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        sender_id: builtins.str = ...,
-        content: builtins.str = ...,
-        mentions: builtins.str = ...,
-        reactions: builtins.str = ...,
-        attachments: collections.abc.Iterable[Global___MessageAttachment] | None = ...,
-        references: builtins.str = ...,
-        create_time: builtins.str = ...,
-        update_time: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        channel_type: builtins.int = ...,
-        clan_name: builtins.str = ...,
-        username: builtins.str = ...,
-        display_name: builtins.str = ...,
-        avatar_url: builtins.str = ...,
+        message_id: _builtins.str = ...,
+        channel_id: _builtins.str = ...,
+        clan_id: _builtins.str = ...,
+        sender_id: _builtins.str = ...,
+        content: _builtins.str = ...,
+        mentions: _builtins.str = ...,
+        reactions: _builtins.str = ...,
+        attachments: _builtins.str = ...,
+        references: _builtins.str = ...,
+        create_time: _builtins.str = ...,
+        update_time: _builtins.str = ...,
+        channel_label: _builtins.str = ...,
+        channel_type: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        username: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        avatar_url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachments", b"attachments", "avatar_url", b"avatar_url", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "content", b"content", "create_time", b"create_time", "display_name", b"display_name", "mentions", b"mentions", "message_id", b"message_id", "reactions", b"reactions", "references", b"references", "sender_id", b"sender_id", "update_time", b"update_time", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "avatar_url", b"avatar_url", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "content", b"content", "create_time", b"create_time", "display_name", b"display_name", "mentions", b"mentions", "message_id", b"message_id", "reactions", b"reactions", "references", b"references", "sender_id", b"sender_id", "update_time", b"update_time", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SearchMessageDocument: typing_extensions.TypeAlias = SearchMessageDocument
+Global___SearchMessageDocument: _TypeAlias = SearchMessageDocument  # noqa: Y015
 
-@typing.final
-class SearchMessageResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SearchMessageResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGES_FIELD_NUMBER: builtins.int
-    TOTAL_FIELD_NUMBER: builtins.int
-    total: builtins.int
+    MESSAGES_FIELD_NUMBER: _builtins.int
+    TOTAL_FIELD_NUMBER: _builtins.int
+    total: _builtins.int
     """The total number of messages."""
-    @property
-    def messages(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___SearchMessageDocument]:
+    @_builtins.property
+    def messages(self) -> _containers.RepeatedCompositeFieldContainer[Global___SearchMessageDocument]:
         """List of paged messages."""
 
     def __init__(
         self,
         *,
-        messages: collections.abc.Iterable[Global___SearchMessageDocument] | None = ...,
-        total: builtins.int = ...,
+        messages: _abc.Iterable[Global___SearchMessageDocument] | None = ...,
+        total: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["messages", b"messages", "total", b"total"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["messages", b"messages", "total", b"total"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SearchMessageResponse: typing_extensions.TypeAlias = SearchMessageResponse
+Global___SearchMessageResponse: _TypeAlias = SearchMessageResponse  # noqa: Y015
 
-@typing.final
-class RegistrationEmailRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RegistrationEmailRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class VarsEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class VarsEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.str
-        value: builtins.str
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
         def __init__(
             self,
             *,
-            key: builtins.str = ...,
-            value: builtins.str = ...,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["key", b"key", "value", b"value"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    EMAIL_FIELD_NUMBER: builtins.int
-    PASSWORD_FIELD_NUMBER: builtins.int
-    OLD_PASSWORD_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    DISPLAY_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_URL_FIELD_NUMBER: builtins.int
-    DOB_FIELD_NUMBER: builtins.int
-    VARS_FIELD_NUMBER: builtins.int
-    email: builtins.str
+    EMAIL_FIELD_NUMBER: _builtins.int
+    PASSWORD_FIELD_NUMBER: _builtins.int
+    OLD_PASSWORD_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_URL_FIELD_NUMBER: _builtins.int
+    DOB_FIELD_NUMBER: _builtins.int
+    VARS_FIELD_NUMBER: _builtins.int
+    email: _builtins.str
     """A valid RFC-5322 email address."""
-    password: builtins.str
+    password: _builtins.str
     """A password for the user account."""
-    old_password: builtins.str
+    old_password: _builtins.str
     """A old password for the user account."""
-    username: builtins.str
+    username: _builtins.str
     """Set the username on the account at register. Must be unique."""
-    display_name: builtins.str
+    display_name: _builtins.str
     """Display name"""
-    avatar_url: builtins.str
+    avatar_url: _builtins.str
     """Avatar url"""
-    dob: builtins.str
+    dob: _builtins.str
     """DOB"""
-    @property
-    def vars(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    @_builtins.property
+    def vars(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]:
         """Extra information that will be bundled in the session token."""
 
     def __init__(
         self,
         *,
-        email: builtins.str = ...,
-        password: builtins.str = ...,
-        old_password: builtins.str = ...,
-        username: builtins.str = ...,
-        display_name: builtins.str = ...,
-        avatar_url: builtins.str = ...,
-        dob: builtins.str = ...,
-        vars: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
+        email: _builtins.str = ...,
+        password: _builtins.str = ...,
+        old_password: _builtins.str = ...,
+        username: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        avatar_url: _builtins.str = ...,
+        dob: _builtins.str = ...,
+        vars: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar_url", b"avatar_url", "display_name", b"display_name", "dob", b"dob", "email", b"email", "old_password", b"old_password", "password", b"password", "username", b"username", "vars", b"vars"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar_url", b"avatar_url", "display_name", b"display_name", "dob", b"dob", "email", b"email", "old_password", b"old_password", "password", b"password", "username", b"username", "vars", b"vars"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RegistrationEmailRequest: typing_extensions.TypeAlias = RegistrationEmailRequest
+Global___RegistrationEmailRequest: _TypeAlias = RegistrationEmailRequest  # noqa: Y015
 
-@typing.final
-class ClanEmoji(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanEmoji(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    SRC_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    IS_FOR_SALE_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    src: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    SRC_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    IS_FOR_SALE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    src: _builtins.str
     """src url"""
-    shortname: builtins.str
+    shortname: _builtins.str
     """shortname"""
-    category: builtins.str
+    category: _builtins.str
     """category"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan_id"""
-    logo: builtins.str
+    logo: _builtins.str
     """clan logo"""
-    clan_name: builtins.str
+    clan_name: _builtins.str
     """clan name"""
-    is_for_sale: builtins.bool
+    is_for_sale: _builtins.bool
     """is for sale"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        src: builtins.str = ...,
-        shortname: builtins.str = ...,
-        category: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        logo: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        is_for_sale: builtins.bool = ...,
+        id: _builtins.int = ...,
+        src: _builtins.str = ...,
+        shortname: _builtins.str = ...,
+        category: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        logo: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
+        is_for_sale: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "shortname", b"shortname", "src", b"src"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "shortname", b"shortname", "src", b"src"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanEmoji: typing_extensions.TypeAlias = ClanEmoji
+Global___ClanEmoji: _TypeAlias = ClanEmoji  # noqa: Y015
 
-@typing.final
-class EmojiListedResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class EmojiListedResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    EMOJI_LIST_FIELD_NUMBER: builtins.int
-    @property
-    def emoji_list(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ClanEmoji]: ...
+    EMOJI_LIST_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def emoji_list(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanEmoji]: ...
     def __init__(
         self,
         *,
-        emoji_list: collections.abc.Iterable[Global___ClanEmoji] | None = ...,
+        emoji_list: _abc.Iterable[Global___ClanEmoji] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["emoji_list", b"emoji_list"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["emoji_list", b"emoji_list"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EmojiListedResponse: typing_extensions.TypeAlias = EmojiListedResponse
+Global___EmojiListedResponse: _TypeAlias = EmojiListedResponse  # noqa: Y015
 
-@typing.final
-class StickerListedResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class StickerListedResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    STICKERS_FIELD_NUMBER: builtins.int
-    @property
-    def stickers(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ClanSticker]: ...
+    STICKERS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def stickers(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanSticker]: ...
     def __init__(
         self,
         *,
-        stickers: collections.abc.Iterable[Global___ClanSticker] | None = ...,
+        stickers: _abc.Iterable[Global___ClanSticker] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["stickers", b"stickers"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["stickers", b"stickers"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StickerListedResponse: typing_extensions.TypeAlias = StickerListedResponse
+Global___StickerListedResponse: _TypeAlias = StickerListedResponse  # noqa: Y015
 
-@typing.final
-class ClanSticker(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanSticker(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    SOURCE_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    LOGO_FIELD_NUMBER: builtins.int
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    MEDIA_TYPE_FIELD_NUMBER: builtins.int
-    IS_FOR_SALE_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    source: builtins.str
-    shortname: builtins.str
-    category: builtins.str
-    creator_id: builtins.str
-    clan_id: builtins.str
-    logo: builtins.str
-    clan_name: builtins.str
-    media_type: builtins.int
-    is_for_sale: builtins.bool
+    ID_FIELD_NUMBER: _builtins.int
+    SOURCE_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LOGO_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    MEDIA_TYPE_FIELD_NUMBER: _builtins.int
+    IS_FOR_SALE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    source: _builtins.str
+    shortname: _builtins.str
+    category: _builtins.str
+    creator_id: _builtins.int
+    create_time_seconds: _builtins.int
+    clan_id: _builtins.int
+    logo: _builtins.str
+    clan_name: _builtins.str
+    media_type: _builtins.int
+    is_for_sale: _builtins.bool
     """is for sale"""
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        source: builtins.str = ...,
-        shortname: builtins.str = ...,
-        category: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        clan_id: builtins.str = ...,
-        logo: builtins.str = ...,
-        clan_name: builtins.str = ...,
-        media_type: builtins.int = ...,
-        is_for_sale: builtins.bool = ...,
+        id: _builtins.int = ...,
+        source: _builtins.str = ...,
+        shortname: _builtins.str = ...,
+        category: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        logo: _builtins.str = ...,
+        clan_name: _builtins.str = ...,
+        media_type: _builtins.int = ...,
+        is_for_sale: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "create_time", b"create_time", "creator_id", b"creator_id", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "media_type", b"media_type", "shortname", b"shortname", "source", b"source"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "media_type", b"media_type", "shortname", b"shortname", "source", b"source"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanSticker: typing_extensions.TypeAlias = ClanSticker
+Global___ClanSticker: _TypeAlias = ClanSticker  # noqa: Y015
 
-@typing.final
-class AllUsersAddChannelRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AllUsersAddChannelRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value: ...
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    limit: _builtins.int
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
+        channel_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "limit", b"limit"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "limit", b"limit"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AllUsersAddChannelRequest: typing_extensions.TypeAlias = AllUsersAddChannelRequest
+Global___AllUsersAddChannelRequest: _TypeAlias = AllUsersAddChannelRequest  # noqa: Y015
 
-@typing.final
-class AllUsersAddChannelResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AllUsersAddChannelResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    USERNAMES_FIELD_NUMBER: builtins.int
-    DISPLAY_NAMES_FIELD_NUMBER: builtins.int
-    AVATARS_FIELD_NUMBER: builtins.int
-    ONLINES_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value: ...
-    @property
-    def usernames(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def display_names(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def avatars(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def onlines(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.bool]: ...
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    USERNAMES_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAMES_FIELD_NUMBER: _builtins.int
+    AVATARS_FIELD_NUMBER: _builtins.int
+    ONLINES_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    limit: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def usernames(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def display_names(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def avatars(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def onlines(self) -> _containers.RepeatedScalarFieldContainer[_builtins.bool]: ...
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        usernames: collections.abc.Iterable[builtins.str] | None = ...,
-        display_names: collections.abc.Iterable[builtins.str] | None = ...,
-        avatars: collections.abc.Iterable[builtins.str] | None = ...,
-        onlines: collections.abc.Iterable[builtins.bool] | None = ...,
+        channel_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        limit: _builtins.int = ...,
+        usernames: _abc.Iterable[_builtins.str] | None = ...,
+        display_names: _abc.Iterable[_builtins.str] | None = ...,
+        avatars: _abc.Iterable[_builtins.str] | None = ...,
+        onlines: _abc.Iterable[_builtins.bool] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatars", b"avatars", "channel_id", b"channel_id", "display_names", b"display_names", "limit", b"limit", "onlines", b"onlines", "user_ids", b"user_ids", "usernames", b"usernames"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatars", b"avatars", "channel_id", b"channel_id", "display_names", b"display_names", "limit", b"limit", "onlines", b"onlines", "user_ids", b"user_ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AllUsersAddChannelResponse: typing_extensions.TypeAlias = AllUsersAddChannelResponse
+Global___AllUsersAddChannelResponse: _TypeAlias = AllUsersAddChannelResponse  # noqa: Y015
 
-@typing.final
-class ClanEmojiCreateRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanEmojiCreateRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    SOURCE_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    IS_FOR_SALE_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    source: builtins.str
-    shortname: builtins.str
-    category: builtins.str
-    id: builtins.str
-    is_for_sale: builtins.bool
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    SOURCE_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    IS_FOR_SALE_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    source: _builtins.str
+    shortname: _builtins.str
+    category: _builtins.str
+    id: _builtins.int
+    is_for_sale: _builtins.bool
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        source: builtins.str = ...,
-        shortname: builtins.str = ...,
-        category: builtins.str = ...,
-        id: builtins.str = ...,
-        is_for_sale: builtins.bool = ...,
+        clan_id: _builtins.int = ...,
+        source: _builtins.str = ...,
+        shortname: _builtins.str = ...,
+        category: _builtins.str = ...,
+        id: _builtins.int = ...,
+        is_for_sale: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "id", b"id", "is_for_sale", b"is_for_sale", "shortname", b"shortname", "source", b"source"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "id", b"id", "is_for_sale", b"is_for_sale", "shortname", b"shortname", "source", b"source"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanEmojiCreateRequest: typing_extensions.TypeAlias = ClanEmojiCreateRequest
+Global___ClanEmojiCreateRequest: _TypeAlias = ClanEmojiCreateRequest  # noqa: Y015
 
-@typing.final
-class ClanEmojiGetByClanIdRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanEmojiGetByClanIdRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanEmojiGetByClanIdRequest: typing_extensions.TypeAlias = ClanEmojiGetByClanIdRequest
+Global___ClanEmojiGetByClanIdRequest: _TypeAlias = ClanEmojiGetByClanIdRequest  # noqa: Y015
 
-@typing.final
-class ClanEmojiDeleteRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanEmojiDeleteRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    EMOJI_LABEL_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    clan_id: builtins.str
-    emoji_label: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    EMOJI_LABEL_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    clan_id: _builtins.int
+    emoji_label: _builtins.str
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        emoji_label: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        emoji_label: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "emoji_label", b"emoji_label", "id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "emoji_label", b"emoji_label", "id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanEmojiDeleteRequest: typing_extensions.TypeAlias = ClanEmojiDeleteRequest
+Global___ClanEmojiDeleteRequest: _TypeAlias = ClanEmojiDeleteRequest  # noqa: Y015
 
-@typing.final
-class ClanEmojiUpdateRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanEmojiUpdateRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    shortname: builtins.str
-    clan_id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    shortname: _builtins.str
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        shortname: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        shortname: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id", "shortname", b"shortname"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "shortname", b"shortname"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanEmojiUpdateRequest: typing_extensions.TypeAlias = ClanEmojiUpdateRequest
+Global___ClanEmojiUpdateRequest: _TypeAlias = ClanEmojiUpdateRequest  # noqa: Y015
 
-@typing.final
-class Webhook(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class Webhook(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    WEBHOOK_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    URL_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    webhook_name: builtins.str
-    channel_id: builtins.str
-    active: builtins.int
-    url: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    WEBHOOK_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    URL_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    webhook_name: _builtins.str
+    channel_id: _builtins.int
+    active: _builtins.int
+    url: _builtins.str
     """URL of the webhook, which is automatically generated and different from the avatar"""
-    creator_id: builtins.str
-    create_time: builtins.str
-    update_time: builtins.str
-    avatar: builtins.str
-    status: builtins.int
-    clan_id: builtins.str
+    creator_id: _builtins.int
+    create_time: _builtins.str
+    update_time: _builtins.str
+    avatar: _builtins.str
+    status: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        webhook_name: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        active: builtins.int = ...,
-        url: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        create_time: builtins.str = ...,
-        update_time: builtins.str = ...,
-        avatar: builtins.str = ...,
-        status: builtins.int = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        webhook_name: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        active: _builtins.int = ...,
+        url: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        create_time: _builtins.str = ...,
+        update_time: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        status: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "create_time", b"create_time", "creator_id", b"creator_id", "id", b"id", "status", b"status", "update_time", b"update_time", "url", b"url", "webhook_name", b"webhook_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "create_time", b"create_time", "creator_id", b"creator_id", "id", b"id", "status", b"status", "update_time", b"update_time", "url", b"url", "webhook_name", b"webhook_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Webhook: typing_extensions.TypeAlias = Webhook
+Global___Webhook: _TypeAlias = Webhook  # noqa: Y015
 
-@typing.final
-class WebhookCreateRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookCreateRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    WEBHOOK_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    webhook_name: builtins.str
-    channel_id: builtins.str
-    avatar: builtins.str
-    clan_id: builtins.str
+    WEBHOOK_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    webhook_name: _builtins.str
+    channel_id: _builtins.int
+    avatar: _builtins.str
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        webhook_name: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        avatar: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        webhook_name: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        avatar: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "webhook_name", b"webhook_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "webhook_name", b"webhook_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookCreateRequest: typing_extensions.TypeAlias = WebhookCreateRequest
+Global___WebhookCreateRequest: _TypeAlias = WebhookCreateRequest  # noqa: Y015
 
-@typing.final
-class WebhookListRequestById(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookListRequestById(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
+        id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookListRequestById: typing_extensions.TypeAlias = WebhookListRequestById
+Global___WebhookListRequestById: _TypeAlias = WebhookListRequestById  # noqa: Y015
 
-@typing.final
-class WebhookUpdateRequestById(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookUpdateRequestById(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    WEBHOOK_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_UPDATE_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    WEBHOOK_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_UPDATE_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """webhook Id"""
-    webhook_name: builtins.str
+    webhook_name: _builtins.str
     """webhook name"""
-    channel_id_update: builtins.str
+    channel_id_update: _builtins.int
     """change channel_id of webhook"""
-    avatar: builtins.str
+    avatar: _builtins.str
     """webhook avatar"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        webhook_name: builtins.str = ...,
-        channel_id_update: builtins.str = ...,
-        avatar: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        webhook_name: _builtins.str = ...,
+        channel_id_update: _builtins.int = ...,
+        avatar: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "channel_id", b"channel_id", "channel_id_update", b"channel_id_update", "clan_id", b"clan_id", "id", b"id", "webhook_name", b"webhook_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "channel_id", b"channel_id", "channel_id_update", b"channel_id_update", "clan_id", b"clan_id", "id", b"id", "webhook_name", b"webhook_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookUpdateRequestById: typing_extensions.TypeAlias = WebhookUpdateRequestById
+Global___WebhookUpdateRequestById: _TypeAlias = WebhookUpdateRequestById  # noqa: Y015
 
-@typing.final
-class WebhookDeleteRequestById(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookDeleteRequestById(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    clan_id: builtins.str
-    channel_id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookDeleteRequestById: typing_extensions.TypeAlias = WebhookDeleteRequestById
+Global___WebhookDeleteRequestById: _TypeAlias = WebhookDeleteRequestById  # noqa: Y015
 
-@typing.final
-class WebhookListRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookListRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    clan_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookListRequest: typing_extensions.TypeAlias = WebhookListRequest
+Global___WebhookListRequest: _TypeAlias = WebhookListRequest  # noqa: Y015
 
-@typing.final
-class WebhookListResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookListResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    WEBHOOKS_FIELD_NUMBER: builtins.int
-    @property
-    def webhooks(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___Webhook]: ...
+    WEBHOOKS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def webhooks(self) -> _containers.RepeatedCompositeFieldContainer[Global___Webhook]: ...
     def __init__(
         self,
         *,
-        webhooks: collections.abc.Iterable[Global___Webhook] | None = ...,
+        webhooks: _abc.Iterable[Global___Webhook] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["webhooks", b"webhooks"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["webhooks", b"webhooks"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookListResponse: typing_extensions.TypeAlias = WebhookListResponse
+Global___WebhookListResponse: _TypeAlias = WebhookListResponse  # noqa: Y015
 
-@typing.final
-class WebhookGenerateResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookGenerateResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    URL_FIELD_NUMBER: builtins.int
-    HOOK_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    url: builtins.str
-    hook_name: builtins.str
-    channel_id: builtins.str
-    avatar: builtins.str
+    URL_FIELD_NUMBER: _builtins.int
+    HOOK_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    url: _builtins.str
+    hook_name: _builtins.str
+    channel_id: _builtins.int
+    avatar: _builtins.str
     def __init__(
         self,
         *,
-        url: builtins.str = ...,
-        hook_name: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        avatar: builtins.str = ...,
+        url: _builtins.str = ...,
+        hook_name: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        avatar: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "channel_id", b"channel_id", "hook_name", b"hook_name", "url", b"url"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "channel_id", b"channel_id", "hook_name", b"hook_name", "url", b"url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookGenerateResponse: typing_extensions.TypeAlias = WebhookGenerateResponse
+Global___WebhookGenerateResponse: _TypeAlias = WebhookGenerateResponse  # noqa: Y015
 
-@typing.final
-class WebhookHandlerRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class WebhookHandlerRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    BODY_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    TOKEN_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    token: builtins.str
-    @property
-    def body(self) -> google.protobuf.struct_pb2.Struct: ...
+    BODY_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    TOKEN_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    token: _builtins.str
+    @_builtins.property
+    def body(self) -> _struct_pb2.Struct: ...
     def __init__(
         self,
         *,
-        body: google.protobuf.struct_pb2.Struct | None = ...,
-        channel_id: builtins.str = ...,
-        token: builtins.str = ...,
+        body: _struct_pb2.Struct | None = ...,
+        channel_id: _builtins.int = ...,
+        token: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["body", b"body"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["body", b"body", "channel_id", b"channel_id", "token", b"token"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["body", b"body"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["body", b"body", "channel_id", b"channel_id", "token", b"token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___WebhookHandlerRequest: typing_extensions.TypeAlias = WebhookHandlerRequest
+Global___WebhookHandlerRequest: _TypeAlias = WebhookHandlerRequest  # noqa: Y015
 
-@typing.final
-class CheckDuplicateClanNameRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CheckDuplicateClanNameRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_NAME_FIELD_NUMBER: builtins.int
-    clan_name: builtins.str
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    clan_name: _builtins.str
     def __init__(
         self,
         *,
-        clan_name: builtins.str = ...,
+        clan_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_name", b"clan_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_name", b"clan_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CheckDuplicateClanNameRequest: typing_extensions.TypeAlias = CheckDuplicateClanNameRequest
+Global___CheckDuplicateClanNameRequest: _TypeAlias = CheckDuplicateClanNameRequest  # noqa: Y015
 
-@typing.final
-class CheckDuplicateClanNameResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CheckDuplicateClanNameResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    IS_DUPLICATE_FIELD_NUMBER: builtins.int
-    is_duplicate: builtins.bool
+    IS_DUPLICATE_FIELD_NUMBER: _builtins.int
+    is_duplicate: _builtins.bool
     def __init__(
         self,
         *,
-        is_duplicate: builtins.bool = ...,
+        is_duplicate: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["is_duplicate", b"is_duplicate"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["is_duplicate", b"is_duplicate"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CheckDuplicateClanNameResponse: typing_extensions.TypeAlias = CheckDuplicateClanNameResponse
+Global___CheckDuplicateClanNameResponse: _TypeAlias = CheckDuplicateClanNameResponse  # noqa: Y015
 
-@typing.final
-class ClanStickerAddRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanStickerAddRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    SOURCE_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    MEDIA_TYPE_FIELD_NUMBER: builtins.int
-    IS_FOR_SALE_FIELD_NUMBER: builtins.int
-    source: builtins.str
-    shortname: builtins.str
-    category: builtins.str
-    clan_id: builtins.str
-    id: builtins.str
+    SOURCE_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    MEDIA_TYPE_FIELD_NUMBER: _builtins.int
+    IS_FOR_SALE_FIELD_NUMBER: _builtins.int
+    source: _builtins.str
+    shortname: _builtins.str
+    category: _builtins.str
+    clan_id: _builtins.int
+    id: _builtins.int
     """UNIQUE include type number"""
-    media_type: builtins.int
+    media_type: _builtins.int
     """media type for image or audio"""
-    is_for_sale: builtins.bool
+    is_for_sale: _builtins.bool
     """is for sale"""
     def __init__(
         self,
         *,
-        source: builtins.str = ...,
-        shortname: builtins.str = ...,
-        category: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        id: builtins.str = ...,
-        media_type: builtins.int = ...,
-        is_for_sale: builtins.bool = ...,
+        source: _builtins.str = ...,
+        shortname: _builtins.str = ...,
+        category: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        id: _builtins.int = ...,
+        media_type: _builtins.int = ...,
+        is_for_sale: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "id", b"id", "is_for_sale", b"is_for_sale", "media_type", b"media_type", "shortname", b"shortname", "source", b"source"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "id", b"id", "is_for_sale", b"is_for_sale", "media_type", b"media_type", "shortname", b"shortname", "source", b"source"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanStickerAddRequest: typing_extensions.TypeAlias = ClanStickerAddRequest
+Global___ClanStickerAddRequest: _TypeAlias = ClanStickerAddRequest  # noqa: Y015
 
-@typing.final
-class ClanStickerListByClanIdRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanStickerListByClanIdRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanStickerListByClanIdRequest: typing_extensions.TypeAlias = ClanStickerListByClanIdRequest
+Global___ClanStickerListByClanIdRequest: _TypeAlias = ClanStickerListByClanIdRequest  # noqa: Y015
 
-@typing.final
-class ClanStickerUpdateByIdRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanStickerUpdateByIdRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    SOURCE_FIELD_NUMBER: builtins.int
-    SHORTNAME_FIELD_NUMBER: builtins.int
-    CATEGORY_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    source: builtins.str
-    shortname: builtins.str
-    category: builtins.str
-    clan_id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    SOURCE_FIELD_NUMBER: _builtins.int
+    SHORTNAME_FIELD_NUMBER: _builtins.int
+    CATEGORY_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    source: _builtins.str
+    shortname: _builtins.str
+    category: _builtins.str
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        source: builtins.str = ...,
-        shortname: builtins.str = ...,
-        category: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        source: _builtins.str = ...,
+        shortname: _builtins.str = ...,
+        category: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category", b"category", "clan_id", b"clan_id", "id", b"id", "shortname", b"shortname", "source", b"source"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "id", b"id", "shortname", b"shortname", "source", b"source"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanStickerUpdateByIdRequest: typing_extensions.TypeAlias = ClanStickerUpdateByIdRequest
+Global___ClanStickerUpdateByIdRequest: _TypeAlias = ClanStickerUpdateByIdRequest  # noqa: Y015
 
-@typing.final
-class ClanStickerDeleteRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanStickerDeleteRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    STICKER_LABEL_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    clan_id: builtins.str
-    sticker_label: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    STICKER_LABEL_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    clan_id: _builtins.int
+    sticker_label: _builtins.str
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        sticker_label: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        sticker_label: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id", "sticker_label", b"sticker_label"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "sticker_label", b"sticker_label"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanStickerDeleteRequest: typing_extensions.TypeAlias = ClanStickerDeleteRequest
+Global___ClanStickerDeleteRequest: _TypeAlias = ClanStickerDeleteRequest  # noqa: Y015
 
-@typing.final
-class ChangeChannelCategoryRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChangeChannelCategoryRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    NEW_CATEGORY_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    channel_id: builtins.str
-    new_category_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    NEW_CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    new_category_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        new_category_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        new_category_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "new_category_id", b"new_category_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "new_category_id", b"new_category_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChangeChannelCategoryRequest: typing_extensions.TypeAlias = ChangeChannelCategoryRequest
+Global___ChangeChannelCategoryRequest: _TypeAlias = ChangeChannelCategoryRequest  # noqa: Y015
 
-@typing.final
-class App(google.protobuf.message.Message):
+@_typing.final
+class App(_message.Message):
     """App information."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    APPNAME_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    APPLOGO_FIELD_NUMBER: builtins.int
-    IS_SHADOW_FIELD_NUMBER: builtins.int
-    DISABLE_TIME_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    TOKEN_FIELD_NUMBER: builtins.int
-    ROLE_FIELD_NUMBER: builtins.int
-    ABOUT_FIELD_NUMBER: builtins.int
-    APP_URL_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    APPNAME_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    APPLOGO_FIELD_NUMBER: _builtins.int
+    IS_SHADOW_FIELD_NUMBER: _builtins.int
+    DISABLE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    TOKEN_FIELD_NUMBER: _builtins.int
+    ROLE_FIELD_NUMBER: _builtins.int
+    ABOUT_FIELD_NUMBER: _builtins.int
+    APP_URL_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """app id"""
-    appname: builtins.str
+    appname: _builtins.str
     """appname"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator_id"""
-    applogo: builtins.str
+    applogo: _builtins.str
     """logo"""
-    is_shadow: builtins.bool
+    is_shadow: _builtins.bool
     """status online"""
-    token: builtins.str
+    disable_time_seconds: _builtins.int
+    """The UNIX time when the app was disabled."""
+    create_time_seconds: _builtins.int
+    """The UNIX time when the app was created"""
+    token: _builtins.str
     """string token"""
-    role: builtins.int
+    role: _builtins.int
     """role"""
-    about: builtins.str
+    about: _builtins.str
     """about"""
-    app_url: builtins.str
+    app_url: _builtins.str
     """app url"""
-    @property
-    def disable_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time when the app was disabled."""
-
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time when the app was created"""
-
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        appname: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        applogo: builtins.str = ...,
-        is_shadow: builtins.bool = ...,
-        disable_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        token: builtins.str = ...,
-        role: builtins.int = ...,
-        about: builtins.str = ...,
-        app_url: builtins.str = ...,
+        id: _builtins.int = ...,
+        appname: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        applogo: _builtins.str = ...,
+        is_shadow: _builtins.bool = ...,
+        disable_time_seconds: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        token: _builtins.str = ...,
+        role: _builtins.int = ...,
+        about: _builtins.str = ...,
+        app_url: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "disable_time", b"disable_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about", b"about", "app_url", b"app_url", "applogo", b"applogo", "appname", b"appname", "create_time", b"create_time", "creator_id", b"creator_id", "disable_time", b"disable_time", "id", b"id", "is_shadow", b"is_shadow", "role", b"role", "token", b"token"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "app_url", b"app_url", "applogo", b"applogo", "appname", b"appname", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "disable_time_seconds", b"disable_time_seconds", "id", b"id", "is_shadow", b"is_shadow", "role", b"role", "token", b"token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___App: typing_extensions.TypeAlias = App
+Global___App: _TypeAlias = App  # noqa: Y015
 
-@typing.final
-class AppDeleteRequest(google.protobuf.message.Message):
+@_typing.final
+class AppDeleteRequest(_message.Message):
     """Delete a app."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    RECORD_DELETION_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    RECORD_DELETION_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """The unique identifier of the app."""
-    @property
-    def record_deletion(self) -> google.protobuf.wrappers_pb2.BoolValue:
-        """Record the app deletion - used for GDPR compliance."""
-
+    record_deletion: _builtins.bool
+    """Record the app deletion - used for GDPR compliance."""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        record_deletion: google.protobuf.wrappers_pb2.BoolValue | None = ...,
+        id: _builtins.int = ...,
+        record_deletion: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["record_deletion", b"record_deletion"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["id", b"id", "record_deletion", b"record_deletion"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["id", b"id", "record_deletion", b"record_deletion"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AppDeleteRequest: typing_extensions.TypeAlias = AppDeleteRequest
+Global___AppDeleteRequest: _TypeAlias = AppDeleteRequest  # noqa: Y015
 
-@typing.final
-class AppList(google.protobuf.message.Message):
+@_typing.final
+class AppList(_message.Message):
     """A list of apps."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    APPS_FIELD_NUMBER: builtins.int
-    TOTAL_COUNT_FIELD_NUMBER: builtins.int
-    NEXT_CURSOR_FIELD_NUMBER: builtins.int
-    total_count: builtins.int
+    APPS_FIELD_NUMBER: _builtins.int
+    TOTAL_COUNT_FIELD_NUMBER: _builtins.int
+    NEXT_CURSOR_FIELD_NUMBER: _builtins.int
+    total_count: _builtins.int
     """Approximate total number of apps."""
-    next_cursor: builtins.str
+    next_cursor: _builtins.str
     """Next cursor."""
-    @property
-    def apps(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___App]:
+    @_builtins.property
+    def apps(self) -> _containers.RepeatedCompositeFieldContainer[Global___App]:
         """A list of apps."""
 
     def __init__(
         self,
         *,
-        apps: collections.abc.Iterable[Global___App] | None = ...,
-        total_count: builtins.int = ...,
-        next_cursor: builtins.str = ...,
+        apps: _abc.Iterable[Global___App] | None = ...,
+        total_count: _builtins.int = ...,
+        next_cursor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["apps", b"apps", "next_cursor", b"next_cursor", "total_count", b"total_count"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["apps", b"apps", "next_cursor", b"next_cursor", "total_count", b"total_count"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AppList: typing_extensions.TypeAlias = AppList
+Global___AppList: _TypeAlias = AppList  # noqa: Y015
 
-@typing.final
-class AddAppRequest(google.protobuf.message.Message):
+@_typing.final
+class AddAppRequest(_message.Message):
     """Add a new app"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    APPNAME_FIELD_NUMBER: builtins.int
-    TOKEN_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    ROLE_FIELD_NUMBER: builtins.int
-    IS_SHADOW_FIELD_NUMBER: builtins.int
-    APP_URL_FIELD_NUMBER: builtins.int
-    APP_LOGO_FIELD_NUMBER: builtins.int
-    ABOUT_ME_FIELD_NUMBER: builtins.int
-    appname: builtins.str
+    APPNAME_FIELD_NUMBER: _builtins.int
+    TOKEN_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    ROLE_FIELD_NUMBER: _builtins.int
+    IS_SHADOW_FIELD_NUMBER: _builtins.int
+    APP_URL_FIELD_NUMBER: _builtins.int
+    APP_LOGO_FIELD_NUMBER: _builtins.int
+    ABOUT_ME_FIELD_NUMBER: _builtins.int
+    appname: _builtins.str
     """The appname."""
-    token: builtins.str
+    token: _builtins.str
     """The password."""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """Creator of the app."""
-    role: builtins.int
+    role: _builtins.int
     """Role of this app."""
-    is_shadow: builtins.bool
+    is_shadow: _builtins.bool
     """Is shadow."""
-    app_url: builtins.str
+    app_url: _builtins.str
     """App url."""
-    app_logo: builtins.str
+    app_logo: _builtins.str
     """app logo"""
-    about_me: builtins.str
+    about_me: _builtins.str
     """about me"""
     def __init__(
         self,
         *,
-        appname: builtins.str = ...,
-        token: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        role: builtins.int = ...,
-        is_shadow: builtins.bool = ...,
-        app_url: builtins.str = ...,
-        app_logo: builtins.str = ...,
-        about_me: builtins.str = ...,
+        appname: _builtins.str = ...,
+        token: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        role: _builtins.int = ...,
+        is_shadow: _builtins.bool = ...,
+        app_url: _builtins.str = ...,
+        app_logo: _builtins.str = ...,
+        about_me: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about_me", b"about_me", "app_logo", b"app_logo", "app_url", b"app_url", "appname", b"appname", "creator_id", b"creator_id", "is_shadow", b"is_shadow", "role", b"role", "token", b"token"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about_me", b"about_me", "app_logo", b"app_logo", "app_url", b"app_url", "appname", b"appname", "creator_id", b"creator_id", "is_shadow", b"is_shadow", "role", b"role", "token", b"token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddAppRequest: typing_extensions.TypeAlias = AddAppRequest
+Global___AddAppRequest: _TypeAlias = AddAppRequest  # noqa: Y015
 
-@typing.final
-class ListAppsRequest(google.protobuf.message.Message):
+@_typing.final
+class ListAppsRequest(_message.Message):
     """List (and optionally filter) users."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FILTER_FIELD_NUMBER: builtins.int
-    TOMBSTONES_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    filter: builtins.str
+    FILTER_FIELD_NUMBER: _builtins.int
+    TOMBSTONES_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    filter: _builtins.str
     """User ID or username filter."""
-    tombstones: builtins.bool
+    tombstones: _builtins.bool
     """Search only recorded deletes."""
-    cursor: builtins.str
+    cursor: _builtins.str
     """Cursor to start from"""
     def __init__(
         self,
         *,
-        filter: builtins.str = ...,
-        tombstones: builtins.bool = ...,
-        cursor: builtins.str = ...,
+        filter: _builtins.str = ...,
+        tombstones: _builtins.bool = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["cursor", b"cursor", "filter", b"filter", "tombstones", b"tombstones"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["cursor", b"cursor", "filter", b"filter", "tombstones", b"tombstones"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListAppsRequest: typing_extensions.TypeAlias = ListAppsRequest
+Global___ListAppsRequest: _TypeAlias = ListAppsRequest  # noqa: Y015
 
-@typing.final
-class UpdateAppRequest(google.protobuf.message.Message):
+@_typing.final
+class UpdateAppRequest(_message.Message):
     """Update app information."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    APPNAME_FIELD_NUMBER: builtins.int
-    METADATA_FIELD_NUMBER: builtins.int
-    APPLOGO_FIELD_NUMBER: builtins.int
-    TOKEN_FIELD_NUMBER: builtins.int
-    ABOUT_FIELD_NUMBER: builtins.int
-    APP_URL_FIELD_NUMBER: builtins.int
-    IS_SHADOW_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    APPNAME_FIELD_NUMBER: _builtins.int
+    METADATA_FIELD_NUMBER: _builtins.int
+    APPLOGO_FIELD_NUMBER: _builtins.int
+    TOKEN_FIELD_NUMBER: _builtins.int
+    ABOUT_FIELD_NUMBER: _builtins.int
+    APP_URL_FIELD_NUMBER: _builtins.int
+    IS_SHADOW_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """User ID to update."""
-    about: builtins.str
+    about: _builtins.str
     """about the app."""
-    app_url: builtins.str
+    app_url: _builtins.str
     """App url."""
-    is_shadow: builtins.str
+    is_shadow: _builtins.str
     """need update or not"""
-    @property
-    def appname(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def appname(self) -> _wrappers_pb2.StringValue:
         """Username."""
 
-    @property
-    def metadata(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def metadata(self) -> _wrappers_pb2.StringValue:
         """Metadata."""
 
-    @property
-    def applogo(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def applogo(self) -> _wrappers_pb2.StringValue:
         """Avatar URL."""
 
-    @property
-    def token(self) -> google.protobuf.wrappers_pb2.StringValue:
+    @_builtins.property
+    def token(self) -> _wrappers_pb2.StringValue:
         """Token."""
 
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        appname: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        metadata: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        applogo: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        token: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        about: builtins.str = ...,
-        app_url: builtins.str = ...,
-        is_shadow: builtins.str = ...,
+        id: _builtins.int = ...,
+        appname: _wrappers_pb2.StringValue | None = ...,
+        metadata: _wrappers_pb2.StringValue | None = ...,
+        applogo: _wrappers_pb2.StringValue | None = ...,
+        token: _wrappers_pb2.StringValue | None = ...,
+        about: _builtins.str = ...,
+        app_url: _builtins.str = ...,
+        is_shadow: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["applogo", b"applogo", "appname", b"appname", "metadata", b"metadata", "token", b"token"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["about", b"about", "app_url", b"app_url", "applogo", b"applogo", "appname", b"appname", "id", b"id", "is_shadow", b"is_shadow", "metadata", b"metadata", "token", b"token"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["applogo", b"applogo", "appname", b"appname", "metadata", b"metadata", "token", b"token"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "app_url", b"app_url", "applogo", b"applogo", "appname", b"appname", "id", b"id", "is_shadow", b"is_shadow", "metadata", b"metadata", "token", b"token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateAppRequest: typing_extensions.TypeAlias = UpdateAppRequest
+Global___UpdateAppRequest: _TypeAlias = UpdateAppRequest  # noqa: Y015
 
-@typing.final
-class AppId(google.protobuf.message.Message):
+@_typing.final
+class AppId(_message.Message):
     """The identifier for an app."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """The unique identifier of the app."""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
+        id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AppId: typing_extensions.TypeAlias = AppId
+Global___AppId: _TypeAlias = AppId  # noqa: Y015
 
-@typing.final
-class AppClan(google.protobuf.message.Message):
+@_typing.final
+class AppClan(_message.Message):
     """The identifier for an app."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    APP_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    app_id: builtins.str
+    APP_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    app_id: _builtins.int
     """The unique identifier of the app."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        app_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        app_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["app_id", b"app_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AppClan: typing_extensions.TypeAlias = AppClan
+Global___AppClan: _TypeAlias = AppClan  # noqa: Y015
 
-@typing.final
-class DeleteChannelMessagesRequest(google.protobuf.message.Message):
+@_typing.final
+class DeleteChannelMessagesRequest(_message.Message):
     """Delete channel messages by timestamp or/and ids."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    BEFORE_FIELD_NUMBER: builtins.int
-    IDS_FIELD_NUMBER: builtins.int
-    @property
-    def before(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """Timestamp before which messages will be deleted."""
-
-    @property
-    def ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    BEFORE_SECONDS_FIELD_NUMBER: _builtins.int
+    IDS_FIELD_NUMBER: _builtins.int
+    before_seconds: _builtins.int
+    """Timestamp before which messages will be deleted."""
+    @_builtins.property
+    def ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """IDs of the messages to delete."""
 
     def __init__(
         self,
         *,
-        before: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        ids: collections.abc.Iterable[builtins.str] | None = ...,
+        before_seconds: _builtins.int = ...,
+        ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["before", b"before"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["before", b"before", "ids", b"ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["before_seconds", b"before_seconds", "ids", b"ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteChannelMessagesRequest: typing_extensions.TypeAlias = DeleteChannelMessagesRequest
+Global___DeleteChannelMessagesRequest: _TypeAlias = DeleteChannelMessagesRequest  # noqa: Y015
 
-@typing.final
-class DeleteChannelMessagesResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DeleteChannelMessagesResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TOTAL_FIELD_NUMBER: builtins.int
-    total: builtins.int
+    TOTAL_FIELD_NUMBER: _builtins.int
+    total: _builtins.int
     """Total number of messages deleted."""
     def __init__(
         self,
         *,
-        total: builtins.int = ...,
+        total: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["total", b"total"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["total", b"total"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteChannelMessagesResponse: typing_extensions.TypeAlias = DeleteChannelMessagesResponse
+Global___DeleteChannelMessagesResponse: _TypeAlias = DeleteChannelMessagesResponse  # noqa: Y015
 
-@typing.final
-class SystemMessage(google.protobuf.message.Message):
+@_typing.final
+class SystemMessage(_message.Message):
     """System message details."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    WELCOME_RANDOM_FIELD_NUMBER: builtins.int
-    WELCOME_STICKER_FIELD_NUMBER: builtins.int
-    BOOST_MESSAGE_FIELD_NUMBER: builtins.int
-    SETUP_TIPS_FIELD_NUMBER: builtins.int
-    HIDE_AUDIT_LOG_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    WELCOME_RANDOM_FIELD_NUMBER: _builtins.int
+    WELCOME_STICKER_FIELD_NUMBER: _builtins.int
+    BOOST_MESSAGE_FIELD_NUMBER: _builtins.int
+    SETUP_TIPS_FIELD_NUMBER: _builtins.int
+    HIDE_AUDIT_LOG_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """ID"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """Clan ID"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """Channel ID"""
-    welcome_random: builtins.str
+    welcome_random: _builtins.str
     """Welcome random"""
-    welcome_sticker: builtins.str
+    welcome_sticker: _builtins.str
     """Welcome sticker"""
-    boost_message: builtins.str
+    boost_message: _builtins.str
     """Boost message"""
-    setup_tips: builtins.str
+    setup_tips: _builtins.str
     """Setup tips"""
-    hide_audit_log: builtins.str
+    hide_audit_log: _builtins.bool
     """Hide audit log"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        welcome_random: builtins.str = ...,
-        welcome_sticker: builtins.str = ...,
-        boost_message: builtins.str = ...,
-        setup_tips: builtins.str = ...,
-        hide_audit_log: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        welcome_random: _builtins.str = ...,
+        welcome_sticker: _builtins.str = ...,
+        boost_message: _builtins.str = ...,
+        setup_tips: _builtins.str = ...,
+        hide_audit_log: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["boost_message", b"boost_message", "channel_id", b"channel_id", "clan_id", b"clan_id", "hide_audit_log", b"hide_audit_log", "id", b"id", "setup_tips", b"setup_tips", "welcome_random", b"welcome_random", "welcome_sticker", b"welcome_sticker"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["boost_message", b"boost_message", "channel_id", b"channel_id", "clan_id", b"clan_id", "hide_audit_log", b"hide_audit_log", "id", b"id", "setup_tips", b"setup_tips", "welcome_random", b"welcome_random", "welcome_sticker", b"welcome_sticker"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SystemMessage: typing_extensions.TypeAlias = SystemMessage
+Global___SystemMessage: _TypeAlias = SystemMessage  # noqa: Y015
 
-@typing.final
-class SystemMessagesList(google.protobuf.message.Message):
+@_typing.final
+class SystemMessagesList(_message.Message):
     """List of system message."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    SYSTEM_MESSAGES_LIST_FIELD_NUMBER: builtins.int
-    @property
-    def system_messages_list(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___SystemMessage]: ...
+    SYSTEM_MESSAGES_LIST_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def system_messages_list(self) -> _containers.RepeatedCompositeFieldContainer[Global___SystemMessage]: ...
     def __init__(
         self,
         *,
-        system_messages_list: collections.abc.Iterable[Global___SystemMessage] | None = ...,
+        system_messages_list: _abc.Iterable[Global___SystemMessage] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["system_messages_list", b"system_messages_list"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["system_messages_list", b"system_messages_list"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SystemMessagesList: typing_extensions.TypeAlias = SystemMessagesList
+Global___SystemMessagesList: _TypeAlias = SystemMessagesList  # noqa: Y015
 
-@typing.final
-class SystemMessageRequest(google.protobuf.message.Message):
+@_typing.final
+class SystemMessageRequest(_message.Message):
     """Request to get system message by clan and channel IDs."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    WELCOME_RANDOM_FIELD_NUMBER: builtins.int
-    WELCOME_STICKER_FIELD_NUMBER: builtins.int
-    BOOST_MESSAGE_FIELD_NUMBER: builtins.int
-    SETUP_TIPS_FIELD_NUMBER: builtins.int
-    HIDE_AUDIT_LOG_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    WELCOME_RANDOM_FIELD_NUMBER: _builtins.int
+    WELCOME_STICKER_FIELD_NUMBER: _builtins.int
+    BOOST_MESSAGE_FIELD_NUMBER: _builtins.int
+    SETUP_TIPS_FIELD_NUMBER: _builtins.int
+    HIDE_AUDIT_LOG_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """Clan ID"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """Channel ID"""
-    welcome_random: builtins.str
+    welcome_random: _builtins.str
     """Welcome random"""
-    welcome_sticker: builtins.str
+    welcome_sticker: _builtins.str
     """Welcome sticker"""
-    boost_message: builtins.str
+    boost_message: _builtins.str
     """Boost message"""
-    setup_tips: builtins.str
+    setup_tips: _builtins.str
     """Setup tips"""
-    hide_audit_log: builtins.str
+    hide_audit_log: _builtins.bool
     """Hide audit log"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        welcome_random: builtins.str = ...,
-        welcome_sticker: builtins.str = ...,
-        boost_message: builtins.str = ...,
-        setup_tips: builtins.str = ...,
-        hide_audit_log: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        welcome_random: _builtins.str = ...,
+        welcome_sticker: _builtins.str = ...,
+        boost_message: _builtins.str = ...,
+        setup_tips: _builtins.str = ...,
+        hide_audit_log: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["boost_message", b"boost_message", "channel_id", b"channel_id", "clan_id", b"clan_id", "hide_audit_log", b"hide_audit_log", "setup_tips", b"setup_tips", "welcome_random", b"welcome_random", "welcome_sticker", b"welcome_sticker"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["boost_message", b"boost_message", "channel_id", b"channel_id", "clan_id", b"clan_id", "hide_audit_log", b"hide_audit_log", "setup_tips", b"setup_tips", "welcome_random", b"welcome_random", "welcome_sticker", b"welcome_sticker"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SystemMessageRequest: typing_extensions.TypeAlias = SystemMessageRequest
+Global___SystemMessageRequest: _TypeAlias = SystemMessageRequest  # noqa: Y015
 
-@typing.final
-class DeleteSystemMessage(google.protobuf.message.Message):
+@_typing.final
+class DeleteSystemMessage(_message.Message):
     """Request to delete a system message by clan ID."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """Clan ID"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteSystemMessage: typing_extensions.TypeAlias = DeleteSystemMessage
+Global___DeleteSystemMessage: _TypeAlias = DeleteSystemMessage  # noqa: Y015
 
-@typing.final
-class GetSystemMessage(google.protobuf.message.Message):
+@_typing.final
+class GetSystemMessage(_message.Message):
     """Request to get system message by clan ID."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """Clan ID"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GetSystemMessage: typing_extensions.TypeAlias = GetSystemMessage
+Global___GetSystemMessage: _TypeAlias = GetSystemMessage  # noqa: Y015
 
-@typing.final
-class DeleteCategoryOrderRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DeleteCategoryOrderRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteCategoryOrderRequest: typing_extensions.TypeAlias = DeleteCategoryOrderRequest
+Global___DeleteCategoryOrderRequest: _TypeAlias = DeleteCategoryOrderRequest  # noqa: Y015
 
-@typing.final
-class StreamHttpCallbackRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class StreamHttpCallbackRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLIENT_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    ACTION_FIELD_NUMBER: builtins.int
-    IS_PUBLISHER_FIELD_NUMBER: builtins.int
-    TOKEN_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLIENT_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    ACTION_FIELD_NUMBER: _builtins.int
+    IS_PUBLISHER_FIELD_NUMBER: _builtins.int
+    TOKEN_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    client_id: builtins.str
+    client_id: _builtins.int
     """client_id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan_id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel_id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user_id"""
-    action: builtins.int
+    action: _builtins.int
     """action"""
-    is_publisher: builtins.bool
+    is_publisher: _builtins.bool
     """is_publisher"""
-    token: builtins.str
+    token: _builtins.str
     """token"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        client_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        action: builtins.int = ...,
-        is_publisher: builtins.bool = ...,
-        token: builtins.str = ...,
+        id: _builtins.int = ...,
+        client_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        action: _builtins.int = ...,
+        is_publisher: _builtins.bool = ...,
+        token: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "client_id", b"client_id", "id", b"id", "is_publisher", b"is_publisher", "token", b"token", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "client_id", b"client_id", "id", b"id", "is_publisher", b"is_publisher", "token", b"token", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamHttpCallbackRequest: typing_extensions.TypeAlias = StreamHttpCallbackRequest
+Global___StreamHttpCallbackRequest: _TypeAlias = StreamHttpCallbackRequest  # noqa: Y015
 
-@typing.final
-class StreamHttpCallbackResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class StreamHttpCallbackResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CODE_FIELD_NUMBER: builtins.int
-    MSG_FIELD_NUMBER: builtins.int
-    msg: builtins.str
-    @property
-    def code(self) -> google.protobuf.wrappers_pb2.Int32Value: ...
+    CODE_FIELD_NUMBER: _builtins.int
+    MSG_FIELD_NUMBER: _builtins.int
+    code: _builtins.int
+    msg: _builtins.str
     def __init__(
         self,
         *,
-        code: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        msg: builtins.str = ...,
+        code: _builtins.int = ...,
+        msg: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["code", b"code"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["code", b"code", "msg", b"msg"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["code", b"code", "msg", b"msg"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamHttpCallbackResponse: typing_extensions.TypeAlias = StreamHttpCallbackResponse
+Global___StreamHttpCallbackResponse: _TypeAlias = StreamHttpCallbackResponse  # noqa: Y015
 
-@typing.final
-class StreamingChannelUser(google.protobuf.message.Message):
+@_typing.final
+class StreamingChannelUser(_message.Message):
     """A list of users belonging to a channel, along with their role."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    PARTICIPANT_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    PARTICIPANT_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """user join id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user for a channel."""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    participant: builtins.str
+    participant: _builtins.str
     """participant"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        participant: builtins.str = ...,
+        id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        participant: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "id", b"id", "participant", b"participant", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "id", b"id", "participant", b"participant", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamingChannelUser: typing_extensions.TypeAlias = StreamingChannelUser
+Global___StreamingChannelUser: _TypeAlias = StreamingChannelUser  # noqa: Y015
 
-@typing.final
-class StreamingChannelUserList(google.protobuf.message.Message):
+@_typing.final
+class StreamingChannelUserList(_message.Message):
     """A list of users belonging to a channel, along with their role."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    STREAMING_CHANNEL_USERS_FIELD_NUMBER: builtins.int
-    @property
-    def streaming_channel_users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___StreamingChannelUser]:
+    STREAMING_CHANNEL_USERS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def streaming_channel_users(self) -> _containers.RepeatedCompositeFieldContainer[Global___StreamingChannelUser]:
         """list of voice channel user"""
 
     def __init__(
         self,
         *,
-        streaming_channel_users: collections.abc.Iterable[Global___StreamingChannelUser] | None = ...,
+        streaming_channel_users: _abc.Iterable[Global___StreamingChannelUser] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["streaming_channel_users", b"streaming_channel_users"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["streaming_channel_users", b"streaming_channel_users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___StreamingChannelUserList: typing_extensions.TypeAlias = StreamingChannelUserList
+Global___StreamingChannelUserList: _TypeAlias = StreamingChannelUserList  # noqa: Y015
 
-@typing.final
-class RegisterStreamingChannelRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RegisterStreamingChannelRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RegisterStreamingChannelRequest: typing_extensions.TypeAlias = RegisterStreamingChannelRequest
+Global___RegisterStreamingChannelRequest: _TypeAlias = RegisterStreamingChannelRequest  # noqa: Y015
 
-@typing.final
-class RegisterStreamingChannelResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RegisterStreamingChannelResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    STREAMING_URL_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    STREAMING_URL_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    streaming_url: builtins.str
+    streaming_url: _builtins.str
     """streaming url"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        streaming_url: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        streaming_url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "streaming_url", b"streaming_url"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "streaming_url", b"streaming_url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RegisterStreamingChannelResponse: typing_extensions.TypeAlias = RegisterStreamingChannelResponse
+Global___RegisterStreamingChannelResponse: _TypeAlias = RegisterStreamingChannelResponse  # noqa: Y015
 
-@typing.final
-class GiveCoffeeEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GiveCoffeeEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    RECEIVER_ID_FIELD_NUMBER: builtins.int
-    TOKEN_COUNT_FIELD_NUMBER: builtins.int
-    MESSAGE_REF_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    sender_id: builtins.str
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    RECEIVER_ID_FIELD_NUMBER: _builtins.int
+    TOKEN_COUNT_FIELD_NUMBER: _builtins.int
+    MESSAGE_REF_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    sender_id: _builtins.int
     """sender id"""
-    receiver_id: builtins.str
+    receiver_id: _builtins.int
     """receiver id"""
-    token_count: builtins.int
+    token_count: _builtins.int
     """token count"""
-    message_ref_id: builtins.str
+    message_ref_id: _builtins.int
     """message_ref"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """chanel id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        sender_id: builtins.str = ...,
-        receiver_id: builtins.str = ...,
-        token_count: builtins.int = ...,
-        message_ref_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        sender_id: _builtins.int = ...,
+        receiver_id: _builtins.int = ...,
+        token_count: _builtins.int = ...,
+        message_ref_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "message_ref_id", b"message_ref_id", "receiver_id", b"receiver_id", "sender_id", b"sender_id", "token_count", b"token_count"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "message_ref_id", b"message_ref_id", "receiver_id", b"receiver_id", "sender_id", b"sender_id", "token_count", b"token_count"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GiveCoffeeEvent: typing_extensions.TypeAlias = GiveCoffeeEvent
+Global___GiveCoffeeEvent: _TypeAlias = GiveCoffeeEvent  # noqa: Y015
 
-@typing.final
-class ListChannelAppsRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListChannelAppsRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListChannelAppsRequest: typing_extensions.TypeAlias = ListChannelAppsRequest
+Global___ListChannelAppsRequest: _TypeAlias = ListChannelAppsRequest  # noqa: Y015
 
-@typing.final
-class ListChannelAppsResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListChannelAppsResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_APPS_FIELD_NUMBER: builtins.int
-    @property
-    def channel_apps(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ChannelAppResponse]:
+    CHANNEL_APPS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def channel_apps(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelAppResponse]:
         """list of channel apps"""
 
     def __init__(
         self,
         *,
-        channel_apps: collections.abc.Iterable[Global___ChannelAppResponse] | None = ...,
+        channel_apps: _abc.Iterable[Global___ChannelAppResponse] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_apps", b"channel_apps"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_apps", b"channel_apps"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListChannelAppsResponse: typing_extensions.TypeAlias = ListChannelAppsResponse
+Global___ListChannelAppsResponse: _TypeAlias = ListChannelAppsResponse  # noqa: Y015
 
-@typing.final
-class ChannelAppResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelAppResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    APP_ID_FIELD_NUMBER: builtins.int
-    APP_URL_FIELD_NUMBER: builtins.int
-    APP_NAME_FIELD_NUMBER: builtins.int
-    APP_LOGO_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    APP_URL_FIELD_NUMBER: _builtins.int
+    APP_NAME_FIELD_NUMBER: _builtins.int
+    APP_LOGO_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    app_id: builtins.str
+    app_id: _builtins.int
     """app id"""
-    app_url: builtins.str
+    app_url: _builtins.str
     """app url"""
-    app_name: builtins.str
+    app_name: _builtins.str
     """app name"""
-    app_logo: builtins.str
+    app_logo: _builtins.str
     """app logo"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        app_id: builtins.str = ...,
-        app_url: builtins.str = ...,
-        app_name: builtins.str = ...,
-        app_logo: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        app_id: _builtins.int = ...,
+        app_url: _builtins.str = ...,
+        app_name: _builtins.str = ...,
+        app_logo: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["app_id", b"app_id", "app_logo", b"app_logo", "app_name", b"app_name", "app_url", b"app_url", "channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "app_logo", b"app_logo", "app_name", b"app_name", "app_url", b"app_url", "channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelAppResponse: typing_extensions.TypeAlias = ChannelAppResponse
+Global___ChannelAppResponse: _TypeAlias = ChannelAppResponse  # noqa: Y015
 
-@typing.final
-class AllUserClans(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AllUserClans(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USERS_FIELD_NUMBER: builtins.int
-    @property
-    def users(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___User]: ...
+    USERS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def users(self) -> _containers.RepeatedCompositeFieldContainer[Global___User]: ...
     def __init__(
         self,
         *,
-        users: collections.abc.Iterable[Global___User] | None = ...,
+        users: _abc.Iterable[Global___User] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["users", b"users"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["users", b"users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AllUserClans: typing_extensions.TypeAlias = AllUserClans
+Global___AllUserClans: _TypeAlias = AllUserClans  # noqa: Y015
 
-@typing.final
-class RoleListEventRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RoleListEventRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    limit: builtins.int
+    limit: _builtins.int
     """limit"""
-    state: builtins.int
+    state: _builtins.int
     """state"""
-    cursor: builtins.str
+    cursor: _builtins.str
     """cursor"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        limit: builtins.int = ...,
-        state: builtins.int = ...,
-        cursor: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "cursor", b"cursor", "limit", b"limit", "state", b"state"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "cursor", b"cursor", "limit", b"limit", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RoleListEventRequest: typing_extensions.TypeAlias = RoleListEventRequest
+Global___RoleListEventRequest: _TypeAlias = RoleListEventRequest  # noqa: Y015
 
-@typing.final
-class RoleListEventResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RoleListEventResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIMIT_FIELD_NUMBER: builtins.int
-    STATE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    CLANID_FIELD_NUMBER: builtins.int
-    ROLES_FIELD_NUMBER: builtins.int
-    limit: builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    CLANID_FIELD_NUMBER: _builtins.int
+    ROLES_FIELD_NUMBER: _builtins.int
+    limit: _builtins.int
     """limit"""
-    state: builtins.int
+    state: _builtins.int
     """state"""
-    cursor: builtins.str
+    cursor: _builtins.str
     """cursor"""
-    clanId: builtins.str
+    clanId: _builtins.int
     """clan_id"""
-    @property
+    @_builtins.property
     def roles(self) -> Global___RoleList:
         """list of roles"""
 
     def __init__(
         self,
         *,
-        limit: builtins.int = ...,
-        state: builtins.int = ...,
-        cursor: builtins.str = ...,
-        clanId: builtins.str = ...,
+        limit: _builtins.int = ...,
+        state: _builtins.int = ...,
+        cursor: _builtins.str = ...,
+        clanId: _builtins.int = ...,
         roles: Global___RoleList | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["roles", b"roles"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clanId", b"clanId", "cursor", b"cursor", "limit", b"limit", "roles", b"roles", "state", b"state"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["roles", b"roles"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clanId", b"clanId", "cursor", b"cursor", "limit", b"limit", "roles", b"roles", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RoleListEventResponse: typing_extensions.TypeAlias = RoleListEventResponse
+Global___RoleListEventResponse: _TypeAlias = RoleListEventResponse  # noqa: Y015
 
-@typing.final
-class UserPermissionInChannelListRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserPermissionInChannelListRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserPermissionInChannelListRequest: typing_extensions.TypeAlias = UserPermissionInChannelListRequest
+Global___UserPermissionInChannelListRequest: _TypeAlias = UserPermissionInChannelListRequest  # noqa: Y015
 
-@typing.final
-class UserPermissionInChannelListResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserPermissionInChannelListResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    PERMISSIONS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    PERMISSIONS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    @property
+    @_builtins.property
     def permissions(self) -> Global___PermissionList:
         """A list of permission."""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
         permissions: Global___PermissionList | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["permissions", b"permissions"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "permissions", b"permissions"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["permissions", b"permissions"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "permissions", b"permissions"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserPermissionInChannelListResponse: typing_extensions.TypeAlias = UserPermissionInChannelListResponse
+Global___UserPermissionInChannelListResponse: _TypeAlias = UserPermissionInChannelListResponse  # noqa: Y015
 
-@typing.final
-class PermissionRoleChannel(google.protobuf.message.Message):
+@_typing.final
+class PermissionRoleChannel(_message.Message):
     """Permission role channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PERMISSION_ID_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    permission_id: builtins.str
+    PERMISSION_ID_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    permission_id: _builtins.int
     """permission id"""
-    active: builtins.bool
+    active: _builtins.bool
     """active"""
     def __init__(
         self,
         *,
-        permission_id: builtins.str = ...,
-        active: builtins.bool = ...,
+        permission_id: _builtins.int = ...,
+        active: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "permission_id", b"permission_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "permission_id", b"permission_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionRoleChannel: typing_extensions.TypeAlias = PermissionRoleChannel
+Global___PermissionRoleChannel: _TypeAlias = PermissionRoleChannel  # noqa: Y015
 
-@typing.final
-class PermissionRoleChannelListEventRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class PermissionRoleChannelListEventRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
     """role id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user id"""
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        user_id: builtins.str = ...,
+        role_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "role_id", b"role_id", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "role_id", b"role_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionRoleChannelListEventRequest: typing_extensions.TypeAlias = PermissionRoleChannelListEventRequest
+Global___PermissionRoleChannelListEventRequest: _TypeAlias = PermissionRoleChannelListEventRequest  # noqa: Y015
 
-@typing.final
-class PermissionRoleChannelListEventResponse(google.protobuf.message.Message):
+@_typing.final
+class PermissionRoleChannelListEventResponse(_message.Message):
     """List of permission role channel"""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ROLE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    PERMISSION_ROLE_CHANNEL_FIELD_NUMBER: builtins.int
-    role_id: builtins.str
+    ROLE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    PERMISSION_ROLE_CHANNEL_FIELD_NUMBER: _builtins.int
+    role_id: _builtins.int
     """role id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user id"""
-    @property
-    def permission_role_channel(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___PermissionRoleChannel]:
+    @_builtins.property
+    def permission_role_channel(self) -> _containers.RepeatedCompositeFieldContainer[Global___PermissionRoleChannel]:
         """list of permission role channel"""
 
     def __init__(
         self,
         *,
-        role_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        permission_role_channel: collections.abc.Iterable[Global___PermissionRoleChannel] | None = ...,
+        role_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        permission_role_channel: _abc.Iterable[Global___PermissionRoleChannel] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "permission_role_channel", b"permission_role_channel", "role_id", b"role_id", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "permission_role_channel", b"permission_role_channel", "role_id", b"role_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PermissionRoleChannelListEventResponse: typing_extensions.TypeAlias = PermissionRoleChannelListEventResponse
+Global___PermissionRoleChannelListEventResponse: _TypeAlias = PermissionRoleChannelListEventResponse  # noqa: Y015
 
-@typing.final
-class ChannelSettingListRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelSettingListRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    PRIVATECHANNEL_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    TYPE_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    PAGE_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    PRIVATE_CHANNEL_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """parent id of thread"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category id"""
-    channel_label: builtins.str
+    private_channel: _builtins.int
+    """is private channel"""
+    active: _builtins.int
+    """is active"""
+    status: _builtins.int
+    """status"""
+    type: _builtins.int
+    """type"""
+    limit: _builtins.int
+    """limit"""
+    page: _builtins.int
+    """page"""
+    channel_label: _builtins.str
     """channel label"""
-    @property
-    def privateChannel(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """is private channel"""
-
-    @property
-    def active(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """is active"""
-
-    @property
-    def status(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """status"""
-
-    @property
-    def type(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """type"""
-
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """limit"""
-
-    @property
-    def page(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """page"""
-
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        privateChannel: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        active: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        status: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        type: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        page: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        channel_label: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        private_channel: _builtins.int = ...,
+        active: _builtins.int = ...,
+        status: _builtins.int = ...,
+        type: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        page: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "limit", b"limit", "page", b"page", "privateChannel", b"privateChannel", "status", b"status", "type", b"type"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "category_id", b"category_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "limit", b"limit", "page", b"page", "parent_id", b"parent_id", "privateChannel", b"privateChannel", "status", b"status", "type", b"type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "category_id", b"category_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "limit", b"limit", "page", b"page", "parent_id", b"parent_id", "private_channel", b"private_channel", "status", b"status", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelSettingListRequest: typing_extensions.TypeAlias = ChannelSettingListRequest
+Global___ChannelSettingListRequest: _TypeAlias = ChannelSettingListRequest  # noqa: Y015
 
-@typing.final
-class ChannelSettingItem(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelSettingItem(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    PARENT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    MEETING_CODE_FIELD_NUMBER: builtins.int
-    CHANNEL_PRIVATE_FIELD_NUMBER: builtins.int
-    CHANNEL_TYPE_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    USER_IDS_FIELD_NUMBER: builtins.int
-    MESSAGE_COUNT_FIELD_NUMBER: builtins.int
-    LAST_SENT_MESSAGE_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    MEETING_CODE_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    MESSAGE_COUNT_FIELD_NUMBER: _builtins.int
+    LAST_SENT_MESSAGE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """channel id"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator id"""
-    parent_id: builtins.str
+    parent_id: _builtins.int
     """parentId"""
-    channel_label: builtins.str
+    channel_label: _builtins.str
     """label of channel"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category id"""
-    meeting_code: builtins.str
+    meeting_code: _builtins.str
     """meeting code"""
-    channel_private: builtins.int
+    channel_private: _builtins.int
     """channel private"""
-    channel_type: builtins.int
+    channel_type: _builtins.int
     """channel type"""
-    active: builtins.int
+    active: _builtins.int
     """is active"""
-    message_count: builtins.int
+    message_count: _builtins.int
     """message count"""
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]:
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
         """list user in channel"""
 
-    @property
+    @_builtins.property
     def last_sent_message(self) -> Global___ChannelMessageHeader:
         """last sent message"""
 
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        parent_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
-        category_id: builtins.str = ...,
-        meeting_code: builtins.str = ...,
-        channel_private: builtins.int = ...,
-        channel_type: builtins.int = ...,
-        active: builtins.int = ...,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
-        message_count: builtins.int = ...,
+        id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
+        category_id: _builtins.int = ...,
+        meeting_code: _builtins.str = ...,
+        channel_private: _builtins.int = ...,
+        channel_type: _builtins.int = ...,
+        active: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        message_count: _builtins.int = ...,
         last_sent_message: Global___ChannelMessageHeader | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_sent_message", b"last_sent_message"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "category_id", b"category_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "creator_id", b"creator_id", "id", b"id", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "message_count", b"message_count", "parent_id", b"parent_id", "user_ids", b"user_ids"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["last_sent_message", b"last_sent_message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "category_id", b"category_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "creator_id", b"creator_id", "id", b"id", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "message_count", b"message_count", "parent_id", b"parent_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelSettingItem: typing_extensions.TypeAlias = ChannelSettingItem
+Global___ChannelSettingItem: _TypeAlias = ChannelSettingItem  # noqa: Y015
 
-@typing.final
-class ChannelSettingListResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelSettingListResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_COUNT_FIELD_NUMBER: builtins.int
-    THREAD_COUNT_FIELD_NUMBER: builtins.int
-    CHANNEL_SETTING_LIST_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_COUNT_FIELD_NUMBER: _builtins.int
+    THREAD_COUNT_FIELD_NUMBER: _builtins.int
+    CHANNEL_SETTING_LIST_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_count: builtins.int
+    channel_count: _builtins.int
     """channel count"""
-    thread_count: builtins.int
+    thread_count: _builtins.int
     """thread count"""
-    @property
-    def channel_setting_list(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ChannelSettingItem]:
+    @_builtins.property
+    def channel_setting_list(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelSettingItem]:
         """channel setting list"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_count: builtins.int = ...,
-        thread_count: builtins.int = ...,
-        channel_setting_list: collections.abc.Iterable[Global___ChannelSettingItem] | None = ...,
+        clan_id: _builtins.int = ...,
+        channel_count: _builtins.int = ...,
+        thread_count: _builtins.int = ...,
+        channel_setting_list: _abc.Iterable[Global___ChannelSettingItem] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_count", b"channel_count", "channel_setting_list", b"channel_setting_list", "clan_id", b"clan_id", "thread_count", b"thread_count"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_count", b"channel_count", "channel_setting_list", b"channel_setting_list", "clan_id", b"clan_id", "thread_count", b"thread_count"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelSettingListResponse: typing_extensions.TypeAlias = ChannelSettingListResponse
+Global___ChannelSettingListResponse: _TypeAlias = ChannelSettingListResponse  # noqa: Y015
 
-@typing.final
-class MarkAsReadRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class MarkAsReadRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CATEGORY_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     """channel id"""
-    category_id: builtins.str
+    category_id: _builtins.int
     """category_id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        category_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MarkAsReadRequest: typing_extensions.TypeAlias = MarkAsReadRequest
+Global___MarkAsReadRequest: _TypeAlias = MarkAsReadRequest  # noqa: Y015
 
-@typing.final
-class EditChannelCanvasRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class EditChannelCanvasRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    IS_DEFAULT_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    IS_DEFAULT_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    """id"""
+    channel_id: _builtins.int
     """channel id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
-    title: builtins.str
+    title: _builtins.str
     """title"""
-    content: builtins.str
+    content: _builtins.str
     """content"""
-    is_default: builtins.bool
+    is_default: _builtins.bool
     """is default"""
-    status: builtins.int
+    status: _builtins.int
     """status"""
-    @property
-    def id(self) -> google.protobuf.wrappers_pb2.StringValue:
-        """id"""
-
     def __init__(
         self,
         *,
-        id: google.protobuf.wrappers_pb2.StringValue | None = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        title: builtins.str = ...,
-        content: builtins.str = ...,
-        is_default: builtins.bool = ...,
-        status: builtins.int = ...,
+        id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        content: _builtins.str = ...,
+        is_default: _builtins.bool = ...,
+        status: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["id", b"id"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "id", b"id", "is_default", b"is_default", "status", b"status", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "id", b"id", "is_default", b"is_default", "status", b"status", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EditChannelCanvasRequest: typing_extensions.TypeAlias = EditChannelCanvasRequest
+Global___EditChannelCanvasRequest: _TypeAlias = EditChannelCanvasRequest  # noqa: Y015
 
-@typing.final
-class EditChannelCanvasResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class EditChannelCanvasResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
+        id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___EditChannelCanvasResponse: typing_extensions.TypeAlias = EditChannelCanvasResponse
+Global___EditChannelCanvasResponse: _TypeAlias = EditChannelCanvasResponse  # noqa: Y015
 
-@typing.final
-class DeleteChannelCanvasRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DeleteChannelCanvasRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CANVAS_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CANVAS_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    canvas_id: builtins.str
+    canvas_id: _builtins.int
     """canvas id"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        canvas_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        canvas_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["canvas_id", b"canvas_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["canvas_id", b"canvas_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteChannelCanvasRequest: typing_extensions.TypeAlias = DeleteChannelCanvasRequest
+Global___DeleteChannelCanvasRequest: _TypeAlias = DeleteChannelCanvasRequest  # noqa: Y015
 
-@typing.final
-class ChannelCanvasListRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelCanvasListRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    PAGE_FIELD_NUMBER: builtins.int
-    CURSOR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    CURSOR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    cursor: builtins.str
+    limit: _builtins.int
+    """limit"""
+    page: _builtins.int
+    """page"""
+    cursor: _builtins.str
     """"""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """limit"""
-
-    @property
-    def page(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """page"""
-
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        page: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        cursor: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        page: _builtins.int = ...,
+        cursor: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "page", b"page"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "cursor", b"cursor", "limit", b"limit", "page", b"page"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "cursor", b"cursor", "limit", b"limit", "page", b"page"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelCanvasListRequest: typing_extensions.TypeAlias = ChannelCanvasListRequest
+Global___ChannelCanvasListRequest: _TypeAlias = ChannelCanvasListRequest  # noqa: Y015
 
-@typing.final
-class ChannelCanvasItem(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelCanvasItem(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    IS_DEFAULT_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    IS_DEFAULT_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    title: builtins.str
+    title: _builtins.str
     """title"""
-    is_default: builtins.bool
+    is_default: _builtins.bool
     """is default"""
-    content: builtins.str
+    content: _builtins.str
     """content"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator"""
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """"""
-
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    update_time_seconds: _builtins.int
+    """"""
+    create_time_seconds: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        title: builtins.str = ...,
-        is_default: builtins.bool = ...,
-        content: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        is_default: _builtins.bool = ...,
+        content: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "update_time", b"update_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["content", b"content", "create_time", b"create_time", "creator_id", b"creator_id", "id", b"id", "is_default", b"is_default", "title", b"title", "update_time", b"update_time"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["content", b"content", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "id", b"id", "is_default", b"is_default", "title", b"title", "update_time_seconds", b"update_time_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelCanvasItem: typing_extensions.TypeAlias = ChannelCanvasItem
+Global___ChannelCanvasItem: _TypeAlias = ChannelCanvasItem  # noqa: Y015
 
-@typing.final
-class ChannelCanvasListResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelCanvasListResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_CANVASES_FIELD_NUMBER: builtins.int
-    COUNT_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_CANVASES_FIELD_NUMBER: _builtins.int
+    COUNT_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
-    count: builtins.int
+    count: _builtins.int
     """"""
-    @property
-    def channel_canvases(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ChannelCanvasItem]:
+    @_builtins.property
+    def channel_canvases(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelCanvasItem]:
         """channel doc item"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        channel_canvases: collections.abc.Iterable[Global___ChannelCanvasItem] | None = ...,
-        count: builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_canvases: _abc.Iterable[Global___ChannelCanvasItem] | None = ...,
+        count: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_canvases", b"channel_canvases", "channel_id", b"channel_id", "clan_id", b"clan_id", "count", b"count"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_canvases", b"channel_canvases", "channel_id", b"channel_id", "clan_id", b"clan_id", "count", b"count"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelCanvasListResponse: typing_extensions.TypeAlias = ChannelCanvasListResponse
+Global___ChannelCanvasListResponse: _TypeAlias = ChannelCanvasListResponse  # noqa: Y015
 
-@typing.final
-class ChannelCanvasDetailRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelCanvasDetailRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    channel_id: _builtins.int
     """channel id"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelCanvasDetailRequest: typing_extensions.TypeAlias = ChannelCanvasDetailRequest
+Global___ChannelCanvasDetailRequest: _TypeAlias = ChannelCanvasDetailRequest  # noqa: Y015
 
-@typing.final
-class ChannelCanvasDetailResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChannelCanvasDetailResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    EDITOR_ID_FIELD_NUMBER: builtins.int
-    IS_DEFAULT_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    EDITOR_ID_FIELD_NUMBER: _builtins.int
+    IS_DEFAULT_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    title: builtins.str
+    title: _builtins.str
     """title"""
-    content: builtins.str
+    content: _builtins.str
     """content"""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator"""
-    editor_id: builtins.str
+    editor_id: _builtins.int
     """editor"""
-    is_default: builtins.bool
+    is_default: _builtins.bool
     """is default"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        title: builtins.str = ...,
-        content: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        editor_id: builtins.str = ...,
-        is_default: builtins.bool = ...,
+        id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        content: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        editor_id: _builtins.int = ...,
+        is_default: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["content", b"content", "creator_id", b"creator_id", "editor_id", b"editor_id", "id", b"id", "is_default", b"is_default", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["content", b"content", "creator_id", b"creator_id", "editor_id", b"editor_id", "id", b"id", "is_default", b"is_default", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChannelCanvasDetailResponse: typing_extensions.TypeAlias = ChannelCanvasDetailResponse
+Global___ChannelCanvasDetailResponse: _TypeAlias = ChannelCanvasDetailResponse  # noqa: Y015
 
-@typing.final
-class AddFavoriteChannelRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AddFavoriteChannelRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    clan_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddFavoriteChannelRequest: typing_extensions.TypeAlias = AddFavoriteChannelRequest
+Global___AddFavoriteChannelRequest: _TypeAlias = AddFavoriteChannelRequest  # noqa: Y015
 
-@typing.final
-class RemoveFavoriteChannelRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class RemoveFavoriteChannelRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    channel_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___RemoveFavoriteChannelRequest: typing_extensions.TypeAlias = RemoveFavoriteChannelRequest
+Global___RemoveFavoriteChannelRequest: _TypeAlias = RemoveFavoriteChannelRequest  # noqa: Y015
 
-@typing.final
-class AddFavoriteChannelResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AddFavoriteChannelResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AddFavoriteChannelResponse: typing_extensions.TypeAlias = AddFavoriteChannelResponse
+Global___AddFavoriteChannelResponse: _TypeAlias = AddFavoriteChannelResponse  # noqa: Y015
 
-@typing.final
-class ListFavoriteChannelRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListFavoriteChannelRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListFavoriteChannelRequest: typing_extensions.TypeAlias = ListFavoriteChannelRequest
+Global___ListFavoriteChannelRequest: _TypeAlias = ListFavoriteChannelRequest  # noqa: Y015
 
-@typing.final
-class ListFavoriteChannelResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListFavoriteChannelResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_IDS_FIELD_NUMBER: builtins.int
-    @property
-    def channel_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    CHANNEL_IDS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def channel_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        channel_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        channel_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_ids", b"channel_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_ids", b"channel_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListFavoriteChannelResponse: typing_extensions.TypeAlias = ListFavoriteChannelResponse
+Global___ListFavoriteChannelResponse: _TypeAlias = ListFavoriteChannelResponse  # noqa: Y015
 
-@typing.final
-class UserActivity(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserActivity(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    ACTIVITY_NAME_FIELD_NUMBER: builtins.int
-    ACTIVITY_TYPE_FIELD_NUMBER: builtins.int
-    ACTIVITY_DESCRIPTION_FIELD_NUMBER: builtins.int
-    START_TIME_FIELD_NUMBER: builtins.int
-    END_TIME_FIELD_NUMBER: builtins.int
-    APPLICATION_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
-    activity_name: builtins.str
-    activity_type: builtins.int
-    activity_description: builtins.str
-    application_id: builtins.str
-    status: builtins.int
-    @property
-    def start_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def end_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    USER_ID_FIELD_NUMBER: _builtins.int
+    ACTIVITY_NAME_FIELD_NUMBER: _builtins.int
+    ACTIVITY_TYPE_FIELD_NUMBER: _builtins.int
+    ACTIVITY_DESCRIPTION_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    END_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    APPLICATION_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
+    activity_name: _builtins.str
+    activity_type: _builtins.int
+    activity_description: _builtins.str
+    start_time_seconds: _builtins.int
+    end_time_seconds: _builtins.int
+    application_id: _builtins.int
+    status: _builtins.int
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        activity_name: builtins.str = ...,
-        activity_type: builtins.int = ...,
-        activity_description: builtins.str = ...,
-        start_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        end_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        application_id: builtins.str = ...,
-        status: builtins.int = ...,
+        user_id: _builtins.int = ...,
+        activity_name: _builtins.str = ...,
+        activity_type: _builtins.int = ...,
+        activity_description: _builtins.str = ...,
+        start_time_seconds: _builtins.int = ...,
+        end_time_seconds: _builtins.int = ...,
+        application_id: _builtins.int = ...,
+        status: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["end_time", b"end_time", "start_time", b"start_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["activity_description", b"activity_description", "activity_name", b"activity_name", "activity_type", b"activity_type", "application_id", b"application_id", "end_time", b"end_time", "start_time", b"start_time", "status", b"status", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["activity_description", b"activity_description", "activity_name", b"activity_name", "activity_type", b"activity_type", "application_id", b"application_id", "end_time_seconds", b"end_time_seconds", "start_time_seconds", b"start_time_seconds", "status", b"status", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserActivity: typing_extensions.TypeAlias = UserActivity
+Global___UserActivity: _TypeAlias = UserActivity  # noqa: Y015
 
-@typing.final
-class ListUserActivity(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListUserActivity(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ACTIVITIES_FIELD_NUMBER: builtins.int
-    @property
-    def activities(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___UserActivity]: ...
+    ACTIVITIES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def activities(self) -> _containers.RepeatedCompositeFieldContainer[Global___UserActivity]: ...
     def __init__(
         self,
         *,
-        activities: collections.abc.Iterable[Global___UserActivity] | None = ...,
+        activities: _abc.Iterable[Global___UserActivity] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["activities", b"activities"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["activities", b"activities"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListUserActivity: typing_extensions.TypeAlias = ListUserActivity
+Global___ListUserActivity: _TypeAlias = ListUserActivity  # noqa: Y015
 
-@typing.final
-class CreateActivityRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CreateActivityRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ACTIVITY_NAME_FIELD_NUMBER: builtins.int
-    ACTIVITY_TYPE_FIELD_NUMBER: builtins.int
-    ACTIVITY_DESCRIPTION_FIELD_NUMBER: builtins.int
-    START_TIME_FIELD_NUMBER: builtins.int
-    APPLICATION_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    activity_name: builtins.str
-    activity_type: builtins.int
-    activity_description: builtins.str
-    application_id: builtins.str
-    status: builtins.int
-    @property
-    def start_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    ACTIVITY_NAME_FIELD_NUMBER: _builtins.int
+    ACTIVITY_TYPE_FIELD_NUMBER: _builtins.int
+    ACTIVITY_DESCRIPTION_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    APPLICATION_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    activity_name: _builtins.str
+    activity_type: _builtins.int
+    activity_description: _builtins.str
+    start_time_seconds: _builtins.int
+    application_id: _builtins.int
+    status: _builtins.int
     def __init__(
         self,
         *,
-        activity_name: builtins.str = ...,
-        activity_type: builtins.int = ...,
-        activity_description: builtins.str = ...,
-        start_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        application_id: builtins.str = ...,
-        status: builtins.int = ...,
+        activity_name: _builtins.str = ...,
+        activity_type: _builtins.int = ...,
+        activity_description: _builtins.str = ...,
+        start_time_seconds: _builtins.int = ...,
+        application_id: _builtins.int = ...,
+        status: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["start_time", b"start_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["activity_description", b"activity_description", "activity_name", b"activity_name", "activity_type", b"activity_type", "application_id", b"application_id", "start_time", b"start_time", "status", b"status"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["activity_description", b"activity_description", "activity_name", b"activity_name", "activity_type", b"activity_type", "application_id", b"application_id", "start_time_seconds", b"start_time_seconds", "status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateActivityRequest: typing_extensions.TypeAlias = CreateActivityRequest
+Global___CreateActivityRequest: _TypeAlias = CreateActivityRequest  # noqa: Y015
 
-@typing.final
-class LoginIDResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class LoginIDResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LOGIN_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    CREATE_TIME_SECOND_FIELD_NUMBER: builtins.int
-    PLATFORM_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    ADDRESS_FIELD_NUMBER: builtins.int
-    login_id: builtins.str
+    LOGIN_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    PLATFORM_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    ADDRESS_FIELD_NUMBER: _builtins.int
+    login_id: _builtins.int
     """loginId"""
-    status: builtins.int
+    status: _builtins.int
     """status login"""
-    create_time_second: builtins.int
+    create_time_seconds: _builtins.int
     """create time"""
-    platform: builtins.str
+    platform: _builtins.str
     """platform"""
-    user_id: builtins.int
+    user_id: _builtins.int
     """user_id"""
-    username: builtins.str
+    username: _builtins.str
     """username"""
-    address: builtins.str
+    address: _builtins.str
     """address"""
     def __init__(
         self,
         *,
-        login_id: builtins.str = ...,
-        status: builtins.int = ...,
-        create_time_second: builtins.int = ...,
-        platform: builtins.str = ...,
-        user_id: builtins.int = ...,
-        username: builtins.str = ...,
-        address: builtins.str = ...,
+        login_id: _builtins.int = ...,
+        status: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        platform: _builtins.str = ...,
+        user_id: _builtins.int = ...,
+        username: _builtins.str = ...,
+        address: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["address", b"address", "create_time_second", b"create_time_second", "login_id", b"login_id", "platform", b"platform", "status", b"status", "user_id", b"user_id", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["address", b"address", "create_time_seconds", b"create_time_seconds", "login_id", b"login_id", "platform", b"platform", "status", b"status", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LoginIDResponse: typing_extensions.TypeAlias = LoginIDResponse
+Global___LoginIDResponse: _TypeAlias = LoginIDResponse  # noqa: Y015
 
-@typing.final
-class LoginRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class LoginRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PLATFORM_FIELD_NUMBER: builtins.int
-    ADDRESS_FIELD_NUMBER: builtins.int
-    platform: builtins.str
+    PLATFORM_FIELD_NUMBER: _builtins.int
+    ADDRESS_FIELD_NUMBER: _builtins.int
+    platform: _builtins.str
     """platform"""
-    address: builtins.str
+    address: _builtins.str
     """address"""
     def __init__(
         self,
         *,
-        platform: builtins.str = ...,
-        address: builtins.str = ...,
+        platform: _builtins.str = ...,
+        address: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["address", b"address", "platform", b"platform"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["address", b"address", "platform", b"platform"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LoginRequest: typing_extensions.TypeAlias = LoginRequest
+Global___LoginRequest: _TypeAlias = LoginRequest  # noqa: Y015
 
-@typing.final
-class ConfirmLoginRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ConfirmLoginRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LOGIN_ID_FIELD_NUMBER: builtins.int
-    IS_REMEMBER_FIELD_NUMBER: builtins.int
-    login_id: builtins.str
+    LOGIN_ID_FIELD_NUMBER: _builtins.int
+    IS_REMEMBER_FIELD_NUMBER: _builtins.int
+    login_id: _builtins.int
     """loginId"""
-    @property
-    def is_remember(self) -> google.protobuf.wrappers_pb2.BoolValue:
-        """Whether to enable "Remember Me" for extended session duration."""
-
+    is_remember: _builtins.bool
+    """Whether to enable "Remember Me" for extended session duration."""
     def __init__(
         self,
         *,
-        login_id: builtins.str = ...,
-        is_remember: google.protobuf.wrappers_pb2.BoolValue | None = ...,
+        login_id: _builtins.int = ...,
+        is_remember: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["is_remember", b"is_remember"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["is_remember", b"is_remember", "login_id", b"login_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["is_remember", b"is_remember", "login_id", b"login_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ConfirmLoginRequest: typing_extensions.TypeAlias = ConfirmLoginRequest
+Global___ConfirmLoginRequest: _TypeAlias = ConfirmLoginRequest  # noqa: Y015
 
-@typing.final
-class PubKey(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class PubKey(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ENCR_FIELD_NUMBER: builtins.int
-    SIGN_FIELD_NUMBER: builtins.int
-    encr: builtins.bytes
-    sign: builtins.bytes
+    ENCR_FIELD_NUMBER: _builtins.int
+    SIGN_FIELD_NUMBER: _builtins.int
+    encr: _builtins.bytes
+    sign: _builtins.bytes
     def __init__(
         self,
         *,
-        encr: builtins.bytes = ...,
-        sign: builtins.bytes = ...,
+        encr: _builtins.bytes = ...,
+        sign: _builtins.bytes = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["encr", b"encr", "sign", b"sign"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["encr", b"encr", "sign", b"sign"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PubKey: typing_extensions.TypeAlias = PubKey
+Global___PubKey: _TypeAlias = PubKey  # noqa: Y015
 
-@typing.final
-class PushPubKeyRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class PushPubKeyRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PK_FIELD_NUMBER: builtins.int
-    @property
+    PK_FIELD_NUMBER: _builtins.int
+    @_builtins.property
     def PK(self) -> Global___PubKey: ...
     def __init__(
         self,
         *,
         PK: Global___PubKey | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["PK", b"PK"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["PK", b"PK"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["PK", b"PK"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["PK", b"PK"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___PushPubKeyRequest: typing_extensions.TypeAlias = PushPubKeyRequest
+Global___PushPubKeyRequest: _TypeAlias = PushPubKeyRequest  # noqa: Y015
 
-@typing.final
-class GetPubKeysRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GetPubKeysRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_IDS_FIELD_NUMBER: builtins.int
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GetPubKeysRequest: typing_extensions.TypeAlias = GetPubKeysRequest
+Global___GetPubKeysRequest: _TypeAlias = GetPubKeysRequest  # noqa: Y015
 
-@typing.final
-class GetPubKeysResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GetPubKeysResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class UserPubKey(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class UserPubKey(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        USER_ID_FIELD_NUMBER: builtins.int
-        PK_FIELD_NUMBER: builtins.int
-        user_id: builtins.str
-        @property
+        USER_ID_FIELD_NUMBER: _builtins.int
+        PK_FIELD_NUMBER: _builtins.int
+        user_id: _builtins.int
+        @_builtins.property
         def PK(self) -> Global___PubKey: ...
         def __init__(
             self,
             *,
-            user_id: builtins.str = ...,
+            user_id: _builtins.int = ...,
             PK: Global___PubKey | None = ...,
         ) -> None: ...
-        _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["PK", b"PK"]
-        def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["PK", b"PK", "user_id", b"user_id"]
+        _HasFieldArgType: _TypeAlias = _typing.Literal["PK", b"PK"]  # noqa: Y015
+        def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["PK", b"PK", "user_id", b"user_id"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    PUB_KEYS_FIELD_NUMBER: builtins.int
-    @property
-    def pub_keys(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___GetPubKeysResponse.UserPubKey]: ...
+    PUB_KEYS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def pub_keys(self) -> _containers.RepeatedCompositeFieldContainer[Global___GetPubKeysResponse.UserPubKey]: ...
     def __init__(
         self,
         *,
-        pub_keys: collections.abc.Iterable[Global___GetPubKeysResponse.UserPubKey] | None = ...,
+        pub_keys: _abc.Iterable[Global___GetPubKeysResponse.UserPubKey] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["pub_keys", b"pub_keys"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["pub_keys", b"pub_keys"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GetPubKeysResponse: typing_extensions.TypeAlias = GetPubKeysResponse
+Global___GetPubKeysResponse: _TypeAlias = GetPubKeysResponse  # noqa: Y015
 
-@typing.final
-class ChanEncryptionMethod(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ChanEncryptionMethod(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    METHOD_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    method: builtins.str
-    channel_id: builtins.str
+    METHOD_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    method: _builtins.str
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        method: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        method: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "method", b"method"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "method", b"method"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ChanEncryptionMethod: typing_extensions.TypeAlias = ChanEncryptionMethod
+Global___ChanEncryptionMethod: _TypeAlias = ChanEncryptionMethod  # noqa: Y015
 
-@typing.final
-class GetKeyServerResp(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GetKeyServerResp(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    URL_FIELD_NUMBER: builtins.int
-    url: builtins.str
+    URL_FIELD_NUMBER: _builtins.int
+    url: _builtins.str
     def __init__(
         self,
         *,
-        url: builtins.str = ...,
+        url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["url", b"url"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["url", b"url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GetKeyServerResp: typing_extensions.TypeAlias = GetKeyServerResp
+Global___GetKeyServerResp: _TypeAlias = GetKeyServerResp  # noqa: Y015
 
-@typing.final
-class AuditLog(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class AuditLog(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ACTION_LOG_FIELD_NUMBER: builtins.int
-    ENTITY_NAME_FIELD_NUMBER: builtins.int
-    ENTITY_ID_FIELD_NUMBER: builtins.int
-    DETAILS_FIELD_NUMBER: builtins.int
-    TIME_LOG_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_LABEL_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    user_id: builtins.str
-    clan_id: builtins.str
-    action_log: builtins.str
-    entity_name: builtins.str
-    entity_id: builtins.str
-    details: builtins.str
-    channel_id: builtins.str
-    channel_label: builtins.str
-    @property
-    def time_log(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ACTION_LOG_FIELD_NUMBER: _builtins.int
+    ENTITY_NAME_FIELD_NUMBER: _builtins.int
+    ENTITY_ID_FIELD_NUMBER: _builtins.int
+    DETAILS_FIELD_NUMBER: _builtins.int
+    TIME_LOG_SECONDS_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    user_id: _builtins.int
+    clan_id: _builtins.int
+    action_log: _builtins.str
+    entity_name: _builtins.str
+    entity_id: _builtins.int
+    details: _builtins.str
+    time_log_seconds: _builtins.int
+    channel_id: _builtins.int
+    channel_label: _builtins.str
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        action_log: builtins.str = ...,
-        entity_name: builtins.str = ...,
-        entity_id: builtins.str = ...,
-        details: builtins.str = ...,
-        time_log: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        channel_id: builtins.str = ...,
-        channel_label: builtins.str = ...,
+        id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        action_log: _builtins.str = ...,
+        entity_name: _builtins.str = ...,
+        entity_id: _builtins.int = ...,
+        details: _builtins.str = ...,
+        time_log_seconds: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["time_log", b"time_log"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action_log", b"action_log", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "details", b"details", "entity_id", b"entity_id", "entity_name", b"entity_name", "id", b"id", "time_log", b"time_log", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action_log", b"action_log", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "details", b"details", "entity_id", b"entity_id", "entity_name", b"entity_name", "id", b"id", "time_log_seconds", b"time_log_seconds", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AuditLog: typing_extensions.TypeAlias = AuditLog
+Global___AuditLog: _TypeAlias = AuditLog  # noqa: Y015
 
-@typing.final
-class ListAuditLog(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListAuditLog(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TOTAL_COUNT_FIELD_NUMBER: builtins.int
-    DATE_LOG_FIELD_NUMBER: builtins.int
-    LOGS_FIELD_NUMBER: builtins.int
-    total_count: builtins.int
-    date_log: builtins.str
-    @property
-    def logs(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___AuditLog]: ...
+    TOTAL_COUNT_FIELD_NUMBER: _builtins.int
+    DATE_LOG_FIELD_NUMBER: _builtins.int
+    LOGS_FIELD_NUMBER: _builtins.int
+    total_count: _builtins.int
+    date_log: _builtins.str
+    @_builtins.property
+    def logs(self) -> _containers.RepeatedCompositeFieldContainer[Global___AuditLog]: ...
     def __init__(
         self,
         *,
-        total_count: builtins.int = ...,
-        date_log: builtins.str = ...,
-        logs: collections.abc.Iterable[Global___AuditLog] | None = ...,
+        total_count: _builtins.int = ...,
+        date_log: _builtins.str = ...,
+        logs: _abc.Iterable[Global___AuditLog] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["date_log", b"date_log", "logs", b"logs", "total_count", b"total_count"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["date_log", b"date_log", "logs", b"logs", "total_count", b"total_count"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListAuditLog: typing_extensions.TypeAlias = ListAuditLog
+Global___ListAuditLog: _TypeAlias = ListAuditLog  # noqa: Y015
 
-@typing.final
-class ListAuditLogRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListAuditLogRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ACTION_LOG_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    DATE_LOG_FIELD_NUMBER: builtins.int
-    action_log: builtins.str
-    user_id: builtins.str
-    clan_id: builtins.str
-    date_log: builtins.str
+    ACTION_LOG_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    DATE_LOG_FIELD_NUMBER: _builtins.int
+    action_log: _builtins.str
+    user_id: _builtins.int
+    clan_id: _builtins.int
+    date_log: _builtins.str
     def __init__(
         self,
         *,
-        action_log: builtins.str = ...,
-        user_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        date_log: builtins.str = ...,
+        action_log: _builtins.str = ...,
+        user_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        date_log: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action_log", b"action_log", "clan_id", b"clan_id", "date_log", b"date_log", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action_log", b"action_log", "clan_id", b"clan_id", "date_log", b"date_log", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListAuditLogRequest: typing_extensions.TypeAlias = ListAuditLogRequest
+Global___ListAuditLogRequest: _TypeAlias = ListAuditLogRequest  # noqa: Y015
 
-@typing.final
-class TokenSentEvent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class TokenSentEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    SENDER_ID_FIELD_NUMBER: builtins.int
-    SENDER_NAME_FIELD_NUMBER: builtins.int
-    RECEIVER_ID_FIELD_NUMBER: builtins.int
-    AMOUNT_FIELD_NUMBER: builtins.int
-    NOTE_FIELD_NUMBER: builtins.int
-    EXTRA_ATTRIBUTE_FIELD_NUMBER: builtins.int
-    TRANSACTION_ID_FIELD_NUMBER: builtins.int
-    sender_id: builtins.str
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    SENDER_NAME_FIELD_NUMBER: _builtins.int
+    RECEIVER_ID_FIELD_NUMBER: _builtins.int
+    AMOUNT_FIELD_NUMBER: _builtins.int
+    NOTE_FIELD_NUMBER: _builtins.int
+    EXTRA_ATTRIBUTE_FIELD_NUMBER: _builtins.int
+    TRANSACTION_ID_FIELD_NUMBER: _builtins.int
+    sender_id: _builtins.int
     """sender id"""
-    sender_name: builtins.str
+    sender_name: _builtins.str
     """sender name"""
-    receiver_id: builtins.str
+    receiver_id: _builtins.int
     """receiver"""
-    amount: builtins.int
+    amount: _builtins.int
     """amount of token"""
-    note: builtins.str
+    note: _builtins.str
     """note"""
-    extra_attribute: builtins.str
+    extra_attribute: _builtins.str
     """extra attribute"""
-    transaction_id: builtins.str
+    transaction_id: _builtins.str
     """transaction id"""
     def __init__(
         self,
         *,
-        sender_id: builtins.str = ...,
-        sender_name: builtins.str = ...,
-        receiver_id: builtins.str = ...,
-        amount: builtins.int = ...,
-        note: builtins.str = ...,
-        extra_attribute: builtins.str = ...,
-        transaction_id: builtins.str = ...,
+        sender_id: _builtins.int = ...,
+        sender_name: _builtins.str = ...,
+        receiver_id: _builtins.int = ...,
+        amount: _builtins.int = ...,
+        note: _builtins.str = ...,
+        extra_attribute: _builtins.str = ...,
+        transaction_id: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["amount", b"amount", "extra_attribute", b"extra_attribute", "note", b"note", "receiver_id", b"receiver_id", "sender_id", b"sender_id", "sender_name", b"sender_name", "transaction_id", b"transaction_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["amount", b"amount", "extra_attribute", b"extra_attribute", "note", b"note", "receiver_id", b"receiver_id", "sender_id", b"sender_id", "sender_name", b"sender_name", "transaction_id", b"transaction_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___TokenSentEvent: typing_extensions.TypeAlias = TokenSentEvent
+Global___TokenSentEvent: _TypeAlias = TokenSentEvent  # noqa: Y015
 
-@typing.final
-class UnlockItemRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UnlockItemRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ITEM_ID_FIELD_NUMBER: builtins.int
-    ITEM_TYPE_FIELD_NUMBER: builtins.int
-    item_id: builtins.str
+    ITEM_ID_FIELD_NUMBER: _builtins.int
+    ITEM_TYPE_FIELD_NUMBER: _builtins.int
+    item_id: _builtins.int
     """item id"""
-    item_type: builtins.int
+    item_type: _builtins.int
     """item type"""
     def __init__(
         self,
         *,
-        item_id: builtins.str = ...,
-        item_type: builtins.int = ...,
+        item_id: _builtins.int = ...,
+        item_type: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["item_id", b"item_id", "item_type", b"item_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["item_id", b"item_id", "item_type", b"item_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UnlockItemRequest: typing_extensions.TypeAlias = UnlockItemRequest
+Global___UnlockItemRequest: _TypeAlias = UnlockItemRequest  # noqa: Y015
 
-@typing.final
-class UnlockedItemResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UnlockedItemResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    SOURCE_FIELD_NUMBER: builtins.int
-    source: builtins.str
+    SOURCE_FIELD_NUMBER: _builtins.int
+    source: _builtins.str
     def __init__(
         self,
         *,
-        source: builtins.str = ...,
+        source: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["source", b"source"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["source", b"source"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UnlockedItemResponse: typing_extensions.TypeAlias = UnlockedItemResponse
+Global___UnlockedItemResponse: _TypeAlias = UnlockedItemResponse  # noqa: Y015
 
-@typing.final
-class ListOnboardingRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListOnboardingRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    GUIDE_TYPE_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    PAGE_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    GUIDE_TYPE_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id"""
-    @property
-    def guide_type(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """guide_type: 0 = greeting, 1 = rule, 2 = task, 3 = question"""
-
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """limit"""
-
-    @property
-    def page(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """page"""
-
-    def __init__(
-        self,
-        *,
-        clan_id: builtins.str = ...,
-        guide_type: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        page: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-    ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["guide_type", b"guide_type", "limit", b"limit", "page", b"page"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "guide_type", b"guide_type", "limit", b"limit", "page", b"page"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___ListOnboardingRequest: typing_extensions.TypeAlias = ListOnboardingRequest
-
-@typing.final
-class ListOnboardingResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    LIST_ONBOARDING_FIELD_NUMBER: builtins.int
-    @property
-    def list_onboarding(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___OnboardingItem]: ...
-    def __init__(
-        self,
-        *,
-        list_onboarding: collections.abc.Iterable[Global___OnboardingItem] | None = ...,
-    ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["list_onboarding", b"list_onboarding"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___ListOnboardingResponse: typing_extensions.TypeAlias = ListOnboardingResponse
-
-@typing.final
-class OnboardingItem(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    GUIDE_TYPE_FIELD_NUMBER: builtins.int
-    TASK_TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    IMAGE_URL_FIELD_NUMBER: builtins.int
-    ANSWERS_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    """id"""
-    clan_id: builtins.str
-    """clan id"""
-    guide_type: builtins.int
+    guide_type: _builtins.int
     """guide_type: 0 = greeting, 1 = rule, 2 = task, 3 = question"""
-    task_type: builtins.int
-    """task type"""
-    channel_id: builtins.str
-    """channel id"""
-    title: builtins.str
-    """title"""
-    content: builtins.str
-    """content"""
-    image_url: builtins.str
-    """image"""
-    @property
-    def answers(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___OnboardingAnswer]:
-        """answers"""
-
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
-
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp:
-        """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was last updated."""
-
+    limit: _builtins.int
+    """limit"""
+    page: _builtins.int
+    """page"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        guide_type: builtins.int = ...,
-        task_type: builtins.int = ...,
-        channel_id: builtins.str = ...,
-        title: builtins.str = ...,
-        content: builtins.str = ...,
-        image_url: builtins.str = ...,
-        answers: collections.abc.Iterable[Global___OnboardingAnswer] | None = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        clan_id: _builtins.int = ...,
+        guide_type: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        page: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "update_time", b"update_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["answers", b"answers", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "create_time", b"create_time", "guide_type", b"guide_type", "id", b"id", "image_url", b"image_url", "task_type", b"task_type", "title", b"title", "update_time", b"update_time"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "guide_type", b"guide_type", "limit", b"limit", "page", b"page"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___OnboardingItem: typing_extensions.TypeAlias = OnboardingItem
+Global___ListOnboardingRequest: _TypeAlias = ListOnboardingRequest  # noqa: Y015
 
-@typing.final
-class OnboardingAnswer(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListOnboardingResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TITLE_FIELD_NUMBER: builtins.int
-    DESCRIPTION_FIELD_NUMBER: builtins.int
-    EMOJI_FIELD_NUMBER: builtins.int
-    IMAGE_URL_FIELD_NUMBER: builtins.int
-    title: builtins.str
-    """title"""
-    description: builtins.str
-    """description"""
-    emoji: builtins.str
-    """emoji"""
-    image_url: builtins.str
-    """image"""
+    LIST_ONBOARDING_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def list_onboarding(self) -> _containers.RepeatedCompositeFieldContainer[Global___OnboardingItem]: ...
     def __init__(
         self,
         *,
-        title: builtins.str = ...,
-        description: builtins.str = ...,
-        emoji: builtins.str = ...,
-        image_url: builtins.str = ...,
+        list_onboarding: _abc.Iterable[Global___OnboardingItem] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["description", b"description", "emoji", b"emoji", "image_url", b"image_url", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["list_onboarding", b"list_onboarding"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___OnboardingAnswer: typing_extensions.TypeAlias = OnboardingAnswer
+Global___ListOnboardingResponse: _TypeAlias = ListOnboardingResponse  # noqa: Y015
 
-@typing.final
-class OnboardingContent(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class OnboardingItem(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    GUIDE_TYPE_FIELD_NUMBER: builtins.int
-    TASK_TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    IMAGE_URL_FIELD_NUMBER: builtins.int
-    ANSWERS_FIELD_NUMBER: builtins.int
-    guide_type: builtins.int
-    """guide type"""
-    task_type: builtins.int
-    """task type"""
-    channel_id: builtins.str
-    """channel id"""
-    title: builtins.str
-    """title"""
-    content: builtins.str
-    """content"""
-    image_url: builtins.str
-    """image"""
-    @property
-    def answers(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___OnboardingAnswer]:
-        """answers"""
-
-    def __init__(
-        self,
-        *,
-        guide_type: builtins.int = ...,
-        task_type: builtins.int = ...,
-        channel_id: builtins.str = ...,
-        title: builtins.str = ...,
-        content: builtins.str = ...,
-        image_url: builtins.str = ...,
-        answers: collections.abc.Iterable[Global___OnboardingAnswer] | None = ...,
-    ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["answers", b"answers", "channel_id", b"channel_id", "content", b"content", "guide_type", b"guide_type", "image_url", b"image_url", "task_type", b"task_type", "title", b"title"]
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___OnboardingContent: typing_extensions.TypeAlias = OnboardingContent
-
-@typing.final
-class CreateOnboardingRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CONTENTS_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    GUIDE_TYPE_FIELD_NUMBER: _builtins.int
+    TASK_TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    IMAGE_URL_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    """id"""
+    clan_id: _builtins.int
     """clan id"""
-    @property
-    def contents(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___OnboardingContent]:
+    guide_type: _builtins.int
+    """guide_type: 0 = greeting, 1 = rule, 2 = task, 3 = question"""
+    task_type: _builtins.int
+    """task type"""
+    channel_id: _builtins.int
+    """channel id"""
+    title: _builtins.str
+    """title"""
+    content: _builtins.str
+    """content"""
+    image_url: _builtins.str
+    """image"""
+    create_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was created."""
+    update_time_seconds: _builtins.int
+    """The UNIX time (for gRPC clients) or ISO string (for REST clients) when the message was last updated."""
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedCompositeFieldContainer[Global___OnboardingAnswer]:
+        """answers"""
+
+    def __init__(
+        self,
+        *,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        guide_type: _builtins.int = ...,
+        task_type: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        content: _builtins.str = ...,
+        image_url: _builtins.str = ...,
+        answers: _abc.Iterable[Global___OnboardingAnswer] | None = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answers", b"answers", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "create_time_seconds", b"create_time_seconds", "guide_type", b"guide_type", "id", b"id", "image_url", b"image_url", "task_type", b"task_type", "title", b"title", "update_time_seconds", b"update_time_seconds"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___OnboardingItem: _TypeAlias = OnboardingItem  # noqa: Y015
+
+@_typing.final
+class OnboardingAnswer(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    TITLE_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    EMOJI_FIELD_NUMBER: _builtins.int
+    IMAGE_URL_FIELD_NUMBER: _builtins.int
+    title: _builtins.str
+    """title"""
+    description: _builtins.str
+    """description"""
+    emoji: _builtins.str
+    """emoji"""
+    image_url: _builtins.str
+    """image"""
+    def __init__(
+        self,
+        *,
+        title: _builtins.str = ...,
+        description: _builtins.str = ...,
+        emoji: _builtins.str = ...,
+        image_url: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["description", b"description", "emoji", b"emoji", "image_url", b"image_url", "title", b"title"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___OnboardingAnswer: _TypeAlias = OnboardingAnswer  # noqa: Y015
+
+@_typing.final
+class OnboardingContent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    GUIDE_TYPE_FIELD_NUMBER: _builtins.int
+    TASK_TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    IMAGE_URL_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    guide_type: _builtins.int
+    """guide type"""
+    task_type: _builtins.int
+    """task type"""
+    channel_id: _builtins.int
+    """channel id"""
+    title: _builtins.str
+    """title"""
+    content: _builtins.str
+    """content"""
+    image_url: _builtins.str
+    """image"""
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedCompositeFieldContainer[Global___OnboardingAnswer]:
+        """answers"""
+
+    def __init__(
+        self,
+        *,
+        guide_type: _builtins.int = ...,
+        task_type: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        content: _builtins.str = ...,
+        image_url: _builtins.str = ...,
+        answers: _abc.Iterable[Global___OnboardingAnswer] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answers", b"answers", "channel_id", b"channel_id", "content", b"content", "guide_type", b"guide_type", "image_url", b"image_url", "task_type", b"task_type", "title", b"title"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___OnboardingContent: _TypeAlias = OnboardingContent  # noqa: Y015
+
+@_typing.final
+class CreateOnboardingRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CONTENTS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    """clan id"""
+    @_builtins.property
+    def contents(self) -> _containers.RepeatedCompositeFieldContainer[Global___OnboardingContent]:
         """contents"""
 
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        contents: collections.abc.Iterable[Global___OnboardingContent] | None = ...,
+        clan_id: _builtins.int = ...,
+        contents: _abc.Iterable[Global___OnboardingContent] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "contents", b"contents"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "contents", b"contents"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateOnboardingRequest: typing_extensions.TypeAlias = CreateOnboardingRequest
+Global___CreateOnboardingRequest: _TypeAlias = CreateOnboardingRequest  # noqa: Y015
 
-@typing.final
-class UpdateOnboardingRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateOnboardingRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    TASK_TYPE_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    TITLE_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    IMAGE_URL_FIELD_NUMBER: builtins.int
-    ANSWERS_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    TASK_TYPE_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    IMAGE_URL_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
-    channel_id: builtins.str
+    task_type: _builtins.int
+    """task type"""
+    channel_id: _builtins.int
     """channel id"""
-    title: builtins.str
+    title: _builtins.str
     """title"""
-    content: builtins.str
+    content: _builtins.str
     """content"""
-    image_url: builtins.str
+    image_url: _builtins.str
     """image"""
-    @property
-    def task_type(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """task type"""
-
-    @property
-    def answers(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___OnboardingAnswer]:
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedCompositeFieldContainer[Global___OnboardingAnswer]:
         """answers"""
 
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        task_type: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        channel_id: builtins.str = ...,
-        title: builtins.str = ...,
-        content: builtins.str = ...,
-        image_url: builtins.str = ...,
-        answers: collections.abc.Iterable[Global___OnboardingAnswer] | None = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        task_type: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        title: _builtins.str = ...,
+        content: _builtins.str = ...,
+        image_url: _builtins.str = ...,
+        answers: _abc.Iterable[Global___OnboardingAnswer] | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["task_type", b"task_type"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["answers", b"answers", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "id", b"id", "image_url", b"image_url", "task_type", b"task_type", "title", b"title"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answers", b"answers", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "id", b"id", "image_url", b"image_url", "task_type", b"task_type", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateOnboardingRequest: typing_extensions.TypeAlias = UpdateOnboardingRequest
+Global___UpdateOnboardingRequest: _TypeAlias = UpdateOnboardingRequest  # noqa: Y015
 
-@typing.final
-class OnboardingRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class OnboardingRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id"""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id"""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___OnboardingRequest: typing_extensions.TypeAlias = OnboardingRequest
+Global___OnboardingRequest: _TypeAlias = OnboardingRequest  # noqa: Y015
 
-@typing.final
-class ClanWebhook(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanWebhook(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    WEBHOOK_NAME_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ACTIVE_FIELD_NUMBER: builtins.int
-    URL_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    WEBHOOK_NAME_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    URL_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id."""
-    webhook_name: builtins.str
+    webhook_name: _builtins.str
     """webhook name."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id."""
-    active: builtins.int
+    active: _builtins.int
     """active."""
-    url: builtins.str
+    url: _builtins.str
     """URL of the webhook, which is automatically generated and different from the avatar."""
-    creator_id: builtins.str
+    creator_id: _builtins.int
     """creator id."""
-    avatar: builtins.str
+    avatar: _builtins.str
     """avatar"""
-    create_time: builtins.str
+    create_time: _builtins.str
     """create time."""
-    update_time: builtins.str
+    update_time: _builtins.str
     """update time."""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        webhook_name: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        active: builtins.int = ...,
-        url: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        avatar: builtins.str = ...,
-        create_time: builtins.str = ...,
-        update_time: builtins.str = ...,
+        id: _builtins.int = ...,
+        webhook_name: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        active: _builtins.int = ...,
+        url: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        avatar: _builtins.str = ...,
+        create_time: _builtins.str = ...,
+        update_time: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["active", b"active", "avatar", b"avatar", "clan_id", b"clan_id", "create_time", b"create_time", "creator_id", b"creator_id", "id", b"id", "update_time", b"update_time", "url", b"url", "webhook_name", b"webhook_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "avatar", b"avatar", "clan_id", b"clan_id", "create_time", b"create_time", "creator_id", b"creator_id", "id", b"id", "update_time", b"update_time", "url", b"url", "webhook_name", b"webhook_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanWebhook: typing_extensions.TypeAlias = ClanWebhook
+Global___ClanWebhook: _TypeAlias = ClanWebhook  # noqa: Y015
 
-@typing.final
-class GenerateClanWebhookRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GenerateClanWebhookRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    WEBHOOK_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    WEBHOOK_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id."""
-    webhook_name: builtins.str
+    webhook_name: _builtins.str
     """webhook name."""
-    avatar: builtins.str
+    avatar: _builtins.str
     """avatar."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        webhook_name: builtins.str = ...,
-        avatar: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        webhook_name: _builtins.str = ...,
+        avatar: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "webhook_name", b"webhook_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "webhook_name", b"webhook_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GenerateClanWebhookRequest: typing_extensions.TypeAlias = GenerateClanWebhookRequest
+Global___GenerateClanWebhookRequest: _TypeAlias = GenerateClanWebhookRequest  # noqa: Y015
 
-@typing.final
-class GenerateClanWebhookResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GenerateClanWebhookResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    URL_FIELD_NUMBER: builtins.int
-    WEBHOOK_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    URL_FIELD_NUMBER: _builtins.int
+    WEBHOOK_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id."""
-    url: builtins.str
+    url: _builtins.str
     """url."""
-    webhook_name: builtins.str
+    webhook_name: _builtins.str
     """webhook name."""
-    avatar: builtins.str
+    avatar: _builtins.str
     """avatar."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        url: builtins.str = ...,
-        webhook_name: builtins.str = ...,
-        avatar: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        url: _builtins.str = ...,
+        webhook_name: _builtins.str = ...,
+        avatar: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "url", b"url", "webhook_name", b"webhook_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "url", b"url", "webhook_name", b"webhook_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GenerateClanWebhookResponse: typing_extensions.TypeAlias = GenerateClanWebhookResponse
+Global___GenerateClanWebhookResponse: _TypeAlias = GenerateClanWebhookResponse  # noqa: Y015
 
-@typing.final
-class ClanWebhookRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanWebhookRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id."""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanWebhookRequest: typing_extensions.TypeAlias = ClanWebhookRequest
+Global___ClanWebhookRequest: _TypeAlias = ClanWebhookRequest  # noqa: Y015
 
-@typing.final
-class UpdateClanWebhookRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateClanWebhookRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    WEBHOOK_NAME_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    RESET_TOKEN_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    WEBHOOK_NAME_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    RESET_TOKEN_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """webhook id."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id."""
-    webhook_name: builtins.str
+    webhook_name: _builtins.str
     """webhook name."""
-    avatar: builtins.str
+    avatar: _builtins.str
     """avatar."""
-    reset_token: builtins.bool
+    reset_token: _builtins.bool
     """reset token."""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        webhook_name: builtins.str = ...,
-        avatar: builtins.str = ...,
-        reset_token: builtins.bool = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        webhook_name: _builtins.str = ...,
+        avatar: _builtins.str = ...,
+        reset_token: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "id", b"id", "reset_token", b"reset_token", "webhook_name", b"webhook_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "clan_id", b"clan_id", "id", b"id", "reset_token", b"reset_token", "webhook_name", b"webhook_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateClanWebhookRequest: typing_extensions.TypeAlias = UpdateClanWebhookRequest
+Global___UpdateClanWebhookRequest: _TypeAlias = UpdateClanWebhookRequest  # noqa: Y015
 
-@typing.final
-class ListClanWebhookRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListClanWebhookRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan_id."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListClanWebhookRequest: typing_extensions.TypeAlias = ListClanWebhookRequest
+Global___ListClanWebhookRequest: _TypeAlias = ListClanWebhookRequest  # noqa: Y015
 
-@typing.final
-class ListClanWebhookResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListClanWebhookResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIST_CLAN_WEBHOOKS_FIELD_NUMBER: builtins.int
-    @property
-    def list_clan_webhooks(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ClanWebhook]:
+    LIST_CLAN_WEBHOOKS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def list_clan_webhooks(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanWebhook]:
         """list clan webhook."""
 
     def __init__(
         self,
         *,
-        list_clan_webhooks: collections.abc.Iterable[Global___ClanWebhook] | None = ...,
+        list_clan_webhooks: _abc.Iterable[Global___ClanWebhook] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["list_clan_webhooks", b"list_clan_webhooks"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["list_clan_webhooks", b"list_clan_webhooks"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListClanWebhookResponse: typing_extensions.TypeAlias = ListClanWebhookResponse
+Global___ListClanWebhookResponse: _TypeAlias = ListClanWebhookResponse  # noqa: Y015
 
-@typing.final
-class ClanWebhookHandlerBody(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanWebhookHandlerBody(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CONTENT_FIELD_NUMBER: builtins.int
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    content: builtins.str
+    CONTENT_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    content: _builtins.str
     """content"""
-    @property
-    def attachments(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___MessageAttachment]:
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageAttachment]:
         """list clan webhook."""
 
     def __init__(
         self,
         *,
-        content: builtins.str = ...,
-        attachments: collections.abc.Iterable[Global___MessageAttachment] | None = ...,
+        content: _builtins.str = ...,
+        attachments: _abc.Iterable[Global___MessageAttachment] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachments", b"attachments", "content", b"content"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "content", b"content"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanWebhookHandlerBody: typing_extensions.TypeAlias = ClanWebhookHandlerBody
+Global___ClanWebhookHandlerBody: _TypeAlias = ClanWebhookHandlerBody  # noqa: Y015
 
-@typing.final
-class ClanWebhookHandlerRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ClanWebhookHandlerRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    BODY_FIELD_NUMBER: builtins.int
-    TOKEN_FIELD_NUMBER: builtins.int
-    USERNAME_FIELD_NUMBER: builtins.int
-    token: builtins.str
+    BODY_FIELD_NUMBER: _builtins.int
+    TOKEN_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
     """token."""
-    username: builtins.str
+    username: _builtins.str
     """username."""
-    @property
+    @_builtins.property
     def body(self) -> Global___ClanWebhookHandlerBody:
         """body."""
 
@@ -9213,1107 +8696,1358 @@ class ClanWebhookHandlerRequest(google.protobuf.message.Message):
         self,
         *,
         body: Global___ClanWebhookHandlerBody | None = ...,
-        token: builtins.str = ...,
-        username: builtins.str = ...,
+        token: _builtins.str = ...,
+        username: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["body", b"body"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["body", b"body", "token", b"token", "username", b"username"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["body", b"body"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["body", b"body", "token", b"token", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ClanWebhookHandlerRequest: typing_extensions.TypeAlias = ClanWebhookHandlerRequest
+Global___ClanWebhookHandlerRequest: _TypeAlias = ClanWebhookHandlerRequest  # noqa: Y015
 
-@typing.final
-class UserStatus(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserStatus(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    user_id: builtins.str
-    status: builtins.str
+    USER_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
+    status: _builtins.str
     def __init__(
         self,
         *,
-        user_id: builtins.str = ...,
-        status: builtins.str = ...,
+        user_id: _builtins.int = ...,
+        status: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["status", b"status", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["status", b"status", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserStatus: typing_extensions.TypeAlias = UserStatus
+Global___UserStatus: _TypeAlias = UserStatus  # noqa: Y015
 
-@typing.final
-class UserStatusUpdate(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserStatusUpdate(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    STATUS_FIELD_NUMBER: builtins.int
-    MINUTES_FIELD_NUMBER: builtins.int
-    UNTIL_TURN_ON_FIELD_NUMBER: builtins.int
-    status: builtins.str
-    minutes: builtins.int
-    until_turn_on: builtins.bool
+    STATUS_FIELD_NUMBER: _builtins.int
+    MINUTES_FIELD_NUMBER: _builtins.int
+    UNTIL_TURN_ON_FIELD_NUMBER: _builtins.int
+    status: _builtins.str
+    minutes: _builtins.int
+    until_turn_on: _builtins.bool
     def __init__(
         self,
         *,
-        status: builtins.str = ...,
-        minutes: builtins.int = ...,
-        until_turn_on: builtins.bool = ...,
+        status: _builtins.str = ...,
+        minutes: _builtins.int = ...,
+        until_turn_on: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["minutes", b"minutes", "status", b"status", "until_turn_on", b"until_turn_on"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["minutes", b"minutes", "status", b"status", "until_turn_on", b"until_turn_on"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserStatusUpdate: typing_extensions.TypeAlias = UserStatusUpdate
+Global___UserStatusUpdate: _TypeAlias = UserStatusUpdate  # noqa: Y015
 
-@typing.final
-class OnboardingSteps(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class OnboardingSteps(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    USER_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ONBOARDING_STEP_FIELD_NUMBER: builtins.int
-    id: builtins.str
+    ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ONBOARDING_STEP_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
     """id."""
-    user_id: builtins.str
+    user_id: _builtins.int
     """user id."""
-    clan_id: builtins.str
+    clan_id: _builtins.int
     """clan id."""
-    onboarding_step: builtins.int
+    onboarding_step: _builtins.int
     """onboarding step."""
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        user_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        onboarding_step: builtins.int = ...,
+        id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        onboarding_step: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "id", b"id", "onboarding_step", b"onboarding_step", "user_id", b"user_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "onboarding_step", b"onboarding_step", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___OnboardingSteps: typing_extensions.TypeAlias = OnboardingSteps
+Global___OnboardingSteps: _TypeAlias = OnboardingSteps  # noqa: Y015
 
-@typing.final
-class ListOnboardingStepResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListOnboardingStepResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIST_ONBOARDING_STEP_FIELD_NUMBER: builtins.int
-    @property
-    def list_onboarding_step(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___OnboardingSteps]:
+    LIST_ONBOARDING_STEP_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def list_onboarding_step(self) -> _containers.RepeatedCompositeFieldContainer[Global___OnboardingSteps]:
         """list onboarding steps."""
 
     def __init__(
         self,
         *,
-        list_onboarding_step: collections.abc.Iterable[Global___OnboardingSteps] | None = ...,
+        list_onboarding_step: _abc.Iterable[Global___OnboardingSteps] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["list_onboarding_step", b"list_onboarding_step"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["list_onboarding_step", b"list_onboarding_step"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListOnboardingStepResponse: typing_extensions.TypeAlias = ListOnboardingStepResponse
+Global___ListOnboardingStepResponse: _TypeAlias = ListOnboardingStepResponse  # noqa: Y015
 
-@typing.final
-class ListOnboardingStepRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListOnboardingStepRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    PAGE_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id."""
-    @property
-    def limit(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """limit"""
-
-    @property
-    def page(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """page"""
-
+    limit: _builtins.int
+    """limit"""
+    page: _builtins.int
+    """page"""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        limit: google.protobuf.wrappers_pb2.Int32Value | None = ...,
-        page: google.protobuf.wrappers_pb2.Int32Value | None = ...,
+        clan_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        page: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["limit", b"limit", "page", b"page"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "limit", b"limit", "page", b"page"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "limit", b"limit", "page", b"page"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListOnboardingStepRequest: typing_extensions.TypeAlias = ListOnboardingStepRequest
+Global___ListOnboardingStepRequest: _TypeAlias = ListOnboardingStepRequest  # noqa: Y015
 
-@typing.final
-class UpdateOnboardingStepRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UpdateOnboardingStepRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    ONBOARDING_STEP_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ONBOARDING_STEP_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
     """clan id."""
-    @property
-    def onboarding_step(self) -> google.protobuf.wrappers_pb2.Int32Value:
-        """onboarding step."""
-
+    onboarding_step: _builtins.int
+    """onboarding step."""
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        onboarding_step: google.protobuf.wrappers_pb2.Int32Value | None = ...,
+        clan_id: _builtins.int = ...,
+        onboarding_step: _builtins.int = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["onboarding_step", b"onboarding_step"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "onboarding_step", b"onboarding_step"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "onboarding_step", b"onboarding_step"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateOnboardingStepRequest: typing_extensions.TypeAlias = UpdateOnboardingStepRequest
+Global___UpdateOnboardingStepRequest: _TypeAlias = UpdateOnboardingStepRequest  # noqa: Y015
 
-@typing.final
-class SdTopic(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SdTopic(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    CREATE_TIME_FIELD_NUMBER: builtins.int
-    UPDATE_TIME_FIELD_NUMBER: builtins.int
-    MESSAGE_FIELD_NUMBER: builtins.int
-    LAST_SENT_MESSAGE_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    creator_id: builtins.str
-    message_id: builtins.str
-    clan_id: builtins.str
-    channel_id: builtins.str
-    status: builtins.int
-    @property
-    def create_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def update_time(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def message(self) -> Global___ChannelMessage: ...
-    @property
+    ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    LAST_SENT_MESSAGE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    creator_id: _builtins.int
+    message_id: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    status: _builtins.int
+    create_time_seconds: _builtins.int
+    update_time_seconds: _builtins.int
+    content: _builtins.str
+    @_builtins.property
     def last_sent_message(self) -> Global___ChannelMessageHeader: ...
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        message_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        status: builtins.int = ...,
-        create_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        update_time: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        message: Global___ChannelMessage | None = ...,
+        id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        status: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        content: _builtins.str = ...,
         last_sent_message: Global___ChannelMessageHeader | None = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["create_time", b"create_time", "last_sent_message", b"last_sent_message", "message", b"message", "update_time", b"update_time"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "create_time", b"create_time", "creator_id", b"creator_id", "id", b"id", "last_sent_message", b"last_sent_message", "message", b"message", "message_id", b"message_id", "status", b"status", "update_time", b"update_time"]
+    _HasFieldArgType: _TypeAlias = _typing.Literal["last_sent_message", b"last_sent_message"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "id", b"id", "last_sent_message", b"last_sent_message", "message_id", b"message_id", "status", b"status", "update_time_seconds", b"update_time_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SdTopic: typing_extensions.TypeAlias = SdTopic
+Global___SdTopic: _TypeAlias = SdTopic  # noqa: Y015
 
-@typing.final
-class SdTopicRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SdTopicRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
-    clan_id: builtins.str
-    channel_id: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
+        message_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SdTopicRequest: typing_extensions.TypeAlias = SdTopicRequest
+Global___SdTopicRequest: _TypeAlias = SdTopicRequest  # noqa: Y015
 
-@typing.final
-class SdTopicList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SdTopicList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    COUNT_FIELD_NUMBER: builtins.int
-    TOPICS_FIELD_NUMBER: builtins.int
-    count: builtins.int
-    @property
-    def topics(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___SdTopic]: ...
+    COUNT_FIELD_NUMBER: _builtins.int
+    TOPICS_FIELD_NUMBER: _builtins.int
+    count: _builtins.int
+    @_builtins.property
+    def topics(self) -> _containers.RepeatedCompositeFieldContainer[Global___SdTopic]: ...
     def __init__(
         self,
         *,
-        count: builtins.int = ...,
-        topics: collections.abc.Iterable[Global___SdTopic] | None = ...,
+        count: _builtins.int = ...,
+        topics: _abc.Iterable[Global___SdTopic] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["count", b"count", "topics", b"topics"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["count", b"count", "topics", b"topics"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SdTopicList: typing_extensions.TypeAlias = SdTopicList
+Global___SdTopicList: _TypeAlias = SdTopicList  # noqa: Y015
 
-@typing.final
-class ListSdTopicRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListSdTopicRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    LIMIT_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    limit: builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    limit: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        limit: builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "limit", b"limit"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "limit", b"limit"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListSdTopicRequest: typing_extensions.TypeAlias = ListSdTopicRequest
+Global___ListSdTopicRequest: _TypeAlias = ListSdTopicRequest  # noqa: Y015
 
-@typing.final
-class SdTopicDetailRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SdTopicDetailRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TOPIC_ID_FIELD_NUMBER: builtins.int
-    topic_id: builtins.str
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
+    topic_id: _builtins.int
     def __init__(
         self,
         *,
-        topic_id: builtins.str = ...,
+        topic_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["topic_id", b"topic_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SdTopicDetailRequest: typing_extensions.TypeAlias = SdTopicDetailRequest
+Global___SdTopicDetailRequest: _TypeAlias = SdTopicDetailRequest  # noqa: Y015
 
-@typing.final
-class DeleteSdTopicRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class DeleteSdTopicRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    id: builtins.str
-    clan_id: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    id: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___DeleteSdTopicRequest: typing_extensions.TypeAlias = DeleteSdTopicRequest
+Global___DeleteSdTopicRequest: _TypeAlias = DeleteSdTopicRequest  # noqa: Y015
 
-@typing.final
-class GenerateMeetTokenRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GenerateMeetTokenRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ROOM_NAME_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    room_name: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    room_name: _builtins.str
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        room_name: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        room_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "room_name", b"room_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "room_name", b"room_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GenerateMeetTokenRequest: typing_extensions.TypeAlias = GenerateMeetTokenRequest
+Global___GenerateMeetTokenRequest: _TypeAlias = GenerateMeetTokenRequest  # noqa: Y015
 
-@typing.final
-class MeetParticipantRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class MeetParticipantRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USERNAME_FIELD_NUMBER: builtins.int
-    ROOM_NAME_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    username: builtins.str
-    room_name: builtins.str
-    channel_id: builtins.str
-    clan_id: builtins.str
+    USERNAME_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    username: _builtins.str
+    room_name: _builtins.str
+    channel_id: _builtins.int
+    clan_id: _builtins.int
     def __init__(
         self,
         *,
-        username: builtins.str = ...,
-        room_name: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
+        username: _builtins.str = ...,
+        room_name: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MeetParticipantRequest: typing_extensions.TypeAlias = MeetParticipantRequest
+Global___MeetParticipantRequest: _TypeAlias = MeetParticipantRequest  # noqa: Y015
 
-@typing.final
-class GenerateMeetTokenResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GenerateMeetTokenResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TOKEN_FIELD_NUMBER: builtins.int
-    token: builtins.str
+    TOKEN_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
     def __init__(
         self,
         *,
-        token: builtins.str = ...,
+        token: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["token", b"token"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["token", b"token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GenerateMeetTokenResponse: typing_extensions.TypeAlias = GenerateMeetTokenResponse
+Global___GenerateMeetTokenResponse: _TypeAlias = GenerateMeetTokenResponse  # noqa: Y015
 
-@typing.final
-class GenerateMezonMeetResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GenerateMezonMeetResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MEET_ID_FIELD_NUMBER: builtins.int
-    ROOM_NAME_FIELD_NUMBER: builtins.int
-    EXTERNAL_LINK_FIELD_NUMBER: builtins.int
-    CREATOR_ID_FIELD_NUMBER: builtins.int
-    EVENT_ID_FIELD_NUMBER: builtins.int
-    meet_id: builtins.str
-    room_name: builtins.str
-    external_link: builtins.str
-    creator_id: builtins.str
-    event_id: builtins.str
+    MEET_ID_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    EXTERNAL_LINK_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    EVENT_ID_FIELD_NUMBER: _builtins.int
+    meet_id: _builtins.int
+    room_name: _builtins.str
+    external_link: _builtins.str
+    creator_id: _builtins.int
+    event_id: _builtins.int
     def __init__(
         self,
         *,
-        meet_id: builtins.str = ...,
-        room_name: builtins.str = ...,
-        external_link: builtins.str = ...,
-        creator_id: builtins.str = ...,
-        event_id: builtins.str = ...,
+        meet_id: _builtins.int = ...,
+        room_name: _builtins.str = ...,
+        external_link: _builtins.str = ...,
+        creator_id: _builtins.int = ...,
+        event_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["creator_id", b"creator_id", "event_id", b"event_id", "external_link", b"external_link", "meet_id", b"meet_id", "room_name", b"room_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["creator_id", b"creator_id", "event_id", b"event_id", "external_link", b"external_link", "meet_id", b"meet_id", "room_name", b"room_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GenerateMezonMeetResponse: typing_extensions.TypeAlias = GenerateMezonMeetResponse
+Global___GenerateMezonMeetResponse: _TypeAlias = GenerateMezonMeetResponse  # noqa: Y015
 
-@typing.final
-class CreateRoomChannelApps(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class CreateRoomChannelApps(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    ROOM_NAME_FIELD_NUMBER: builtins.int
-    channel_id: builtins.str
-    room_name: builtins.str
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    room_name: _builtins.str
     def __init__(
         self,
         *,
-        channel_id: builtins.str = ...,
-        room_name: builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        room_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "room_name", b"room_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "room_name", b"room_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___CreateRoomChannelApps: typing_extensions.TypeAlias = CreateRoomChannelApps
+Global___CreateRoomChannelApps: _TypeAlias = CreateRoomChannelApps  # noqa: Y015
 
-@typing.final
-class MezonOauthClient(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class MezonOauthClient(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ACCESS_TOKEN_STRATEGY_FIELD_NUMBER: builtins.int
-    ALLOWED_CORS_ORIGINS_FIELD_NUMBER: builtins.int
-    AUDIENCE_FIELD_NUMBER: builtins.int
-    AUTHORIZATION_CODE_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    AUTHORIZATION_CODE_GRANT_ID_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    AUTHORIZATION_CODE_GRANT_REFRESH_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    BACKCHANNEL_LOGOUT_SESSION_REQUIRED_FIELD_NUMBER: builtins.int
-    BACKCHANNEL_LOGOUT_URI_FIELD_NUMBER: builtins.int
-    CLIENT_CREDENTIALS_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    CLIENT_ID_FIELD_NUMBER: builtins.int
-    CLIENT_NAME_FIELD_NUMBER: builtins.int
-    CLIENT_SECRET_FIELD_NUMBER: builtins.int
-    CLIENT_SECRET_EXPIRES_AT_FIELD_NUMBER: builtins.int
-    CLIENT_URI_FIELD_NUMBER: builtins.int
-    CONTACTS_FIELD_NUMBER: builtins.int
-    CREATED_AT_FIELD_NUMBER: builtins.int
-    FRONTCHANNEL_LOGOUT_SESSION_REQUIRED_FIELD_NUMBER: builtins.int
-    FRONTCHANNEL_LOGOUT_URI_FIELD_NUMBER: builtins.int
-    GRANT_TYPES_FIELD_NUMBER: builtins.int
-    IMPLICIT_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    IMPLICIT_GRANT_ID_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    JWKS_FIELD_NUMBER: builtins.int
-    JWKS_URI_FIELD_NUMBER: builtins.int
-    JWT_BEARER_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    LOGO_URI_FIELD_NUMBER: builtins.int
-    OWNER_FIELD_NUMBER: builtins.int
-    POLICY_URI_FIELD_NUMBER: builtins.int
-    POST_LOGOUT_REDIRECT_URIS_FIELD_NUMBER: builtins.int
-    REDIRECT_URIS_FIELD_NUMBER: builtins.int
-    REFRESH_TOKEN_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    REFRESH_TOKEN_GRANT_ID_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    REFRESH_TOKEN_GRANT_REFRESH_TOKEN_LIFESPAN_FIELD_NUMBER: builtins.int
-    REGISTRATION_ACCESS_TOKEN_FIELD_NUMBER: builtins.int
-    REGISTRATION_CLIENT_URI_FIELD_NUMBER: builtins.int
-    REQUEST_OBJECT_SIGNING_ALG_FIELD_NUMBER: builtins.int
-    REQUEST_URIS_FIELD_NUMBER: builtins.int
-    RESPONSE_TYPES_FIELD_NUMBER: builtins.int
-    SCOPE_FIELD_NUMBER: builtins.int
-    SECTOR_IDENTIFIER_URI_FIELD_NUMBER: builtins.int
-    SKIP_CONSENT_FIELD_NUMBER: builtins.int
-    SKIP_LOGOUT_CONSENT_FIELD_NUMBER: builtins.int
-    SUBJECT_TYPE_FIELD_NUMBER: builtins.int
-    TOKEN_ENDPOINT_AUTH_METHOD_FIELD_NUMBER: builtins.int
-    TOKEN_ENDPOINT_AUTH_SIGNING_ALG_FIELD_NUMBER: builtins.int
-    TOS_URI_FIELD_NUMBER: builtins.int
-    UPDATED_AT_FIELD_NUMBER: builtins.int
-    USERINFO_SIGNED_RESPONSE_ALG_FIELD_NUMBER: builtins.int
-    access_token_strategy: builtins.str
-    authorization_code_grant_access_token_lifespan: builtins.str
-    authorization_code_grant_id_token_lifespan: builtins.str
-    authorization_code_grant_refresh_token_lifespan: builtins.str
-    backchannel_logout_session_required: builtins.bool
-    backchannel_logout_uri: builtins.str
-    client_credentials_grant_access_token_lifespan: builtins.str
-    client_id: builtins.str
-    client_name: builtins.str
-    client_secret: builtins.str
-    client_secret_expires_at: builtins.int
-    client_uri: builtins.str
-    frontchannel_logout_session_required: builtins.bool
-    frontchannel_logout_uri: builtins.str
-    implicit_grant_access_token_lifespan: builtins.str
-    implicit_grant_id_token_lifespan: builtins.str
-    jwks_uri: builtins.str
-    jwt_bearer_grant_access_token_lifespan: builtins.str
-    logo_uri: builtins.str
-    owner: builtins.str
-    policy_uri: builtins.str
-    refresh_token_grant_access_token_lifespan: builtins.str
-    refresh_token_grant_id_token_lifespan: builtins.str
-    refresh_token_grant_refresh_token_lifespan: builtins.str
-    registration_access_token: builtins.str
-    registration_client_uri: builtins.str
-    request_object_signing_alg: builtins.str
-    scope: builtins.str
-    sector_identifier_uri: builtins.str
-    skip_consent: builtins.bool
-    skip_logout_consent: builtins.bool
-    subject_type: builtins.str
-    token_endpoint_auth_method: builtins.str
-    token_endpoint_auth_signing_alg: builtins.str
-    tos_uri: builtins.str
-    userinfo_signed_response_alg: builtins.str
-    @property
-    def allowed_cors_origins(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def audience(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def contacts(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def created_at(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def grant_types(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def jwks(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def post_logout_redirect_uris(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def redirect_uris(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def request_uris(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def response_types(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
-    @property
-    def updated_at(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    ACCESS_TOKEN_STRATEGY_FIELD_NUMBER: _builtins.int
+    ALLOWED_CORS_ORIGINS_FIELD_NUMBER: _builtins.int
+    AUDIENCE_FIELD_NUMBER: _builtins.int
+    AUTHORIZATION_CODE_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    AUTHORIZATION_CODE_GRANT_ID_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    AUTHORIZATION_CODE_GRANT_REFRESH_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    BACKCHANNEL_LOGOUT_SESSION_REQUIRED_FIELD_NUMBER: _builtins.int
+    BACKCHANNEL_LOGOUT_URI_FIELD_NUMBER: _builtins.int
+    CLIENT_CREDENTIALS_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    CLIENT_ID_FIELD_NUMBER: _builtins.int
+    CLIENT_NAME_FIELD_NUMBER: _builtins.int
+    CLIENT_SECRET_FIELD_NUMBER: _builtins.int
+    CLIENT_SECRET_EXPIRES_AT_FIELD_NUMBER: _builtins.int
+    CLIENT_URI_FIELD_NUMBER: _builtins.int
+    CONTACTS_FIELD_NUMBER: _builtins.int
+    CREATED_AT_SECONDS_FIELD_NUMBER: _builtins.int
+    FRONTCHANNEL_LOGOUT_SESSION_REQUIRED_FIELD_NUMBER: _builtins.int
+    FRONTCHANNEL_LOGOUT_URI_FIELD_NUMBER: _builtins.int
+    GRANT_TYPES_FIELD_NUMBER: _builtins.int
+    IMPLICIT_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    IMPLICIT_GRANT_ID_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    JWKS_FIELD_NUMBER: _builtins.int
+    JWKS_URI_FIELD_NUMBER: _builtins.int
+    JWT_BEARER_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    LOGO_URI_FIELD_NUMBER: _builtins.int
+    OWNER_FIELD_NUMBER: _builtins.int
+    POLICY_URI_FIELD_NUMBER: _builtins.int
+    POST_LOGOUT_REDIRECT_URIS_FIELD_NUMBER: _builtins.int
+    REDIRECT_URIS_FIELD_NUMBER: _builtins.int
+    REFRESH_TOKEN_GRANT_ACCESS_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    REFRESH_TOKEN_GRANT_ID_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    REFRESH_TOKEN_GRANT_REFRESH_TOKEN_LIFESPAN_FIELD_NUMBER: _builtins.int
+    REGISTRATION_ACCESS_TOKEN_FIELD_NUMBER: _builtins.int
+    REGISTRATION_CLIENT_URI_FIELD_NUMBER: _builtins.int
+    REQUEST_OBJECT_SIGNING_ALG_FIELD_NUMBER: _builtins.int
+    REQUEST_URIS_FIELD_NUMBER: _builtins.int
+    RESPONSE_TYPES_FIELD_NUMBER: _builtins.int
+    SCOPE_FIELD_NUMBER: _builtins.int
+    SECTOR_IDENTIFIER_URI_FIELD_NUMBER: _builtins.int
+    SKIP_CONSENT_FIELD_NUMBER: _builtins.int
+    SKIP_LOGOUT_CONSENT_FIELD_NUMBER: _builtins.int
+    SUBJECT_TYPE_FIELD_NUMBER: _builtins.int
+    TOKEN_ENDPOINT_AUTH_METHOD_FIELD_NUMBER: _builtins.int
+    TOKEN_ENDPOINT_AUTH_SIGNING_ALG_FIELD_NUMBER: _builtins.int
+    TOS_URI_FIELD_NUMBER: _builtins.int
+    UPDATED_AT_SECONDS_FIELD_NUMBER: _builtins.int
+    USERINFO_SIGNED_RESPONSE_ALG_FIELD_NUMBER: _builtins.int
+    access_token_strategy: _builtins.str
+    authorization_code_grant_access_token_lifespan: _builtins.str
+    authorization_code_grant_id_token_lifespan: _builtins.str
+    authorization_code_grant_refresh_token_lifespan: _builtins.str
+    backchannel_logout_session_required: _builtins.bool
+    backchannel_logout_uri: _builtins.str
+    client_credentials_grant_access_token_lifespan: _builtins.str
+    client_id: _builtins.str
+    client_name: _builtins.str
+    client_secret: _builtins.str
+    client_secret_expires_at: _builtins.int
+    client_uri: _builtins.str
+    created_at_seconds: _builtins.int
+    frontchannel_logout_session_required: _builtins.bool
+    frontchannel_logout_uri: _builtins.str
+    implicit_grant_access_token_lifespan: _builtins.str
+    implicit_grant_id_token_lifespan: _builtins.str
+    jwks_uri: _builtins.str
+    jwt_bearer_grant_access_token_lifespan: _builtins.str
+    logo_uri: _builtins.str
+    owner: _builtins.str
+    policy_uri: _builtins.str
+    refresh_token_grant_access_token_lifespan: _builtins.str
+    refresh_token_grant_id_token_lifespan: _builtins.str
+    refresh_token_grant_refresh_token_lifespan: _builtins.str
+    registration_access_token: _builtins.str
+    registration_client_uri: _builtins.str
+    request_object_signing_alg: _builtins.str
+    scope: _builtins.str
+    sector_identifier_uri: _builtins.str
+    skip_consent: _builtins.bool
+    skip_logout_consent: _builtins.bool
+    subject_type: _builtins.str
+    token_endpoint_auth_method: _builtins.str
+    token_endpoint_auth_signing_alg: _builtins.str
+    tos_uri: _builtins.str
+    updated_at_seconds: _builtins.int
+    userinfo_signed_response_alg: _builtins.str
+    @_builtins.property
+    def allowed_cors_origins(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def audience(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def contacts(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def grant_types(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def jwks(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def post_logout_redirect_uris(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def redirect_uris(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def request_uris(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def response_types(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
     def __init__(
         self,
         *,
-        access_token_strategy: builtins.str = ...,
-        allowed_cors_origins: collections.abc.Iterable[builtins.str] | None = ...,
-        audience: collections.abc.Iterable[builtins.str] | None = ...,
-        authorization_code_grant_access_token_lifespan: builtins.str = ...,
-        authorization_code_grant_id_token_lifespan: builtins.str = ...,
-        authorization_code_grant_refresh_token_lifespan: builtins.str = ...,
-        backchannel_logout_session_required: builtins.bool = ...,
-        backchannel_logout_uri: builtins.str = ...,
-        client_credentials_grant_access_token_lifespan: builtins.str = ...,
-        client_id: builtins.str = ...,
-        client_name: builtins.str = ...,
-        client_secret: builtins.str = ...,
-        client_secret_expires_at: builtins.int = ...,
-        client_uri: builtins.str = ...,
-        contacts: collections.abc.Iterable[builtins.str] | None = ...,
-        created_at: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        frontchannel_logout_session_required: builtins.bool = ...,
-        frontchannel_logout_uri: builtins.str = ...,
-        grant_types: collections.abc.Iterable[builtins.str] | None = ...,
-        implicit_grant_access_token_lifespan: builtins.str = ...,
-        implicit_grant_id_token_lifespan: builtins.str = ...,
-        jwks: collections.abc.Iterable[builtins.str] | None = ...,
-        jwks_uri: builtins.str = ...,
-        jwt_bearer_grant_access_token_lifespan: builtins.str = ...,
-        logo_uri: builtins.str = ...,
-        owner: builtins.str = ...,
-        policy_uri: builtins.str = ...,
-        post_logout_redirect_uris: collections.abc.Iterable[builtins.str] | None = ...,
-        redirect_uris: collections.abc.Iterable[builtins.str] | None = ...,
-        refresh_token_grant_access_token_lifespan: builtins.str = ...,
-        refresh_token_grant_id_token_lifespan: builtins.str = ...,
-        refresh_token_grant_refresh_token_lifespan: builtins.str = ...,
-        registration_access_token: builtins.str = ...,
-        registration_client_uri: builtins.str = ...,
-        request_object_signing_alg: builtins.str = ...,
-        request_uris: collections.abc.Iterable[builtins.str] | None = ...,
-        response_types: collections.abc.Iterable[builtins.str] | None = ...,
-        scope: builtins.str = ...,
-        sector_identifier_uri: builtins.str = ...,
-        skip_consent: builtins.bool = ...,
-        skip_logout_consent: builtins.bool = ...,
-        subject_type: builtins.str = ...,
-        token_endpoint_auth_method: builtins.str = ...,
-        token_endpoint_auth_signing_alg: builtins.str = ...,
-        tos_uri: builtins.str = ...,
-        updated_at: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        userinfo_signed_response_alg: builtins.str = ...,
+        access_token_strategy: _builtins.str = ...,
+        allowed_cors_origins: _abc.Iterable[_builtins.str] | None = ...,
+        audience: _abc.Iterable[_builtins.str] | None = ...,
+        authorization_code_grant_access_token_lifespan: _builtins.str = ...,
+        authorization_code_grant_id_token_lifespan: _builtins.str = ...,
+        authorization_code_grant_refresh_token_lifespan: _builtins.str = ...,
+        backchannel_logout_session_required: _builtins.bool = ...,
+        backchannel_logout_uri: _builtins.str = ...,
+        client_credentials_grant_access_token_lifespan: _builtins.str = ...,
+        client_id: _builtins.str = ...,
+        client_name: _builtins.str = ...,
+        client_secret: _builtins.str = ...,
+        client_secret_expires_at: _builtins.int = ...,
+        client_uri: _builtins.str = ...,
+        contacts: _abc.Iterable[_builtins.str] | None = ...,
+        created_at_seconds: _builtins.int = ...,
+        frontchannel_logout_session_required: _builtins.bool = ...,
+        frontchannel_logout_uri: _builtins.str = ...,
+        grant_types: _abc.Iterable[_builtins.str] | None = ...,
+        implicit_grant_access_token_lifespan: _builtins.str = ...,
+        implicit_grant_id_token_lifespan: _builtins.str = ...,
+        jwks: _abc.Iterable[_builtins.str] | None = ...,
+        jwks_uri: _builtins.str = ...,
+        jwt_bearer_grant_access_token_lifespan: _builtins.str = ...,
+        logo_uri: _builtins.str = ...,
+        owner: _builtins.str = ...,
+        policy_uri: _builtins.str = ...,
+        post_logout_redirect_uris: _abc.Iterable[_builtins.str] | None = ...,
+        redirect_uris: _abc.Iterable[_builtins.str] | None = ...,
+        refresh_token_grant_access_token_lifespan: _builtins.str = ...,
+        refresh_token_grant_id_token_lifespan: _builtins.str = ...,
+        refresh_token_grant_refresh_token_lifespan: _builtins.str = ...,
+        registration_access_token: _builtins.str = ...,
+        registration_client_uri: _builtins.str = ...,
+        request_object_signing_alg: _builtins.str = ...,
+        request_uris: _abc.Iterable[_builtins.str] | None = ...,
+        response_types: _abc.Iterable[_builtins.str] | None = ...,
+        scope: _builtins.str = ...,
+        sector_identifier_uri: _builtins.str = ...,
+        skip_consent: _builtins.bool = ...,
+        skip_logout_consent: _builtins.bool = ...,
+        subject_type: _builtins.str = ...,
+        token_endpoint_auth_method: _builtins.str = ...,
+        token_endpoint_auth_signing_alg: _builtins.str = ...,
+        tos_uri: _builtins.str = ...,
+        updated_at_seconds: _builtins.int = ...,
+        userinfo_signed_response_alg: _builtins.str = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["created_at", b"created_at", "updated_at", b"updated_at"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["access_token_strategy", b"access_token_strategy", "allowed_cors_origins", b"allowed_cors_origins", "audience", b"audience", "authorization_code_grant_access_token_lifespan", b"authorization_code_grant_access_token_lifespan", "authorization_code_grant_id_token_lifespan", b"authorization_code_grant_id_token_lifespan", "authorization_code_grant_refresh_token_lifespan", b"authorization_code_grant_refresh_token_lifespan", "backchannel_logout_session_required", b"backchannel_logout_session_required", "backchannel_logout_uri", b"backchannel_logout_uri", "client_credentials_grant_access_token_lifespan", b"client_credentials_grant_access_token_lifespan", "client_id", b"client_id", "client_name", b"client_name", "client_secret", b"client_secret", "client_secret_expires_at", b"client_secret_expires_at", "client_uri", b"client_uri", "contacts", b"contacts", "created_at", b"created_at", "frontchannel_logout_session_required", b"frontchannel_logout_session_required", "frontchannel_logout_uri", b"frontchannel_logout_uri", "grant_types", b"grant_types", "implicit_grant_access_token_lifespan", b"implicit_grant_access_token_lifespan", "implicit_grant_id_token_lifespan", b"implicit_grant_id_token_lifespan", "jwks", b"jwks", "jwks_uri", b"jwks_uri", "jwt_bearer_grant_access_token_lifespan", b"jwt_bearer_grant_access_token_lifespan", "logo_uri", b"logo_uri", "owner", b"owner", "policy_uri", b"policy_uri", "post_logout_redirect_uris", b"post_logout_redirect_uris", "redirect_uris", b"redirect_uris", "refresh_token_grant_access_token_lifespan", b"refresh_token_grant_access_token_lifespan", "refresh_token_grant_id_token_lifespan", b"refresh_token_grant_id_token_lifespan", "refresh_token_grant_refresh_token_lifespan", b"refresh_token_grant_refresh_token_lifespan", "registration_access_token", b"registration_access_token", "registration_client_uri", b"registration_client_uri", "request_object_signing_alg", b"request_object_signing_alg", "request_uris", b"request_uris", "response_types", b"response_types", "scope", b"scope", "sector_identifier_uri", b"sector_identifier_uri", "skip_consent", b"skip_consent", "skip_logout_consent", b"skip_logout_consent", "subject_type", b"subject_type", "token_endpoint_auth_method", b"token_endpoint_auth_method", "token_endpoint_auth_signing_alg", b"token_endpoint_auth_signing_alg", "tos_uri", b"tos_uri", "updated_at", b"updated_at", "userinfo_signed_response_alg", b"userinfo_signed_response_alg"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["access_token_strategy", b"access_token_strategy", "allowed_cors_origins", b"allowed_cors_origins", "audience", b"audience", "authorization_code_grant_access_token_lifespan", b"authorization_code_grant_access_token_lifespan", "authorization_code_grant_id_token_lifespan", b"authorization_code_grant_id_token_lifespan", "authorization_code_grant_refresh_token_lifespan", b"authorization_code_grant_refresh_token_lifespan", "backchannel_logout_session_required", b"backchannel_logout_session_required", "backchannel_logout_uri", b"backchannel_logout_uri", "client_credentials_grant_access_token_lifespan", b"client_credentials_grant_access_token_lifespan", "client_id", b"client_id", "client_name", b"client_name", "client_secret", b"client_secret", "client_secret_expires_at", b"client_secret_expires_at", "client_uri", b"client_uri", "contacts", b"contacts", "created_at_seconds", b"created_at_seconds", "frontchannel_logout_session_required", b"frontchannel_logout_session_required", "frontchannel_logout_uri", b"frontchannel_logout_uri", "grant_types", b"grant_types", "implicit_grant_access_token_lifespan", b"implicit_grant_access_token_lifespan", "implicit_grant_id_token_lifespan", b"implicit_grant_id_token_lifespan", "jwks", b"jwks", "jwks_uri", b"jwks_uri", "jwt_bearer_grant_access_token_lifespan", b"jwt_bearer_grant_access_token_lifespan", "logo_uri", b"logo_uri", "owner", b"owner", "policy_uri", b"policy_uri", "post_logout_redirect_uris", b"post_logout_redirect_uris", "redirect_uris", b"redirect_uris", "refresh_token_grant_access_token_lifespan", b"refresh_token_grant_access_token_lifespan", "refresh_token_grant_id_token_lifespan", b"refresh_token_grant_id_token_lifespan", "refresh_token_grant_refresh_token_lifespan", b"refresh_token_grant_refresh_token_lifespan", "registration_access_token", b"registration_access_token", "registration_client_uri", b"registration_client_uri", "request_object_signing_alg", b"request_object_signing_alg", "request_uris", b"request_uris", "response_types", b"response_types", "scope", b"scope", "sector_identifier_uri", b"sector_identifier_uri", "skip_consent", b"skip_consent", "skip_logout_consent", b"skip_logout_consent", "subject_type", b"subject_type", "token_endpoint_auth_method", b"token_endpoint_auth_method", "token_endpoint_auth_signing_alg", b"token_endpoint_auth_signing_alg", "tos_uri", b"tos_uri", "updated_at_seconds", b"updated_at_seconds", "userinfo_signed_response_alg", b"userinfo_signed_response_alg"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MezonOauthClient: typing_extensions.TypeAlias = MezonOauthClient
+Global___MezonOauthClient: _TypeAlias = MezonOauthClient  # noqa: Y015
 
-@typing.final
-class MezonOauthClientList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class MezonOauthClientList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIST_MEZON_OAUTH_CLIENT_FIELD_NUMBER: builtins.int
-    @property
-    def list_mezon_oauth_client(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___MezonOauthClient]: ...
+    LIST_MEZON_OAUTH_CLIENT_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def list_mezon_oauth_client(self) -> _containers.RepeatedCompositeFieldContainer[Global___MezonOauthClient]: ...
     def __init__(
         self,
         *,
-        list_mezon_oauth_client: collections.abc.Iterable[Global___MezonOauthClient] | None = ...,
+        list_mezon_oauth_client: _abc.Iterable[Global___MezonOauthClient] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["list_mezon_oauth_client", b"list_mezon_oauth_client"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["list_mezon_oauth_client", b"list_mezon_oauth_client"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___MezonOauthClientList: typing_extensions.TypeAlias = MezonOauthClientList
+Global___MezonOauthClientList: _TypeAlias = MezonOauthClientList  # noqa: Y015
 
-@typing.final
-class GetMezonOauthClientRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GetMezonOauthClientRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLIENT_ID_FIELD_NUMBER: builtins.int
-    CLIENT_NAME_FIELD_NUMBER: builtins.int
-    client_id: builtins.str
-    client_name: builtins.str
+    CLIENT_ID_FIELD_NUMBER: _builtins.int
+    CLIENT_NAME_FIELD_NUMBER: _builtins.int
+    client_id: _builtins.str
+    client_name: _builtins.str
     def __init__(
         self,
         *,
-        client_id: builtins.str = ...,
-        client_name: builtins.str = ...,
+        client_id: _builtins.str = ...,
+        client_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["client_id", b"client_id", "client_name", b"client_name"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["client_id", b"client_id", "client_name", b"client_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GetMezonOauthClientRequest: typing_extensions.TypeAlias = GetMezonOauthClientRequest
+Global___GetMezonOauthClientRequest: _TypeAlias = GetMezonOauthClientRequest  # noqa: Y015
 
-@typing.final
-class SearchThreadRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class SearchThreadRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    LABEL_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    channel_id: builtins.str
-    label: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    LABEL_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    label: _builtins.str
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        label: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        label: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "label", b"label"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "label", b"label"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___SearchThreadRequest: typing_extensions.TypeAlias = SearchThreadRequest
+Global___SearchThreadRequest: _TypeAlias = SearchThreadRequest  # noqa: Y015
 
-@typing.final
-class GenerateHashChannelAppsRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GenerateHashChannelAppsRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    APP_ID_FIELD_NUMBER: builtins.int
-    app_id: builtins.str
+    APP_ID_FIELD_NUMBER: _builtins.int
+    app_id: _builtins.int
     def __init__(
         self,
         *,
-        app_id: builtins.str = ...,
+        app_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["app_id", b"app_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GenerateHashChannelAppsRequest: typing_extensions.TypeAlias = GenerateHashChannelAppsRequest
+Global___GenerateHashChannelAppsRequest: _TypeAlias = GenerateHashChannelAppsRequest  # noqa: Y015
 
-@typing.final
-class GenerateHashChannelAppsResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class GenerateHashChannelAppsResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    WEB_APP_DATA_FIELD_NUMBER: builtins.int
-    web_app_data: builtins.str
+    WEB_APP_DATA_FIELD_NUMBER: _builtins.int
+    web_app_data: _builtins.str
     def __init__(
         self,
         *,
-        web_app_data: builtins.str = ...,
+        web_app_data: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["web_app_data", b"web_app_data"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["web_app_data", b"web_app_data"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___GenerateHashChannelAppsResponse: typing_extensions.TypeAlias = GenerateHashChannelAppsResponse
+Global___GenerateHashChannelAppsResponse: _TypeAlias = GenerateHashChannelAppsResponse  # noqa: Y015
 
-@typing.final
-class Message2InboxRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class Message2InboxRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    AVATAR_FIELD_NUMBER: builtins.int
-    CONTENT_FIELD_NUMBER: builtins.int
-    MENTIONS_FIELD_NUMBER: builtins.int
-    ATTACHMENTS_FIELD_NUMBER: builtins.int
-    REACTIONS_FIELD_NUMBER: builtins.int
-    REFERENCES_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
-    channel_id: builtins.str
-    clan_id: builtins.str
-    avatar: builtins.str
-    content: builtins.str
-    mentions: builtins.str
-    attachments: builtins.str
-    reactions: builtins.str
-    references: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    REACTIONS_FIELD_NUMBER: _builtins.int
+    REFERENCES_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
+    avatar: _builtins.str
+    content: _builtins.str
+    @_builtins.property
+    def mentions(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageMention]: ...
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageAttachment]: ...
+    @_builtins.property
+    def reactions(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageReaction]: ...
+    @_builtins.property
+    def references(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageRef]: ...
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        avatar: builtins.str = ...,
-        content: builtins.str = ...,
-        mentions: builtins.str = ...,
-        attachments: builtins.str = ...,
-        reactions: builtins.str = ...,
-        references: builtins.str = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        avatar: _builtins.str = ...,
+        content: _builtins.str = ...,
+        mentions: _abc.Iterable[Global___MessageMention] | None = ...,
+        attachments: _abc.Iterable[Global___MessageAttachment] | None = ...,
+        reactions: _abc.Iterable[Global___MessageReaction] | None = ...,
+        references: _abc.Iterable[Global___MessageRef] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "mentions", b"mentions", "message_id", b"message_id", "reactions", b"reactions", "references", b"references"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "mentions", b"mentions", "message_id", b"message_id", "reactions", b"reactions", "references", b"references"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___Message2InboxRequest: typing_extensions.TypeAlias = Message2InboxRequest
+Global___Message2InboxRequest: _TypeAlias = Message2InboxRequest  # noqa: Y015
 
-@typing.final
-class AccountEmail(google.protobuf.message.Message):
+@_typing.final
+class AccountEmail(_message.Message):
     """Send an email with password to the server. Used with authenticate/link/unlink."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class VarsEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class VarsEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.str
-        value: builtins.str
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
         def __init__(
             self,
             *,
-            key: builtins.str = ...,
-            value: builtins.str = ...,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["key", b"key", "value", b"value"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    EMAIL_FIELD_NUMBER: builtins.int
-    PASSWORD_FIELD_NUMBER: builtins.int
-    PREV_EMAIL_FIELD_NUMBER: builtins.int
-    VARS_FIELD_NUMBER: builtins.int
-    email: builtins.str
+    EMAIL_FIELD_NUMBER: _builtins.int
+    PASSWORD_FIELD_NUMBER: _builtins.int
+    PREV_EMAIL_FIELD_NUMBER: _builtins.int
+    VARS_FIELD_NUMBER: _builtins.int
+    email: _builtins.str
     """A valid RFC-5322 email address."""
-    password: builtins.str
+    password: _builtins.str
     """A password for the user account.
     Ignored with unlink operations.
     """
-    prev_email: builtins.str
+    prev_email: _builtins.str
     """Prev email"""
-    @property
-    def vars(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    @_builtins.property
+    def vars(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]:
         """Extra information that will be bundled in the session token."""
 
     def __init__(
         self,
         *,
-        email: builtins.str = ...,
-        password: builtins.str = ...,
-        prev_email: builtins.str = ...,
-        vars: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
+        email: _builtins.str = ...,
+        password: _builtins.str = ...,
+        prev_email: _builtins.str = ...,
+        vars: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["email", b"email", "password", b"password", "prev_email", b"prev_email", "vars", b"vars"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["email", b"email", "password", b"password", "prev_email", b"prev_email", "vars", b"vars"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AccountEmail: typing_extensions.TypeAlias = AccountEmail
+Global___AccountEmail: _TypeAlias = AccountEmail  # noqa: Y015
 
-@typing.final
-class AccountMezon(google.protobuf.message.Message):
+@_typing.final
+class AccountMezon(_message.Message):
     """Send a Mezon token to the server. Used with authenticate/link/unlink."""
 
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    DESCRIPTOR: _descriptor.Descriptor
 
-    @typing.final
-    class VarsEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+    @_typing.final
+    class VarsEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
 
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.str
-        value: builtins.str
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
         def __init__(
             self,
             *,
-            key: builtins.str = ...,
-            value: builtins.str = ...,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
         ) -> None: ...
-        _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["key", b"key", "value", b"value"]
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-    PHONE_NUMBER_FIELD_NUMBER: builtins.int
-    VARS_FIELD_NUMBER: builtins.int
-    phone_number: builtins.str
+    PHONE_NUMBER_FIELD_NUMBER: _builtins.int
+    VARS_FIELD_NUMBER: _builtins.int
+    phone_number: _builtins.str
     """The phone number."""
-    @property
-    def vars(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]:
+    @_builtins.property
+    def vars(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]:
         """Extra information that will be bundled in the session token."""
 
     def __init__(
         self,
         *,
-        phone_number: builtins.str = ...,
-        vars: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
+        phone_number: _builtins.str = ...,
+        vars: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["phone_number", b"phone_number", "vars", b"vars"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["phone_number", b"phone_number", "vars", b"vars"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___AccountMezon: typing_extensions.TypeAlias = AccountMezon
+Global___AccountMezon: _TypeAlias = AccountMezon  # noqa: Y015
 
-@typing.final
-class LinkAccountConfirmRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class LinkAccountConfirmRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    REQ_ID_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    OTP_CODE_FIELD_NUMBER: builtins.int
-    req_id: builtins.str
+    REQ_ID_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    OTP_CODE_FIELD_NUMBER: _builtins.int
+    req_id: _builtins.str
     """The request id"""
-    status: builtins.int
+    status: _builtins.int
     """Status"""
-    otp_code: builtins.str
+    otp_code: _builtins.str
     """The confirm code"""
     def __init__(
         self,
         *,
-        req_id: builtins.str = ...,
-        status: builtins.int = ...,
-        otp_code: builtins.str = ...,
+        req_id: _builtins.str = ...,
+        status: _builtins.int = ...,
+        otp_code: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["otp_code", b"otp_code", "req_id", b"req_id", "status", b"status"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["otp_code", b"otp_code", "req_id", b"req_id", "status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LinkAccountConfirmRequest: typing_extensions.TypeAlias = LinkAccountConfirmRequest
+Global___LinkAccountConfirmRequest: _TypeAlias = LinkAccountConfirmRequest  # noqa: Y015
 
-@typing.final
-class QuickMenuAccess(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class QuickMenuAccess(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: builtins.int
-    BOT_ID_FIELD_NUMBER: builtins.int
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MENU_NAME_FIELD_NUMBER: builtins.int
-    BACKGROUND_FIELD_NUMBER: builtins.int
-    ACTION_MSG_FIELD_NUMBER: builtins.int
-    MENU_TYPE_FIELD_NUMBER: builtins.int
-    id: builtins.str
-    bot_id: builtins.str
-    clan_id: builtins.str
-    channel_id: builtins.str
-    menu_name: builtins.str
-    background: builtins.str
-    action_msg: builtins.str
-    menu_type: builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    BOT_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MENU_NAME_FIELD_NUMBER: _builtins.int
+    BACKGROUND_FIELD_NUMBER: _builtins.int
+    ACTION_MSG_FIELD_NUMBER: _builtins.int
+    MENU_TYPE_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    bot_id: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    menu_name: _builtins.str
+    background: _builtins.str
+    action_msg: _builtins.str
+    menu_type: _builtins.int
     def __init__(
         self,
         *,
-        id: builtins.str = ...,
-        bot_id: builtins.str = ...,
-        clan_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        menu_name: builtins.str = ...,
-        background: builtins.str = ...,
-        action_msg: builtins.str = ...,
-        menu_type: builtins.int = ...,
+        id: _builtins.int = ...,
+        bot_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        menu_name: _builtins.str = ...,
+        background: _builtins.str = ...,
+        action_msg: _builtins.str = ...,
+        menu_type: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["action_msg", b"action_msg", "background", b"background", "bot_id", b"bot_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "menu_name", b"menu_name", "menu_type", b"menu_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["action_msg", b"action_msg", "background", b"background", "bot_id", b"bot_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "menu_name", b"menu_name", "menu_type", b"menu_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___QuickMenuAccess: typing_extensions.TypeAlias = QuickMenuAccess
+Global___QuickMenuAccess: _TypeAlias = QuickMenuAccess  # noqa: Y015
 
-@typing.final
-class ListQuickMenuAccessRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListQuickMenuAccessRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    BOT_ID_FIELD_NUMBER: builtins.int
-    CHANNEL_ID_FIELD_NUMBER: builtins.int
-    MENU_TYPE_FIELD_NUMBER: builtins.int
-    bot_id: builtins.str
-    channel_id: builtins.str
-    menu_type: builtins.int
+    BOT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MENU_TYPE_FIELD_NUMBER: _builtins.int
+    bot_id: _builtins.int
+    channel_id: _builtins.int
+    menu_type: _builtins.int
     def __init__(
         self,
         *,
-        bot_id: builtins.str = ...,
-        channel_id: builtins.str = ...,
-        menu_type: builtins.int = ...,
+        bot_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        menu_type: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["bot_id", b"bot_id", "channel_id", b"channel_id", "menu_type", b"menu_type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["bot_id", b"bot_id", "channel_id", b"channel_id", "menu_type", b"menu_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListQuickMenuAccessRequest: typing_extensions.TypeAlias = ListQuickMenuAccessRequest
+Global___ListQuickMenuAccessRequest: _TypeAlias = ListQuickMenuAccessRequest  # noqa: Y015
 
-@typing.final
-class QuickMenuAccessList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class QuickMenuAccessList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    LIST_MENUS_FIELD_NUMBER: builtins.int
-    @property
-    def list_menus(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___QuickMenuAccess]: ...
+    LIST_MENUS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def list_menus(self) -> _containers.RepeatedCompositeFieldContainer[Global___QuickMenuAccess]: ...
     def __init__(
         self,
         *,
-        list_menus: collections.abc.Iterable[Global___QuickMenuAccess] | None = ...,
+        list_menus: _abc.Iterable[Global___QuickMenuAccess] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["list_menus", b"list_menus"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["list_menus", b"list_menus"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___QuickMenuAccessList: typing_extensions.TypeAlias = QuickMenuAccessList
+Global___QuickMenuAccessList: _TypeAlias = QuickMenuAccessList  # noqa: Y015
 
-@typing.final
-class ListForSaleItemsRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ListForSaleItemsRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    PAGE_FIELD_NUMBER: builtins.int
-    page: builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    page: _builtins.int
     def __init__(
         self,
         *,
-        page: builtins.int = ...,
+        page: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["page", b"page"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["page", b"page"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListForSaleItemsRequest: typing_extensions.TypeAlias = ListForSaleItemsRequest
+Global___ListForSaleItemsRequest: _TypeAlias = ListForSaleItemsRequest  # noqa: Y015
 
-@typing.final
-class ForSaleItem(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ForSaleItem(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    TYPE_FIELD_NUMBER: builtins.int
-    PREVIEW_URL_FIELD_NUMBER: builtins.int
-    type: builtins.int
-    preview_url: builtins.str
+    TYPE_FIELD_NUMBER: _builtins.int
+    PREVIEW_URL_FIELD_NUMBER: _builtins.int
+    type: _builtins.int
+    preview_url: _builtins.str
     def __init__(
         self,
         *,
-        type: builtins.int = ...,
-        preview_url: builtins.str = ...,
+        type: _builtins.int = ...,
+        preview_url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["preview_url", b"preview_url", "type", b"type"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["preview_url", b"preview_url", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ForSaleItem: typing_extensions.TypeAlias = ForSaleItem
+Global___ForSaleItem: _TypeAlias = ForSaleItem  # noqa: Y015
 
-@typing.final
-class ForSaleItemList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ForSaleItemList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FOR_SALE_ITEMS_FIELD_NUMBER: builtins.int
-    @property
-    def for_sale_items(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___ForSaleItem]: ...
+    FOR_SALE_ITEMS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def for_sale_items(self) -> _containers.RepeatedCompositeFieldContainer[Global___ForSaleItem]: ...
     def __init__(
         self,
         *,
-        for_sale_items: collections.abc.Iterable[Global___ForSaleItem] | None = ...,
+        for_sale_items: _abc.Iterable[Global___ForSaleItem] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["for_sale_items", b"for_sale_items"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["for_sale_items", b"for_sale_items"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ForSaleItemList: typing_extensions.TypeAlias = ForSaleItemList
+Global___ForSaleItemList: _TypeAlias = ForSaleItemList  # noqa: Y015
 
-@typing.final
-class IsFollowerRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class IsFollowerRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FOLLOW_ID_FIELD_NUMBER: builtins.int
-    follow_id: builtins.str
+    FOLLOW_ID_FIELD_NUMBER: _builtins.int
+    follow_id: _builtins.int
     def __init__(
         self,
         *,
-        follow_id: builtins.str = ...,
+        follow_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["follow_id", b"follow_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["follow_id", b"follow_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___IsFollowerRequest: typing_extensions.TypeAlias = IsFollowerRequest
+Global___IsFollowerRequest: _TypeAlias = IsFollowerRequest  # noqa: Y015
 
-@typing.final
-class IsFollowerResponse(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class IsFollowerResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    FOLLOW_ID_FIELD_NUMBER: builtins.int
-    IS_FOLLOWER_FIELD_NUMBER: builtins.int
-    follow_id: builtins.str
-    is_follower: builtins.bool
+    FOLLOW_ID_FIELD_NUMBER: _builtins.int
+    IS_FOLLOWER_FIELD_NUMBER: _builtins.int
+    follow_id: _builtins.int
+    is_follower: _builtins.bool
     def __init__(
         self,
         *,
-        follow_id: builtins.str = ...,
-        is_follower: builtins.bool = ...,
+        follow_id: _builtins.int = ...,
+        is_follower: _builtins.bool = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["follow_id", b"follow_id", "is_follower", b"is_follower"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["follow_id", b"follow_id", "is_follower", b"is_follower"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___IsFollowerResponse: typing_extensions.TypeAlias = IsFollowerResponse
+Global___IsFollowerResponse: _TypeAlias = IsFollowerResponse  # noqa: Y015
 
-@typing.final
-class TransferOwnershipRequest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class TransferOwnershipRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    CLAN_ID_FIELD_NUMBER: builtins.int
-    NEW_OWNER_ID_FIELD_NUMBER: builtins.int
-    clan_id: builtins.str
-    new_owner_id: builtins.str
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    NEW_OWNER_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    new_owner_id: _builtins.int
     def __init__(
         self,
         *,
-        clan_id: builtins.str = ...,
-        new_owner_id: builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        new_owner_id: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["clan_id", b"clan_id", "new_owner_id", b"new_owner_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "new_owner_id", b"new_owner_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___TransferOwnershipRequest: typing_extensions.TypeAlias = TransferOwnershipRequest
+Global___TransferOwnershipRequest: _TypeAlias = TransferOwnershipRequest  # noqa: Y015
 
-@typing.final
-class UserIds(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class UserIds(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    USER_IDS_FIELD_NUMBER: builtins.int
-    @property
-    def user_ids(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     def __init__(
         self,
         *,
-        user_ids: collections.abc.Iterable[builtins.str] | None = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["user_ids", b"user_ids"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UserIds: typing_extensions.TypeAlias = UserIds
+Global___UserIds: _TypeAlias = UserIds  # noqa: Y015
 
-@typing.final
-class ReportMessageAbuseReqest(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class ReportMessageAbuseReqest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    MESSAGE_ID_FIELD_NUMBER: builtins.int
-    ABUSE_TYPE_FIELD_NUMBER: builtins.int
-    message_id: builtins.str
-    abuse_type: builtins.str
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    ABUSE_TYPE_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
+    abuse_type: _builtins.str
     def __init__(
         self,
         *,
-        message_id: builtins.str = ...,
-        abuse_type: builtins.str = ...,
+        message_id: _builtins.int = ...,
+        abuse_type: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["abuse_type", b"abuse_type", "message_id", b"message_id"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["abuse_type", b"abuse_type", "message_id", b"message_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ReportMessageAbuseReqest: typing_extensions.TypeAlias = ReportMessageAbuseReqest
+Global___ReportMessageAbuseReqest: _TypeAlias = ReportMessageAbuseReqest  # noqa: Y015
 
-@typing.final
-class LogedDeviceList(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class LogedDeviceList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    DEVICES_FIELD_NUMBER: builtins.int
-    @property
-    def devices(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[Global___LogedDevice]: ...
+    DEVICES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def devices(self) -> _containers.RepeatedCompositeFieldContainer[Global___LogedDevice]: ...
     def __init__(
         self,
         *,
-        devices: collections.abc.Iterable[Global___LogedDevice] | None = ...,
+        devices: _abc.Iterable[Global___LogedDevice] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["devices", b"devices"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["devices", b"devices"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LogedDeviceList: typing_extensions.TypeAlias = LogedDeviceList
+Global___LogedDeviceList: _TypeAlias = LogedDeviceList  # noqa: Y015
 
-@typing.final
-class LogedDevice(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+@_typing.final
+class LogedDevice(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
 
-    DEVICE_ID_FIELD_NUMBER: builtins.int
-    DEVICE_NAME_FIELD_NUMBER: builtins.int
-    LOGIN_AT_FIELD_NUMBER: builtins.int
-    STATUS_FIELD_NUMBER: builtins.int
-    PLATFORM_FIELD_NUMBER: builtins.int
-    IP_FIELD_NUMBER: builtins.int
-    LAST_ACTIVE_FIELD_NUMBER: builtins.int
-    LOCATION_FIELD_NUMBER: builtins.int
-    IS_CURRENT_FIELD_NUMBER: builtins.int
-    device_id: builtins.str
-    device_name: builtins.str
-    status: builtins.int
-    platform: builtins.str
-    ip: builtins.str
-    location: builtins.str
-    is_current: builtins.bool
-    @property
-    def login_at(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
-    @property
-    def last_active(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    DEVICE_ID_FIELD_NUMBER: _builtins.int
+    DEVICE_NAME_FIELD_NUMBER: _builtins.int
+    LOGIN_AT_SECONDS_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    PLATFORM_FIELD_NUMBER: _builtins.int
+    IP_FIELD_NUMBER: _builtins.int
+    LAST_ACTIVE_SECONDS_FIELD_NUMBER: _builtins.int
+    LOCATION_FIELD_NUMBER: _builtins.int
+    IS_CURRENT_FIELD_NUMBER: _builtins.int
+    device_id: _builtins.str
+    device_name: _builtins.str
+    login_at_seconds: _builtins.int
+    status: _builtins.int
+    platform: _builtins.str
+    ip: _builtins.str
+    last_active_seconds: _builtins.int
+    location: _builtins.str
+    is_current: _builtins.bool
     def __init__(
         self,
         *,
-        device_id: builtins.str = ...,
-        device_name: builtins.str = ...,
-        login_at: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        status: builtins.int = ...,
-        platform: builtins.str = ...,
-        ip: builtins.str = ...,
-        last_active: google.protobuf.timestamp_pb2.Timestamp | None = ...,
-        location: builtins.str = ...,
-        is_current: builtins.bool = ...,
+        device_id: _builtins.str = ...,
+        device_name: _builtins.str = ...,
+        login_at_seconds: _builtins.int = ...,
+        status: _builtins.int = ...,
+        platform: _builtins.str = ...,
+        ip: _builtins.str = ...,
+        last_active_seconds: _builtins.int = ...,
+        location: _builtins.str = ...,
+        is_current: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: typing_extensions.TypeAlias = typing.Literal["last_active", b"last_active", "login_at", b"login_at"]
-    def HasField(self, field_name: _HasFieldArgType) -> builtins.bool: ...
-    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["device_id", b"device_id", "device_name", b"device_name", "ip", b"ip", "is_current", b"is_current", "last_active", b"last_active", "location", b"location", "login_at", b"login_at", "platform", b"platform", "status", b"status"]
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["device_id", b"device_id", "device_name", b"device_name", "ip", b"ip", "is_current", b"is_current", "last_active_seconds", b"last_active_seconds", "location", b"location", "login_at_seconds", b"login_at_seconds", "platform", b"platform", "status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___LogedDevice: typing_extensions.TypeAlias = LogedDevice
+Global___LogedDevice: _TypeAlias = LogedDevice  # noqa: Y015
+
+@_typing.final
+class DirectFcmProto(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    TITLE_FIELD_NUMBER: _builtins.int
+    LINK_FIELD_NUMBER: _builtins.int
+    CONTENT_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    AVATAR_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    ATTACHMENT_LINK_FIELD_NUMBER: _builtins.int
+    DISPLAY_NAME_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    USERNAME_FIELD_NUMBER: _builtins.int
+    MENTION_IDS_FIELD_NUMBER: _builtins.int
+    POSITION_S_FIELD_NUMBER: _builtins.int
+    POSITION_E_FIELD_NUMBER: _builtins.int
+    ATTACHMENT_TYPE_FIELD_NUMBER: _builtins.int
+    HAS_MORE_ATTACHMENT_FIELD_NUMBER: _builtins.int
+    IS_MENTION_ROLE_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    title: _builtins.str
+    link: _builtins.str
+    content: _builtins.str
+    channel_id: _builtins.int
+    sender_id: _builtins.int
+    avatar: _builtins.str
+    clan_id: _builtins.int
+    attachment_link: _builtins.str
+    display_name: _builtins.str
+    create_time_seconds: _builtins.int
+    update_time_seconds: _builtins.int
+    username: _builtins.str
+    attachment_type: _builtins.str
+    has_more_attachment: _builtins.bool
+    message_id: _builtins.int
+    @_builtins.property
+    def mention_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def position_s(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def position_e(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def is_mention_role(self) -> _containers.RepeatedScalarFieldContainer[_builtins.bool]: ...
+    def __init__(
+        self,
+        *,
+        title: _builtins.str = ...,
+        link: _builtins.str = ...,
+        content: _builtins.str = ...,
+        channel_id: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+        avatar: _builtins.str = ...,
+        clan_id: _builtins.int = ...,
+        attachment_link: _builtins.str = ...,
+        display_name: _builtins.str = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        username: _builtins.str = ...,
+        mention_ids: _abc.Iterable[_builtins.int] | None = ...,
+        position_s: _abc.Iterable[_builtins.int] | None = ...,
+        position_e: _abc.Iterable[_builtins.int] | None = ...,
+        attachment_type: _builtins.str = ...,
+        has_more_attachment: _builtins.bool = ...,
+        is_mention_role: _abc.Iterable[_builtins.bool] | None = ...,
+        message_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachment_link", b"attachment_link", "attachment_type", b"attachment_type", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "create_time_seconds", b"create_time_seconds", "display_name", b"display_name", "has_more_attachment", b"has_more_attachment", "is_mention_role", b"is_mention_role", "link", b"link", "mention_ids", b"mention_ids", "message_id", b"message_id", "position_e", b"position_e", "position_s", b"position_s", "sender_id", b"sender_id", "title", b"title", "update_time_seconds", b"update_time_seconds", "username", b"username"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___DirectFcmProto: _TypeAlias = DirectFcmProto  # noqa: Y015
+
+@_typing.final
+class MessageMentionList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    MENTIONS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def mentions(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageMention]: ...
+    def __init__(
+        self,
+        *,
+        mentions: _abc.Iterable[Global___MessageMention] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["mentions", b"mentions"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MessageMentionList: _TypeAlias = MessageMentionList  # noqa: Y015
+
+@_typing.final
+class MessageAttachmentList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageAttachment]: ...
+    def __init__(
+        self,
+        *,
+        attachments: _abc.Iterable[Global___MessageAttachment] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MessageAttachmentList: _TypeAlias = MessageAttachmentList  # noqa: Y015
+
+@_typing.final
+class MessageRefList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    REFS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def refs(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageRef]: ...
+    def __init__(
+        self,
+        *,
+        refs: _abc.Iterable[Global___MessageRef] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["refs", b"refs"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MessageRefList: _TypeAlias = MessageRefList  # noqa: Y015
+
+@_typing.final
+class MessageReactionList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    REACTIONS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def reactions(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageReaction]: ...
+    def __init__(
+        self,
+        *,
+        reactions: _abc.Iterable[Global___MessageReaction] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["reactions", b"reactions"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MessageReactionList: _TypeAlias = MessageReactionList  # noqa: Y015
+
+@_typing.final
+class ListClanBadgeCountRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListClanBadgeCountRequest: _TypeAlias = ListClanBadgeCountRequest  # noqa: Y015
+
+@_typing.final
+class ListClanBadgeCountResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    BADGE_COUNT_FIELD_NUMBER: _builtins.int
+    badge_count: _builtins.int
+    def __init__(
+        self,
+        *,
+        badge_count: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["badge_count", b"badge_count"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListClanBadgeCountResponse: _TypeAlias = ListClanBadgeCountResponse  # noqa: Y015
+
+@_typing.final
+class ClanDiscover(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CLAN_NAME_FIELD_NUMBER: _builtins.int
+    INVITE_ID_FIELD_NUMBER: _builtins.int
+    CLAN_LOGO_FIELD_NUMBER: _builtins.int
+    ONLINE_MEMBERS_FIELD_NUMBER: _builtins.int
+    TOTAL_MEMBERS_FIELD_NUMBER: _builtins.int
+    VERIFIED_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    BANNER_FIELD_NUMBER: _builtins.int
+    ABOUT_FIELD_NUMBER: _builtins.int
+    SHORT_URL_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    clan_name: _builtins.str
+    invite_id: _builtins.int
+    clan_logo: _builtins.str
+    online_members: _builtins.int
+    total_members: _builtins.int
+    verified: _builtins.bool
+    description: _builtins.str
+    banner: _builtins.str
+    about: _builtins.str
+    short_url: _builtins.str
+    create_time_seconds: _builtins.int
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        clan_name: _builtins.str = ...,
+        invite_id: _builtins.int = ...,
+        clan_logo: _builtins.str = ...,
+        online_members: _builtins.int = ...,
+        total_members: _builtins.int = ...,
+        verified: _builtins.bool = ...,
+        description: _builtins.str = ...,
+        banner: _builtins.str = ...,
+        about: _builtins.str = ...,
+        short_url: _builtins.str = ...,
+        create_time_seconds: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_logo", b"clan_logo", "clan_name", b"clan_name", "create_time_seconds", b"create_time_seconds", "description", b"description", "invite_id", b"invite_id", "online_members", b"online_members", "short_url", b"short_url", "total_members", b"total_members", "verified", b"verified"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ClanDiscover: _TypeAlias = ClanDiscover  # noqa: Y015
+
+@_typing.final
+class ListClanDiscover(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_DISCOVER_FIELD_NUMBER: _builtins.int
+    PAGE_NUMBER_FIELD_NUMBER: _builtins.int
+    PAGE_COUNT_FIELD_NUMBER: _builtins.int
+    page_number: _builtins.int
+    page_count: _builtins.int
+    @_builtins.property
+    def clan_discover(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanDiscover]: ...
+    def __init__(
+        self,
+        *,
+        clan_discover: _abc.Iterable[Global___ClanDiscover] | None = ...,
+        page_number: _builtins.int = ...,
+        page_count: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_discover", b"clan_discover", "page_count", b"page_count", "page_number", b"page_number"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListClanDiscover: _TypeAlias = ListClanDiscover  # noqa: Y015
+
+@_typing.final
+class GenerateMeetTokenExternalResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    TOKEN_FIELD_NUMBER: _builtins.int
+    GUEST_USER_ID_FIELD_NUMBER: _builtins.int
+    GUEST_ACCESS_TOKEN_FIELD_NUMBER: _builtins.int
+    token: _builtins.str
+    guest_user_id: _builtins.int
+    guest_access_token: _builtins.str
+    def __init__(
+        self,
+        *,
+        token: _builtins.str = ...,
+        guest_user_id: _builtins.int = ...,
+        guest_access_token: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["guest_access_token", b"guest_access_token", "guest_user_id", b"guest_user_id", "token", b"token"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___GenerateMeetTokenExternalResponse: _TypeAlias = GenerateMeetTokenExternalResponse  # noqa: Y015

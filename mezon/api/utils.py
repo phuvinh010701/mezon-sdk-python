@@ -4,7 +4,7 @@ import json
 from urllib.parse import urlparse
 
 import aiohttp
-from google.protobuf.message import DecodeError
+from google.protobuf.message import DecodeError, Message as ProtobufMessage
 from pydantic import BaseModel
 
 from mezon.protobuf.utils import parse_api_protobuf
@@ -12,13 +12,19 @@ from mezon.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-BINARY_CONTENT_TYPES = ("application/x-protobuf", "application/octet-stream")
+BINARY_CONTENT_TYPES = (
+    "application/proto",
+    "application/x-protobuf",
+    "application/protobuf",
+    "application/octet-stream",
+)
 
 
 def build_headers(
     bearer_token: Optional[str] = None,
     basic_auth: Optional[tuple] = None,
     accept_binary: bool = False,
+    send_binary: bool = False,
 ) -> dict[str, Any]:
     """
     Build headers for API requests.
@@ -27,13 +33,14 @@ def build_headers(
         bearer_token (Optional[str]): Bearer token for authentication
         basic_auth (Optional[tuple]): Tuple of (username, password) for basic auth
         accept_binary (bool): Whether to accept binary protobuf responses. Defaults to False.
+        send_binary (bool): Whether to send binary protobuf request body. Defaults to False.
 
     Returns:
         dict[str, Any]: Headers dictionary
     """
     headers = {
-        "Accept": "application/x-protobuf" if accept_binary else "application/json",
-        "Content-Type": "application/json",
+        "Accept": "application/proto" if accept_binary else "application/json",
+        "Content-Type": "application/proto" if send_binary else "application/json",
     }
     if bearer_token:
         headers["Authorization"] = f"Bearer {bearer_token}"
@@ -46,7 +53,7 @@ def build_headers(
 
 def build_body(body: BaseModel | dict[str, Any]) -> str:
     """
-    Build body for API requests.
+    Build JSON body for API requests.
 
     Args:
         body (BaseModel): Body model
@@ -60,6 +67,19 @@ def build_body(body: BaseModel | dict[str, Any]) -> str:
         return json.dumps(body)
     else:
         raise ValueError(f"Invalid body type: {type(body)}")
+
+
+def build_protobuf_body(proto_message: ProtobufMessage) -> bytes:
+    """
+    Build binary protobuf body for API requests.
+
+    Args:
+        proto_message (ProtobufMessage): Protobuf message to serialize
+
+    Returns:
+        bytes: Serialized protobuf bytes
+    """
+    return proto_message.SerializeToString()
 
 
 def parse_url_components(url: str) -> dict[str, Any]:

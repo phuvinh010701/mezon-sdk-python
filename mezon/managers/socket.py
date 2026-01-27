@@ -92,7 +92,7 @@ class SocketManager:
         """
         clans = await self.api_client.list_clans_descs(token)
         clans.clandesc.append(
-            ApiClanDesc(clan_id="0", clan_name="DM", welcome_channel_id="0")
+            ApiClanDesc(clan_id=0, clan_name="DM", welcome_channel_id=0)
         )
         await self.join_all_clans(clans.clandesc, token)
 
@@ -115,9 +115,9 @@ class SocketManager:
 
     async def write_ephemeral_message(
         self,
-        receiver_id: str,
-        clan_id: str,
-        channel_id: str,
+        receiver_id: int,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
         content: Any,
@@ -128,7 +128,7 @@ class SocketManager:
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
         code: Optional[int] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         return await self.socket.write_ephemeral_message(
             receiver_id=receiver_id,
@@ -149,8 +149,8 @@ class SocketManager:
 
     async def write_chat_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
         content: Any,
@@ -161,7 +161,7 @@ class SocketManager:
         mention_everyone: Optional[bool] = None,
         avatar: Optional[str] = None,
         code: Optional[int] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         return await self.socket.write_chat_message(
             clan_id=clan_id,
@@ -181,16 +181,16 @@ class SocketManager:
 
     async def update_chat_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
+        message_id: int,
         content: Any,
         mentions: Optional[list[ApiMessageMention]] = None,
         attachments: Optional[list[ApiMessageAttachment]] = None,
         hide_editted: bool = False,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
         is_update_msg_topic: Optional[bool] = None,
     ) -> ChannelMessageAck:
         """
@@ -229,16 +229,16 @@ class SocketManager:
 
     async def write_message_reaction(
         self,
-        id: str,
-        clan_id: str,
-        channel_id: str,
+        id: int,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
-        emoji_id: str,
+        message_id: int,
+        emoji_id: int,
         emoji: str,
         count: int,
-        message_sender_id: str,
+        message_sender_id: int,
         action_delete: bool = False,
     ) -> ApiMessageReaction:
         """
@@ -277,12 +277,12 @@ class SocketManager:
 
     async def remove_chat_message(
         self,
-        clan_id: str,
-        channel_id: str,
+        clan_id: int,
+        channel_id: int,
         mode: int,
         is_public: bool,
-        message_id: str,
-        topic_id: Optional[str] = None,
+        message_id: int,
+        topic_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         return await self.socket.remove_chat_message(
             clan_id=clan_id,

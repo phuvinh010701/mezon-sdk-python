@@ -18,6 +18,7 @@ import aiosqlite
 import json
 import os
 from typing import Optional, Any
+from mezon.models import ChannelMessageRaw
 from mezon.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -135,8 +136,8 @@ class MessageDB:
         )
 
     async def get_message_by_id(
-        self, message_id: str, channel_id: str
-    ) -> Optional[dict[str, Any]]:
+        self, message_id: int, channel_id: int
+    ) -> Optional[ChannelMessageRaw]:
         """
         Retrieve a message by its ID and channel ID.
 
@@ -162,15 +163,7 @@ class MessageDB:
         if not row:
             return None
 
-        message = dict(row)
-        message["content"] = json.loads(message["content"])
-        message["mentions"] = json.loads(message["mentions"])
-        message["attachments"] = json.loads(message["attachments"])
-        message["reactions"] = json.loads(message["reactions"])
-        message["references"] = json.loads(message["msg_references"])
-        del message["msg_references"]
-
-        return message
+        return ChannelMessageRaw.from_db_dict(dict(row))
 
     async def get_messages_by_channel(
         self, channel_id: str, limit: int = 50, offset: int = 0

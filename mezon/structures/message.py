@@ -57,14 +57,14 @@ class Message:
             channel: The TextChannel this message belongs to
             socket_manager: Socket manager for sending updates
         """
-        self.id: str = message_raw.id
-        self.sender_id: str = message_raw.sender_id
+        self.id: int = message_raw.id
+        self.sender_id: int = message_raw.sender_id
         self.content: ChannelMessageContent = message_raw.content
         self.mentions: Optional[list[ApiMessageMention]] = message_raw.mentions
         self.attachments: Optional[list[ApiMessageAttachment]] = message_raw.attachments
         self.reactions: Optional[list[ApiMessageReaction]] = message_raw.reactions
         self.references: Optional[list[ApiMessageRef]] = message_raw.references
-        self.topic_id: Optional[str] = message_raw.topic_id
+        self.topic_id: Optional[int] = message_raw.topic_id
         self.create_time_seconds: Optional[int] = message_raw.create_time_seconds
 
         self.channel = channel
@@ -77,7 +77,7 @@ class Message:
         attachments: Optional[list[ApiMessageAttachment]] = None,
         mention_everyone: Optional[bool] = None,
         anonymous_message: Optional[bool] = None,
-        topic_id: Optional[str] = None,
+        topic_id: Optional[int] = None,
         code: Optional[int] = None,
     ) -> ChannelMessageAck:
         """
@@ -168,10 +168,10 @@ class Message:
 
     async def react(
         self,
-        emoji_id: str,
+        emoji_id: int,
         emoji: str,
         count: int,
-        id: Optional[str] = "",
+        id: Optional[int] = 0,
         action_delete: bool = False,
     ) -> Any:
         """
