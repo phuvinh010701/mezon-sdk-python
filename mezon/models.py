@@ -417,6 +417,19 @@ class ApiCreateChannelDescRequest(BaseModel):
     user_ids: Optional[list[int]] = None
 
 
+class ApiSentTokenRequest(BaseModel):
+    """Request to send tokens to another user"""
+
+    receiver_id: int
+    amount: int
+    sender_id: Optional[int] = None
+    sender_name: Optional[str] = None
+    note: Optional[str] = None
+    extra_attribute: Optional[str] = None
+    mmn_extra_info: Optional[dict[str, Any]] = None
+    timestamp: Optional[int] = None
+
+
 # Client Models
 
 
