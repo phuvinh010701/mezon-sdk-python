@@ -39,8 +39,6 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
-    ApiAuthenticateLogoutRequest,
-    ApiAuthenticateRefreshRequest,
     ApiSentTokenRequest,
     ChannelMessageRaw,
     UserInitData,
@@ -1326,35 +1324,6 @@ class MezonClient:
 
         logger.info("Session refreshed successfully")
         return new_session
-
-    async def logout(self) -> bool:
-        """
-        Log out the current session and invalidate tokens.
-
-        Returns:
-            bool: True if logout was successful
-        """
-
-        session = self.session_manager.get_session()
-
-        logout_request = ApiAuthenticateLogoutRequest(
-            token=session.token,
-            refresh_token=session.refresh_token or "",
-        )
-
-        self._is_hard_disconnect = True
-
-        try:
-            await self.api_client.mezon_authenticate_logout(
-                bearer_token=session.token,
-                body=logout_request,
-            )
-            await self.close_socket()
-            logger.info("Logged out successfully")
-            return True
-        except Exception as err:
-            logger.error(f"Logout failed: {err}")
-            return False
 
     def _setup_reconnect_handlers(self) -> None:
         """

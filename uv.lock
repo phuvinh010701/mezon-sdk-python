@@ -706,7 +706,7 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.9.0" },
     { name = "aiolimiter", specifier = ">=1.2.1" },
     { name = "aiosqlite", specifier = ">=0.20.0" },
-    { name = "mmn-sdk", specifier = "==1.0.0" },
+    { name = "mmn-sdk", specifier = "==1.0.1" },
     { name = "pydantic", specifier = ">=2.12.3" },
     { name = "pyjwt", specifier = ">=2.8.0" },
     { name = "tenacity", specifier = ">=9.1.2" },
@@ -730,7 +730,7 @@ dev = [
 
 [[package]]
 name = "mmn-sdk"
-version = "1.0.0"
+version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -739,9 +739,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "pynacl" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/b0/cf084b8f8bdd90edc199b99622342b41ae2c21e95387b96bcbe66ca616cb/mmn_sdk-1.0.0.tar.gz", hash = "sha256:0404bb2a936c8cc2e72e00bf148d5d979f8e8a6be21889f21b3fe61aa4a2680e", size = 18404, upload-time = "2025-11-30T03:03:56.847Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b2/ed/8e8d54c2a833e7a5465879e4fea974721bb0a3c9bbbba021e53497260fcb/mmn_sdk-1.0.1.tar.gz", hash = "sha256:7ccb14fcd8af2024d364f5e8c8ce5f039ce787cc0181e3438f5b3b1e1939d08c", size = 18460, upload-time = "2026-01-27T11:26:42.679Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d5/18/a2c6f1950aede48a8693ab8508ea1baf4d59496fad67f28ff6dfbe0a2f0a/mmn_sdk-1.0.0-py3-none-any.whl", hash = "sha256:af73d9adef239fabe90f3eed867d9e1d7f6cd1c86153a8877c27650ad5c81799", size = 18062, upload-time = "2025-11-30T03:03:55.757Z" },
+    { url = "https://files.pythonhosted.org/packages/a1/d6/d205f1024cd4487ce903c96ef973c521e6d6ccbfe430ee06e3081d5bd425/mmn_sdk-1.0.1-py3-none-any.whl", hash = "sha256:0d7f86bd035f36fde7a98570d68180a185cbe57cf09edbe1d1565f0558059d72", size = 18105, upload-time = "2026-01-27T11:26:41.838Z" },
 ]
 
 [[package]]
