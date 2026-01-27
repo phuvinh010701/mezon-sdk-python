@@ -163,7 +163,6 @@ class MessageDB:
         if not row:
             return None
 
-
         return ChannelMessageRaw.from_db_dict(dict(row))
 
     async def get_messages_by_channel(

@@ -82,19 +82,6 @@ class ApiSession(BaseModel):
     id_token: Optional[str] = None
 
 
-class ApiAuthenticateLogoutRequest(BaseModel):
-    """Log out a session, invalidate a refresh token"""
-
-    refresh_token: Optional[str] = None
-    token: Optional[str] = None
-
-
-class ApiAuthenticateRefreshRequest(BaseModel):
-    """Authenticate against the server with a refresh token"""
-
-    refresh_token: Optional[str] = None
-
-
 class ApiAccountApp(BaseModel):
     """Send a app token to the server"""
 
@@ -106,12 +93,6 @@ class ApiAccountApp(BaseModel):
 
 class ApiAuthenticateRequest(BaseModel):
     account: Optional[ApiAccountApp] = None
-
-
-class ApiUpdateMessageRequest(BaseModel):
-    consume_time: Optional[str] = None
-    id: Optional[int] = None
-    read_time: Optional[str] = None
 
 
 class ApiChannelMessageHeader(BaseModel):
@@ -434,26 +415,6 @@ class ApiCreateChannelDescRequest(BaseModel):
     parent_id: Optional[int] = None
     type: Optional[int] = None
     user_ids: Optional[list[int]] = None
-
-
-class ApiRegisterStreamingChannelRequest(BaseModel):
-    """Register streaming channel request"""
-
-    clan_id: Optional[int] = None
-    channel_id: Optional[int] = None
-
-
-class ApiSentTokenRequest(BaseModel):
-    """Request to send tokens to another user"""
-
-    receiver_id: int
-    amount: int
-    sender_id: Optional[int] = None
-    sender_name: Optional[str] = None
-    note: Optional[str] = None
-    extra_attribute: Optional[str] = None
-    mmn_extra_info: Optional[dict[str, Any]] = None
-    timestamp: Optional[int] = None
 
 
 # Client Models
