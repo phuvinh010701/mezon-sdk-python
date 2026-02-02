@@ -1,0 +1,90 @@
+site_name: Mezon SDK Python
+site_description: Python SDK for building bots and applications on the Mezon platform
+site_url: https://phuvinh010701.github.io/mezon-sdk-python/
+repo_url: https://github.com/phuvinh010701/mezon-sdk-python
+repo_name: mezon-sdk-python
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quickstart.md
+  - Guide:
+      - Client Configuration: guide/client.md
+      - Event Handling: guide/events.md
+      - Sending Messages: guide/messaging.md
+      - Channels: guide/channels.md
+      - Clans: guide/clans.md
+      - Users: guide/users.md
+      - Token Sending: guide/tokens.md
+      - Interactive Messages: guide/interactive.md
+      - Message Caching: guide/caching.md
+  - API Reference:
+      - MezonClient: api-reference/client.md
+      - Clan: api-reference/clan.md
+      - TextChannel: api-reference/channel.md
+      - Message: api-reference/message.md
+      - Builders: api-reference/builders.md
+      - Models: api-reference/models.md
+      - Events: api-reference/events.md
+  - Examples:
+      - Basic Bot: examples/basic-bot.md
+      - FastAPI Integration: examples/fastapi.md
+      - Advanced Patterns: examples/advanced.md
+  - Changelog: changelog.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/phuvinh010701/mezon-sdk-python
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/mezon-sdk/
