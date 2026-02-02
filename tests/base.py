@@ -18,27 +18,25 @@ class TestConfig:
     Args:
         client_id (str): Bot client ID
         api_key (str): Bot API key
-        clan_id (str): Test clan ID
-        channel_id (str): Test text channel ID
-        user_id (str): Test user ID for interactions
-        voice_channel_id (Optional[str]): Test voice channel ID
-        role_id (Optional[str]): Test role ID
-        token_receiver_id (Optional[str]): User ID for token transfers
-        friend_username (Optional[str]): Username for friend tests
+        clan_id (int): Test clan ID
+        channel_id (int): Test text channel ID
+        user_id (int): Test user ID for interactions
+        voice_channel_id (Optional[int]): Test voice channel ID
+        role_id (Optional[int]): Test role ID
+        token_receiver_id (Optional[int]): User ID for token transfers
     """
 
     client_id: str
     api_key: str
-    clan_id: str
-    channel_id: str
-    user_id: str
+    clan_id: int
+    channel_id: int
+    user_id: int
     user_name: str
-    user_id_2: str
+    user_id_2: int
     user_name_2: str
-    voice_channel_id: Optional[str] = None
-    role_id: Optional[str] = None
-    token_receiver_id: Optional[str] = None
-    friend_username: Optional[str] = None
+    voice_channel_id: Optional[int] = None
+    role_id: Optional[int] = None
+    token_receiver_id: Optional[int] = None
 
 
 @dataclass

@@ -22,9 +22,9 @@ from aiolimiter import AsyncLimiter
 from mezon.api.utils import (
     build_body,
     build_headers,
-    build_protobuf_body,
     parse_response,
 )
+from mezon.protobuf.utils import encode_protobuf
 from mezon.protobuf.api import api_pb2
 from mezon.utils.logger import get_logger
 
@@ -189,7 +189,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(request)
+        body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",
@@ -245,7 +245,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(request)
+        body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",
@@ -292,7 +292,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(proto_request)
+        body = encode_protobuf(proto_request)
 
         response = await self.call_api(
             method="POST",
@@ -331,7 +331,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(request)
+        body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",
@@ -387,7 +387,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(request)
+        body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",
@@ -437,7 +437,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(proto_request)
+        body = encode_protobuf(proto_request)
 
         response = await self.call_api(
             method="POST",
@@ -482,7 +482,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(request)
+        body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",
@@ -502,7 +502,14 @@ class MezonApi:
     async def add_quick_menu_access(
         self,
         bearer_token: str,
-        body: dict[str, Any],
+        channel_id: int,
+        clan_id: int,
+        menu_type: int,
+        action_msg: str,
+        background: str,
+        menu_name: str,
+        menu_id: int,
+        bot_id: int,
         options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
@@ -510,35 +517,34 @@ class MezonApi:
 
         Args:
             bearer_token: Bearer token for authentication
-            body: Quick menu access payload with fields:
-                - channel_id: Channel ID
-                - clan_id: Clan ID
-                - menu_type: Menu type (default 1)
-                - action_msg: Action message
-                - background: Background image URL
-                - menu_name: Menu name
-                - id: Menu ID
-                - bot_id: Bot ID
+            channel_id: Channel ID
+            clan_id: Clan ID
+            menu_type: Menu type
+            action_msg: Action message
+            background: Background image URL
+            menu_name: Menu name
+            menu_id: Menu ID
+            bot_id: Bot ID
             options: Additional options for the request
 
         Returns:
             Any: Quick menu access response
         """
         request = api_pb2.QuickMenuAccess(
-            id=body.get("id", 0),
-            bot_id=body.get("bot_id", 0),
-            clan_id=body.get("clan_id", 0),
-            channel_id=body.get("channel_id", 0),
-            menu_name=body.get("menu_name", ""),
-            background=body.get("background", ""),
-            action_msg=body.get("action_msg", ""),
-            menu_type=body.get("menu_type", 0),
+            id=menu_id,
+            bot_id=bot_id,
+            clan_id=clan_id,
+            channel_id=channel_id,
+            menu_name=menu_name,
+            background=background,
+            action_msg=action_msg,
+            menu_type=menu_type,
         )
 
         headers = build_headers(
             bearer_token=bearer_token, accept_binary=True, send_binary=True
         )
-        proto_body = build_protobuf_body(request)
+        proto_body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",
@@ -589,7 +595,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=bearer_token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(request)
+        body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",
@@ -631,7 +637,7 @@ class MezonApi:
         headers = build_headers(
             bearer_token=bearer_token, accept_binary=True, send_binary=True
         )
-        body = build_protobuf_body(request)
+        body = encode_protobuf(request)
 
         response = await self.call_api(
             method="POST",

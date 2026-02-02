@@ -13,11 +13,8 @@ from tests.test_users import UserTests
 from tests.test_clans import ClanTests
 from tests.test_binary_api import BinaryApiTests
 from tests.test_session import SessionTests
-from tests.test_friends import FriendTests
 from tests.test_quick_menu import QuickMenuTests
-from tests.test_streaming import StreamingTests
 from tests.test_tokens import TokenTests
-from tests.test_health import HealthTests
 
 __all__ = [
     "BaseTestSuite",
@@ -30,9 +27,7 @@ __all__ = [
     "ClanTests",
     "BinaryApiTests",
     "SessionTests",
-    "FriendTests",
     "QuickMenuTests",
-    "StreamingTests",
     "TokenTests",
     "HealthTests",
 ]

@@ -91,9 +91,7 @@ class SocketManager:
             None
         """
         clans = await self.api_client.list_clans_descs(token)
-        clans.clandesc.append(
-            ApiClanDesc(clan_id=0, clan_name="DM", welcome_channel_id=0)
-        )
+        clans.clandesc.append(ApiClanDesc(clan_id=0, clan_name=""))
         await self.join_all_clans(clans.clandesc, token)
 
     async def join_all_clans(self, clans: list[ApiClanDesc], token: str) -> None:

@@ -528,34 +528,46 @@ class MezonClient:
         self.users.set(user_id, user)
         return user
 
-    async def add_quick_menu_access(self, body: dict[str, Any]) -> Any:
+    async def add_quick_menu_access(
+        self,
+        channel_id: int,
+        clan_id: int,
+        menu_type: int,
+        action_msg: str,
+        background: str,
+        menu_name: str,
+    ) -> Any:
         """
         Add a quick menu access entry for this bot.
 
         Args:
-            body (dict[str, Any]): Menu configuration containing clan_id, menu_type,
-                action_msg, background, and menu_name.
+            channel_id: Channel ID
+            clan_id: Clan ID
+            menu_type: Menu type
+            action_msg: Action message
+            background: Background image URL
+            menu_name: Menu name
 
         Returns:
             Any: The API response or None if session is unavailable.
         """
         menu_id = generate_snowflake_id()
         session = self.session_manager.get_session()
+
         if not session:
             return None
 
-        payload = {
-            "channel_id": int(body.get("channel_id", 0)),
-            "clan_id": int(body.get("clan_id", 0)),
-            "menu_type": int(body.get("menu_type", 1)),
-            "action_msg": body.get("action_msg", ""),
-            "background": body.get("background", ""),
-            "menu_name": body.get("menu_name", ""),
-            "id": int(menu_id),
-            "bot_id": int(self.client_id) if self.client_id else 0,
-        }
-
-        return await self.api_client.add_quick_menu_access(session.token, payload)
+        return await self.api_client.add_quick_menu_access(
+            session.token,
+            channel_id,
+            clan_id,
+            menu_type,
+            action_msg,
+            background,
+            menu_name,
+            menu_id,
+            int(self.client_id),
+        )
 
     async def delete_quick_menu_access(
         self,
@@ -927,7 +939,7 @@ class MezonClient:
 
     @auto_bind(Events.TOKEN_SEND)
     async def _handle_token_send_default(self, message: api_pb2.TokenSentEvent) -> None:
-        if message.sender_id == self.client_id:
+        if message.sender_id == int(self.client_id):
             receiver = await self.users.fetch(message.receiver_id)
             if receiver:
                 await receiver.send_dm_message(
@@ -1271,13 +1283,13 @@ class MezonClient:
             return
 
         user_init_data = UserInitData(
-            id=message.user.user_id if message.user else "",
+            id=message.user.user_id if message.user else 0,
             username=message.user.username if message.user else "",
             clan_nick="",
             clan_avatar="",
             avatar=message.user.avatar if message.user else "",
             display_name=message.user.display_name if message.user else "",
-            dm_channel_id="",
+            dm_channel_id=0,
         )
 
         user = User(
@@ -1291,39 +1303,6 @@ class MezonClient:
     async def close_socket(self) -> None:
         await self.socket_manager.get_socket().close()
         self.event_manager = EventManager()
-
-    async def session_refresh(self) -> Session:
-        """
-        Refresh the current session using the refresh token.
-
-        Returns:
-            Session: New session with refreshed tokens
-
-        Raises:
-            ValueError: If no refresh token is available
-        """
-
-        current_session = self.session_manager.get_session()
-
-        if not current_session.refresh_token:
-            raise ValueError("No refresh token available for session refresh")
-
-        refresh_request = ApiAuthenticateRefreshRequest(
-            token=current_session.token,
-            refresh_token=current_session.refresh_token,
-        )
-
-        new_api_session = await self.api_client.mezon_authenticate_refresh(
-            basic_auth_username=self.client_id,
-            basic_auth_password=self.api_key,
-            body=refresh_request,
-        )
-
-        new_session = Session(new_api_session)
-        self.session_manager.session = new_session
-
-        logger.info("Session refreshed successfully")
-        return new_session
 
     def _setup_reconnect_handlers(self) -> None:
         """

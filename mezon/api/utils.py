@@ -4,7 +4,7 @@ import json
 from urllib.parse import urlparse
 
 import aiohttp
-from google.protobuf.message import DecodeError, Message as ProtobufMessage
+from google.protobuf.message import DecodeError
 from pydantic import BaseModel
 
 from mezon.protobuf.utils import parse_api_protobuf
@@ -67,19 +67,6 @@ def build_body(body: BaseModel | dict[str, Any]) -> str:
         return json.dumps(body)
     else:
         raise ValueError(f"Invalid body type: {type(body)}")
-
-
-def build_protobuf_body(proto_message: ProtobufMessage) -> bytes:
-    """
-    Build binary protobuf body for API requests.
-
-    Args:
-        proto_message (ProtobufMessage): Protobuf message to serialize
-
-    Returns:
-        bytes: Serialized protobuf bytes
-    """
-    return proto_message.SerializeToString()
 
 
 def parse_url_components(url: str) -> dict[str, Any]:

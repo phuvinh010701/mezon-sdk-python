@@ -20,6 +20,8 @@ class MessageTests(BaseTestSuite):
         """Run all message tests."""
         await self.test_message_send()
         await asyncio.sleep(1)
+        await self.test_message_send()
+        await asyncio.sleep(1)
         await self.test_message_edit()
         await self.test_message_react()
         await self.test_message_reply()
@@ -59,7 +61,7 @@ class MessageTests(BaseTestSuite):
 
             clan = await self.client.clans.fetch(self.config.clan_id)
             channel = await clan.channels.fetch(self.config.channel_id)
-            message = await channel.messages.fetch(self.sent_message_id)
+            message = await channel.messages.fetch(int(self.sent_message_id))
             await message.update(
                 content=ChannelMessageContent(t="🧪 Test message (edited)")
             )
@@ -76,7 +78,7 @@ class MessageTests(BaseTestSuite):
             clan = await self.client.clans.fetch(self.config.clan_id)
             channel = await clan.channels.fetch(self.config.channel_id)
             message = await channel.messages.fetch(self.sent_message_id)
-            await message.react(emoji_id="7386985750250017344", emoji="👍", count=1)
+            await message.react(emoji_id=7386985750250017344, emoji="👍", count=1)
             self.log_result("Message React", True)
         except Exception as e:
             self.log_result("Message React", False, str(e))

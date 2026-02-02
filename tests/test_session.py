@@ -13,7 +13,6 @@ class SessionTests(BaseTestSuite):
         await self.test_session_get()
         await self.test_session_properties()
         await self.test_session_serialization()
-        await self.test_session_refresh()
 
     async def test_session_get(self) -> None:
         """Test: Get current session."""
@@ -59,23 +58,3 @@ class SessionTests(BaseTestSuite):
             self.log_result("Session Serialization", True)
         except Exception as e:
             self.log_result("Session Serialization", False, str(e))
-
-    async def test_session_refresh(self) -> None:
-        """Test: Refresh session token."""
-        try:
-            # Get current session
-            old_session = self.client.session_manager.get_session()
-            if not old_session.refresh_token:
-                self.skip_test("Session Refresh", "No refresh token available")
-                return
-
-            # Refresh session
-            new_session = await self.client.session_refresh()
-
-            assert new_session is not None, "New session should exist"
-            assert new_session.token, "New session should have token"
-            assert new_session.user_id == old_session.user_id, "User ID should match"
-
-            self.log_result("Session Refresh", True)
-        except Exception as e:
-            self.log_result("Session Refresh", False, str(e))

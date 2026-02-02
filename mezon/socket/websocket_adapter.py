@@ -116,22 +116,10 @@ class WebSocketAdapterPb(WebSocketAdapter):
             self._socket = await websockets.connect(
                 url,
                 subprotocols=["protobuf"],
+                ping_interval=None,
             )
         except Exception:
             raise
-
-    def _encode_protobuf(self, message: realtime_pb2.Envelope) -> bytes:
-        """
-        Encode message to protobuf.
-
-        Args:
-            message: Message envelope
-
-        Returns:
-            Encoded protobuf bytes
-        """
-
-        return message.SerializeToString()
 
     async def send(self, message: Any) -> None:
         """
