@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.6.10 (2026-02-02)
+
+### Bug Fixes
+
+- Update MezonClient and MezonApi to enhance quick menu access handling, improve type annotations,
+  and streamline protobuf usage
+  ([`8a08df7`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8a08df7b87e417fb5a4186c647821f40ca3aa5ab))
+
+
 ## v1.6.9 (2026-01-27)
 
 ### Bug Fixes
