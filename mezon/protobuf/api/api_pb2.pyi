@@ -22,7 +22,6 @@ The Mezon server RPC protocol for games and apps.
 from collections import abc as _abc
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
@@ -1291,27 +1290,21 @@ class VoiceChannelUser(_message.Message):
 
     DESCRIPTOR: _descriptor.Descriptor
 
-    ID_FIELD_NUMBER: _builtins.int
-    USER_ID_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
     CHANNEL_ID_FIELD_NUMBER: _builtins.int
-    PARTICIPANT_FIELD_NUMBER: _builtins.int
-    id: _builtins.int
-    """voice user join id"""
-    user_id: _builtins.int
-    """User for a channel."""
     channel_id: _builtins.int
     """channel id"""
-    participant: _builtins.str
-    """participant"""
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
+        """User for a channel."""
+
     def __init__(
         self,
         *,
-        id: _builtins.int = ...,
-        user_id: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.str] | None = ...,
         channel_id: _builtins.int = ...,
-        participant: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "id", b"id", "participant", b"participant", "user_id", b"user_id"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___VoiceChannelUser: _TypeAlias = VoiceChannelUser  # noqa: Y015
@@ -2080,6 +2073,7 @@ class Session(_message.Message):
     IS_REMEMBER_FIELD_NUMBER: _builtins.int
     API_URL_FIELD_NUMBER: _builtins.int
     ID_TOKEN_FIELD_NUMBER: _builtins.int
+    WS_URL_FIELD_NUMBER: _builtins.int
     created: _builtins.bool
     """True if the corresponding account was just created, false otherwise."""
     token: _builtins.str
@@ -2094,6 +2088,8 @@ class Session(_message.Message):
     """api url"""
     id_token: _builtins.str
     """id token for zklogin"""
+    ws_url: _builtins.str
+    """ws_url"""
     def __init__(
         self,
         *,
@@ -2104,8 +2100,9 @@ class Session(_message.Message):
         is_remember: _builtins.bool = ...,
         api_url: _builtins.str = ...,
         id_token: _builtins.str = ...,
+        ws_url: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_url", b"api_url", "created", b"created", "id_token", b"id_token", "is_remember", b"is_remember", "refresh_token", b"refresh_token", "token", b"token", "user_id", b"user_id"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_url", b"api_url", "created", b"created", "id_token", b"id_token", "is_remember", b"is_remember", "refresh_token", b"refresh_token", "token", b"token", "user_id", b"user_id", "ws_url", b"ws_url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___Session: _TypeAlias = Session  # noqa: Y015
@@ -6056,31 +6053,6 @@ class WebhookGenerateResponse(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___WebhookGenerateResponse: _TypeAlias = WebhookGenerateResponse  # noqa: Y015
-
-@_typing.final
-class WebhookHandlerRequest(_message.Message):
-    DESCRIPTOR: _descriptor.Descriptor
-
-    BODY_FIELD_NUMBER: _builtins.int
-    CHANNEL_ID_FIELD_NUMBER: _builtins.int
-    TOKEN_FIELD_NUMBER: _builtins.int
-    channel_id: _builtins.int
-    token: _builtins.str
-    @_builtins.property
-    def body(self) -> _struct_pb2.Struct: ...
-    def __init__(
-        self,
-        *,
-        body: _struct_pb2.Struct | None = ...,
-        channel_id: _builtins.int = ...,
-        token: _builtins.str = ...,
-    ) -> None: ...
-    _HasFieldArgType: _TypeAlias = _typing.Literal["body", b"body"]  # noqa: Y015
-    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["body", b"body", "channel_id", b"channel_id", "token", b"token"]  # noqa: Y015
-    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-
-Global___WebhookHandlerRequest: _TypeAlias = WebhookHandlerRequest  # noqa: Y015
 
 @_typing.final
 class CheckDuplicateClanNameRequest(_message.Message):
@@ -10051,3 +10023,145 @@ class GenerateMeetTokenExternalResponse(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___GenerateMeetTokenExternalResponse: _TypeAlias = GenerateMeetTokenExternalResponse  # noqa: Y015
+
+@_typing.final
+class KafkaActionMsg(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    FRIEND_IDS_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    MODE_FIELD_NUMBER: _builtins.int
+    STREAM_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    mode: _builtins.int
+    stream: _builtins.bytes
+    @_builtins.property
+    def friend_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        friend_ids: _abc.Iterable[_builtins.int] | None = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        mode: _builtins.int = ...,
+        stream: _builtins.bytes = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "friend_ids", b"friend_ids", "mode", b"mode", "stream", b"stream", "user_ids", b"user_ids"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___KafkaActionMsg: _TypeAlias = KafkaActionMsg  # noqa: Y015
+
+@_typing.final
+class ParticipantInfo(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    class _State:
+        ValueType = _typing.NewType("ValueType", _builtins.int)
+        V: _TypeAlias = ValueType  # noqa: Y015
+
+    class _StateEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[ParticipantInfo._State.ValueType], _builtins.type):
+        DESCRIPTOR: _descriptor.EnumDescriptor
+        JOINING: ParticipantInfo._State.ValueType  # 0
+        """websocket' connected, but not offered yet"""
+        JOINED: ParticipantInfo._State.ValueType  # 1
+        """server received client offer"""
+        ACTIVE: ParticipantInfo._State.ValueType  # 2
+        """ICE connectivity established"""
+        DISCONNECTED: ParticipantInfo._State.ValueType  # 3
+        """WS disconnected"""
+
+    class State(_State, metaclass=_StateEnumTypeWrapper): ...
+    JOINING: ParticipantInfo.State.ValueType  # 0
+    """websocket' connected, but not offered yet"""
+    JOINED: ParticipantInfo.State.ValueType  # 1
+    """server received client offer"""
+    ACTIVE: ParticipantInfo.State.ValueType  # 2
+    """ICE connectivity established"""
+    DISCONNECTED: ParticipantInfo.State.ValueType  # 3
+    """WS disconnected"""
+
+    class _Kind:
+        ValueType = _typing.NewType("ValueType", _builtins.int)
+        V: _TypeAlias = ValueType  # noqa: Y015
+
+    class _KindEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[ParticipantInfo._Kind.ValueType], _builtins.type):
+        DESCRIPTOR: _descriptor.EnumDescriptor
+        STANDARD: ParticipantInfo._Kind.ValueType  # 0
+        """standard participants, e.g. web clients"""
+        INGRESS: ParticipantInfo._Kind.ValueType  # 1
+        """only ingests streams"""
+        EGRESS: ParticipantInfo._Kind.ValueType  # 2
+        """only consumes streams"""
+        SIP: ParticipantInfo._Kind.ValueType  # 3
+        """SIP participants"""
+        AGENT: ParticipantInfo._Kind.ValueType  # 4
+        """LiveKit agents"""
+        CONNECTOR: ParticipantInfo._Kind.ValueType  # 7
+        """Connectors participants"""
+        BRIDGE: ParticipantInfo._Kind.ValueType  # 8
+        """Bridge participants
+        NEXT_ID: 9
+        """
+
+    class Kind(_Kind, metaclass=_KindEnumTypeWrapper): ...
+    STANDARD: ParticipantInfo.Kind.ValueType  # 0
+    """standard participants, e.g. web clients"""
+    INGRESS: ParticipantInfo.Kind.ValueType  # 1
+    """only ingests streams"""
+    EGRESS: ParticipantInfo.Kind.ValueType  # 2
+    """only consumes streams"""
+    SIP: ParticipantInfo.Kind.ValueType  # 3
+    """SIP participants"""
+    AGENT: ParticipantInfo.Kind.ValueType  # 4
+    """LiveKit agents"""
+    CONNECTOR: ParticipantInfo.Kind.ValueType  # 7
+    """Connectors participants"""
+    BRIDGE: ParticipantInfo.Kind.ValueType  # 8
+    """Bridge participants
+    NEXT_ID: 9
+    """
+
+    class _KindDetail:
+        ValueType = _typing.NewType("ValueType", _builtins.int)
+        V: _TypeAlias = ValueType  # noqa: Y015
+
+    class _KindDetailEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[ParticipantInfo._KindDetail.ValueType], _builtins.type):
+        DESCRIPTOR: _descriptor.EnumDescriptor
+        CLOUD_AGENT: ParticipantInfo._KindDetail.ValueType  # 0
+        FORWARDED: ParticipantInfo._KindDetail.ValueType  # 1
+        CONNECTOR_WHATSAPP: ParticipantInfo._KindDetail.ValueType  # 2
+        CONNECTOR_TWILIO: ParticipantInfo._KindDetail.ValueType  # 3
+        BRIDGE_RTSP: ParticipantInfo._KindDetail.ValueType  # 4
+        """NEXT_ID: 5"""
+
+    class KindDetail(_KindDetail, metaclass=_KindDetailEnumTypeWrapper): ...
+    CLOUD_AGENT: ParticipantInfo.KindDetail.ValueType  # 0
+    FORWARDED: ParticipantInfo.KindDetail.ValueType  # 1
+    CONNECTOR_WHATSAPP: ParticipantInfo.KindDetail.ValueType  # 2
+    CONNECTOR_TWILIO: ParticipantInfo.KindDetail.ValueType  # 3
+    BRIDGE_RTSP: ParticipantInfo.KindDetail.ValueType  # 4
+    """NEXT_ID: 5"""
+
+    SID_FIELD_NUMBER: _builtins.int
+    IDENTITY_FIELD_NUMBER: _builtins.int
+    STATE_FIELD_NUMBER: _builtins.int
+    sid: _builtins.str
+    identity: _builtins.str
+    state: Global___ParticipantInfo.State.ValueType
+    def __init__(
+        self,
+        *,
+        sid: _builtins.str = ...,
+        identity: _builtins.str = ...,
+        state: Global___ParticipantInfo.State.ValueType = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["identity", b"identity", "sid", b"sid", "state", b"state"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ParticipantInfo: _TypeAlias = ParticipantInfo  # noqa: Y015

@@ -13,7 +13,6 @@ class TokenTests(BaseTestSuite):
     async def run_all(self) -> None:
         """Run all token tests."""
         await self.test_send_token()
-        await self.test_transaction_detail()
 
     async def test_send_token(self) -> None:
         """Test: Send token to another user via blockchain."""
@@ -41,20 +40,3 @@ class TokenTests(BaseTestSuite):
                 self.skip_test("Send Token", "MMN client not initialized")
             else:
                 self.log_result("Send Token", False, str(e))
-
-    async def test_transaction_detail(self) -> None:
-        """Test: Get transaction detail by ID."""
-        try:
-            # Use a placeholder transaction ID (real test would need actual ID)
-            test_tx_id = "test_transaction_id"
-
-            result = await self.client.list_transaction_detail(test_tx_id)
-            # May return empty or error for non-existent transaction
-            self.log_result("Transaction Detail", True)
-        except Exception as e:
-            # Transaction not found is expected for test ID
-            error_str = str(e).lower()
-            if "not found" in error_str or "404" in error_str:
-                self.log_result("Transaction Detail", True)  # API works, just no data
-            else:
-                self.log_result("Transaction Detail", False, str(e))

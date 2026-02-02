@@ -44,7 +44,7 @@ class ClanTests(BaseTestSuite):
         """Test: List clan roles."""
         try:
             clan = await self.client.clans.fetch(self.config.clan_id)
-            roles = await clan.list_roles(limit="100")
+            roles = await clan.list_roles(limit=100)
             assert roles is not None, "Roles response should exist"
             self.log_result("Clan Roles", True)
         except Exception as e:
@@ -74,7 +74,7 @@ class ClanTests(BaseTestSuite):
             assert clan_count > 0, "Clan cache should have entries"
 
             # Fetch specific clan
-            clan = await self.client.clans.fetch(self.config.clan_id)
+            _ = await self.client.clans.fetch(self.config.clan_id)
 
             # Get all cached clans
             clan_list = list(self.client.clans.values())

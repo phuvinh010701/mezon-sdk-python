@@ -100,6 +100,8 @@ class Socket:
         self.onheartbeattimeout: Optional[callable] = None
         self.onconnect: Optional[callable] = None
 
+        self._intentional_close = False
+
     def generate_cid(self) -> str:
         """
         Generate a unique command ID for RPC calls.
@@ -122,12 +124,13 @@ class Socket:
 
     async def close(self) -> None:
         """Close the socket connection."""
+        self._intentional_close = True
+
         if self._heartbeat_task:
             self._heartbeat_task.cancel()
 
         if self._listen_task:
             self._listen_task.cancel()
-
         await self.adapter.close()
 
     async def connect(
@@ -154,6 +157,7 @@ class Socket:
         if self.adapter.is_open():
             return self.session
 
+        self._intentional_close = False
         self.session = session
 
         try:
@@ -181,23 +185,37 @@ class Socket:
 
     async def _listen(self) -> None:
         """Listen for incoming protobuf messages."""
-        async for message in self.adapter._socket:
-            if isinstance(message, bytes):
-                envelope = parse_protobuf(message)
-                logger.debug(f"Received envelope: {envelope}")
+        try:
+            async for message in self.adapter._socket:
+                if isinstance(message, bytes):
+                    envelope = parse_protobuf(message)
+                    logger.debug(f"Received envelope: {envelope}")
 
-                if envelope.cid:
-                    executor = self.cids.get(envelope.cid)
-                    if executor:
-                        if envelope.HasField("error"):
-                            executor.reject(envelope.error)
+                    if envelope.cid:
+                        executor = self.cids.get(envelope.cid)
+                        if executor:
+                            if envelope.HasField("error"):
+                                executor.reject(envelope.error)
+                            else:
+                                executor.resolve(envelope)
                         else:
-                            executor.resolve(envelope)
+                            logger.debug(f"No executor found for cid: {envelope.cid}")
                     else:
-                        logger.debug(f"No executor found for cid: {envelope.cid}")
-                else:
-                    if self.event_manager:
-                        asyncio.create_task(self._emit_event_from_envelope(envelope))
+                        if self.event_manager:
+                            asyncio.create_task(
+                                self._emit_event_from_envelope(envelope)
+                            )
+        except Exception as e:
+            logger.warning(f"WebSocket connection lost: {e}")
+        finally:
+            if self.ondisconnect and not self._intentional_close:
+                try:
+                    if asyncio.iscoroutinefunction(self.ondisconnect):
+                        asyncio.create_task(self.ondisconnect(None))
+                    else:
+                        asyncio.create_task(asyncio.to_thread(self.ondisconnect, None))
+                except Exception as callback_error:
+                    logger.error(f"Error in disconnect callback: {callback_error}")
 
     async def _start_listen(self) -> None:
         """Start the heartbeat ping-pong and listen tasks."""
@@ -233,9 +251,7 @@ class Socket:
             try:
                 envelope = realtime_pb2.Envelope()
                 envelope.ping.CopyFrom(realtime_pb2.Ping())
-
                 await self._send_with_cid(envelope, self._heartbeat_timeout_ms)
-                logger.debug("Heartbeat ping sent successfully")
 
             except Exception:
                 if self.adapter.is_open():
@@ -253,7 +269,7 @@ class Socket:
                             logger.error(
                                 f"Error in heartbeat timeout callback: {callback_error}"
                             )
-
+                    logger.info("Closing socket due to heartbeat timeout")
                     await self.adapter.close()
 
                 return
@@ -300,7 +316,6 @@ class Socket:
             await self.adapter.send(message)
             result = await executor.future
 
-            logger.debug(f"Received response for cid: {cid}")
             return result
 
         except asyncio.CancelledError:
@@ -325,8 +340,6 @@ class Socket:
         field_name = envelope.WhichOneof("message")
         if field_name:
             payload = envelope.__getattribute__(field_name)
-            logger.debug(f"Field name: {field_name}")
-            logger.debug(f"Payload: {payload}")
             await self.event_manager.emit(field_name, payload)
 
     async def _send_envelope_with_field(

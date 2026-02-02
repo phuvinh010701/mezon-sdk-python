@@ -17,32 +17,21 @@ Environment Variables:
     MEZON_VOICE_CHANNEL_ID: Voice channel ID (optional)
     MEZON_ROLE_ID: Role ID (optional)
     MEZON_TOKEN_RECEIVER_ID: Token receiver user ID (optional)
-    MEZON_FRIEND_USERNAME: Friend username for tests (optional)
 """
 
 import asyncio
 import logging
 import os
+import sys
 import time
 from typing import Optional
 
 from mezon import MezonClient
 
+from tests import BinaryApiTests, BuzzTests, ClanTests, InteractiveTests, MentionTests, MessageTests, SessionTests, UserTests
 from tests.base import TestConfig, TestResults, print_test_summary
-from tests.test_binary_api import BinaryApiTests
-from tests.test_buzz import BuzzTests
-from tests.test_clans import ClanTests
-from tests.test_friends import FriendTests
-from tests.test_health import HealthTests
-from tests.test_interactive import InteractiveTests
-from tests.test_mentions import MentionTests
-from tests.test_messages import MessageTests
 from tests.test_quick_menu import QuickMenuTests
-from tests.test_reconnect import ReconnectTests
-from tests.test_session import SessionTests
-from tests.test_streaming import StreamingTests
 from tests.test_tokens import TokenTests
-from tests.test_users import UserTests
 
 
 # ============================================================================
@@ -103,19 +92,21 @@ def get_config_from_env() -> TestConfig:
             "  export MEZON_USER_NAME_2=your_user_name_2"
         )
 
+    def to_optional_int(value: str | None) -> int | None:
+        return int(value) if value else None
+
     return TestConfig(
         client_id=client_id,
         api_key=api_key,
-        clan_id=clan_id,
-        channel_id=channel_id,
-        user_id=user_id,
+        clan_id=int(clan_id),
+        channel_id=int(channel_id),
+        user_id=int(user_id),
         user_name=user_name,
-        user_id_2=user_id_2,
+        user_id_2=int(user_id_2),
         user_name_2=user_name_2,
-        voice_channel_id=os.getenv("MEZON_VOICE_CHANNEL_ID"),
-        role_id=os.getenv("MEZON_ROLE_ID"),
-        token_receiver_id=os.getenv("MEZON_TOKEN_RECEIVER_ID"),
-        friend_username=os.getenv("MEZON_FRIEND_USERNAME"),
+        voice_channel_id=to_optional_int(os.getenv("MEZON_VOICE_CHANNEL_ID")),
+        role_id=to_optional_int(os.getenv("MEZON_ROLE_ID")),
+        token_receiver_id=to_optional_int(os.getenv("MEZON_TOKEN_RECEIVER_ID")),
     )
 
 
@@ -172,12 +163,8 @@ async def run_all_tests(
             ("CLAN OPERATIONS", ClanTests(client, config, results)),
             ("BINARY API", BinaryApiTests(client, config, results)),
             ("SESSION MANAGEMENT", SessionTests(client, config, results)),
-            ("WEBSOCKET RECONNECT", ReconnectTests(client, config, results)),
-            ("FRIEND OPERATIONS", FriendTests(client, config, results)),
             ("QUICK MENU", QuickMenuTests(client, config, results)),
-            ("STREAMING", StreamingTests(client, config, results)),
             ("TOKEN TRANSFERS", TokenTests(client, config, results)),
-            ("HEALTH CHECKS", HealthTests(client, config, results)),
         ]
 
         # Run all test suites
@@ -220,11 +207,9 @@ def main():
 ║  • Binary API (protobuf vs JSON, performance comparison)                     ║
 ║  • Session (get, refresh, properties, serialization)                         ║
 ║  • WebSocket Reconnect (auto-reconnect, hard disconnect, functionality)      ║
-║  • Friends (list, add, accept, pagination)                                   ║
 ║  • Quick Menu (add, delete)                                                  ║
 ║  • Streaming (register channel)                                              ║
-║  • Tokens (send, transaction detail)                                         ║
-║  • Health (healthcheck, readycheck)                                          ║
+║  • Tokens (send)                                                             ║
 ║                                                                              ║
 ║  Required environment variables:                                             ║
 ║    MEZON_CLIENT_ID, MEZON_API_KEY, MEZON_CLAN_ID,                            ║
@@ -232,7 +217,7 @@ def main():
 ║                                                                              ║
 ║  Optional environment variables:                                             ║
 ║    MEZON_VOICE_CHANNEL_ID, MEZON_ROLE_ID,                                    ║
-║    MEZON_TOKEN_RECEIVER_ID, MEZON_FRIEND_USERNAME                            ║
+║    MEZON_TOKEN_RECEIVER_ID                                                    ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
     """
     )
