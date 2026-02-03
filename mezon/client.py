@@ -115,7 +115,7 @@ class MezonClient:
 
     def __init__(
         self,
-        client_id: str,
+        client_id: str | int,
         api_key: str,
         host: str = DEFAULT_HOST,
         port: str = DEFAULT_PORT,
@@ -144,7 +144,7 @@ class MezonClient:
         if enable_logging:
             setup_logger(log_level=log_level)
 
-        self.client_id = client_id
+        self.client_id = int(client_id)
         self.api_key = api_key
         self.mmn_api_url = mmn_api_url
         self.zk_api_url = zk_api_url
@@ -566,7 +566,7 @@ class MezonClient:
             background,
             menu_name,
             menu_id,
-            int(self.client_id),
+            self.client_id,
         )
 
     async def delete_quick_menu_access(
@@ -600,7 +600,7 @@ class MezonClient:
             bearer_token=session.token,
             id=id,
             clan_id=clan_id,
-            bot_id=bot_id or int(self.client_id) if self.client_id else None,
+            bot_id=bot_id or self.client_id if self.client_id else None,
             menu_name=menu_name,
             background=background,
             action_msg=action_msg,
@@ -608,7 +608,7 @@ class MezonClient:
 
     async def list_quick_menu_access(
         self,
-        bot_id: int | None = None,
+        bot_id: str | int | None = None,
         channel_id: int | None = None,
         menu_type: int | None = None,
     ) -> Any:
@@ -629,7 +629,7 @@ class MezonClient:
 
         return await self.api_client.list_quick_menu_access(
             bearer_token=session.token,
-            bot_id=bot_id or int(self.client_id) if self.client_id else None,
+            bot_id=bot_id,
             channel_id=channel_id,
             menu_type=menu_type,
         )

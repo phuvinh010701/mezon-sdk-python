@@ -15,11 +15,11 @@ class SessionManager:
     def get_session(self) -> Session:
         return self.session
 
-    async def authenticate(self, client_id: str, client_secret: str) -> Session:
+    async def authenticate(self, client_id: str | int, client_secret: str) -> Session:
         return await self.api_client.mezon_authenticate(
             basic_auth_username=client_id,
             basic_auth_password=client_secret,
             body=ApiAuthenticateRequest(
-                account=ApiAccountApp(appid=client_id, token=client_secret)
+                account=ApiAccountApp(appid=str(client_id), token=client_secret)
             ),
         )

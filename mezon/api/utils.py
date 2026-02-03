@@ -22,7 +22,7 @@ BINARY_CONTENT_TYPES = (
 
 def build_headers(
     bearer_token: Optional[str] = None,
-    basic_auth: Optional[tuple] = None,
+    basic_auth: Optional[tuple[str | int, str]] = None,
     accept_binary: bool = False,
     send_binary: bool = False,
 ) -> dict[str, Any]:
