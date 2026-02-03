@@ -42,12 +42,12 @@ asyncio.run(main())
 
 ## Documentation
 
-**Full documentation:** [https://phuvinh010701.github.io/mezon-sdk-python/](https://phuvinh010701.github.io/mezon-sdk-python/)
+**Full documentation:** [https://docs.laptrinhai.id.vn/](https://docs.laptrinhai.id.vn)
 
-- [Installation Guide](https://phuvinh010701.github.io/mezon-sdk-python/getting-started/installation/)
-- [Quick Start](https://phuvinh010701.github.io/mezon-sdk-python/getting-started/quickstart/)
-- [API Reference](https://phuvinh010701.github.io/mezon-sdk-python/api-reference/client/)
-- [Examples](https://phuvinh010701.github.io/mezon-sdk-python/examples/basic-bot/)
+- [Installation Guide](https://docs.laptrinhai.id.vn/getting-started/installation/)
+- [Quick Start](https://docs.laptrinhai.id.vn/getting-started/quickstart/)
+- [API Reference](https://docs.laptrinhai.id.vn/api-reference/client/)
+- [Examples](https://docs.laptrinhai.id.vn/examples/basic-bot/)
 
 ## Features
 
