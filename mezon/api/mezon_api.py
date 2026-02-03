@@ -67,7 +67,9 @@ class MezonApi:
 
     _rate_limiter = AsyncLimiter(max_rate=1, time_period=1.25)
 
-    def __init__(self, client_id: str | int, api_key: str, base_url: str, timeout_ms: int):
+    def __init__(
+        self, client_id: str | int, api_key: str, base_url: str, timeout_ms: int
+    ):
         """
         Initialize Mezon API client.
 
