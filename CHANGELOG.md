@@ -2,6 +2,21 @@
 
 <!-- version list -->
 
+## v1.6.11 (2026-02-03)
+
+### Bug Fixes
+
+- Update type annotations in MezonClient and MezonApi to support str | int for client_id and bot_id,
+  improve handling of IDs, and adjust related methods for consistency
+  ([`94303de`](https://github.com/phuvinh010701/mezon-sdk-python/commit/94303ded449e26ff12421975a59d2ae812606458))
+
+### Chores
+
+- Add documentation workflow with MkDocs, create initial documentation structure, and include
+  changelog and examples
+  ([`2871e8a`](https://github.com/phuvinh010701/mezon-sdk-python/commit/2871e8a46189291a30c5a337cf94cc11a8712aa4))
+
+
 ## v1.6.10 (2026-02-02)
 
 ### Bug Fixes
