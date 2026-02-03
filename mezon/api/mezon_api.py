@@ -67,7 +67,7 @@ class MezonApi:
 
     _rate_limiter = AsyncLimiter(max_rate=1, time_period=1.25)
 
-    def __init__(self, client_id: str, api_key: str, base_url: str, timeout_ms: int):
+    def __init__(self, client_id: str | int, api_key: str, base_url: str, timeout_ms: int):
         """
         Initialize Mezon API client.
 
@@ -77,7 +77,7 @@ class MezonApi:
             base_url: Base URL for API
             timeout_ms: Timeout in milliseconds
         """
-        self.client_id = client_id
+        self.client_id = int(client_id)
         self.api_key = api_key
         self.base_url = base_url
         self.timeout_ms = timeout_ms
@@ -129,7 +129,7 @@ class MezonApi:
 
     async def mezon_authenticate(
         self,
-        basic_auth_username: str,
+        basic_auth_username: str | int,
         basic_auth_password: str,
         body: ApiAuthenticateRequest,
         options: Optional[dict[str, Any]] = None,
@@ -553,6 +553,7 @@ class MezonApi:
             body=proto_body,
             headers=headers,
             accept_binary=True,
+            response_proto_class=api_pb2.QuickMenuAccess,
         )
         return response
 
@@ -562,6 +563,7 @@ class MezonApi:
         id: Optional[int] = None,
         clan_id: Optional[int] = None,
         bot_id: Optional[int] = None,
+        channel_id: Optional[int] = None,
         menu_name: Optional[str] = None,
         background: Optional[str] = None,
         action_msg: Optional[str] = None,
@@ -587,6 +589,7 @@ class MezonApi:
             id=id if id is not None else 0,
             bot_id=bot_id if bot_id is not None else 0,
             clan_id=clan_id if clan_id is not None else 0,
+            channel_id=channel_id if channel_id is not None else 0,
             menu_name=menu_name if menu_name is not None else "",
             background=background if background is not None else "",
             action_msg=action_msg if action_msg is not None else "",
@@ -604,15 +607,16 @@ class MezonApi:
             body=body,
             headers=headers,
             accept_binary=True,
+            response_proto_class=api_pb2.QuickMenuAccess,
         )
         return response
 
     async def list_quick_menu_access(
         self,
         bearer_token: str,
-        bot_id: Optional[int] = None,
-        channel_id: Optional[int] = None,
-        menu_type: Optional[int] = None,
+        bot_id: Optional[int] = 0,
+        channel_id: Optional[int] = 0,
+        menu_type: Optional[int] = 0,
         options: Optional[dict[str, Any]] = None,
     ) -> Any:
         """
@@ -629,9 +633,9 @@ class MezonApi:
             Any: List of quick menu access items
         """
         request = api_pb2.ListQuickMenuAccessRequest(
-            bot_id=bot_id if bot_id is not None else 0,
-            channel_id=channel_id if channel_id is not None else 0,
-            menu_type=menu_type if menu_type is not None else 0,
+            bot_id=bot_id,
+            channel_id=channel_id,
+            menu_type=menu_type,
         )
 
         headers = build_headers(

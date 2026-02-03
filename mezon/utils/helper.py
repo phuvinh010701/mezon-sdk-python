@@ -99,12 +99,12 @@ def parse_url_to_host_and_ssl(url_str: str) -> dict[str, Any]:
     }
 
 
-def generate_snowflake_id() -> str:
+def generate_snowflake_id() -> int:
     """
     Generate a Snowflake ID for unique identification.
 
     Returns:
-        Snowflake ID as string
+        Snowflake ID as integer
     """
     global _sequence, _last_timestamp
 
@@ -127,4 +127,4 @@ def generate_snowflake_id() -> str:
         | _sequence
     )
 
-    return str(snowflake_id)
+    return snowflake_id
