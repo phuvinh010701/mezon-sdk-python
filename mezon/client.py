@@ -1195,44 +1195,6 @@ class MezonClient:
         """
         self._register_event_handler(Events.NOTIFICATIONS, handler)
 
-    @auto_bind(Events.NOTIFICATIONS)
-    async def _handle_notifications_default(
-        self, message: realtime_pb2.Notifications
-    ) -> None:
-        """
-        Default handler for ``Notifications`` events.
-
-        Processes built-in behaviors such as auto-accepting certain friend
-        requests based on notification codes.
-        """
-        notifications = message.notifications if message.notifications else []
-
-        for notification in notifications:
-            try:
-                content = (
-                    json.loads(notification.content) if notification.content else {}
-                )
-
-                if notification.code == -2:
-                    session = self.session_manager.get_session()
-                    if session and session.token:
-                        username = content.get("username", "")
-                        sender_id = notification.sender_id
-
-                        if hasattr(self.api_client, "request_friend"):
-                            try:
-                                await self.api_client.request_friend(
-                                    session.token, username, sender_id
-                                )
-                            except Exception as err:
-                                logger.warning(f"Failed to request friend: {err}")
-            except json.JSONDecodeError:
-                logger.warning(
-                    f"Failed to parse notification content: {notification.content}"
-                )
-            except Exception as err:
-                logger.warning(f"Error processing notification: {err}")
-
     def on_add_clan_user(
         self, handler: Callable[[realtime_pb2.AddClanUserEvent], None]
     ) -> None:
