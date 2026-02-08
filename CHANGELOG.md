@@ -2,6 +2,41 @@
 
 <!-- version list -->
 
+## v1.6.12 (2026-02-08)
+
+### Bug Fixes
+
+- Add 'text/plain' to BINARY_CONTENT_TYPES for improved content handling
+  ([`9773836`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9773836c085362b6fcd2bc2c12e233a62364e819))
+
+- Update content type handling in parse_response to default to 'text/plain; charset=utf-8' for
+  improved response parsing
+  ([`92ed19a`](https://github.com/phuvinh010701/mezon-sdk-python/commit/92ed19afbf55c192bbd5add036b6782195ae879b))
+
+- Update write_ephemeral_message method to accept multiple receiver IDs as a list for improved
+  message handling
+  ([`cc82b85`](https://github.com/phuvinh010701/mezon-sdk-python/commit/cc82b85618c63fddddf7a2dfc03e7a75b2c5fe8f))
+
+### Chores
+
+- Update documentation links in README to reflect new URL structure
+  ([`b59f9c7`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b59f9c7036c20720afe44b4ba32122572afa8402))
+
+### Refactoring
+
+- Format __init__ method in MezonApi for improved readability
+  ([`da24aef`](https://github.com/phuvinh010701/mezon-sdk-python/commit/da24aef012e1ed51a3f86872d24616ee9052665e))
+
+- Remove default notification handler from MezonClient to simplify event processing
+  ([`9d70604`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9d706047d0a8ab6194109ca5a7300fd3646de8af))
+
+- Update default parameter values in list_channel_voice_users method for consistency and clarity
+  ([`6155854`](https://github.com/phuvinh010701/mezon-sdk-python/commit/61558541e1ac9ef502fb14c68b519bf749dd8c68))
+
+- Update default parameter values in list_clans_descs method for consistency and clarity
+  ([`3878cbd`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3878cbd500cc9321fd5f3a12f2681c14d6d832b1))
+
+
 ## v1.6.11 (2026-02-03)
 
 ### Bug Fixes
