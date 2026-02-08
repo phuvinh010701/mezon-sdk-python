@@ -17,7 +17,7 @@ BINARY_CONTENT_TYPES = (
     "application/x-protobuf",
     "application/protobuf",
     "application/octet-stream",
-    "text/plain; charset=utf-8"
+    "text/plain; charset=utf-8",
 )
 
 

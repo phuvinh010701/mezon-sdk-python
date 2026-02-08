@@ -55,6 +55,7 @@ class InternalEventsSocket(str, Enum):
     WEBRTC_SIGNALING_FWD = "webrtc_signaling_fwd"
     NOTIFICATIONS = "notifications"
     QUICK_MENU = "quick_menu_event"
+    AI_AGENT_ENABLE = "ai_agent_enabled_event"
 
 
 class Events(str, Enum):
@@ -134,6 +135,9 @@ class Events(str, Enum):
 
     # Listen to add quick menu
     QUICK_MENU = InternalEventsSocket.QUICK_MENU.value
+
+    # Listen to AI agent enabled event
+    AI_AGENT_ENABLE = InternalEventsSocket.AI_AGENT_ENABLE.value
 
 
 class ChannelType(IntEnum):

@@ -16,7 +16,6 @@ limitations under the License.
 
 import asyncio
 import inspect
-import json
 import logging
 from collections.abc import Callable
 from typing import Any, Literal
@@ -1168,6 +1167,17 @@ class MezonClient:
             handler (Callable): Callback to invoke when a quick menu event occurs.
         """
         self._register_event_handler(Events.QUICK_MENU, handler)
+
+    def on_ai_agent_enabled_event(
+        self, handler: Callable[[realtime_pb2.AIAgentEnabledEvent], None]
+    ) -> None:
+        """
+        Register a user-defined handler for AI agent enabled events.
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent is enabled.
+        """
+        self._register_event_handler(Events.AI_AGENT_ENABLE, handler)
 
     def on_role_assign(
         self, handler: Callable[[realtime_pb2.RoleAssignedEvent], None]
