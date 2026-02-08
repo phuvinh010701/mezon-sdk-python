@@ -113,7 +113,7 @@ class SocketManager:
 
     async def write_ephemeral_message(
         self,
-        receiver_id: int,
+        receiver_ids: list[int],
         clan_id: int,
         channel_id: int,
         mode: int,
@@ -129,7 +129,7 @@ class SocketManager:
         topic_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         return await self.socket.write_ephemeral_message(
-            receiver_id=receiver_id,
+            receiver_ids=receiver_ids,
             clan_id=clan_id,
             channel_id=channel_id,
             mode=mode,

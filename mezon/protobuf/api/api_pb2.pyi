@@ -1292,8 +1292,11 @@ class VoiceChannelUser(_message.Message):
 
     USER_IDS_FIELD_NUMBER: _builtins.int
     CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
     channel_id: _builtins.int
     """channel id"""
+    room_name: _builtins.str
+    """room name"""
     @_builtins.property
     def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
         """User for a channel."""
@@ -1303,8 +1306,9 @@ class VoiceChannelUser(_message.Message):
         *,
         user_ids: _abc.Iterable[_builtins.str] | None = ...,
         channel_id: _builtins.int = ...,
+        room_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "user_ids", b"user_ids"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "room_name", b"room_name", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___VoiceChannelUser: _TypeAlias = VoiceChannelUser  # noqa: Y015
@@ -2851,9 +2855,11 @@ class InviteUserRes(_message.Message):
     CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
     USER_JOINED_FIELD_NUMBER: _builtins.int
     EXPIRY_TIME_SECONDS_FIELD_NUMBER: _builtins.int
-    CHANNEL_DESC_FIELD_NUMBER: _builtins.int
     CLAN_LOGO_FIELD_NUMBER: _builtins.int
     MEMBER_COUNT_FIELD_NUMBER: _builtins.int
+    BANNER_FIELD_NUMBER: _builtins.int
+    COMMUNITY_BANNER_FIELD_NUMBER: _builtins.int
+    IS_COMMUNITY_FIELD_NUMBER: _builtins.int
     clan_id: _builtins.int
     """id clan to add link to ."""
     channel_id: _builtins.int
@@ -2868,10 +2874,9 @@ class InviteUserRes(_message.Message):
     """expiry_time"""
     clan_logo: _builtins.str
     member_count: _builtins.int
-    @_builtins.property
-    def channel_desc(self) -> Global___ChannelDescription:
-        """"""
-
+    banner: _builtins.str
+    community_banner: _builtins.str
+    is_community: _builtins.bool
     def __init__(
         self,
         *,
@@ -2881,13 +2886,13 @@ class InviteUserRes(_message.Message):
         channel_label: _builtins.str = ...,
         user_joined: _builtins.bool = ...,
         expiry_time_seconds: _builtins.int = ...,
-        channel_desc: Global___ChannelDescription | None = ...,
         clan_logo: _builtins.str = ...,
         member_count: _builtins.int = ...,
+        banner: _builtins.str = ...,
+        community_banner: _builtins.str = ...,
+        is_community: _builtins.bool = ...,
     ) -> None: ...
-    _HasFieldArgType: _TypeAlias = _typing.Literal["channel_desc", b"channel_desc"]  # noqa: Y015
-    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_desc", b"channel_desc", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "clan_logo", b"clan_logo", "clan_name", b"clan_name", "expiry_time_seconds", b"expiry_time_seconds", "member_count", b"member_count", "user_joined", b"user_joined"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["banner", b"banner", "channel_id", b"channel_id", "channel_label", b"channel_label", "clan_id", b"clan_id", "clan_logo", b"clan_logo", "clan_name", b"clan_name", "community_banner", b"community_banner", "expiry_time_seconds", b"expiry_time_seconds", "is_community", b"is_community", "member_count", b"member_count", "user_joined", b"user_joined"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___InviteUserRes: _TypeAlias = InviteUserRes  # noqa: Y015
@@ -10056,6 +10061,25 @@ class KafkaActionMsg(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___KafkaActionMsg: _TypeAlias = KafkaActionMsg  # noqa: Y015
+
+@_typing.final
+class UpdateAIAgentRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    room_name: _builtins.str
+    def __init__(
+        self,
+        *,
+        channel_id: _builtins.int = ...,
+        room_name: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "room_name", b"room_name"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___UpdateAIAgentRequest: _TypeAlias = UpdateAIAgentRequest  # noqa: Y015
 
 @_typing.final
 class ParticipantInfo(_message.Message):

@@ -17,6 +17,7 @@ BINARY_CONTENT_TYPES = (
     "application/x-protobuf",
     "application/protobuf",
     "application/octet-stream",
+    "text/plain; charset=utf-8"
 )
 
 
@@ -165,7 +166,8 @@ async def parse_response(
     Returns:
         Any: Parsed response (dict from JSON or protobuf message)
     """
-    content_type = resp.headers.get("Content-Type", "")
+    # TODO: some api that returns binary response doesn't have Content-Type header
+    content_type = resp.headers.get("Content-Type", "text/plain; charset=utf-8")
 
     if is_binary_response(content_type):
         if not response_proto_class:

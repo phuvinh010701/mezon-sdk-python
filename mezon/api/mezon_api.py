@@ -164,9 +164,9 @@ class MezonApi:
     async def list_clans_descs(
         self,
         token: str,
-        limit: Optional[int] = None,
-        state: Optional[int] = None,
-        cursor: Optional[str] = None,
+        limit: Optional[int] = 0,
+        state: Optional[int] = 0,
+        cursor: Optional[str] = "",
         options: Optional[dict[str, Any]] = None,
     ) -> ApiClanDescList:
         """
@@ -183,9 +183,9 @@ class MezonApi:
             ApiClanDescList: Clan descriptions
         """
         request = api_pb2.ListClanDescRequest(
-            limit=limit if limit is not None else 0,
-            state=state if state is not None else 0,
-            cursor=cursor if cursor is not None else "",
+            limit=limit,
+            state=state,
+            cursor=cursor,
         )
 
         headers = build_headers(
@@ -353,12 +353,12 @@ class MezonApi:
     async def list_channel_voice_users(
         self,
         token: str,
-        clan_id: Optional[str] = None,
-        channel_id: Optional[str] = None,
-        channel_type: Optional[int] = None,
-        limit: Optional[int] = None,
-        state: Optional[int] = None,
-        cursor: Optional[str] = None,
+        clan_id: Optional[int] = 0,
+        channel_id: Optional[int] = 0,
+        channel_type: Optional[int] = 0,
+        limit: Optional[int] = 0,
+        state: Optional[int] = 0,
+        cursor: Optional[str] = "",
         options: Optional[dict[str, Any]] = None,
     ) -> ApiVoiceChannelUserList:
         """
@@ -378,12 +378,12 @@ class MezonApi:
             ApiVoiceChannelUserList: List of voice channel users
         """
         request = api_pb2.ListChannelUsersRequest(
-            clan_id=clan_id if clan_id is not None else 0,
-            channel_id=channel_id if channel_id is not None else 0,
-            channel_type=channel_type if channel_type is not None else 0,
-            limit=limit if limit is not None else 0,
-            state=state if state is not None else 0,
-            cursor=cursor if cursor is not None else "",
+            clan_id=clan_id,
+            channel_id=channel_id,
+            channel_type=channel_type,
+            limit=limit,
+            state=state,
+            cursor=cursor,
         )
 
         headers = build_headers(

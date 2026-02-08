@@ -228,7 +228,7 @@ class EphemeralMessageBuilder:
 
     @staticmethod
     def build(
-        receiver_id: int,
+        receiver_ids: list[int],
         clan_id: int,
         channel_id: int,
         mode: int,
@@ -262,7 +262,7 @@ class EphemeralMessageBuilder:
             topic_id=topic_id,
         )
         return realtime_pb2.EphemeralMessageSend(
-            receiver_id=receiver_id,
+            receiver_ids=receiver_ids,
             message=channel_message_send,
         )
 
