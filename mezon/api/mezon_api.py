@@ -164,9 +164,9 @@ class MezonApi:
     async def list_clans_descs(
         self,
         token: str,
-        limit: Optional[int] = None,
-        state: Optional[int] = None,
-        cursor: Optional[str] = None,
+        limit: Optional[int] = 0,
+        state: Optional[int] = 0,
+        cursor: Optional[str] = "",
         options: Optional[dict[str, Any]] = None,
     ) -> ApiClanDescList:
         """
@@ -183,9 +183,9 @@ class MezonApi:
             ApiClanDescList: Clan descriptions
         """
         request = api_pb2.ListClanDescRequest(
-            limit=limit if limit is not None else 0,
-            state=state if state is not None else 0,
-            cursor=cursor if cursor is not None else "",
+            limit=limit,
+            state=state,
+            cursor=cursor,
         )
 
         headers = build_headers(
