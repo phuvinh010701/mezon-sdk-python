@@ -3566,6 +3566,7 @@ class ListChannelDescsRequest(_message.Message):
     CLAN_ID_FIELD_NUMBER: _builtins.int
     CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
     IS_MOBILE_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
     limit: _builtins.int
     """Max number of records to return. Between 1 and 100."""
     state: _builtins.int
@@ -3578,6 +3579,8 @@ class ListChannelDescsRequest(_message.Message):
     """channel type"""
     is_mobile: _builtins.bool
     """is mobile"""
+    page: _builtins.int
+    """page"""
     def __init__(
         self,
         *,
@@ -3587,8 +3590,9 @@ class ListChannelDescsRequest(_message.Message):
         clan_id: _builtins.int = ...,
         channel_type: _builtins.int = ...,
         is_mobile: _builtins.bool = ...,
+        page: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_type", b"channel_type", "clan_id", b"clan_id", "cursor", b"cursor", "is_mobile", b"is_mobile", "limit", b"limit", "state", b"state"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_type", b"channel_type", "clan_id", b"clan_id", "cursor", b"cursor", "is_mobile", b"is_mobile", "limit", b"limit", "page", b"page", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___ListChannelDescsRequest: _TypeAlias = ListChannelDescsRequest  # noqa: Y015
@@ -10175,17 +10179,400 @@ class ParticipantInfo(_message.Message):
     SID_FIELD_NUMBER: _builtins.int
     IDENTITY_FIELD_NUMBER: _builtins.int
     STATE_FIELD_NUMBER: _builtins.int
+    IS_PUBLISHER_FIELD_NUMBER: _builtins.int
+    KIND_FIELD_NUMBER: _builtins.int
     sid: _builtins.str
     identity: _builtins.str
     state: Global___ParticipantInfo.State.ValueType
+    is_publisher: _builtins.bool
+    kind: Global___ParticipantInfo.Kind.ValueType
     def __init__(
         self,
         *,
         sid: _builtins.str = ...,
         identity: _builtins.str = ...,
         state: Global___ParticipantInfo.State.ValueType = ...,
+        is_publisher: _builtins.bool = ...,
+        kind: Global___ParticipantInfo.Kind.ValueType = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["identity", b"identity", "sid", b"sid", "state", b"state"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["identity", b"identity", "is_publisher", b"is_publisher", "kind", b"kind", "sid", b"sid", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___ParticipantInfo: _TypeAlias = ParticipantInfo  # noqa: Y015
+
+@_typing.final
+class ChannelTimelineAttachment(_message.Message):
+    """Channel Timeline Attachment"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    ID_FIELD_NUMBER: _builtins.int
+    FILE_NAME_FIELD_NUMBER: _builtins.int
+    FILE_URL_FIELD_NUMBER: _builtins.int
+    FILE_TYPE_FIELD_NUMBER: _builtins.int
+    FILE_SIZE_FIELD_NUMBER: _builtins.int
+    WIDTH_FIELD_NUMBER: _builtins.int
+    HEIGHT_FIELD_NUMBER: _builtins.int
+    THUMBNAIL_FIELD_NUMBER: _builtins.int
+    DURATION_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    file_name: _builtins.str
+    file_url: _builtins.str
+    file_type: _builtins.str
+    file_size: _builtins.int
+    width: _builtins.int
+    height: _builtins.int
+    thumbnail: _builtins.str
+    duration: _builtins.int
+    message_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        id: _builtins.int = ...,
+        file_name: _builtins.str = ...,
+        file_url: _builtins.str = ...,
+        file_type: _builtins.str = ...,
+        file_size: _builtins.int = ...,
+        width: _builtins.int = ...,
+        height: _builtins.int = ...,
+        thumbnail: _builtins.str = ...,
+        duration: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["duration", b"duration", "file_name", b"file_name", "file_size", b"file_size", "file_type", b"file_type", "file_url", b"file_url", "height", b"height", "id", b"id", "message_id", b"message_id", "thumbnail", b"thumbnail", "width", b"width"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ChannelTimelineAttachment: _TypeAlias = ChannelTimelineAttachment  # noqa: Y015
+
+@_typing.final
+class ListChannelTimelineAttachment(_message.Message):
+    """Channel Timeline Attachment List"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelTimelineAttachment]: ...
+    def __init__(
+        self,
+        *,
+        attachments: _abc.Iterable[Global___ChannelTimelineAttachment] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListChannelTimelineAttachment: _TypeAlias = ListChannelTimelineAttachment  # noqa: Y015
+
+@_typing.final
+class ChannelTimeline(_message.Message):
+    """Channel Timeline"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    END_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    LOCATION_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    UPDATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    PREVIEW_IMGS_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    start_time_seconds: _builtins.int
+    title: _builtins.str
+    description: _builtins.str
+    end_time_seconds: _builtins.int
+    location: _builtins.str
+    status: _builtins.int
+    creator_id: _builtins.int
+    create_time_seconds: _builtins.int
+    update_time_seconds: _builtins.int
+    type: _builtins.int
+    attachments: _builtins.bytes
+    preview_imgs: _builtins.bytes
+    def __init__(
+        self,
+        *,
+        id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        start_time_seconds: _builtins.int = ...,
+        title: _builtins.str = ...,
+        description: _builtins.str = ...,
+        end_time_seconds: _builtins.int = ...,
+        location: _builtins.str = ...,
+        status: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        create_time_seconds: _builtins.int = ...,
+        update_time_seconds: _builtins.int = ...,
+        type: _builtins.int = ...,
+        attachments: _builtins.bytes = ...,
+        preview_imgs: _builtins.bytes = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "create_time_seconds", b"create_time_seconds", "creator_id", b"creator_id", "description", b"description", "end_time_seconds", b"end_time_seconds", "id", b"id", "location", b"location", "preview_imgs", b"preview_imgs", "start_time_seconds", b"start_time_seconds", "status", b"status", "title", b"title", "type", b"type", "update_time_seconds", b"update_time_seconds"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ChannelTimeline: _TypeAlias = ChannelTimeline  # noqa: Y015
+
+@_typing.final
+class ListChannelTimelineRequest(_message.Message):
+    """List Channel Timeline Request"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    YEAR_FIELD_NUMBER: _builtins.int
+    START_TIME_FIELD_NUMBER: _builtins.int
+    END_TIME_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    year: _builtins.int
+    start_time: _builtins.int
+    end_time: _builtins.int
+    limit: _builtins.int
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        year: _builtins.int = ...,
+        start_time: _builtins.int = ...,
+        end_time: _builtins.int = ...,
+        limit: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "end_time", b"end_time", "limit", b"limit", "start_time", b"start_time", "year", b"year"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListChannelTimelineRequest: _TypeAlias = ListChannelTimelineRequest  # noqa: Y015
+
+@_typing.final
+class ListChannelTimelineResponse(_message.Message):
+    """List Channel Timeline Response"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    EVENTS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def events(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelTimeline]: ...
+    def __init__(
+        self,
+        *,
+        events: _abc.Iterable[Global___ChannelTimeline] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["events", b"events"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListChannelTimelineResponse: _TypeAlias = ListChannelTimelineResponse  # noqa: Y015
+
+@_typing.final
+class CreateChannelTimelineRequest(_message.Message):
+    """Create Channel Timeline Request"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    END_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    LOCATION_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    start_time_seconds: _builtins.int
+    title: _builtins.str
+    description: _builtins.str
+    end_time_seconds: _builtins.int
+    location: _builtins.str
+    type: _builtins.int
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelTimelineAttachment]: ...
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        start_time_seconds: _builtins.int = ...,
+        title: _builtins.str = ...,
+        description: _builtins.str = ...,
+        end_time_seconds: _builtins.int = ...,
+        location: _builtins.str = ...,
+        type: _builtins.int = ...,
+        attachments: _abc.Iterable[Global___ChannelTimelineAttachment] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "description", b"description", "end_time_seconds", b"end_time_seconds", "location", b"location", "start_time_seconds", b"start_time_seconds", "title", b"title", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CreateChannelTimelineRequest: _TypeAlias = CreateChannelTimelineRequest  # noqa: Y015
+
+@_typing.final
+class CreateChannelTimelineResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    EVENT_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def event(self) -> Global___ChannelTimeline: ...
+    def __init__(
+        self,
+        *,
+        event: Global___ChannelTimeline | None = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _typing.Literal["event", b"event"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["event", b"event"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CreateChannelTimelineResponse: _TypeAlias = CreateChannelTimelineResponse  # noqa: Y015
+
+@_typing.final
+class UpdateChannelTimelineRequest(_message.Message):
+    """Update Channel Timeline Request"""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    DESCRIPTION_FIELD_NUMBER: _builtins.int
+    LOCATION_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    ATTACHMENTS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    id: _builtins.int
+    start_time_seconds: _builtins.int
+    title: _builtins.str
+    description: _builtins.str
+    location: _builtins.str
+    type: _builtins.int
+    @_builtins.property
+    def attachments(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelTimelineAttachment]: ...
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        id: _builtins.int = ...,
+        start_time_seconds: _builtins.int = ...,
+        title: _builtins.str = ...,
+        description: _builtins.str = ...,
+        location: _builtins.str = ...,
+        type: _builtins.int = ...,
+        attachments: _abc.Iterable[Global___ChannelTimelineAttachment] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "description", b"description", "id", b"id", "location", b"location", "start_time_seconds", b"start_time_seconds", "title", b"title", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___UpdateChannelTimelineRequest: _TypeAlias = UpdateChannelTimelineRequest  # noqa: Y015
+
+@_typing.final
+class UpdateChannelTimelineResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    EVENT_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def event(self) -> Global___ChannelTimeline: ...
+    def __init__(
+        self,
+        *,
+        event: Global___ChannelTimeline | None = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _typing.Literal["event", b"event"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["event", b"event"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___UpdateChannelTimelineResponse: _TypeAlias = UpdateChannelTimelineResponse  # noqa: Y015
+
+@_typing.final
+class ChannelTimelineDetailRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ID_FIELD_NUMBER: _builtins.int
+    START_TIME_SECONDS_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    id: _builtins.int
+    start_time_seconds: _builtins.int
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        id: _builtins.int = ...,
+        start_time_seconds: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "start_time_seconds", b"start_time_seconds"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ChannelTimelineDetailRequest: _TypeAlias = ChannelTimelineDetailRequest  # noqa: Y015
+
+@_typing.final
+class ChannelTimelineDetailResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    EVENT_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def event(self) -> Global___ChannelTimeline: ...
+    def __init__(
+        self,
+        *,
+        event: Global___ChannelTimeline | None = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _typing.Literal["event", b"event"]  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["event", b"event"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ChannelTimelineDetailResponse: _TypeAlias = ChannelTimelineDetailResponse  # noqa: Y015
+
+@_typing.final
+class ListMutedChannelRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListMutedChannelRequest: _TypeAlias = ListMutedChannelRequest  # noqa: Y015
+
+@_typing.final
+class MutedChannelList(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    MUTED_LIST_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def muted_list(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        muted_list: _abc.Iterable[_builtins.int] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["muted_list", b"muted_list"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MutedChannelList: _TypeAlias = MutedChannelList  # noqa: Y015

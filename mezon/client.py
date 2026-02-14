@@ -38,6 +38,7 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
+    ApiQuickMenuAccess,
     ApiSentTokenRequest,
     ChannelMessageRaw,
     UserInitData,
@@ -535,7 +536,7 @@ class MezonClient:
         action_msg: str,
         background: str,
         menu_name: str,
-    ) -> Any:
+    ) -> ApiQuickMenuAccess:
         """
         Add a quick menu access entry for this bot.
 
@@ -548,7 +549,7 @@ class MezonClient:
             menu_name: Menu name
 
         Returns:
-            Any: The API response or None if session is unavailable.
+            ApiQuickMenuAccess: The API response or None if session is unavailable.
         """
         menu_id = generate_snowflake_id()
         session = self.session_manager.get_session()
