@@ -2,6 +2,18 @@
 
 <!-- version list -->
 
+## v1.6.13 (2026-02-14)
+
+### Bug Fixes
+
+- Add AI agent enabled event handler to MezonClient and update event enums
+  ([`b2f1123`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b2f1123990267376922df4116e2a763137bf875c))
+
+- Enhance MezonClient and MezonApi with ApiQuickMenuAccess integration and update type annotations
+  for improved clarity
+  ([`72ffb95`](https://github.com/phuvinh010701/mezon-sdk-python/commit/72ffb95d7ee5bfe050bb33b998011731d90b4060))
+
+
 ## v1.6.12 (2026-02-08)
 
 ### Bug Fixes
