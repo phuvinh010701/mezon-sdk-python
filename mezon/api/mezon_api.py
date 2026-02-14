@@ -30,6 +30,7 @@ from mezon.utils.logger import get_logger
 
 from ..models import (
     ApiClanDescList,
+    ApiQuickMenuAccess,
     ApiSession,
     ApiAuthenticateRequest,
     ApiChannelDescription,
@@ -557,7 +558,10 @@ class MezonApi:
             accept_binary=True,
             response_proto_class=api_pb2.QuickMenuAccess,
         )
-        return response
+        if isinstance(response, api_pb2.QuickMenuAccess):
+            return ApiQuickMenuAccess.from_protobuf(response)
+        else:
+            return ApiQuickMenuAccess.model_validate(response)
 
     async def delete_quick_menu_access(
         self,

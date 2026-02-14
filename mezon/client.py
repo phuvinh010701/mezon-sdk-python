@@ -16,7 +16,6 @@ limitations under the License.
 
 import asyncio
 import inspect
-import json
 import logging
 from collections.abc import Callable
 from typing import Any, Literal
@@ -39,6 +38,7 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
+    ApiQuickMenuAccess,
     ApiSentTokenRequest,
     ChannelMessageRaw,
     UserInitData,
@@ -536,7 +536,7 @@ class MezonClient:
         action_msg: str,
         background: str,
         menu_name: str,
-    ) -> Any:
+    ) -> ApiQuickMenuAccess:
         """
         Add a quick menu access entry for this bot.
 
@@ -549,7 +549,7 @@ class MezonClient:
             menu_name: Menu name
 
         Returns:
-            Any: The API response or None if session is unavailable.
+            ApiQuickMenuAccess: The API response or None if session is unavailable.
         """
         menu_id = generate_snowflake_id()
         session = self.session_manager.get_session()
@@ -1168,6 +1168,17 @@ class MezonClient:
             handler (Callable): Callback to invoke when a quick menu event occurs.
         """
         self._register_event_handler(Events.QUICK_MENU, handler)
+
+    def on_ai_agent_enabled_event(
+        self, handler: Callable[[realtime_pb2.AIAgentEnabledEvent], None]
+    ) -> None:
+        """
+        Register a user-defined handler for AI agent enabled events.
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent is enabled.
+        """
+        self._register_event_handler(Events.AI_AGENT_ENABLE, handler)
 
     def on_role_assign(
         self, handler: Callable[[realtime_pb2.RoleAssignedEvent], None]
