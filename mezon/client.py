@@ -20,14 +20,6 @@ import logging
 from collections.abc import Callable
 from typing import Any, Literal
 
-from tenacity import (
-    AsyncRetrying,
-    retry_if_exception_type,
-    stop_never,
-    wait_exponential,
-    before_sleep_log,
-)
-
 from mezon import ApiChannelDescription, CacheManager, ChannelType, Events
 from mezon.api.utils import parse_url_components
 from mezon.protobuf.api import api_pb2
@@ -301,6 +293,7 @@ class MezonClient:
 
         self._enable_auto_reconnect = enable_auto_reconnect
         self._is_hard_disconnect = False
+        self._reconnect_task: asyncio.Task | None = None
 
         if enable_auto_reconnect:
             self._setup_reconnect_handlers()
@@ -1278,9 +1271,7 @@ class MezonClient:
         self.event_manager = EventManager()
 
     def _setup_reconnect_handlers(self) -> None:
-        """
-        Setup event handlers for automatic reconnection.
-        """
+        """Setup event handlers for automatic reconnection."""
         socket = self.socket_manager.get_socket()
 
         original_ondisconnect = socket.ondisconnect
@@ -1295,7 +1286,13 @@ class MezonClient:
                     asyncio.create_task(asyncio.to_thread(original_ondisconnect, event))
 
             if not self._is_hard_disconnect and self._enable_auto_reconnect:
-                await self._retry_connection()
+                self._reconnect_task = asyncio.current_task()
+                try:
+                    await self._retry_connection()
+                except (asyncio.CancelledError, Exception):
+                    pass
+                finally:
+                    self._reconnect_task = None
 
         async def handle_error(event):
             logger.error(f"Socket error: {event}")
@@ -1306,73 +1303,68 @@ class MezonClient:
                     asyncio.create_task(asyncio.to_thread(original_onerror, event))
 
             if not self._is_hard_disconnect and self._enable_auto_reconnect:
-                if self.socket_manager.is_connected():
+                self._reconnect_task = asyncio.current_task()
+                try:
                     await self._retry_connection()
+                except (asyncio.CancelledError, Exception):
+                    pass
+                finally:
+                    self._reconnect_task = None
 
         socket.ondisconnect = handle_disconnect
         socket.onerror = handle_error
 
-    async def _reconnect_attempt(self) -> None:
+    async def _retry_connection(
+        self,
+        max_retries: int = 10,
+        initial_delay: int = 5,
+        max_delay: int = 60,
+    ) -> None:
         """
-        Attempt to reconnect to the server.
+        Retry connection with exponential backoff.
 
-        Raises:
-            Exception: If reconnection fails
-            asyncio.CancelledError: If hard disconnect is detected
+        Args:
+            max_retries (int): Maximum number of retry attempts.
+            initial_delay (int): Initial delay in seconds between retries.
+            max_delay (int): Maximum delay in seconds between retries.
         """
-        if self._is_hard_disconnect:
-            raise asyncio.CancelledError("Hard disconnect, stopping reconnection")
+        delay = initial_delay
 
-        session = await self.get_session()
-        await self.initialize_managers(session)
-        logger.debug("Reconnected successfully!")
-
-    async def _retry_connection(self) -> None:
-        """
-        Retry connection with exponential backoff using tenacity.
-
-        Retries with exponential backoff starting at 5 seconds, doubling each time,
-        up to a maximum of 60 seconds between attempts. Stops if hard disconnect
-        is detected or reconnection succeeds.
-        """
-        logger.info("Starting reconnection attempts...")
-
-        def before_sleep_with_check(retry_state):
-            """Check for hard disconnect and log before waiting."""
+        for attempt in range(1, max_retries + 1):
             if self._is_hard_disconnect:
-                logger.info("Hard disconnect detected, stopping reconnection")
-                raise asyncio.CancelledError("Hard disconnect")
-            before_sleep_log(logger, logging.INFO)(retry_state)
+                return
+            try:
+                logger.info(f"Reconnecting (attempt {attempt}/{max_retries})...")
+                session = await self.get_session()
+                await self.initialize_managers(session)
+                logger.info("Reconnected successfully!")
+                return
+            except asyncio.CancelledError:
+                raise
+            except Exception as err:
+                if self._is_hard_disconnect:
+                    return
+                logger.warning(f"Reconnect attempt {attempt} failed: {err}")
+                if attempt < max_retries:
+                    await asyncio.sleep(delay)
+                    delay = min(delay * 2, max_delay)
 
-        try:
-            async for attempt in AsyncRetrying(
-                wait=wait_exponential(multiplier=2, min=5, max=60),
-                stop=stop_never,
-                retry=retry_if_exception_type(Exception),
-                before_sleep=before_sleep_with_check,
-                reraise=True,
-            ):
-                with attempt:
-                    if self._is_hard_disconnect:
-                        logger.info("Hard disconnect detected, stopping reconnection")
-                        break
-
-                    logger.info(
-                        f"Attempting to reconnect (attempt {attempt.retry_state.attempt_number})..."
-                    )
-                    await self._reconnect_attempt()
-                    break
-
-        except asyncio.CancelledError:
-            logger.info("Hard disconnect detected, stopping reconnection")
-        except Exception as err:
-            logger.error(f"Reconnection failed after all retries: {err}")
+        logger.error(f"Reconnection failed after {max_retries} attempts")
 
     async def disconnect(self) -> None:
         """
         Disconnect from the socket without logging out.
         Sets hard disconnect flag to prevent auto-reconnection.
+        Cancels any in-progress reconnection task.
         """
         self._is_hard_disconnect = True
+
+        if self._reconnect_task and not self._reconnect_task.done():
+            self._reconnect_task.cancel()
+            try:
+                await self._reconnect_task
+            except (asyncio.CancelledError, RuntimeError, Exception):
+                pass
+
         await self.close_socket()
         logger.info("Client disconnected")
