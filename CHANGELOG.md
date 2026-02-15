@@ -2,6 +2,54 @@
 
 <!-- version list -->
 
+## v1.6.14 (2026-02-15)
+
+### Bug Fixes
+
+- Add user_ids parameter to MezonApi for enhanced request handling
+  ([`de70885`](https://github.com/phuvinh010701/mezon-sdk-python/commit/de70885cc1b00cf1d8517e3341b87d2ae9d4f9cf))
+
+- **deps**: Bump pyjwt from 2.10.1 to 2.11.0
+  ([`42a9a31`](https://github.com/phuvinh010701/mezon-sdk-python/commit/42a9a31505d2641634851cf9e7f42fa5fb9e8818))
+
+- **deps**: Bump tenacity from 9.1.2 to 9.1.4
+  ([`0457bbc`](https://github.com/phuvinh010701/mezon-sdk-python/commit/0457bbcca485e1fc8bd5fc375f9365859b40fd10))
+
+- **deps**: Bump websockets from 15.0.1 to 16.0
+  ([`828bc99`](https://github.com/phuvinh010701/mezon-sdk-python/commit/828bc9961877d7cbcaa3dbca2911aec6d784119e))
+
+- **deps-dev**: Bump fastapi from 0.128.0 to 0.129.0
+  ([`0a8c7b1`](https://github.com/phuvinh010701/mezon-sdk-python/commit/0a8c7b19732de43da3f3093d10a4fa9691eb0b7f))
+
+- **deps-dev**: Bump protobuf from 6.33.2 to 6.33.5
+  ([`24b9cfb`](https://github.com/phuvinh010701/mezon-sdk-python/commit/24b9cfb1ee3cf5ed2135ee30e9bfbde60979b387))
+
+### Chores
+
+- Add dependabot configuration for tracking uv and GitHub Actions dependencies
+  ([`105e76c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/105e76cfe490594dd3ab120e40714dd4153ec29f))
+
+- Update dependabot commit message prefix from fix to chore for consistency
+  ([`32e0d6f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/32e0d6f6062e5f66718ae4ff16bb616ca1433c61))
+
+### Continuous Integration
+
+- **deps**: Bump actions/checkout from 4 to 6
+  ([`7b21033`](https://github.com/phuvinh010701/mezon-sdk-python/commit/7b21033ab618d1d261f90899ce94f1d586809680))
+
+- **deps**: Bump actions/setup-python from 5 to 6
+  ([`4e8877a`](https://github.com/phuvinh010701/mezon-sdk-python/commit/4e8877aa77f8864b529991c5a76a6bdeb63a1e76))
+
+- **deps**: Bump astral-sh/setup-uv from 3 to 7
+  ([`9cb146e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9cb146e9c98ebbb4729f22c57bb68ca8229880e6))
+
+### Refactoring
+
+- Improve reconnection logic in MezonClient with enhanced error handling and configurable retry
+  parameters
+  ([`50c2ffc`](https://github.com/phuvinh010701/mezon-sdk-python/commit/50c2ffceae76f6652710313b1c1b4151a0e62787))
+
+
 ## v1.6.13 (2026-02-14)
 
 ### Bug Fixes
