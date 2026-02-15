@@ -13,7 +13,7 @@ updates:
     assignees:
       - "phuvinh010701"
     commit-message:
-      prefix: "fix"
+      prefix: "chore"
       include: "scope"
 
   # Track GitHub Actions
