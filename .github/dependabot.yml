@@ -1,0 +1,33 @@
+version: 2
+updates:
+  # Track dependencies for uv
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "phuvinh010701"
+    assignees:
+      - "phuvinh010701"
+    commit-message:
+      prefix: "fix"
+      include: "scope"
+
+  # Track GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "phuvinh010701"
+    assignees:
+      - "phuvinh010701"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

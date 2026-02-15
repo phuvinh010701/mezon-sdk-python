@@ -19,6 +19,7 @@
         "NEOF",
         "ondisconnect",
         "onheartbeattimeout",
+        "phuvinh",
         "pydantic",
         "pyjwt",
         "pypi",
@@ -29,6 +30,7 @@
         "rtapi",
         "sendtoken",
         "setuptools",
+        "TIMESPAN",
         "uvicorn",
         "webrtc"
     ]
