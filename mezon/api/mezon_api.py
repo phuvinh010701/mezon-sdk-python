@@ -290,6 +290,7 @@ class MezonApi:
             parent_id=request.parent_id if request.parent_id else 0,
             category_id=request.category_id if request.category_id else 0,
             type=request.type if request.type else 0,
+            user_ids=request.user_ids if request.user_ids else [],
         )
 
         headers = build_headers(
