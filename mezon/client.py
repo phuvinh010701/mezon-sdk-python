@@ -34,7 +34,8 @@ from mmn import (
     ZkProof,
 )
 
-from mezon import ApiChannelDescription, CacheManager, ChannelType, Events
+from mezon.managers.cache import CacheManager
+from mezon.constants import ChannelType, Events
 from mezon.api.utils import parse_url_components
 from mezon.constants import TypeMessage
 from mezon.managers.channel import ChannelManager
@@ -43,6 +44,7 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
+    ApiChannelDescription,
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
     ChannelMessageContent,

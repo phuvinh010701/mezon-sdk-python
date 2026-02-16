@@ -1,7 +1,7 @@
 from typing import Optional
 
 import mezon.api as api
-from mezon import ApiChannelDescription
+from mezon.models import ApiChannelDescription
 from mezon.constants import ChannelType
 from mezon.models import ApiCreateChannelDescRequest
 

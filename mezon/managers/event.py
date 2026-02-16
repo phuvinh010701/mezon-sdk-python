@@ -2,7 +2,7 @@ import asyncio
 import logging
 from typing import Callable
 
-from mezon import Events
+from mezon.constants import Events
 
 logger = logging.getLogger(__name__)
 

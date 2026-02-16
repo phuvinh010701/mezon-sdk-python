@@ -16,7 +16,8 @@ limitations under the License.
 
 from typing import TYPE_CHECKING, Optional
 
-from mezon import ApiMessageAttachment, ChannelMessageAck, ChannelType, TypeMessage
+from mezon.models import ApiMessageAttachment, ChannelMessageAck
+from mezon.constants import ChannelType, TypeMessage
 from mezon.models import ApiChannelDescription, ChannelMessageContent, UserInitData
 from mezon.utils import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger
