@@ -249,7 +249,7 @@ class ApiMessageRef(BaseModel):
     ref_type: Optional[int] = None
     message_sender_id: int
     message_sender_username: Optional[str] = None
-    mesages_sender_avatar: Optional[str] = None
+    message_sender_avatar: Optional[str] = None
     message_sender_clan_nick: Optional[str] = None
     message_sender_display_name: Optional[str] = None
     content: Optional[str] = None
