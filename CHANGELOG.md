@@ -2,6 +2,43 @@
 
 <!-- version list -->
 
+## v1.6.15 (2026-02-16)
+
+### Bug Fixes
+
+- Standardize variable names in ApiMessageRef and TextChannel models for consistency
+  ([`cfda2aa`](https://github.com/phuvinh010701/mezon-sdk-python/commit/cfda2aa6d7eb48156ad346e85e02cd78834db8c3))
+
+### Chores
+
+- Add pre-commit hook for automated code checks and formatting with ruff
+  ([`3979233`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3979233dede19f957d21a09a24868af42aadfb23))
+
+- **deps-dev**: Bump ruff from 0.14.10 to 0.15.1
+  ([`46d1337`](https://github.com/phuvinh010701/mezon-sdk-python/commit/46d133781bdde3506681aececb66976ead330498))
+
+### Refactoring
+
+- Enhance Pydantic model structure by introducing MezonBaseModel for protobuf conversion support and
+  streamline session expiration checks
+  ([`deacc56`](https://github.com/phuvinh010701/mezon-sdk-python/commit/deacc569d12f35c4ec4f88824fa7c467f2c2d8c0))
+
+- Remove unused friend management and transaction detail methods from MezonClient for cleaner code
+  ([`dfe5622`](https://github.com/phuvinh010701/mezon-sdk-python/commit/dfe5622564417ed6c5ff0b67d167677871a0577b))
+
+- Reorganize imports and enhance structure in Mezon SDK for improved readability and maintainability
+  ([`7e73fac`](https://github.com/phuvinh010701/mezon-sdk-python/commit/7e73fac97346b232fbf25e16de89d3f490e0bc38))
+
+- Reorganize imports in Mezon SDK to improve clarity and maintainability
+  ([`d6b125b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d6b125b888f856c1c0f3e8e3b39bb05a81c5ef9f))
+
+- Reorganize imports in Mezon SDK to improve clarity and maintainability
+  ([`a875fc4`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a875fc4a7722261a06d050f1e04c696c1146bce9))
+
+- Simplify response handling in MezonApi by removing redundant type checks
+  ([`9aca08b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9aca08b94a89db346ff74412c181cbc94f82a2fe))
+
+
 ## v1.6.14 (2026-02-15)
 
 ### Bug Fixes
