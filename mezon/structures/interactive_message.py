@@ -16,13 +16,14 @@ limitations under the License.
 
 import random
 from datetime import datetime
-from typing import Optional, Any
+from typing import Any, Optional
+
 from mezon.models import (
-    MessageComponentType,
-    InputFieldOption,
-    SelectFieldOption,
-    RadioFieldOption,
     AnimationConfig,
+    InputFieldOption,
+    MessageComponentType,
+    RadioFieldOption,
+    SelectFieldOption,
 )
 
 

@@ -1,15 +1,12 @@
 import asyncio
-from typing import Any, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from mezon.client import MezonClient
 
 from mezon.api import MezonApi
-from mezon.socket import WebSocketAdapterPb, Socket
 from mezon.managers.event import EventManager
 from mezon.messages import MessageDB
-from mezon.structures.clan import Clan
-
 from mezon.models import (
     ApiClanDesc,
     ApiMessageAttachment,
@@ -19,6 +16,8 @@ from mezon.models import (
     ChannelMessageAck,
 )
 from mezon.session import Session
+from mezon.socket import Socket, WebSocketAdapterPb
+from mezon.structures.clan import Clan
 
 
 class SocketManager:

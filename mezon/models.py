@@ -16,11 +16,13 @@ limitations under the License.
 
 import json
 from enum import Enum
-from typing import Optional, Any
+from typing import Any, Optional
+
+from google.protobuf import json_format
 from pydantic import BaseModel, Field
+
 from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
-from google.protobuf import json_format
 
 
 def protobuf_to_pydantic(proto_message, pydantic_class: type[BaseModel]) -> BaseModel:
@@ -36,14 +38,39 @@ def protobuf_to_pydantic(proto_message, pydantic_class: type[BaseModel]) -> Base
     json_data = json_format.MessageToJson(
         proto_message, preserving_proto_field_name=True
     )
-    data_dict = json.loads(json_data)
-    return pydantic_class.model_validate(data_dict)
+    return pydantic_class.model_validate_json(json_data)
 
 
 # API Models
 
 
-class ApiClanDesc(BaseModel):
+class MezonBaseModel(BaseModel):
+    """Base model with protobuf conversion support.
+
+    Subclasses automatically get a `from_protobuf` classmethod that converts
+    a protobuf message to the Pydantic model via JSON serialization.
+
+    Usage:
+        class MyModel(MezonBaseModel):
+            name: Optional[str] = None
+
+        model = MyModel.from_protobuf(proto_message)
+    """
+
+    @classmethod
+    def from_protobuf(cls, message: Any) -> "MezonBaseModel":
+        """Convert protobuf message to Pydantic model.
+
+        Args:
+            message: Protobuf message instance
+
+        Returns:
+            Pydantic model instance
+        """
+        return protobuf_to_pydantic(message, cls)
+
+
+class ApiClanDesc(MezonBaseModel):
     """Clan description"""
 
     banner: Optional[str] = None
@@ -57,21 +84,11 @@ class ApiClanDesc(BaseModel):
     welcome_channel_id: Optional[int] = None
     onboarding_banner: Optional[str] = None
 
-    @classmethod
-    def from_protobuf(cls, message: api_pb2.ClanDesc) -> "ApiClanDesc":
-        """Convert protobuf ClanDesc to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
-
-class ApiClanDescList(BaseModel):
+class ApiClanDescList(MezonBaseModel):
     """A list of clan descriptions"""
 
     clandesc: Optional[list[ApiClanDesc]] = None
-
-    @classmethod
-    def from_protobuf(cls, message: api_pb2.ClanDescList) -> "ApiClanDescList":
-        """Convert protobuf ClanDescList to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
 
 class ApiSession(BaseModel):
@@ -159,16 +176,11 @@ class ApiChannelDescription(BaseModel):
         return cls.model_validate(data_dict)
 
 
-class ApiChannelDescList(BaseModel):
+class ApiChannelDescList(MezonBaseModel):
     """A list of channel descriptions"""
 
     channeldesc: Optional[list[ApiChannelDescription]] = None
     cursor: Optional[str] = None
-
-    @classmethod
-    def from_protobuf(cls, message: api_pb2.ChannelDescList) -> "ApiChannelDescList":
-        """Convert protobuf ChannelDescList to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
 
 class ApiMessageAttachment(BaseModel):
@@ -237,7 +249,7 @@ class ApiMessageRef(BaseModel):
     ref_type: Optional[int] = None
     message_sender_id: int
     message_sender_username: Optional[str] = None
-    mesages_sender_avatar: Optional[str] = None
+    message_sender_avatar: Optional[str] = None
     message_sender_clan_nick: Optional[str] = None
     message_sender_display_name: Optional[str] = None
     content: Optional[str] = None
@@ -247,7 +259,7 @@ class ApiMessageRef(BaseModel):
     channel_label: Optional[str] = None
 
 
-class ApiVoiceChannelUser(BaseModel):
+class ApiVoiceChannelUser(MezonBaseModel):
     """Voice channel user"""
 
     id: Optional[int] = None
@@ -255,23 +267,11 @@ class ApiVoiceChannelUser(BaseModel):
     participant: Optional[str] = None
     user_id: Optional[int] = None
 
-    @classmethod
-    def from_protobuf(cls, message: api_pb2.VoiceChannelUser) -> "ApiVoiceChannelUser":
-        """Convert protobuf VoiceChannelUser to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
-
-class ApiVoiceChannelUserList(BaseModel):
+class ApiVoiceChannelUserList(MezonBaseModel):
     """Voice channel user list"""
 
     voice_channel_users: Optional[list[ApiVoiceChannelUser]] = None
-
-    @classmethod
-    def from_protobuf(
-        cls, message: api_pb2.VoiceChannelUserList
-    ) -> "ApiVoiceChannelUserList":
-        """Convert protobuf VoiceChannelUserList to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
 
 class ApiPermission(BaseModel):
@@ -312,7 +312,7 @@ class ApiRoleUserList(BaseModel):
     role_users: Optional[list[RoleUserListRoleUser]] = None
 
 
-class ApiRole(BaseModel):
+class ApiRole(MezonBaseModel):
     """Role"""
 
     id: Optional[int] = None
@@ -333,13 +333,8 @@ class ApiRole(BaseModel):
     role_user_list: Optional[ApiRoleUserList] = None
     role_channel_active: Optional[int] = None
 
-    @classmethod
-    def from_protobuf(cls, message: api_pb2.Role) -> "ApiRole":
-        """Convert protobuf Role to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
-
-class ApiRoleList(BaseModel):
+class ApiRoleList(MezonBaseModel):
     """Role list"""
 
     cacheable_cursor: Optional[str] = None
@@ -347,13 +342,8 @@ class ApiRoleList(BaseModel):
     prev_cursor: Optional[str] = None
     roles: Optional[list[ApiRole]] = None
 
-    @classmethod
-    def from_protobuf(cls, message: api_pb2.RoleList) -> "ApiRoleList":
-        """Convert protobuf RoleList to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
-
-class ApiRoleListEventResponse(BaseModel):
+class ApiRoleListEventResponse(MezonBaseModel):
     """Role list event response"""
 
     clan_id: Optional[int] = None
@@ -362,15 +352,8 @@ class ApiRoleListEventResponse(BaseModel):
     roles: Optional[ApiRoleList] = None
     state: Optional[str] = None
 
-    @classmethod
-    def from_protobuf(
-        cls, message: api_pb2.RoleListEventResponse
-    ) -> "ApiRoleListEventResponse":
-        """Convert protobuf RoleListEventResponse to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
-
-class ApiQuickMenuAccess(BaseModel):
+class ApiQuickMenuAccess(MezonBaseModel):
     """Quick menu access item"""
 
     id: Optional[int] = None
@@ -381,11 +364,6 @@ class ApiQuickMenuAccess(BaseModel):
     background: Optional[str] = None
     action_msg: Optional[str] = None
     menu_type: Optional[int] = None
-
-    @classmethod
-    def from_protobuf(cls, message: api_pb2.QuickMenuAccess) -> "ApiQuickMenuAccess":
-        """Convert protobuf QuickMenuAccess to Pydantic model."""
-        return protobuf_to_pydantic(message, cls)
 
 
 class ApiQuickMenuAccessList(BaseModel):

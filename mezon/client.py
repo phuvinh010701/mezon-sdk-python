@@ -20,45 +20,47 @@ import logging
 from collections.abc import Callable
 from typing import Any, Literal
 
-from mezon import ApiChannelDescription, CacheManager, ChannelType, Events
+from mmn import (
+    AddTxResponse,
+    EphemeralKeyPair,
+    ExtraInfo,
+    MmnClient,
+    MmnClientConfig,
+    SendTransactionRequest,
+    TransferType,
+    ZkClient,
+    ZkClientConfig,
+    ZkClientType,
+    ZkProof,
+)
+
 from mezon.api.utils import parse_url_components
-from mezon.protobuf.api import api_pb2
-from mezon.protobuf.rtapi import realtime_pb2
+from mezon.constants import ChannelType, Events, TypeMessage
+from mezon.managers.cache import CacheManager
 from mezon.managers.channel import ChannelManager
 from mezon.managers.event import EventManager
 from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
+    ApiChannelDescription,
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
+    ChannelMessageContent,
     ChannelMessageRaw,
     UserInitData,
 )
+from mezon.protobuf.api import api_pb2
+from mezon.protobuf.rtapi import realtime_pb2
 from mezon.structures.clan import Clan
 from mezon.structures.message import Message
 from mezon.structures.text_channel import TextChannel
 from mezon.structures.user import User
+from mezon.utils.helper import generate_snowflake_id
 from mezon.utils.logger import get_logger, setup_logger
-from mmn import (
-    EphemeralKeyPair,
-    MmnClient,
-    MmnClientConfig,
-    ZkClient,
-    ZkClientConfig,
-    ZkProof,
-    AddTxResponse,
-    ExtraInfo,
-    SendTransactionRequest,
-    TransferType,
-    ZkClientType,
-)
 
 from .api import MezonApi
 from .session import Session
-from mezon.utils.helper import generate_snowflake_id
-from mezon.models import ChannelMessageContent
-from mezon.constants import TypeMessage
 
 DEFAULT_HOST = "gw.mezon.ai"
 DEFAULT_PORT = "443"
@@ -625,78 +627,6 @@ class MezonClient:
             bot_id=bot_id,
             channel_id=channel_id,
             menu_type=menu_type,
-        )
-
-    async def get_list_friends(
-        self,
-        limit: int | None = None,
-        state: str | None = None,
-        cursor: str | None = None,
-    ) -> Any:
-        """
-        Get the list of friends for this client.
-
-        Args:
-            limit (int | None): Maximum number of friends to return.
-            state (str | None): Filter by friend state.
-            cursor (str | None): Pagination cursor.
-
-        Returns:
-            Any: The friends list or None if session is unavailable.
-        """
-        session = self.session_manager.get_session()
-        if not session:
-            return None
-        return await self.api_client.get_list_friends(
-            session.token, limit, state, cursor
-        )
-
-    async def accept_friend(self, user_id: int, username: str) -> Any:
-        """
-        Accept a friend request from a user.
-
-        Args:
-            user_id (int): The ID of the user to accept.
-            username (str): The username of the user to accept.
-
-        Returns:
-            Any: The API response or None if session is unavailable.
-        """
-        session = self.session_manager.get_session()
-        if not session:
-            return None
-        return await self.api_client.request_friend(session.token, username, user_id)
-
-    async def add_friend(self, username: str) -> Any:
-        """
-        Send a friend request to a user.
-
-        Args:
-            username (str): The username of the user to add.
-
-        Returns:
-            Any: The API response or None if session is unavailable.
-        """
-        session = self.session_manager.get_session()
-        if not session:
-            return None
-        return await self.api_client.request_friend(session.token, username)
-
-    async def list_transaction_detail(self, transaction_id: str) -> Any:
-        """
-        Get details of a specific transaction.
-
-        Args:
-            transaction_id (str): The ID of the transaction.
-
-        Returns:
-            Any: The transaction details or None if session is unavailable.
-        """
-        session = self.session_manager.get_session()
-        if not session:
-            return None
-        return await self.api_client.list_transaction_detail(
-            session.token, transaction_id
         )
 
     async def _init_channel_message_cache(

@@ -14,16 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from collections import OrderedDict
 from typing import (
-    TypeVar,
-    Generic,
-    Optional,
+    Awaitable,
     Callable,
+    Generic,
     Iterator,
     List,
-    Awaitable,
+    Optional,
+    TypeVar,
 )
-from collections import OrderedDict
 
 K = TypeVar("K")
 V = TypeVar("V")

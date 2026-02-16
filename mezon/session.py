@@ -44,33 +44,33 @@ class Session:
 
         self.update(self.token, self.refresh_token)
 
-    def is_expired(self, currenttime: int) -> bool:
+    def is_expired(self, current_time: int) -> bool:
         """
         Check if the session has expired.
 
         Args:
-            currenttime: Current UNIX timestamp in seconds
+            current_time: Current UNIX timestamp in seconds
 
         Returns:
             True if expired, False otherwise
         """
         if self.expires_at is None:
             return True
-        return (self.expires_at - currenttime) < 0
+        return (self.expires_at - current_time) < 0
 
-    def is_refresh_expired(self, currenttime: int) -> bool:
+    def is_refresh_expired(self, current_time: int) -> bool:
         """
         Check if the refresh token has expired.
 
         Args:
-            currenttime: Current UNIX timestamp in seconds
+            current_time: Current UNIX timestamp in seconds
 
         Returns:
             True if expired, False otherwise
         """
         if self.refresh_expires_at is None:
             return True
-        return (self.refresh_expires_at - currenttime) < 0
+        return (self.refresh_expires_at - current_time) < 0
 
     def update(self, token: str, refresh_token: str | None = None) -> None:
         """
@@ -109,21 +109,3 @@ class Session:
             Session instance
         """
         return cls(session)
-
-    def to_dict(self) -> dict[str, Any]:
-        """
-        Convert session to dictionary for serialization.
-
-        Returns:
-            Dictionary representation of session
-        """
-        return {
-            "token": self.token,
-            "refresh_token": self.refresh_token,
-            "user_id": self.user_id,
-            "created_at": self.created_at,
-            "expires_at": self.expires_at,
-            "refresh_expires_at": self.refresh_expires_at,
-            "vars": self.vars,
-            "api_url": self.api_url,
-        }

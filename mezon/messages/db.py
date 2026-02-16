@@ -14,10 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import aiosqlite
 import json
 import os
-from typing import Optional, Any
+from typing import Any, Optional
+
+import aiosqlite
+
 from mezon.models import ChannelMessageRaw
 from mezon.utils.logger import get_logger
 

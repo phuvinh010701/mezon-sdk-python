@@ -14,10 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
-from mezon import ApiMessageAttachment, ChannelMessageAck, ChannelType, TypeMessage
-from mezon.models import ChannelMessageContent, UserInitData, ApiChannelDescription
+from mezon.constants import ChannelType, TypeMessage
+from mezon.models import (
+    ApiChannelDescription,
+    ApiMessageAttachment,
+    ChannelMessageAck,
+    ChannelMessageContent,
+    UserInitData,
+)
 from mezon.utils import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger
 

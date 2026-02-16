@@ -10,63 +10,62 @@ Licensed under the Apache License, Version 2.0
 __version__ = "0.1.0"
 
 # Core imports
-from .session import Session
+from .api import MezonApi
+
+# Import client
+from .client import MezonClient
+from .constants import (
+    ChannelStreamMode,
+    ChannelType,
+    Events,
+    TypeMessage,
+)
+
+# Managers imports
+from .managers import (
+    CacheManager,
+    ChannelManager,
+    Collection,
+    SessionManager,
+    SocketManager,
+)
 from .models import (
-    # API Models
-    ApiSession,
+    ApiChannelDescList,
+    ApiChannelDescription,
     ApiClanDesc,
     ApiClanDescList,
-    ApiChannelDescription,
-    ApiChannelDescList,
     ApiMessageAttachment,
     ApiMessageMention,
     ApiMessageReaction,
     ApiMessageRef,
+    # API Models
+    ApiSession,
     ApiVoiceChannelUserList,
+    Channel,
+    ChannelMessageAck,
     # Client Models
     ChannelMessageContent,
     MessagePayLoad,
-    ChannelMessageAck,
     # Socket Models
     Presence,
-    Channel,
 )
-from .constants import (
-    Events,
-    ChannelType,
-    ChannelStreamMode,
-    TypeMessage,
-)
-from .api import MezonApi
-
-# Managers imports
-from .managers import (
-    ChannelManager,
-    SessionManager,
-    SocketManager,
-    CacheManager,
-    Collection,
-)
-
-# Import client
-from .client import MezonClient
+from .session import Session
 
 # Socket imports
-from .socket import WebSocketAdapter, WebSocketAdapterPb, Socket
+from .socket import Socket, WebSocketAdapter, WebSocketAdapterPb
 
 # Structure imports
 from .structures import (
+    ButtonBuilder,
     Clan,
+    InteractiveBuilder,
     Message,
     TextChannel,
     User,
-    ButtonBuilder,
-    InteractiveBuilder,
 )
 
 # Utils imports
-from .utils import setup_logger, get_logger, disable_logging, enable_logging
-
+from .utils import disable_logging, enable_logging, get_logger, setup_logger
 
 __all__ = [
     # Version

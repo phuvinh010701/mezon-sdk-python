@@ -1,29 +1,15 @@
 import asyncio
 import re
 import time
-from typing import TypeVar, Any
+from typing import Any, TypeVar
 from urllib.parse import urlparse
 
-from ..constants import ChannelType, ChannelStreamMode, InternalEventsSocket
-
+from ..constants import ChannelStreamMode, ChannelType
 
 _sequence = 0
 _last_timestamp = 0
 
 T = TypeVar("T")
-
-
-def convert_internal_event_to_events(input: InternalEventsSocket) -> str:
-    """
-    Convert internal event to event string.
-
-    Args:
-        input: Internal event socket enum
-
-    Returns:
-        Converted event string
-    """
-    return input.value.replace("_event", "").replace("_", "")
 
 
 def convert_channeltype_to_channel_mode(channel_type: int) -> int:
@@ -36,16 +22,17 @@ def convert_channeltype_to_channel_mode(channel_type: int) -> int:
     Returns:
         Channel stream mode value
     """
-    if channel_type == ChannelType.CHANNEL_TYPE_DM:
-        return ChannelStreamMode.STREAM_MODE_DM
-    elif channel_type == ChannelType.CHANNEL_TYPE_GROUP:
-        return ChannelStreamMode.STREAM_MODE_GROUP
-    elif channel_type == ChannelType.CHANNEL_TYPE_CHANNEL:
-        return ChannelStreamMode.STREAM_MODE_CHANNEL
-    elif channel_type == ChannelType.CHANNEL_TYPE_THREAD:
-        return ChannelStreamMode.STREAM_MODE_THREAD
-
-    return 0
+    match channel_type:
+        case ChannelType.CHANNEL_TYPE_DM:
+            return ChannelStreamMode.STREAM_MODE_DM
+        case ChannelType.CHANNEL_TYPE_GROUP:
+            return ChannelStreamMode.STREAM_MODE_GROUP
+        case ChannelType.CHANNEL_TYPE_CHANNEL:
+            return ChannelStreamMode.STREAM_MODE_CHANNEL
+        case ChannelType.CHANNEL_TYPE_THREAD:
+            return ChannelStreamMode.STREAM_MODE_THREAD
+        case _:
+            return 0
 
 
 def is_valid_user_id(user_id: Any) -> bool:

@@ -1,4 +1,5 @@
 from typing import Optional
+
 from mezon.api.mezon_api import MezonApi
 from mezon.models import (
     ApiAccountApp,

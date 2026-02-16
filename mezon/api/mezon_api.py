@@ -14,31 +14,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import aiohttp
 from typing import Any, Optional
-from aiolimiter import AsyncLimiter
 
+import aiohttp
+from aiolimiter import AsyncLimiter
 
 from mezon.api.utils import (
     build_body,
     build_headers,
     parse_response,
 )
-from mezon.protobuf.utils import encode_protobuf
-from mezon.protobuf.api import api_pb2
-from mezon.utils.logger import get_logger
-
-from ..models import (
-    ApiClanDescList,
-    ApiQuickMenuAccess,
-    ApiSession,
+from mezon.models import (
     ApiAuthenticateRequest,
-    ApiChannelDescription,
     ApiChannelDescList,
+    ApiChannelDescription,
+    ApiClanDescList,
     ApiCreateChannelDescRequest,
-    ApiVoiceChannelUserList,
+    ApiQuickMenuAccess,
     ApiRoleListEventResponse,
+    ApiSession,
+    ApiVoiceChannelUserList,
 )
+from mezon.protobuf.api import api_pb2
+from mezon.protobuf.utils import encode_protobuf
+from mezon.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -165,9 +164,9 @@ class MezonApi:
     async def list_clans_descs(
         self,
         token: str,
-        limit: Optional[int] = 0,
-        state: Optional[int] = 0,
-        cursor: Optional[str] = "",
+        limit: int = 0,
+        state: int = 0,
+        cursor: str = "",
         options: Optional[dict[str, Any]] = None,
     ) -> ApiClanDescList:
         """
@@ -204,20 +203,17 @@ class MezonApi:
             response_proto_class=api_pb2.ClanDescList,
         )
 
-        if isinstance(response, api_pb2.ClanDescList):
-            return ApiClanDescList.from_protobuf(response)
-        else:
-            return ApiClanDescList.model_validate(response)
+        return ApiClanDescList.from_protobuf(response)
 
     async def list_channel_descs(
         self,
         token: str,
-        channel_type: Optional[int] = None,
-        clan_id: Optional[str] = None,
-        limit: Optional[int] = None,
-        state: Optional[int] = None,
-        cursor: Optional[str] = None,
-        is_mobile: Optional[bool] = None,
+        channel_type: int = 0,
+        clan_id: int = 0,
+        limit: int = 0,
+        state: int = 0,
+        cursor: str = "",
+        is_mobile: bool = False,
         options: Optional[dict[str, Any]] = None,
     ) -> ApiChannelDescList:
         """
@@ -237,12 +233,12 @@ class MezonApi:
             ApiChannelDescList: List of channel descriptions with optional cursor
         """
         request = api_pb2.ListChannelDescsRequest(
-            clan_id=clan_id if clan_id is not None else 0,
-            channel_type=channel_type if channel_type is not None else 0,
-            limit=limit if limit is not None else 0,
-            state=state if state is not None else 0,
-            cursor=cursor if cursor is not None else "",
-            is_mobile=is_mobile if is_mobile is not None else False,
+            clan_id=clan_id,
+            channel_type=channel_type,
+            limit=limit,
+            state=state,
+            cursor=cursor,
+            is_mobile=is_mobile,
         )
 
         headers = build_headers(
@@ -260,10 +256,7 @@ class MezonApi:
             response_proto_class=api_pb2.ChannelDescList,
         )
 
-        if isinstance(response, api_pb2.ChannelDescList):
-            return ApiChannelDescList.from_protobuf(response)
-        else:
-            return ApiChannelDescList.model_validate(response)
+        return ApiChannelDescList.from_protobuf(response)
 
     async def create_channel_desc(
         self,
@@ -308,10 +301,7 @@ class MezonApi:
             response_proto_class=api_pb2.ChannelDescription,
         )
 
-        if isinstance(response, api_pb2.ChannelDescription):
-            return ApiChannelDescription.from_protobuf(response)
-        else:
-            return ApiChannelDescription.model_validate(response)
+        return ApiChannelDescription.from_protobuf(response)
 
     async def get_channel_detail(
         self,
@@ -403,10 +393,7 @@ class MezonApi:
             response_proto_class=api_pb2.VoiceChannelUserList,
         )
 
-        if isinstance(response, api_pb2.VoiceChannelUserList):
-            return ApiVoiceChannelUserList.from_protobuf(response)
-        else:
-            return ApiVoiceChannelUserList.model_validate(response)
+        return ApiVoiceChannelUserList.from_protobuf(response)
 
     async def update_role(
         self,
@@ -498,10 +485,7 @@ class MezonApi:
             response_proto_class=api_pb2.RoleListEventResponse,
         )
 
-        if isinstance(response, api_pb2.RoleListEventResponse):
-            return ApiRoleListEventResponse.from_protobuf(response)
-        else:
-            return ApiRoleListEventResponse.model_validate(response)
+        return ApiRoleListEventResponse.from_protobuf(response)
 
     async def add_quick_menu_access(
         self,
@@ -559,10 +543,7 @@ class MezonApi:
             accept_binary=True,
             response_proto_class=api_pb2.QuickMenuAccess,
         )
-        if isinstance(response, api_pb2.QuickMenuAccess):
-            return ApiQuickMenuAccess.from_protobuf(response)
-        else:
-            return ApiQuickMenuAccess.model_validate(response)
+        return ApiQuickMenuAccess.from_protobuf(response)
 
     async def delete_quick_menu_access(
         self,
