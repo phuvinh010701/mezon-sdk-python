@@ -204,10 +204,7 @@ class MezonApi:
             response_proto_class=api_pb2.ClanDescList,
         )
 
-        if isinstance(response, api_pb2.ClanDescList):
-            return ApiClanDescList.from_protobuf(response)
-        else:
-            return ApiClanDescList.model_validate(response)
+        return ApiClanDescList.from_protobuf(response)
 
     async def list_channel_descs(
         self,
@@ -260,10 +257,7 @@ class MezonApi:
             response_proto_class=api_pb2.ChannelDescList,
         )
 
-        if isinstance(response, api_pb2.ChannelDescList):
-            return ApiChannelDescList.from_protobuf(response)
-        else:
-            return ApiChannelDescList.model_validate(response)
+        return ApiChannelDescList.from_protobuf(response)
 
     async def create_channel_desc(
         self,
@@ -308,10 +302,7 @@ class MezonApi:
             response_proto_class=api_pb2.ChannelDescription,
         )
 
-        if isinstance(response, api_pb2.ChannelDescription):
-            return ApiChannelDescription.from_protobuf(response)
-        else:
-            return ApiChannelDescription.model_validate(response)
+        return ApiChannelDescription.from_protobuf(response)
 
     async def get_channel_detail(
         self,
@@ -403,10 +394,7 @@ class MezonApi:
             response_proto_class=api_pb2.VoiceChannelUserList,
         )
 
-        if isinstance(response, api_pb2.VoiceChannelUserList):
-            return ApiVoiceChannelUserList.from_protobuf(response)
-        else:
-            return ApiVoiceChannelUserList.model_validate(response)
+        return ApiVoiceChannelUserList.from_protobuf(response)
 
     async def update_role(
         self,
@@ -498,10 +486,7 @@ class MezonApi:
             response_proto_class=api_pb2.RoleListEventResponse,
         )
 
-        if isinstance(response, api_pb2.RoleListEventResponse):
-            return ApiRoleListEventResponse.from_protobuf(response)
-        else:
-            return ApiRoleListEventResponse.model_validate(response)
+        return ApiRoleListEventResponse.from_protobuf(response)
 
     async def add_quick_menu_access(
         self,
@@ -559,10 +544,7 @@ class MezonApi:
             accept_binary=True,
             response_proto_class=api_pb2.QuickMenuAccess,
         )
-        if isinstance(response, api_pb2.QuickMenuAccess):
-            return ApiQuickMenuAccess.from_protobuf(response)
-        else:
-            return ApiQuickMenuAccess.model_validate(response)
+        return ApiQuickMenuAccess.from_protobuf(response)
 
     async def delete_quick_menu_access(
         self,
