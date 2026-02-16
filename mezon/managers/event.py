@@ -1,6 +1,8 @@
 import asyncio
-from typing import Callable
 import logging
+from typing import Callable
+
+from mezon import Events
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +18,7 @@ class EventManager:
     def __init__(self):
         self.event_handlers: dict[str, list[Callable]] = {}
 
-    def on(self, event_name: str, handler: Callable) -> None:
+    def on(self, event_name: Events, handler: Callable) -> None:
         """
         Register an event handler for a specific event.
 
@@ -28,7 +30,7 @@ class EventManager:
             self.event_handlers[event_name] = []
         self.event_handlers[event_name].append(handler)
 
-    def off(self, event_name: str, handler: Callable = None) -> None:
+    def off(self, event_name: Events, handler: Callable = None) -> None:
         """
         Unregister an event handler.
 
@@ -48,7 +50,7 @@ class EventManager:
             if not self.event_handlers[event_name]:
                 del self.event_handlers[event_name]
 
-    async def emit(self, event_name: str, *args, **kwargs) -> None:
+    async def emit(self, event_name: Events, *args, **kwargs) -> None:
         """
         Emit an event to all registered handlers.
 
@@ -123,7 +125,7 @@ class EventManager:
         except Exception as e:
             logger.exception(f"Error in async event handler for '{event_name}': {e}")
 
-    def has_listeners(self, event_name: str) -> bool:
+    def has_listeners(self, event_name: Events) -> bool:
         """
         Check if there are any listeners for a specific event.
 

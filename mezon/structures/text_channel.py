@@ -14,7 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Optional
+
+from mezon.constants import TypeMessage
+from mezon.managers.cache import CacheManager
+from mezon.messages.db import MessageDB
 from mezon.models import (
     ApiChannelDescription,
     ApiMessageAttachment,
@@ -23,18 +27,16 @@ from mezon.models import (
     ChannelMessageAck,
     ChannelMessageContent,
 )
-from mezon.managers.cache import CacheManager
-from mezon.messages.db import MessageDB
-
 from mezon.utils.helper import (
     convert_channeltype_to_channel_mode,
 )
-from mezon.constants import TypeMessage
 from mezon.utils.logger import get_logger
+
 from .message import Message
 
 if TYPE_CHECKING:
     from mezon.managers.socket import SocketManager
+
     from .clan import Clan
 
 logger = get_logger(__name__)
@@ -129,7 +131,7 @@ class TextChannel:
 
     async def send_ephemeral(
         self,
-        receiver_id: int,
+        receiver_ids: list[int],
         content: Any,
         reference_message_id: Optional[int] = None,
         mentions: Optional[list[ApiMessageMention]] = None,
@@ -175,7 +177,7 @@ class TextChannel:
             ]
 
         data_send = {
-            "receiver_id": receiver_id,
+            "receiver_ids": receiver_ids,
             "clan_id": self.clan.id,
             "channel_id": self.id,
             "mode": convert_channeltype_to_channel_mode(self.channel_type),

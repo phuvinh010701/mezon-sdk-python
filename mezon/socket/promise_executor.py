@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Optional, Any
+from typing import Any, Optional
 
 
 class PromiseExecutor:

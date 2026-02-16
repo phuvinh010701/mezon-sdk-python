@@ -1,6 +1,6 @@
-from typing import Any, Optional
 import base64
 import json
+from typing import Any, Optional
 from urllib.parse import urlparse
 
 import aiohttp

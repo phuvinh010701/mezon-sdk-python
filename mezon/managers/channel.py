@@ -1,11 +1,12 @@
 from typing import Optional
 
-from mezon import ApiChannelDescription
 import mezon.api as api
-from mezon.models import ApiCreateChannelDescRequest
-from .socket import SocketManager
-from .session import SessionManager
+from mezon import ApiChannelDescription
 from mezon.constants import ChannelType
+from mezon.models import ApiCreateChannelDescRequest
+
+from .session import SessionManager
+from .socket import SocketManager
 
 
 class ChannelManager:

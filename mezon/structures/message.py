@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, Any, TYPE_CHECKING
 import json
+from typing import TYPE_CHECKING, Any, Optional
+
 from mezon import ChannelMessageAck
 from mezon.models import (
     ApiMessageAttachment,
@@ -29,8 +30,9 @@ from mezon.utils.helper import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger
 
 if TYPE_CHECKING:
-    from .text_channel import TextChannel
     from mezon.managers.socket import SocketManager
+
+    from .text_channel import TextChannel
 
 logger = get_logger(__name__)
 

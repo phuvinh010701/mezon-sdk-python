@@ -15,21 +15,22 @@ limitations under the License.
 """
 
 import asyncio
+import logging
 from abc import ABC, abstractmethod
-from typing import Optional, Any
-import websockets
-from websockets.asyncio.client import ClientConnection
+from typing import Any, Optional
 from urllib.parse import quote
 
+import websockets
 from aiolimiter import AsyncLimiter
+from websockets.asyncio.client import ClientConnection
 from websockets.protocol import State
-from mezon.protobuf.rtapi import realtime_pb2
-import logging
-from mezon.protobuf.utils import encode_protobuf
+
 from mezon.constants.rate_limit import (
     WEBSOCKET_PB_RATE_LIMIT,
     WEBSOCKET_PB_RATE_LIMIT_PERIOD,
 )
+from mezon.protobuf.rtapi import realtime_pb2
+from mezon.protobuf.utils import encode_protobuf
 
 logger = logging.getLogger(__name__)
 

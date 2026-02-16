@@ -1,11 +1,10 @@
 import asyncio
 import re
 import time
-from typing import TypeVar, Any
+from typing import Any, TypeVar
 from urllib.parse import urlparse
 
-from ..constants import ChannelType, ChannelStreamMode, InternalEventsSocket
-
+from ..constants import ChannelStreamMode, ChannelType, InternalEventsSocket
 
 _sequence = 0
 _last_timestamp = 0

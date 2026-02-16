@@ -17,15 +17,14 @@ limitations under the License.
 import json
 from typing import Any, Optional
 
-
-from mezon.protobuf.rtapi import realtime_pb2
-from mezon.protobuf.api import api_pb2
 from mezon.models import (
-    ApiMessageMention,
     ApiMessageAttachment,
+    ApiMessageMention,
     ApiMessageRef,
     ChannelMessageContent,
 )
+from mezon.protobuf.api import api_pb2
+from mezon.protobuf.rtapi import realtime_pb2
 
 
 class ChannelMessageBuilder:

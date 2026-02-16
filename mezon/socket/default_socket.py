@@ -15,33 +15,34 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Optional, Any, TypeVar
+from typing import Any, Optional, TypeVar
 
-from mezon.protobuf.rtapi import realtime_pb2
-from mezon.utils.logger import get_logger
-from mezon.protobuf.utils import parse_protobuf
+import google.protobuf.message
 from google.protobuf import json_format
 from pydantic import BaseModel
-import google.protobuf.message
 
-from .promise_executor import PromiseExecutor
-from .websocket_adapter import WebSocketAdapterPb
+from mezon.managers.event import EventManager
+from mezon.protobuf.rtapi import realtime_pb2
+from mezon.protobuf.utils import parse_protobuf
+from mezon.utils.logger import get_logger
+
+from ..models import (
+    ApiMessageAttachment,
+    ApiMessageMention,
+    ApiMessageReaction,
+    ApiMessageRef,
+    ChannelMessageAck,
+    ChannelMessageContent,
+)
+from ..session import Session
 from .message_builder import (
     ChannelMessageBuilder,
     ChannelMessageUpdateBuilder,
     EphemeralMessageBuilder,
     MessageReactionBuilder,
 )
-from mezon.managers.event import EventManager
-from ..session import Session
-from ..models import (
-    ChannelMessageAck,
-    ApiMessageMention,
-    ApiMessageAttachment,
-    ApiMessageRef,
-    ApiMessageReaction,
-    ChannelMessageContent,
-)
+from .promise_executor import PromiseExecutor
+from .websocket_adapter import WebSocketAdapterPb
 
 logger = get_logger(__name__)
 

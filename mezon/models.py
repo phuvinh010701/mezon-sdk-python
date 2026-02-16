@@ -16,11 +16,13 @@ limitations under the License.
 
 import json
 from enum import Enum
-from typing import Optional, Any
+from typing import Any, Optional
+
+from google.protobuf import json_format
 from pydantic import BaseModel, Field
+
 from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
-from google.protobuf import json_format
 
 
 def protobuf_to_pydantic(proto_message, pydantic_class: type[BaseModel]) -> BaseModel:

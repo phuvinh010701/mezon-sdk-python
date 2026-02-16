@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Optional, Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Optional
 
 from mezon.api import MezonApi
 from mezon.constants.enum import ChannelType
 from mezon.managers.cache import CacheManager
 from mezon.messages.db import MessageDB
-from mezon.models import ApiVoiceChannelUserList, ApiRoleListEventResponse
+from mezon.models import ApiRoleListEventResponse, ApiVoiceChannelUserList
 from mezon.utils.logger import get_logger
 
 from .text_channel import TextChannel
