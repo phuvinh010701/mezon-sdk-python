@@ -17,12 +17,12 @@ limitations under the License.
 import json
 from typing import TYPE_CHECKING, Any, Optional
 
-from mezon.models import ChannelMessageAck
 from mezon.models import (
     ApiMessageAttachment,
     ApiMessageMention,
     ApiMessageReaction,
     ApiMessageRef,
+    ChannelMessageAck,
     ChannelMessageContent,
     ChannelMessageRaw,
 )

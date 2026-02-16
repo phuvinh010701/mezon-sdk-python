@@ -34,10 +34,9 @@ from mmn import (
     ZkProof,
 )
 
-from mezon.managers.cache import CacheManager
-from mezon.constants import ChannelType, Events
 from mezon.api.utils import parse_url_components
-from mezon.constants import TypeMessage
+from mezon.constants import ChannelType, Events, TypeMessage
+from mezon.managers.cache import CacheManager
 from mezon.managers.channel import ChannelManager
 from mezon.managers.event import EventManager
 from mezon.managers.session import SessionManager

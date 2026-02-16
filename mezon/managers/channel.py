@@ -1,9 +1,8 @@
 from typing import Optional
 
 import mezon.api as api
-from mezon.models import ApiChannelDescription
 from mezon.constants import ChannelType
-from mezon.models import ApiCreateChannelDescRequest
+from mezon.models import ApiChannelDescription, ApiCreateChannelDescRequest
 
 from .session import SessionManager
 from .socket import SocketManager
