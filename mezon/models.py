@@ -88,7 +88,7 @@ class ApiClanDesc(MezonBaseModel):
 class ApiClanDescList(MezonBaseModel):
     """A list of clan descriptions"""
 
-    clandesc: Optional[list[ApiClanDesc]] = None
+    clandesc: list[ApiClanDesc] = []
 
 
 class ApiSession(BaseModel):

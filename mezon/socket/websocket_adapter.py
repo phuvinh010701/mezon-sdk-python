@@ -113,14 +113,11 @@ class WebSocketAdapterPb(WebSocketAdapter):
     ) -> None:
         """Connect to WebSocket server with protobuf protocol."""
         url = f"{scheme}{host}:{port}/ws?lang=en&status={quote(str(create_status).lower())}&token={quote(token)}&format=protobuf"
-        try:
-            self._socket = await websockets.connect(
-                url,
-                subprotocols=["protobuf"],
-                ping_interval=None,
-            )
-        except Exception:
-            raise
+        self._socket = await websockets.connect(
+            url,
+            subprotocols=["protobuf"],
+            ping_interval=None,
+        )
 
     async def send(self, message: Any) -> None:
         """

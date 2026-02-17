@@ -17,6 +17,7 @@ dependencies = [
     "mmn-sdk==1.0.1",
     "aiolimiter>=1.2.1",
     "tenacity>=9.1.2",
+    "protobuf>=6.33.2",
 ]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
@@ -33,11 +34,10 @@ dev = [
     "uvicorn>=0.40.0",
     "python-dotenv>=1.2.1",
     "mypy-protobuf>=5.0.0",
-    "protobuf>=6.33.2",
 ]
 
 [tool.semantic_release]
-version_toml = ["pyproject.toml:project.version"]
+version_toml = [["pyproject.toml:project.version"], ["mezon/__init__.py:__version__"]]
 branch = "master"
 upload_to_pypi = false
 upload_to_release = true

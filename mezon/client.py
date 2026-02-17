@@ -34,6 +34,7 @@ from mmn import (
     ZkProof,
 )
 
+from mezon.api.mezon_api import MezonApi
 from mezon.api.utils import parse_url_components
 from mezon.constants import ChannelType, Events, TypeMessage
 from mezon.managers.cache import CacheManager
@@ -52,15 +53,13 @@ from mezon.models import (
 )
 from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
+from mezon.session import Session
 from mezon.structures.clan import Clan
 from mezon.structures.message import Message
 from mezon.structures.text_channel import TextChannel
 from mezon.structures.user import User
 from mezon.utils.helper import generate_snowflake_id
 from mezon.utils.logger import get_logger, setup_logger
-
-from .api import MezonApi
-from .session import Session
 
 DEFAULT_HOST = "gw.mezon.ai"
 DEFAULT_PORT = "443"
