@@ -7,7 +7,9 @@ Copyright 2020 The Mezon Authors
 Licensed under the Apache License, Version 2.0
 """
 
-__version__ = "0.1.0"
+from importlib.metadata import version
+
+__version__ = version("mezon-sdk")
 
 # Core imports
 from .api import MezonApi
