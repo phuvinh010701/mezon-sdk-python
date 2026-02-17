@@ -2,6 +2,29 @@
 
 <!-- version list -->
 
+## v1.6.16 (2026-02-17)
+
+### Bug Fixes
+
+- Add retry mechanism in MezonClient for improved error handling
+  ([`31c2d8c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/31c2d8cd0ff47c4c2152267e0449821ee5909c71))
+
+### Chores
+
+- Add protobuf dependency to pyproject.toml and update uv.lock for consistency
+  ([`839053d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/839053d70807c2132a645a5f6eb017e1bb17f6f6))
+
+- Remove version from __init__.py in version_toml for streamlined version management
+  ([`a0dc9e5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a0dc9e5bc43edccf0a7a98cd164ecca5fed6eb88))
+
+- Update version_toml format in pyproject.toml for improved clarity
+  ([`5108a1e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/5108a1e4dc02459684d83267eef79eac61e60a7c))
+
+- Update version_toml in pyproject.toml to include version from __init__.py for better version
+  management
+  ([`6d49f74`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6d49f74366efa67d8b51085171ba9d6a40310c97))
+
+
 ## v1.6.15 (2026-02-16)
 
 ### Bug Fixes
