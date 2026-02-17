@@ -24,8 +24,7 @@ from mezon.models import (
     ChannelMessageContent,
     UserInitData,
 )
-from mezon.utils import convert_channeltype_to_channel_mode
-from mezon.utils.logger import get_logger
+from mezon.utils import convert_channeltype_to_channel_mode, get_logger
 
 if TYPE_CHECKING:
     from mezon.managers.channel import ChannelManager
