@@ -91,13 +91,13 @@ class ApiClanDescList(MezonBaseModel):
     clandesc: list[ApiClanDesc] = []
 
 
-class ApiSession(BaseModel):
-    refresh_token: str
-    token: str
-    user_id: int
-    api_url: str
-    id_token: str
-    ws_url: str
+class ApiSession(MezonBaseModel):
+    refresh_token: Optional[str] = None
+    token: Optional[str] = None
+    user_id: Optional[int] = None
+    api_url: Optional[str] = None
+    id_token: Optional[str] = None
+    ws_url: Optional[str] = None
 
 
 class ApiAccountApp(BaseModel):
