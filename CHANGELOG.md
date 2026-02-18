@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.6.19 (2026-02-18)
+
+### Bug Fixes
+
+- Streamline session initialization in MezonClient and update ApiSession model to use optional
+  fields
+  ([`8992b49`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8992b4951152e731b3fe20382ff545ccf87b1047))
+
+
 ## v1.6.18 (2026-02-18)
 
 ### Bug Fixes
