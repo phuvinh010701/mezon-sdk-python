@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.6.18 (2026-02-18)
+
+### Bug Fixes
+
+- Enhance URL handling in MezonClient and related modules by introducing build_url function and
+  updating session management
+  ([`2ef41fb`](https://github.com/phuvinh010701/mezon-sdk-python/commit/2ef41fbf016cef6238284d11d57d9c958709fa36))
+
+
 ## v1.6.17 (2026-02-18)
 
 ### Bug Fixes
