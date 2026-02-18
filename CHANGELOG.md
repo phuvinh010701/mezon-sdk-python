@@ -2,6 +2,15 @@
 
 <!-- version list -->
 
+## v1.6.17 (2026-02-18)
+
+### Bug Fixes
+
+- Remove retry decorator from init_all_dm_channels and add it to connect_socket for improved error
+  handling
+  ([`0e81975`](https://github.com/phuvinh010701/mezon-sdk-python/commit/0e8197517fea57dbae2c67a08c6536b1fe34b840))
+
+
 ## v1.6.16 (2026-02-17)
 
 ### Bug Fixes
