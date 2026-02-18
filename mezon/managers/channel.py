@@ -1,7 +1,5 @@
 from typing import Optional
 
-from tenacity import retry, stop_after_attempt, wait_exponential
-
 import mezon.api as api
 from mezon.constants import ChannelType
 from mezon.models import ApiChannelDescription, ApiCreateChannelDescRequest
@@ -29,11 +27,6 @@ class ChannelManager:
         self.session_manager = session_manager
         self.all_dm_channels: Optional[dict[int, int]] = None
 
-    @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=1.5, max=15),
-        reraise=True,
-    )
     async def init_all_dm_channels(self, session_token: str) -> None:
         """
         Initialize and cache all DM channels for quick lookup.
