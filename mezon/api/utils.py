@@ -26,6 +26,7 @@ def build_headers(
     basic_auth: Optional[tuple[str | int, str]] = None,
     accept_binary: bool = False,
     send_binary: bool = False,
+    additional_headers: dict[str, Any] = {},
 ) -> dict[str, Any]:
     """
     Build headers for API requests.
@@ -43,6 +44,8 @@ def build_headers(
         "Accept": "application/proto" if accept_binary else "application/json",
         "Content-Type": "application/proto" if send_binary else "application/json",
     }
+    if additional_headers:
+        headers.update(additional_headers)
     if bearer_token:
         headers["Authorization"] = f"Bearer {bearer_token}"
     elif basic_auth:

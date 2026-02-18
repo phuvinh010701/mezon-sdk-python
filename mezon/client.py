@@ -298,10 +298,9 @@ class MezonClient:
         session = await self.get_session()
         await self.initialize_managers(session)
 
-        if session.user_id:
-            self.ephemeral_key_pair = self.get_ephemeral_key_pair()
-            self.address = self.get_address_from_user_id(self.client_id)
-            self.zk_proof = await self.get_zk_proof()
+        self.ephemeral_key_pair = self.get_ephemeral_key_pair()
+        self.address = self.get_address_from_user_id(self.client_id)
+        self.zk_proof = await self.get_zk_proof()
 
         self._enable_auto_reconnect = enable_auto_reconnect
         self._is_hard_disconnect = False
