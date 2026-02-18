@@ -1,6 +1,8 @@
 import asyncio
 from typing import TYPE_CHECKING, Any, Optional
 
+from tenacity import retry, stop_after_attempt, wait_exponential
+
 if TYPE_CHECKING:
     from mezon.client import MezonClient
 
@@ -79,6 +81,11 @@ class SocketManager:
         """
         return self.socket.is_open()
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1.5, max=15),
+        reraise=True,
+    )
     async def connect_socket(self, token: str) -> None:
         """
         Connect to the socket and join all clans.
