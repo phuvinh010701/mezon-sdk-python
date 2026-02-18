@@ -34,15 +34,23 @@ class Session:
         """
         self.token: str = api_session.token
         self.refresh_token: str = api_session.refresh_token
-        self.user_id: str | None = api_session.user_id
-        self.api_url: str | None = api_session.api_url
-        self.id_token: str | None = api_session.id_token
+        self.user_id: str = api_session.user_id
+        self.api_url: str = api_session.api_url
+        self.id_token: str = api_session.id_token
+        self.ws_url: str = self.restore_ws_url(api_session.ws_url)
         self.created_at: int = int(time.time())
         self.expires_at: int | None = None
         self.refresh_expires_at: int | None = None
         self.vars: dict[str, Any] = {}
 
         self.update(self.token, self.refresh_token)
+
+    def restore_ws_url(self, ws_url: str) -> str:
+        # TODO: Restore the ws url to the correct protocol
+        # for now assume it returns wss:// if not provided
+        if not ws_url.startswith("wss://") or not ws_url.startswith("ws://"):
+            ws_url = f"wss://{ws_url}"
+        return ws_url
 
     def is_expired(self, current_time: int) -> bool:
         """
