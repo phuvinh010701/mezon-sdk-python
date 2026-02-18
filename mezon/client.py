@@ -35,7 +35,7 @@ from mmn import (
 )
 
 from mezon.api.mezon_api import MezonApi
-from mezon.api.utils import parse_url_components
+from mezon.api.utils import build_url, parse_url_components
 from mezon.constants import ChannelType, Events, TypeMessage
 from mezon.managers.cache import CacheManager
 from mezon.managers.channel import ChannelManager
@@ -141,7 +141,8 @@ class MezonClient:
         self.api_key = api_key
         self.mmn_api_url = mmn_api_url
         self.zk_api_url = zk_api_url
-        self.login_url = f"{use_ssl and 'https' or 'http'}://{host}:{port}"
+        self.use_ssl = use_ssl
+        self.login_url = build_url(use_ssl and "https" or "http", host=host, port=port)
         self.timeout_ms = timeout
         self.clans: CacheManager[int, Clan] = CacheManager(None, max_size=1000)
         self.channels: CacheManager[int, TextChannel] = CacheManager(
@@ -207,19 +208,29 @@ class MezonClient:
         Args:
             sock_session: Session object with authentication token
         """
-        url_components = parse_url_components(sock_session.api_url)
+        url_components = parse_url_components(
+            sock_session.api_url, use_ssl=self.use_ssl
+        )
+        ws_url_components = parse_url_components(
+            sock_session.ws_url, use_ssl=self.use_ssl
+        )
+
         self.api_client = MezonApi(
             self.client_id,
             self.api_key,
-            f"{url_components['scheme']}://{url_components['hostname']}:{url_components['port']}",
+            build_url(
+                url_components["scheme"],
+                url_components["hostname"],
+                url_components["port"],
+            ),
             self.timeout_ms,
         )
 
         if not hasattr(self, "socket_manager"):
             self.socket_manager = SocketManager(
-                host=url_components["hostname"],
-                port=url_components["port"],
-                use_ssl=url_components["use_ssl"],
+                host=ws_url_components["hostname"],
+                port=ws_url_components["port"],
+                use_ssl=ws_url_components["use_ssl"],
                 api_client=self.api_client,
                 event_manager=self.event_manager,
                 mezon_client=self,

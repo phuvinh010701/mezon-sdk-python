@@ -92,11 +92,12 @@ class ApiClanDescList(MezonBaseModel):
 
 
 class ApiSession(BaseModel):
-    refresh_token: Optional[str] = None
-    token: Optional[str] = None
+    refresh_token: str
+    token: str
     user_id: int
-    api_url: Optional[str] = None
-    id_token: Optional[str] = None
+    api_url: str
+    id_token: str
+    ws_url: str
 
 
 class ApiAccountApp(BaseModel):

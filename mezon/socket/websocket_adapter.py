@@ -18,13 +18,13 @@ import asyncio
 import logging
 from abc import ABC, abstractmethod
 from typing import Any, Optional
-from urllib.parse import quote
 
 import websockets
 from aiolimiter import AsyncLimiter
 from websockets.asyncio.client import ClientConnection
 from websockets.protocol import State
 
+from mezon.api.utils import build_url
 from mezon.constants.rate_limit import (
     WEBSOCKET_PB_RATE_LIMIT,
     WEBSOCKET_PB_RATE_LIMIT_PERIOD,
@@ -112,7 +112,19 @@ class WebSocketAdapterPb(WebSocketAdapter):
         self, scheme: str, host: str, port: str, create_status: bool, token: str
     ) -> None:
         """Connect to WebSocket server with protobuf protocol."""
-        url = f"{scheme}{host}:{port}/ws?lang=en&status={quote(str(create_status).lower())}&token={quote(token)}&format=protobuf"
+        url = build_url(
+            scheme,
+            host,
+            port,
+            "ws",
+            query={
+                "lang": "en",
+                "status": str(create_status).lower(),
+                "token": token,
+                "format": "protobuf",
+            },
+        )
+        logger.debug(f"Connecting to WebSocket server with URL: {url}")
         self._socket = await websockets.connect(
             url,
             subprotocols=["protobuf"],

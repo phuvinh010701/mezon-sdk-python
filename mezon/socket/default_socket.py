@@ -81,7 +81,7 @@ class Socket:
         self.host = host
         self.port = port
         self.use_ssl = use_ssl
-        self.websocket_scheme = "wss://" if use_ssl else "ws://"
+        self.websocket_scheme = use_ssl and "wss" or "ws"
         self.send_timeout_ms = send_timeout_ms
         self.event_manager = event_manager or EventManager()
 
