@@ -23,7 +23,6 @@ from google.protobuf import json_format
 from pydantic import BaseModel, Field
 
 from mezon.protobuf.api import api_pb2
-from mezon.protobuf.rtapi import realtime_pb2
 
 logger = logging.getLogger(__name__)
 
@@ -161,21 +160,14 @@ class ApiChannelDescription(BaseModel):
 
     @classmethod
     def from_protobuf(
-        cls,
-        message: realtime_pb2.ChannelCreatedEvent
-        | realtime_pb2.ChannelUpdatedEvent
-        | api_pb2.ChannelDescription,
+        cls, message: api_pb2.ChannelDescription
     ) -> "ApiChannelDescription":
-        if isinstance(message, api_pb2.ChannelDescription):
-            channel_type_value = message.type
-        else:
-            channel_type_value = message.channel_type
-
+        """Convert API protobuf ChannelDescription to Pydantic model."""
         json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
         data_dict = json.loads(json_data)
 
-        if channel_type_value is not None:
-            data_dict["type"] = channel_type_value
+        if message.type is not None:
+            data_dict["type"] = message.type
 
         return cls.model_validate(data_dict)
 
@@ -889,20 +881,19 @@ class UserProfileRedis(BaseModel):
     """User profile from Redis"""
 
     user_id: int
-    username: str
-    avatar: str
-    display_name: str
-    about_me: str
-    custom_status: str
-    create_time_second: int
-    fcm_tokens: list[FCMTokens]
-    online: bool
-    metadata: str
-    is_disabled: bool
-    joined_clans: list[int]
-    pubkey: str
-    mezon_id: str
-    app_token: str
+    username: Optional[str] = None
+    avatar: Optional[str] = None
+    display_name: Optional[str] = None
+    user_status: Optional[str] = None
+    status: Optional[str] = None
+    online: Optional[bool] = None
+    fcm_tokens: list[FCMTokens] = Field(default_factory=list)
+    joined_clans: list[int] = Field(default_factory=list)
+    app_token: Optional[str] = None
+    create_time_second: Optional[int] = None
+    app_url: Optional[str] = None
+    is_bot: Optional[bool] = None
+    voip_token: Optional[str] = None
 
 
 class AddUsers(BaseModel):
@@ -914,22 +905,16 @@ class AddUsers(BaseModel):
     display_name: str
 
 
-class ChannelDescription(BaseModel):
-    """Channel description for events"""
-
-    pass  # Will be same as ApiChannelDescription
-
-
 class UserChannelAddedEvent(BaseModel):
     """User channel added event"""
 
-    channel_desc: ChannelDescription
-    users: list[UserProfileRedis]
-    status: str
     clan_id: int
+    channel_desc: Optional[ApiChannelDescription] = None
+    users: list[UserProfileRedis] = Field(default_factory=list)
+    status: Optional[str] = None
     caller: Optional[UserProfileRedis] = None
-    create_time_second: int
-    active: int
+    create_time_seconds: Optional[int] = None
+    active: Optional[int] = None
 
 
 class UserChannelRemoved(BaseModel):
@@ -1010,22 +995,22 @@ class VoiceJoinedEvent(BaseModel):
     """Voice joined event"""
 
     clan_id: int
-    clan_name: str
-    id: str
-    participant: str
     user_id: int
-    voice_channel_label: str
     voice_channel_id: int
+    clan_name: Optional[str] = None
+    id: Optional[str] = None
+    participant: Optional[str] = None
+    voice_channel_label: Optional[str] = None
     last_screenshot: Optional[str] = None
 
 
 class VoiceLeavedEvent(BaseModel):
     """Voice leaved event"""
 
-    id: str
     clan_id: int
     voice_channel_id: int
     voice_user_id: int
+    id: Optional[str] = None
 
 
 class VoiceStartedEvent(BaseModel):
@@ -1078,47 +1063,52 @@ class ChannelUpdatedEvent(BaseModel):
     """Channel updated event"""
 
     clan_id: int
-    category_id: int
-    creator_id: int
-    parent_id: int
     channel_id: int
-    channel_label: str
+    category_id: Optional[int] = None
+    creator_id: Optional[int] = None
+    parent_id: Optional[int] = None
+    channel_label: Optional[str] = None
     channel_type: Optional[int] = None
-    status: int
-    meeting_code: str
-    is_error: bool
-    channel_private: bool
-    app_url: str
-    e2ee: int
-    topic: str
-    age_restricted: int
-    active: int
+    status: Optional[int] = None
+    meeting_code: Optional[str] = None
+    is_error: Optional[bool] = None
+    channel_private: Optional[bool] = None
+    app_id: Optional[int] = None
+    e2ee: Optional[int] = None
+    topic: Optional[str] = None
+    age_restricted: Optional[int] = None
+    active: Optional[int] = None
+    count_mess_unread: Optional[int] = None
+    user_ids: list[int] = Field(default_factory=list)
+    role_ids: list[int] = Field(default_factory=list)
+    channel_avatar: Optional[str] = None
 
 
 class ChannelCreatedEvent(BaseModel):
     """Channel created event"""
 
     clan_id: int
-    category_id: int
-    creator_id: int
-    parent_id: int
     channel_id: int
-    channel_label: str
-    channel_private: int
+    category_id: Optional[int] = None
+    creator_id: Optional[int] = None
+    parent_id: Optional[int] = None
+    channel_label: Optional[str] = None
+    channel_private: Optional[int] = None
     channel_type: Optional[int] = None
-    status: int
-    app_url: str
-    clan_name: str
+    status: Optional[int] = None
+    app_id: Optional[int] = None
+    clan_name: Optional[str] = None
+    channel_avatar: Optional[str] = None
 
 
 class ChannelDeletedEvent(BaseModel):
     """Channel deleted event"""
 
     clan_id: int
-    category_id: int
-    parent_id: int
     channel_id: int
-    deletor: str
+    category_id: Optional[int] = None
+    parent_id: Optional[int] = None
+    deletor: Optional[str] = None
 
 
 class ClanUpdatedEvent(BaseModel):
