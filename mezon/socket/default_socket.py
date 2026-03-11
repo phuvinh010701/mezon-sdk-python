@@ -22,11 +22,10 @@ from google.protobuf import json_format
 from pydantic import BaseModel
 
 from mezon.managers.event import EventManager
+from mezon.models import convert_envelope_to_pydantic
 from mezon.protobuf.rtapi import realtime_pb2
 from mezon.protobuf.utils import parse_protobuf
 from mezon.utils.logger import get_logger
-from mezon.models import convert_envelope_to_pydantic
-
 
 from ..models import (
     ApiMessageAttachment,

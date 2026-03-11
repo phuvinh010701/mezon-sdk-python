@@ -22,9 +22,9 @@ from mezon.models import (
     ApiMessageMention,
     ApiMessageReaction,
     ApiMessageRef,
+    ChannelMessage,
     ChannelMessageAck,
     ChannelMessageContent,
-    ChannelMessage,
 )
 from mezon.utils.helper import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger

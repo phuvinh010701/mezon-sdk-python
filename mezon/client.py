@@ -47,8 +47,8 @@ from mezon.models import (
     ApiChannelDescription,
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
-    ChannelMessageContent,
     ChannelMessage,
+    ChannelMessageContent,
     UserInitData,
 )
 from mezon.protobuf.api import api_pb2
