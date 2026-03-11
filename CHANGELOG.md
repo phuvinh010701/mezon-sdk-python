@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.6.21 (2026-03-11)
+
+### Bug Fixes
+
+- Update channel event handling and model definitions
+  ([`b544983`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b544983e0a3d5d29f03c3996ba3793c4032a7346))
+
+
 ## v1.6.20 (2026-03-11)
 
 ### Bug Fixes
