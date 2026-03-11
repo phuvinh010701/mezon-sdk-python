@@ -3963,3 +3963,65 @@ class AIAgentEnabledEvent(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___AIAgentEnabledEvent: _TypeAlias = AIAgentEnabledEvent  # noqa: Y015
+
+@_typing.final
+class GotifyMessage(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    @_typing.final
+    class ExtrasEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
+        def __init__(
+            self,
+            *,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
+        ) -> None: ...
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
+        def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+    ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    IMAGE_FIELD_NUMBER: _builtins.int
+    PRIORITY_FIELD_NUMBER: _builtins.int
+    USERS_FIELD_NUMBER: _builtins.int
+    EXTRAS_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    channel_id: _builtins.int
+    message: _builtins.str
+    title: _builtins.str
+    image: _builtins.str
+    priority: _builtins.int
+    app_id: _builtins.int
+    sender_id: _builtins.int
+    @_builtins.property
+    def users(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def extras(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]: ...
+    def __init__(
+        self,
+        *,
+        id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message: _builtins.str = ...,
+        title: _builtins.str = ...,
+        image: _builtins.str = ...,
+        priority: _builtins.int = ...,
+        users: _abc.Iterable[_builtins.str] | None = ...,
+        extras: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
+        app_id: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "channel_id", b"channel_id", "extras", b"extras", "id", b"id", "image", b"image", "message", b"message", "priority", b"priority", "sender_id", b"sender_id", "title", b"title", "users", b"users"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___GotifyMessage: _TypeAlias = GotifyMessage  # noqa: Y015

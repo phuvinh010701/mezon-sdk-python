@@ -48,7 +48,7 @@ from mezon.models import (
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
     ChannelMessageContent,
-    ChannelMessageRaw,
+    ChannelMessage,
     UserInitData,
 )
 from mezon.protobuf.api import api_pb2
@@ -638,16 +638,14 @@ class MezonClient:
             menu_type=menu_type,
         )
 
-    async def _init_channel_message_cache(
-        self, message: api_pb2.ChannelMessage
-    ) -> None:
+    async def _init_channel_message_cache(self, message: ChannelMessage) -> None:
         """
         Initialize channel message cache when receiving a message.
 
         Args:
-            message: The channel message from protobuf
+            message: The channel message (Pydantic model or protobuf)
         """
-        message_raw = ChannelMessageRaw.from_protobuf(message)
+        message_raw = message
 
         try:
             await self.message_db.save_message(message_raw.to_db_dict())
@@ -682,12 +680,12 @@ class MezonClient:
 
         channel.messages.set(message_raw.id, message_obj)
 
-    async def _init_user_clan_cache(self, message: api_pb2.ChannelMessage) -> None:
+    async def _init_user_clan_cache(self, message: ChannelMessage) -> None:
         """
         Initialize user and clan cache when receiving a message.
 
         Args:
-            message: The channel message from protobuf
+            message: The channel message
         """
 
         all_dm_channels = self.channel_manager.get_all_dm_channels()
@@ -755,9 +753,7 @@ class MezonClient:
         self._register_event_handler(Events.CHANNEL_MESSAGE, handler)
 
     @auto_bind(Events.CHANNEL_MESSAGE)
-    async def _handle_channel_message_default(
-        self, message: api_pb2.ChannelMessage
-    ) -> None:
+    async def _handle_channel_message_default(self, message: ChannelMessage) -> None:
         """
         Default handler for ``ChannelMessage`` events.
 
