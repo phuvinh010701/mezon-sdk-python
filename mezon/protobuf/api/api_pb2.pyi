@@ -120,6 +120,22 @@ DECREMENT: Operator.ValueType  # 4
 """Override the leaderboard operator with DECREMENT."""
 Global___Operator: _TypeAlias = Operator  # noqa: Y015
 
+class _PollType:
+    ValueType = _typing.NewType("ValueType", _builtins.int)
+    V: _TypeAlias = ValueType  # noqa: Y015
+
+class _PollTypeEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[_PollType.ValueType], _builtins.type):
+    DESCRIPTOR: _descriptor.EnumDescriptor
+    SINGLE: _PollType.ValueType  # 0
+    MULTIPLE: _PollType.ValueType  # 1
+
+class PollType(_PollType, metaclass=_PollTypeEnumTypeWrapper):
+    """Poll type: SINGLE = one choice, MULTIPLE = multiple choices."""
+
+SINGLE: PollType.ValueType  # 0
+MULTIPLE: PollType.ValueType  # 1
+Global___PollType: _TypeAlias = PollType  # noqa: Y015
+
 @_typing.final
 class Account(_message.Message):
     """A user with additional account details. Always the current user."""
@@ -5338,6 +5354,72 @@ class UploadAttachment(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___UploadAttachment: _TypeAlias = UploadAttachment  # noqa: Y015
+
+@_typing.final
+class MultipartUploadAttachment(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    FILENAME_FIELD_NUMBER: _builtins.int
+    URLS_FIELD_NUMBER: _builtins.int
+    UPLOAD_ID_FIELD_NUMBER: _builtins.int
+    filename: _builtins.str
+    """The name of file that need to upload"""
+    upload_id: _builtins.str
+    """the upload id"""
+    @_builtins.property
+    def urls(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
+        """The url"""
+
+    def __init__(
+        self,
+        *,
+        filename: _builtins.str = ...,
+        urls: _abc.Iterable[_builtins.str] | None = ...,
+        upload_id: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["filename", b"filename", "upload_id", b"upload_id", "urls", b"urls"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MultipartUploadAttachment: _TypeAlias = MultipartUploadAttachment  # noqa: Y015
+
+@_typing.final
+class MultipartUploadAttachmentPart(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    PART_NUMBER_FIELD_NUMBER: _builtins.int
+    E_TAG_FIELD_NUMBER: _builtins.int
+    part_number: _builtins.int
+    e_tag: _builtins.str
+    def __init__(
+        self,
+        *,
+        part_number: _builtins.int = ...,
+        e_tag: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["e_tag", b"e_tag", "part_number", b"part_number"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MultipartUploadAttachmentPart: _TypeAlias = MultipartUploadAttachmentPart  # noqa: Y015
+
+@_typing.final
+class MultipartUploadAttachmentFinishRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    UPLOAD_ID_FIELD_NUMBER: _builtins.int
+    PARTS_FIELD_NUMBER: _builtins.int
+    upload_id: _builtins.str
+    @_builtins.property
+    def parts(self) -> _containers.RepeatedCompositeFieldContainer[Global___MultipartUploadAttachmentPart]: ...
+    def __init__(
+        self,
+        *,
+        upload_id: _builtins.str = ...,
+        parts: _abc.Iterable[Global___MultipartUploadAttachmentPart] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["parts", b"parts", "upload_id", b"upload_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MultipartUploadAttachmentFinishRequest: _TypeAlias = MultipartUploadAttachmentFinishRequest  # noqa: Y015
 
 @_typing.final
 class SearchMessageRequest(_message.Message):
@@ -10576,3 +10658,275 @@ class MutedChannelList(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___MutedChannelList: _TypeAlias = MutedChannelList  # noqa: Y015
+
+@_typing.final
+class NotificationBatchRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    @_typing.final
+    class NotificationsEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.int
+        @_builtins.property
+        def value(self) -> Global___NotificationList: ...
+        def __init__(
+            self,
+            *,
+            key: _builtins.int = ...,
+            value: Global___NotificationList | None = ...,
+        ) -> None: ...
+        _HasFieldArgType: _TypeAlias = _typing.Literal["value", b"value"]  # noqa: Y015
+        def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
+        def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+    NOTIFICATIONS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def notifications(self) -> _containers.MessageMap[_builtins.int, Global___NotificationList]: ...
+    def __init__(
+        self,
+        *,
+        notifications: _abc.Mapping[_builtins.int, Global___NotificationList] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["notifications", b"notifications"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___NotificationBatchRequest: _TypeAlias = NotificationBatchRequest  # noqa: Y015
+
+@_typing.final
+class CreatePollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    QUESTION_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    EXPIRE_HOURS_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
+    question: _builtins.str
+    expire_hours: _builtins.int
+    type: Global___PollType.ValueType
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    def __init__(
+        self,
+        *,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        question: _builtins.str = ...,
+        answers: _abc.Iterable[_builtins.str] | None = ...,
+        expire_hours: _builtins.int = ...,
+        type: Global___PollType.ValueType = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answers", b"answers", "channel_id", b"channel_id", "clan_id", b"clan_id", "expire_hours", b"expire_hours", "question", b"question", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CreatePollRequest: _TypeAlias = CreatePollRequest  # noqa: Y015
+
+@_typing.final
+class CreatePollResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    QUESTION_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    ANSWER_COUNTS_FIELD_NUMBER: _builtins.int
+    EXP_FIELD_NUMBER: _builtins.int
+    IS_CLOSED_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    TOTAL_VOTES_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    question: _builtins.str
+    exp: _builtins.int
+    is_closed: _builtins.bool
+    creator_id: _builtins.int
+    type: Global___PollType.ValueType
+    total_votes: _builtins.int
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedCompositeFieldContainer[Global___PollAnswer]: ...
+    @_builtins.property
+    def answer_counts(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        question: _builtins.str = ...,
+        answers: _abc.Iterable[Global___PollAnswer] | None = ...,
+        answer_counts: _abc.Iterable[_builtins.int] | None = ...,
+        exp: _builtins.int = ...,
+        is_closed: _builtins.bool = ...,
+        creator_id: _builtins.int = ...,
+        type: Global___PollType.ValueType = ...,
+        total_votes: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_counts", b"answer_counts", "answers", b"answers", "creator_id", b"creator_id", "exp", b"exp", "is_closed", b"is_closed", "message_id", b"message_id", "poll_id", b"poll_id", "question", b"question", "total_votes", b"total_votes", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CreatePollResponse: _TypeAlias = CreatePollResponse  # noqa: Y015
+
+@_typing.final
+class VotePollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ANSWER_INDICES_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    @_builtins.property
+    def answer_indices(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        answer_indices: _abc.Iterable[_builtins.int] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_indices", b"answer_indices", "channel_id", b"channel_id", "message_id", b"message_id", "poll_id", b"poll_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___VotePollRequest: _TypeAlias = VotePollRequest  # noqa: Y015
+
+@_typing.final
+class ClosePollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "poll_id", b"poll_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ClosePollRequest: _TypeAlias = ClosePollRequest  # noqa: Y015
+
+@_typing.final
+class GetPollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "poll_id", b"poll_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___GetPollRequest: _TypeAlias = GetPollRequest  # noqa: Y015
+
+@_typing.final
+class PollAnswer(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    INDEX_FIELD_NUMBER: _builtins.int
+    LABEL_FIELD_NUMBER: _builtins.int
+    index: _builtins.int
+    label: _builtins.str
+    def __init__(
+        self,
+        *,
+        index: _builtins.int = ...,
+        label: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["index", b"index", "label", b"label"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___PollAnswer: _TypeAlias = PollAnswer  # noqa: Y015
+
+@_typing.final
+class PollVoterDetail(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    ANSWER_INDEX_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    answer_index: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        answer_index: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_index", b"answer_index", "user_ids", b"user_ids"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___PollVoterDetail: _TypeAlias = PollVoterDetail  # noqa: Y015
+
+@_typing.final
+class GetPollResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    QUESTION_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    ANSWER_COUNTS_FIELD_NUMBER: _builtins.int
+    EXP_FIELD_NUMBER: _builtins.int
+    IS_CLOSED_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    TOTAL_VOTES_FIELD_NUMBER: _builtins.int
+    VOTER_DETAILS_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    question: _builtins.str
+    exp: _builtins.int
+    is_closed: _builtins.bool
+    creator_id: _builtins.int
+    type: Global___PollType.ValueType
+    total_votes: _builtins.int
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedCompositeFieldContainer[Global___PollAnswer]: ...
+    @_builtins.property
+    def answer_counts(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def voter_details(self) -> _containers.RepeatedCompositeFieldContainer[Global___PollVoterDetail]: ...
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        question: _builtins.str = ...,
+        answers: _abc.Iterable[Global___PollAnswer] | None = ...,
+        answer_counts: _abc.Iterable[_builtins.int] | None = ...,
+        exp: _builtins.int = ...,
+        is_closed: _builtins.bool = ...,
+        creator_id: _builtins.int = ...,
+        type: Global___PollType.ValueType = ...,
+        total_votes: _builtins.int = ...,
+        voter_details: _abc.Iterable[Global___PollVoterDetail] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_counts", b"answer_counts", "answers", b"answers", "creator_id", b"creator_id", "exp", b"exp", "is_closed", b"is_closed", "message_id", b"message_id", "poll_id", b"poll_id", "question", b"question", "total_votes", b"total_votes", "type", b"type", "voter_details", b"voter_details"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___GetPollResponse: _TypeAlias = GetPollResponse  # noqa: Y015

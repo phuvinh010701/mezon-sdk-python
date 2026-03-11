@@ -22,9 +22,9 @@ from mezon.models import (
     ApiMessageMention,
     ApiMessageReaction,
     ApiMessageRef,
+    ChannelMessage,
     ChannelMessageAck,
     ChannelMessageContent,
-    ChannelMessageRaw,
 )
 from mezon.utils.helper import convert_channeltype_to_channel_mode
 from mezon.utils.logger import get_logger
@@ -47,7 +47,7 @@ class Message:
 
     def __init__(
         self,
-        message_raw: ChannelMessageRaw,
+        message_raw: ChannelMessage,
         channel: "TextChannel",
         socket_manager: "SocketManager",
     ):
@@ -55,7 +55,7 @@ class Message:
         Initialize a Message.
 
         Args:
-            message_raw: ChannelMessageRaw
+            message_raw: ChannelMessage
             channel: The TextChannel this message belongs to
             socket_manager: Socket manager for sending updates
         """

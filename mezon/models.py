@@ -15,6 +15,7 @@ limitations under the License.
 """
 
 import json
+import logging
 from enum import Enum
 from typing import Any, Optional
 
@@ -23,6 +24,8 @@ from pydantic import BaseModel, Field
 
 from mezon.protobuf.api import api_pb2
 from mezon.protobuf.rtapi import realtime_pb2
+
+logger = logging.getLogger(__name__)
 
 
 def protobuf_to_pydantic(proto_message, pydantic_class: type[BaseModel]) -> BaseModel:
@@ -193,6 +196,8 @@ class ApiMessageAttachment(BaseModel):
     size: Optional[int] = None
     url: Optional[str] = None
     width: Optional[int] = None
+    thumbnail: Optional[str] = None
+    duration: Optional[int] = None
     channel_id: Optional[int] = None
     mode: Optional[int] = None
     channel_label: Optional[str] = None
@@ -969,10 +974,12 @@ class MessageTypingEvent(BaseModel):
     """Message typing event"""
 
     channel_id: int
-    mode: int
-    is_public: bool
-    clan_id: int
     sender_id: int
+    sender_username: Optional[str] = None
+    sender_display_name: Optional[str] = None
+    mode: Optional[int] = None
+    is_public: Optional[bool] = None
+    clan_id: Optional[int] = None
     channel_label: Optional[str] = None
 
 
@@ -1229,6 +1236,12 @@ class Ping(BaseModel):
     pass
 
 
+class Pong(BaseModel):
+    """Pong message"""
+
+    pass
+
+
 class Rpc(BaseModel):
     """RPC call"""
 
@@ -1236,34 +1249,57 @@ class Rpc(BaseModel):
     payload: Any
 
 
-class ChannelMessageRaw(BaseModel):
-    """Raw channel message data from protobuf"""
+class ChannelMessage(BaseModel):
+    """A message sent on a channel"""
 
-    id: int = Field(alias="message_id")
+    message_id: int
     clan_id: int
     channel_id: int
     sender_id: int
+
     content: dict[str, Any] = Field(default_factory=dict)
-    reactions: list[ApiMessageReaction] = Field(default_factory=list)
+
     mentions: list[ApiMessageMention] = Field(default_factory=list)
     attachments: list[ApiMessageAttachment] = Field(default_factory=list)
+    reactions: list[ApiMessageReaction] = Field(default_factory=list)
     references: list[ApiMessageRef] = Field(default_factory=list)
+
+    username: Optional[str] = None
+    avatar: Optional[str] = None
+    display_name: Optional[str] = None
+    clan_nick: Optional[str] = None
+    clan_avatar: Optional[str] = None
+    channel_label: Optional[str] = None
+    clan_logo: Optional[str] = None
+    category_name: Optional[str] = None
+
     create_time_seconds: Optional[int] = None
+    update_time_seconds: Optional[int] = None
+    mode: Optional[int] = None
+    is_public: Optional[bool] = None
+    hide_editted: Optional[bool] = None
     topic_id: Optional[int] = None
+    code: Optional[int] = None
+    referenced_message: Optional[bytes] = None
 
     class Config:
         populate_by_name = True
 
+    @property
+    def id(self) -> int:
+        """Alias for message_id (backward compatibility)"""
+        return self.message_id
+
     @classmethod
-    def from_protobuf(cls, message: api_pb2.ChannelMessage) -> "ChannelMessageRaw":
+    def from_protobuf(cls, message: api_pb2.ChannelMessage) -> "ChannelMessage":
         """
-        Create a ChannelMessageRaw from a protobuf ChannelMessage.
+        Create a ChannelMessage from a protobuf ChannelMessage.
 
         Args:
             message: Protobuf ChannelMessage object
 
         Returns:
-            ChannelMessageRaw instance
+            ChannelMessage instance
         """
 
         def safe_json_parse(value: Optional[str | bytes], default):
@@ -1275,20 +1311,131 @@ class ChannelMessageRaw(BaseModel):
             except (json.JSONDecodeError, TypeError, UnicodeDecodeError):
                 return default
 
+        def decode_protobuf_mentions(data: bytes) -> list[ApiMessageMention]:
+            """Decode protobuf bytes to list of mentions"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                mention_list = api_pb2.MessageMentionList()
+                mention_list.ParseFromString(data)
+                return [
+                    ApiMessageMention(
+                        id=m.id,
+                        user_id=m.user_id,
+                        username=m.username,
+                        role_id=m.role_id,
+                        rolename=m.rolename,
+                        s=m.s,
+                        e=m.e,
+                    )
+                    for m in mention_list.mentions
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode mentions: {e}")
+                return []
+
+        def decode_protobuf_attachments(data: bytes) -> list[ApiMessageAttachment]:
+            """Decode protobuf bytes to list of attachments"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                attachment_list = api_pb2.MessageAttachmentList()
+                attachment_list.ParseFromString(data)
+                return [
+                    ApiMessageAttachment(
+                        filename=a.filename,
+                        filetype=a.filetype,
+                        height=a.height,
+                        size=a.size,
+                        url=a.url,
+                        width=a.width,
+                        thumbnail=a.thumbnail,
+                        duration=a.duration,
+                    )
+                    for a in attachment_list.attachments
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode attachments: {e}")
+                return []
+
+        def decode_protobuf_reactions(data: bytes) -> list[ApiMessageReaction]:
+            """Decode protobuf bytes to list of reactions"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                reaction_list = api_pb2.MessageReactionList()
+                reaction_list.ParseFromString(data)
+                return [
+                    ApiMessageReaction(
+                        action=r.action,
+                        emoji_id=r.emoji_id,
+                        emoji=r.emoji,
+                        id=r.id,
+                        sender_id=r.sender_id,
+                        sender_name=r.sender_name,
+                        sender_avatar=r.sender_avatar,
+                        count=r.count,
+                    )
+                    for r in reaction_list.reactions
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode reactions: {e}")
+                return []
+
+        def decode_protobuf_references(data: bytes) -> list[ApiMessageRef]:
+            """Decode protobuf bytes to list of references"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                ref_list = api_pb2.MessageRefList()
+                ref_list.ParseFromString(data)
+                return [
+                    ApiMessageRef(
+                        message_id=r.message_id,
+                        message_ref_id=r.message_ref_id,
+                        ref_type=r.ref_type,
+                        message_sender_id=r.message_sender_id,
+                        message_sender_username=r.message_sender_username,
+                        message_sender_display_name=r.message_sender_display_name,
+                        message_sender_avatar=r.mesages_sender_avatar,
+                        has_attachment=r.has_attachment,
+                        message_sender_clan_nick=r.message_sender_clan_nick,
+                        content=r.content,
+                    )
+                    for r in ref_list.refs
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode references: {e}")
+                return []
+
         return cls(
             message_id=message.message_id,
             clan_id=message.clan_id,
             channel_id=message.channel_id,
             sender_id=message.sender_id,
             content=safe_json_parse(getattr(message, "content", None), {}),
-            reactions=safe_json_parse(getattr(message, "reactions", None), []),
-            mentions=safe_json_parse(getattr(message, "mentions", None), []),
-            attachments=safe_json_parse(getattr(message, "attachments", None), [])
-            if isinstance(message.attachments, list)
-            else [],
-            references=safe_json_parse(getattr(message, "references", None), []),
+            mentions=decode_protobuf_mentions(getattr(message, "mentions", b"")),
+            attachments=decode_protobuf_attachments(
+                getattr(message, "attachments", b"")
+            ),
+            reactions=decode_protobuf_reactions(getattr(message, "reactions", b"")),
+            references=decode_protobuf_references(getattr(message, "references", b"")),
+            username=getattr(message, "username", None),
+            avatar=getattr(message, "avatar", None),
+            display_name=getattr(message, "display_name", None),
+            clan_nick=getattr(message, "clan_nick", None),
+            clan_avatar=getattr(message, "clan_avatar", None),
+            channel_label=getattr(message, "channel_label", None),
+            clan_logo=getattr(message, "clan_logo", None),
+            category_name=getattr(message, "category_name", None),
             create_time_seconds=getattr(message, "create_time_seconds", None),
+            update_time_seconds=getattr(message, "update_time_seconds", None),
+            mode=getattr(message, "mode", None),
+            is_public=getattr(message, "is_public", None),
+            hide_editted=getattr(message, "hide_editted", None),
             topic_id=getattr(message, "topic_id", None),
+            code=getattr(message, "code", None),
+            referenced_message=getattr(message, "referenced_message", None),
         )
 
     def to_message_dict(self) -> dict[str, Any]:
@@ -1321,9 +1468,9 @@ class ChannelMessageRaw(BaseModel):
         }
 
     @classmethod
-    def from_db_dict(cls, dict: dict[str, Any]) -> "ChannelMessageRaw":
+    def from_db_dict(cls, dict: dict[str, Any]) -> "ChannelMessage":
         """
-        Create a ChannelMessageRaw from a database dictionary.
+        Create a ChannelMessage from a database dictionary.
         """
         reactions_data = (
             json.loads(dict["reactions"])
@@ -1422,3 +1569,93 @@ class UserInitData(BaseModel):
             Dictionary suitable for User class initialization
         """
         return self.model_dump(by_alias=True)
+
+
+# Envelope message type to Pydantic model mapping
+ENVELOPE_TO_PYDANTIC_MAP: dict[str, type[BaseModel]] = {
+    # Channel operations
+    "channel_message": ChannelMessage,
+    "channel_message_ack": ChannelMessageAck,
+    "channel_message_send": ChannelMessageSend,
+    "channel_message_update": ChannelMessageUpdate,
+    "channel_message_remove": ChannelMessageRemove,
+    "channel_join": ChannelJoin,
+    "channel_leave": ChannelLeave,
+    # Clan operations
+    "clan_join": ClanJoin,
+    # Events
+    "channel_created_event": ChannelCreatedEvent,
+    "channel_deleted_event": ChannelDeletedEvent,
+    "channel_updated_event": ChannelUpdatedEvent,
+    "clan_updated_event": ClanUpdatedEvent,
+    "clan_profile_updated_event": ClanProfileUpdatedEvent,
+    "custom_status_event": CustomStatusEvent,
+    "message_typing_event": MessageTypingEvent,
+    "last_seen_message_event": LastSeenMessageEvent,
+    "last_pin_message_event": LastPinMessageEvent,
+    "voice_joined_event": VoiceJoinedEvent,
+    "voice_leaved_event": VoiceLeavedEvent,
+    "voice_started_event": VoiceStartedEvent,
+    "voice_ended_event": VoiceEndedEvent,
+    "streaming_joined_event": StreamingJoinedEvent,
+    "streaming_leaved_event": StreamingLeavedEvent,
+    "user_channel_added_event": UserChannelAddedEvent,
+    "user_channel_removed_event": UserChannelRemoved,
+    "user_clan_removed_event": UserClanRemovedEvent,
+    "user_profile_updated_event": UserProfileUpdatedEvent,
+    "check_name_existed_event": ClanNameExistedEvent,
+    "give_coffee_event": GiveCoffeeEvent,
+    "token_sent_event": TokenSentEvent,
+    "dropdown_box_selected": DropdownBoxSelected,
+    "notifications": NotificationEvent,
+    # Socket messages
+    "ping": Ping,
+    "pong": Pong,
+    "rpc": Rpc,
+    "error": SocketError,
+}
+
+
+def convert_envelope_to_pydantic(
+    field_name: str, protobuf_message: Any
+) -> BaseModel | Any:
+    """
+    Convert a protobuf envelope message to its corresponding Pydantic model.
+
+    This function automatically converts protobuf messages to Pydantic models based on
+    the ENVELOPE_TO_PYDANTIC_MAP. If no mapping exists, returns the original protobuf.
+
+    Args:
+        field_name: The envelope field name (from WhichOneof)
+        protobuf_message: The protobuf message instance
+
+    Returns:
+        Pydantic model instance if mapping exists and has from_protobuf(),
+        otherwise returns the original protobuf message
+
+    Example:
+        >>> envelope = parse_protobuf(message_bytes)
+        >>> field_name = envelope.WhichOneof("message")
+        >>> payload = getattr(envelope, field_name)
+        >>> pydantic_model = convert_envelope_to_pydantic(field_name, payload)
+        >>> # pydantic_model is now a Pydantic instance, not protobuf
+    """
+    pydantic_class = ENVELOPE_TO_PYDANTIC_MAP.get(field_name)
+
+    if pydantic_class:
+        try:
+            if hasattr(pydantic_class, "from_protobuf"):
+                return pydantic_class.from_protobuf(protobuf_message)
+            else:
+                return protobuf_to_pydantic(protobuf_message, pydantic_class)
+        except Exception as e:
+            import logging
+
+            logger = logging.getLogger(__name__)
+            logger.error(
+                f"Failed to convert {field_name} to Pydantic: {e}. "
+                f"Falling back to protobuf object."
+            )
+            return protobuf_message
+
+    return protobuf_message

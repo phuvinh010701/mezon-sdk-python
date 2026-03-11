@@ -22,6 +22,7 @@ from google.protobuf import json_format
 from pydantic import BaseModel
 
 from mezon.managers.event import EventManager
+from mezon.models import convert_envelope_to_pydantic
 from mezon.protobuf.rtapi import realtime_pb2
 from mezon.protobuf.utils import parse_protobuf
 from mezon.utils.logger import get_logger
@@ -190,8 +191,6 @@ class Socket:
             async for message in self.adapter._socket:
                 if isinstance(message, bytes):
                     envelope = parse_protobuf(message)
-                    logger.debug(f"Received envelope: {envelope}")
-
                     if envelope.cid:
                         executor = self.cids.get(envelope.cid)
                         if executor:
@@ -340,8 +339,17 @@ class Socket:
 
         field_name = envelope.WhichOneof("message")
         if field_name:
-            payload = envelope.__getattribute__(field_name)
-            await self.event_manager.emit(field_name, payload)
+            protobuf_payload = envelope.__getattribute__(field_name)
+
+            pydantic_payload = convert_envelope_to_pydantic(
+                field_name, protobuf_payload
+            )
+
+            logger.debug(
+                f"Emitting event: {field_name} with payload: {pydantic_payload}"
+            )
+
+            await self.event_manager.emit(field_name, pydantic_payload)
 
     async def _send_envelope_with_field(
         self,
