@@ -47,8 +47,10 @@ from mezon.models import (
     ApiChannelDescription,
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
+    ChannelCreatedEvent,
     ChannelMessage,
     ChannelMessageContent,
+    ChannelUpdatedEvent,
     UserInitData,
 )
 from mezon.protobuf.api import api_pb2
@@ -721,14 +723,31 @@ class MezonClient:
 
     async def _update_cache_channel(
         self,
-        message: realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent,
+        message: ChannelCreatedEvent | ChannelUpdatedEvent,
     ) -> None:
         clan = self.clans.get(message.clan_id)
         if not clan:
             return
 
+        channel_description = ApiChannelDescription(
+            channel_id=message.channel_id,
+            clan_id=message.clan_id,
+            category_id=message.category_id,
+            creator_id=message.creator_id,
+            parent_id=message.parent_id,
+            channel_label=message.channel_label,
+            type=message.channel_type,
+            channel_private=message.channel_private,
+            clan_name=message.clan_name
+            if isinstance(message, ChannelCreatedEvent)
+            else None,
+            channel_avatar=message.channel_avatar
+            if hasattr(message, "channel_avatar")
+            else None,
+        )
+
         channel = TextChannel(
-            ApiChannelDescription.from_protobuf(message),
+            channel_description,
             clan,
             self.socket_manager,
             self.message_db,
@@ -780,7 +799,8 @@ class MezonClient:
 
     @auto_bind(Events.CHANNEL_CREATED)
     async def _handle_channel_created_default(
-        self, message: realtime_pb2.ChannelCreatedEvent
+        self,
+        message: ChannelCreatedEvent,
     ) -> None:
         """
         Default handler for channel created events.
@@ -804,7 +824,8 @@ class MezonClient:
 
     @auto_bind(Events.CHANNEL_UPDATED)
     async def _handle_channel_updated_default(
-        self, message: realtime_pb2.ChannelUpdatedEvent
+        self,
+        message: ChannelUpdatedEvent,
     ) -> None:
         """
         Default handler for ``ChannelUpdatedEvent``.
