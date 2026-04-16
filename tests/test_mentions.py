@@ -76,13 +76,14 @@ class MentionTests(BaseTestSuite):
                 e=len(self.config.user_name) + 1,
             )
 
+            # mention2 starts right after "@{user_name} Hey! " (1 + len(user_name) + 6 chars)
+            mention2_s = len(self.config.user_name) + 1 + 6
+            mention2_e = mention2_s + len(self.config.user_name_2) + 1
             mention2 = ApiMessageMention(
                 user_id=self.config.user_id_2,
                 username=self.config.user_name_2,
-                s=len(self.config.user_name)
-                + len(self.config.user_name_2)
-                + 6,  # Position after "Hey! "
-                e=len(self.config.user_name_2) + 6,
+                s=mention2_s,
+                e=mention2_e,
             )
 
             result = await channel.send(
