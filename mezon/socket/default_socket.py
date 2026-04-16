@@ -140,7 +140,16 @@ class Socket:
         await self.adapter.close()
 
         if tasks_to_cancel:
-            await asyncio.gather(*tasks_to_cancel, return_exceptions=True)
+            try:
+                await asyncio.wait_for(
+                    asyncio.gather(*tasks_to_cancel, return_exceptions=True),
+                    timeout=5.0,
+                )
+            except asyncio.TimeoutError:
+                logger.warning("Timed out waiting for background tasks to cancel")
+
+        self._heartbeat_task = None
+        self._listen_task = None
 
     async def connect(
         self,
