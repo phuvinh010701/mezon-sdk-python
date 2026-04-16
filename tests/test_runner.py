@@ -22,13 +22,21 @@ Environment Variables:
 import asyncio
 import logging
 import os
-import sys
 import time
 from typing import Optional
 
 from mezon import MezonClient
 
-from tests import BinaryApiTests, BuzzTests, ClanTests, InteractiveTests, MentionTests, MessageTests, SessionTests, UserTests
+from tests import (
+    BinaryApiTests,
+    BuzzTests,
+    ClanTests,
+    InteractiveTests,
+    MentionTests,
+    MessageTests,
+    SessionTests,
+    UserTests,
+)
 from tests.base import TestConfig, TestResults, print_test_summary
 from tests.test_quick_menu import QuickMenuTests
 from tests.test_tokens import TokenTests

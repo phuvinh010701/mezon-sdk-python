@@ -648,6 +648,7 @@ class Socket:
         avatar: Optional[str] = None,
         code: Optional[int] = None,
         topic_id: Optional[int] = None,
+        message_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         ephemeral_message_send = EphemeralMessageBuilder.build(
             receiver_ids=receiver_ids,
@@ -664,6 +665,7 @@ class Socket:
             avatar=avatar,
             code=code,
             topic_id=topic_id,
+            message_id=message_id,
         )
 
         response = await self._send_envelope_with_field(

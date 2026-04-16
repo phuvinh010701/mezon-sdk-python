@@ -2,6 +2,81 @@
 
 <!-- version list -->
 
+## v1.6.22 (2026-04-16)
+
+### Features
+
+- Sync with mezon-sdk-js v2.8.44: add SSE/AI agent session event support
+  and new enum values
+
+### Bug Fixes
+
+- Fix `AI_AGENT_ENABLE` enum value: corrected from `"ai_agent_enabled_event"`
+  to `"aiagent_enabled_event"` to match protobuf field name (event was
+  silently never firing)
+
+### Changes
+
+- **`mezon/constants/enum.py`**: add `InternalAgentEvents` (SSE routing keys),
+  extend `Events` with `AI_AGENT_SESSION_STARTED/ENDED/SUMMARY_DONE` wired to
+  `InternalAgentEvents`; add `TypeMessage` values `CONTACT=16`, `LOCATION=17`,
+  `POLL=18`; add `SSEEvents` and `SSEConnectionState` enums
+- **`mezon/models.py`**: add `SSEConfig`, `SSEMessage`, `RoomInfo`,
+  `RoomMetadataEvent`, `AIAgentSessionStartedEvent`, `AIAgentSessionEndedEvent`,
+  `AIAgentSessionSummaryDoneEvent` with `Literal` type-narrowing on
+  `event_type` fields
+- **`mezon/socket/`** + **`mezon/managers/socket.py`**: `write_ephemeral_message`
+  now accepts optional `message_id` param (maps to `ChannelMessageSend.id`)
+- **`mezon/client.py`**: add `on_ai_agent_session_started()`,
+  `on_ai_agent_session_ended()`, `on_ai_agent_session_summary_done()` event
+  handler registration methods with concrete Pydantic model type signatures
+
+
+## v1.6.21 (2026-03-11)
+
+### Bug Fixes
+
+- Update channel event handling and model definitions
+  ([`b544983`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b544983e0a3d5d29f03c3996ba3793c4032a7346))
+
+
+## v1.6.20 (2026-03-11)
+
+### Bug Fixes
+
+- Decode message ref, message attachment, message mentions
+  ([`e74f7f1`](https://github.com/phuvinh010701/mezon-sdk-python/commit/e74f7f1c631d05623c7a1264132ec0097b2a285f))
+
+- Decode message ref, message attachment, message mentions
+  ([`e69b70e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/e69b70e4d96b746276c6c265e06c633b53163774))
+
+### Chores
+
+- **deps**: Bump protobuf from 6.33.5 to 7.34.0
+  ([`38402d5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/38402d553b7d13bc5c25b6285f60041c54eee743))
+
+- **deps-dev**: Bump fastapi from 0.129.0 to 0.131.0
+  ([`c1e0e1e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/c1e0e1e83f36f7a63bda7f61fb3ea57e68c15b8f))
+
+- **deps-dev**: Bump fastapi from 0.131.0 to 0.135.1
+  ([`f1675a0`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f1675a094b6ea4dc1257c7d3c0bdae5e81988c50))
+
+- **deps-dev**: Bump python-dotenv from 1.2.1 to 1.2.2
+  ([`e66222d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/e66222d9971b1ebe97d688bf388118d493d0277b))
+
+- **deps-dev**: Bump ruff from 0.15.1 to 0.15.2
+  ([`d55a58b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d55a58bbb6b0573c1f038db5e875f16caeb38dde))
+
+- **deps-dev**: Bump ruff from 0.15.2 to 0.15.4
+  ([`b0961e8`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b0961e89975323c1a34197850bd077878f7f5b16))
+
+- **deps-dev**: Bump ruff from 0.15.4 to 0.15.5
+  ([`44aee69`](https://github.com/phuvinh010701/mezon-sdk-python/commit/44aee6974f237cec3c84451711008860461c4b7f))
+
+- **deps-dev**: Bump uvicorn from 0.40.0 to 0.41.0
+  ([`24e167e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/24e167e458e2ab8dccdbcde31641ff7ea179393c))
+
+
 ## v1.6.19 (2026-02-18)
 
 ### Bug Fixes
