@@ -241,6 +241,7 @@ class EphemeralMessageBuilder:
         avatar: Optional[str] = None,
         code: Optional[int] = None,
         topic_id: Optional[int] = None,
+        message_id: Optional[int] = None,
     ) -> realtime_pb2.EphemeralMessageSend:
         """
         Build a complete EphemeralMessageSend protobuf message.
@@ -260,6 +261,8 @@ class EphemeralMessageBuilder:
             code=code,
             topic_id=topic_id,
         )
+        if message_id is not None:
+            channel_message_send.id = message_id
         return realtime_pb2.EphemeralMessageSend(
             receiver_ids=receiver_ids,
             message=channel_message_send,

@@ -1561,6 +1561,65 @@ class UserInitData(BaseModel):
         return self.model_dump(by_alias=True)
 
 
+# SSE / AI Agent Models
+
+
+class SSEConfig(MezonBaseModel):
+    """Server-Sent Events connection configuration."""
+
+    url: str
+    app_id: str
+    token: str
+    auto_reconnect: Optional[bool] = True
+    reconnect_delay: Optional[int] = None
+    max_reconnect_attempts: Optional[int] = None
+    headers: Optional[dict[str, str]] = None
+
+
+class SSEMessage(MezonBaseModel):
+    """A message received over a Server-Sent Events connection."""
+
+    id: Optional[str] = None
+    event: Optional[str] = None
+    data: str
+    timestamp: int
+
+
+class RoomInfo(MezonBaseModel):
+    """Room info embedded in AI agent metadata events."""
+
+    room_id: str
+    room_name: str
+
+
+class RoomMetadataEvent(MezonBaseModel):
+    """Base room metadata event received from AI agent SSE stream."""
+
+    event_id: str
+    event_type: str
+    timestamp: str
+    room: RoomInfo
+    metadata: dict[str, Any] = {}
+
+
+class AIAgentSessionStartedEvent(RoomMetadataEvent):
+    """AI agent session started — room_started event."""
+
+    event_type: str = "room_started"
+
+
+class AIAgentSessionEndedEvent(RoomMetadataEvent):
+    """AI agent session ended — room_ended event."""
+
+    event_type: str = "room_ended"
+
+
+class AIAgentSessionSummaryDoneEvent(RoomMetadataEvent):
+    """AI agent session summary completed — room_summary_done event."""
+
+    event_type: str = "room_summary_done"
+
+
 # Envelope message type to Pydantic model mapping
 ENVELOPE_TO_PYDANTIC_MAP: dict[str, type[BaseModel]] = {
     # Channel operations
