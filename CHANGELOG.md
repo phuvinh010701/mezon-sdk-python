@@ -2,6 +2,49 @@
 
 <!-- version list -->
 
+## v1.7.0 (2026-04-16)
+
+### Bug Fixes
+
+- Address code review items #1-3
+  ([`a701cb6`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a701cb6bc06e1773ce97a9c166de0362794b0e40))
+
+- Resolve conflict
+  ([`4b68bfe`](https://github.com/phuvinh010701/mezon-sdk-python/commit/4b68bfe1448df7ff6b7fd0d3f2f8046a1437c572))
+
+- Resolve integration test failures
+  ([`3bef172`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3bef172dacbd657ae9c0374de9a604ce84502539))
+
+### Chores
+
+- Bump version to 1.6.22 and update CHANGELOG
+  ([`c8436b9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/c8436b991b72d62ab77877a47287b3400f46cdd5))
+
+- Update mezon-sdk version to 1.6.22 and clean up test files by removing unnecessary blank lines
+  ([`ccc87d9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ccc87d998e3bbad9d93d6b7893462c6d9552a826))
+
+### Continuous Integration
+
+- Add GitHub Actions workflow to run unit tests on PR to dev
+  ([`7606b8c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/7606b8cba213955ad295c099da02ead2ba717245))
+
+- Add uv caching and use --frozen flag
+  ([`a2c1974`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a2c19749305df54b1612e0a966f37480f89facfa))
+
+- Inject Mezon secrets as env vars in test step
+  ([`b055b48`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b055b483932fcb2046d17f40ee12c9a4c3979263))
+
+### Features
+
+- Sync with mezon-sdk-js v2.8.44
+  ([`397c936`](https://github.com/phuvinh010701/mezon-sdk-python/commit/397c936c7c43264a021c644604dd98520b2817e9))
+
+### Testing
+
+- Add unit tests for SSE/AI agent models and enums (v2.8.44)
+  ([`3675f0b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3675f0b2452754e8fcc51c546d240aa06fedffb3))
+
+
 ## v1.6.22 (2026-04-16)
 
 ### Bug Fixes
