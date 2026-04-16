@@ -55,7 +55,20 @@ class InternalEventsSocket(str, Enum):
     WEBRTC_SIGNALING_FWD = "webrtc_signaling_fwd"
     NOTIFICATIONS = "notifications"
     QUICK_MENU = "quick_menu_event"
-    AI_AGENT_ENABLE = "ai_agent_enabled_event"
+    AI_AGENT_ENABLE = "aiagent_enabled_event"
+
+
+class InternalAgentEvents(str, Enum):
+    """Internal routing keys for AI agent SSE events.
+
+    The JS SDK translates SSE payload event_type values
+    ("room_started", "room_ended", "room_summary_done") to these routing keys
+    inside _emitAIAgentEvent before dispatching to listeners.
+    """
+
+    SESSION_STARTED = "session_started"
+    SESSION_ENDED = "session_ended"
+    ROOM_SUMMARY_DONE = "room_summary_done"
 
 
 class Events(str, Enum):
@@ -139,6 +152,15 @@ class Events(str, Enum):
     # Listen to AI agent enabled event
     AI_AGENT_ENABLE = InternalEventsSocket.AI_AGENT_ENABLE.value
 
+    # Listen to agent session started (SSE — routing key, not the SSE payload event_type)
+    AI_AGENT_SESSION_STARTED = InternalAgentEvents.SESSION_STARTED.value
+
+    # Listen to agent session ended (SSE — routing key, not the SSE payload event_type)
+    AI_AGENT_SESSION_ENDED = InternalAgentEvents.SESSION_ENDED.value
+
+    # Listen to agent session summary done (SSE)
+    AI_AGENT_SESSION_SUMMARY_DONE = InternalAgentEvents.ROOM_SUMMARY_DONE.value
+
 
 class ChannelType(IntEnum):
     """Channel types"""
@@ -184,3 +206,25 @@ class TypeMessage(IntEnum):
     UPCOMING_EVENT = 13
     UPDATE_EPHEMERAL_MSG = 14
     DELETE_EPHEMERAL_MSG = 15
+    CONTACT = 16
+    LOCATION = 17
+    POLL = 18
+
+
+class SSEEvents(str, Enum):
+    """Events for SSE (Server-Sent Events) connection lifecycle"""
+
+    OPEN = "sse_open"
+    MESSAGE = "sse_message"
+    ERROR = "sse_error"
+    CLOSE = "sse_close"
+    RECONNECTING = "sse_reconnecting"
+    RECONNECTED = "sse_reconnected"
+
+
+class SSEConnectionState(IntEnum):
+    """SSE connection state"""
+
+    CONNECTING = 0
+    OPEN = 1
+    CLOSED = 2

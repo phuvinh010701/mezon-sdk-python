@@ -4,7 +4,6 @@ Binary API (protobuf) tests for Mezon SDK.
 
 import time
 
-
 from tests.base import BaseTestSuite
 
 

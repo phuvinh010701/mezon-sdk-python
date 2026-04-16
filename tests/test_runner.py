@@ -22,17 +22,24 @@ Environment Variables:
 import asyncio
 import logging
 import os
-import sys
 import time
 from typing import Optional
+import sys
 
 from mezon import MezonClient
-
-from tests import BinaryApiTests, BuzzTests, ClanTests, InteractiveTests, MentionTests, MessageTests, SessionTests, UserTests
+from tests import (
+    BinaryApiTests,
+    BuzzTests,
+    ClanTests,
+    InteractiveTests,
+    MentionTests,
+    MessageTests,
+    SessionTests,
+    UserTests,
+)
 from tests.base import TestConfig, TestResults, print_test_summary
 from tests.test_quick_menu import QuickMenuTests
 from tests.test_tokens import TokenTests
-
 
 # ============================================================================
 # CONFIGURATION - Set via environment variables
@@ -222,7 +229,8 @@ def main():
     """
     )
 
-    asyncio.run(run_all_tests())
+    results = asyncio.run(run_all_tests())
+    sys.exit(0 if not results.failed else 1)
 
 
 if __name__ == "__main__":

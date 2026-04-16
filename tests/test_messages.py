@@ -3,9 +3,9 @@ Message operation tests for Mezon SDK.
 """
 
 import asyncio
+
 from mezon import ChannelMessageContent
 from mezon.models import ApiMessageAttachment, ApiMessageMention
-
 from tests.base import BaseTestSuite
 
 
@@ -189,7 +189,7 @@ class MessageTests(BaseTestSuite):
             clan = await self.client.clans.fetch(self.config.clan_id)
             channel = await clan.channels.fetch(self.config.channel_id)
             await channel.send_ephemeral(
-                receiver_id=self.config.user_id,
+                receiver_ids=[self.config.user_id],
                 content=ChannelMessageContent(t="👻 Ephemeral test message"),
             )
             self.log_result("Ephemeral Message", True)
