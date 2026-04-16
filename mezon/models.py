@@ -1200,7 +1200,7 @@ class ChannelMessageRemove(BaseModel):
 class ChannelMessageAck(BaseModel):
     """Channel message acknowledgement"""
 
-    channel_id: int
+    channel_id: Optional[int] = None
     mode: Optional[int] = None
     message_id: Optional[int] = None
     code: Optional[int] = 0
