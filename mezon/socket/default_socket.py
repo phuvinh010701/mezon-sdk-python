@@ -125,15 +125,31 @@ class Socket:
         return self.adapter.is_open()
 
     async def close(self) -> None:
-        """Close the socket connection."""
+        """Close the socket connection and wait for background tasks to finish."""
         self._intentional_close = True
 
-        if self._heartbeat_task:
+        tasks_to_cancel = []
+        if self._heartbeat_task and not self._heartbeat_task.done():
             self._heartbeat_task.cancel()
+            tasks_to_cancel.append(self._heartbeat_task)
 
-        if self._listen_task:
+        if self._listen_task and not self._listen_task.done():
             self._listen_task.cancel()
+            tasks_to_cancel.append(self._listen_task)
+
         await self.adapter.close()
+
+        if tasks_to_cancel:
+            try:
+                await asyncio.wait_for(
+                    asyncio.gather(*tasks_to_cancel, return_exceptions=True),
+                    timeout=5.0,
+                )
+            except asyncio.TimeoutError:
+                logger.warning("Timed out waiting for background tasks to cancel")
+
+        self._heartbeat_task = None
+        self._listen_task = None
 
     async def connect(
         self,
@@ -648,6 +664,7 @@ class Socket:
         avatar: Optional[str] = None,
         code: Optional[int] = None,
         topic_id: Optional[int] = None,
+        message_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         ephemeral_message_send = EphemeralMessageBuilder.build(
             receiver_ids=receiver_ids,
@@ -664,6 +681,7 @@ class Socket:
             avatar=avatar,
             code=code,
             topic_id=topic_id,
+            message_id=message_id,
         )
 
         response = await self._send_envelope_with_field(

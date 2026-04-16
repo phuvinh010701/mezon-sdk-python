@@ -44,6 +44,9 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
+    AIAgentSessionEndedEvent,
+    AIAgentSessionStartedEvent,
+    AIAgentSessionSummaryDoneEvent,
     ApiChannelDescription,
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
@@ -1128,6 +1131,39 @@ class MezonClient:
             handler (Callable): Callback to invoke when an AI agent is enabled.
         """
         self._register_event_handler(Events.AI_AGENT_ENABLE, handler)
+
+    def on_ai_agent_session_started(
+        self, handler: Callable[[AIAgentSessionStartedEvent], None]
+    ) -> None:
+        """
+        Register a handler for AI agent session started events (SSE).
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent session starts.
+        """
+        self._register_event_handler(Events.AI_AGENT_SESSION_STARTED, handler)
+
+    def on_ai_agent_session_ended(
+        self, handler: Callable[[AIAgentSessionEndedEvent], None]
+    ) -> None:
+        """
+        Register a handler for AI agent session ended events (SSE).
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent session ends.
+        """
+        self._register_event_handler(Events.AI_AGENT_SESSION_ENDED, handler)
+
+    def on_ai_agent_session_summary_done(
+        self, handler: Callable[[AIAgentSessionSummaryDoneEvent], None]
+    ) -> None:
+        """
+        Register a handler for AI agent session summary done events (SSE).
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent session summary is ready.
+        """
+        self._register_event_handler(Events.AI_AGENT_SESSION_SUMMARY_DONE, handler)
 
     def on_role_assign(
         self, handler: Callable[[realtime_pb2.RoleAssignedEvent], None]
