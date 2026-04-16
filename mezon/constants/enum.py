@@ -58,6 +58,19 @@ class InternalEventsSocket(str, Enum):
     AI_AGENT_ENABLE = "aiagent_enabled_event"
 
 
+class InternalAgentEvents(str, Enum):
+    """Internal routing keys for AI agent SSE events.
+
+    The JS SDK translates SSE payload event_type values
+    ("room_started", "room_ended", "room_summary_done") to these routing keys
+    inside _emitAIAgentEvent before dispatching to listeners.
+    """
+
+    SESSION_STARTED = "session_started"
+    SESSION_ENDED = "session_ended"
+    ROOM_SUMMARY_DONE = "room_summary_done"
+
+
 class Events(str, Enum):
     """Events that can be listened to from the MezonClient"""
 
@@ -139,14 +152,14 @@ class Events(str, Enum):
     # Listen to AI agent enabled event
     AI_AGENT_ENABLE = InternalEventsSocket.AI_AGENT_ENABLE.value
 
-    # Listen to agent session started (SSE)
-    AI_AGENT_SESSION_STARTED = "session_started"
+    # Listen to agent session started (SSE — routing key, not the SSE payload event_type)
+    AI_AGENT_SESSION_STARTED = InternalAgentEvents.SESSION_STARTED.value
 
-    # Listen to agent session ended (SSE)
-    AI_AGENT_SESSION_ENDED = "session_ended"
+    # Listen to agent session ended (SSE — routing key, not the SSE payload event_type)
+    AI_AGENT_SESSION_ENDED = InternalAgentEvents.SESSION_ENDED.value
 
     # Listen to agent session summary done (SSE)
-    AI_AGENT_SESSION_SUMMARY_DONE = "room_summary_done"
+    AI_AGENT_SESSION_SUMMARY_DONE = InternalAgentEvents.ROOM_SUMMARY_DONE.value
 
 
 class ChannelType(IntEnum):
@@ -196,14 +209,6 @@ class TypeMessage(IntEnum):
     CONTACT = 16
     LOCATION = 17
     POLL = 18
-
-
-class InternalAgentEvents(str, Enum):
-    """Internal agent events from SSE (Server-Sent Events)"""
-
-    SESSION_STARTED = "session_started"
-    SESSION_ENDED = "session_ended"
-    ROOM_SUMMARY_DONE = "room_summary_done"
 
 
 class SSEEvents(str, Enum):

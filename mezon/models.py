@@ -17,7 +17,7 @@ limitations under the License.
 import json
 import logging
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from google.protobuf import json_format
 from pydantic import BaseModel, Field
@@ -1593,31 +1593,50 @@ class RoomInfo(MezonBaseModel):
 
 
 class RoomMetadataEvent(MezonBaseModel):
-    """Base room metadata event received from AI agent SSE stream."""
+    """Base room metadata event received from AI agent SSE stream.
+
+    ``event_type`` is the value carried inside the SSE data payload
+    (e.g. ``"room_started"``).  It is *not* the same as the internal
+    routing key used by ``Events``/``InternalAgentEvents`` — the dispatch
+    layer translates between the two, mirroring the JS SDK
+    ``_emitAIAgentEvent`` switch.
+    """
 
     event_id: str
     event_type: str
     timestamp: str
     room: RoomInfo
-    metadata: dict[str, Any] = {}
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class AIAgentSessionStartedEvent(RoomMetadataEvent):
-    """AI agent session started — room_started event."""
+    """AI agent session started.
 
-    event_type: str = "room_started"
+    SSE payload ``event_type`` value; dispatch routing key is
+    ``Events.AI_AGENT_SESSION_STARTED`` (``"session_started"``).
+    """
+
+    event_type: Literal["room_started"] = "room_started"
 
 
 class AIAgentSessionEndedEvent(RoomMetadataEvent):
-    """AI agent session ended — room_ended event."""
+    """AI agent session ended.
 
-    event_type: str = "room_ended"
+    SSE payload ``event_type`` value; dispatch routing key is
+    ``Events.AI_AGENT_SESSION_ENDED`` (``"session_ended"``).
+    """
+
+    event_type: Literal["room_ended"] = "room_ended"
 
 
 class AIAgentSessionSummaryDoneEvent(RoomMetadataEvent):
-    """AI agent session summary completed — room_summary_done event."""
+    """AI agent session summary completed.
 
-    event_type: str = "room_summary_done"
+    SSE payload ``event_type`` value matches the dispatch routing key
+    ``Events.AI_AGENT_SESSION_SUMMARY_DONE`` (``"room_summary_done"``).
+    """
+
+    event_type: Literal["room_summary_done"] = "room_summary_done"
 
 
 # Envelope message type to Pydantic model mapping

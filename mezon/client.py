@@ -44,6 +44,9 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
+    AIAgentSessionEndedEvent,
+    AIAgentSessionStartedEvent,
+    AIAgentSessionSummaryDoneEvent,
     ApiChannelDescription,
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
@@ -1129,7 +1132,9 @@ class MezonClient:
         """
         self._register_event_handler(Events.AI_AGENT_ENABLE, handler)
 
-    def on_ai_agent_session_started(self, handler: Callable[[Any], None]) -> None:
+    def on_ai_agent_session_started(
+        self, handler: Callable[[AIAgentSessionStartedEvent], None]
+    ) -> None:
         """
         Register a handler for AI agent session started events (SSE).
 
@@ -1138,7 +1143,9 @@ class MezonClient:
         """
         self._register_event_handler(Events.AI_AGENT_SESSION_STARTED, handler)
 
-    def on_ai_agent_session_ended(self, handler: Callable[[Any], None]) -> None:
+    def on_ai_agent_session_ended(
+        self, handler: Callable[[AIAgentSessionEndedEvent], None]
+    ) -> None:
         """
         Register a handler for AI agent session ended events (SSE).
 
@@ -1147,7 +1154,9 @@ class MezonClient:
         """
         self._register_event_handler(Events.AI_AGENT_SESSION_ENDED, handler)
 
-    def on_ai_agent_session_summary_done(self, handler: Callable[[Any], None]) -> None:
+    def on_ai_agent_session_summary_done(
+        self, handler: Callable[[AIAgentSessionSummaryDoneEvent], None]
+    ) -> None:
         """
         Register a handler for AI agent session summary done events (SSE).
 
