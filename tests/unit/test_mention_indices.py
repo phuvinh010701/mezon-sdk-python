@@ -10,25 +10,7 @@ Reference semantics (matching the JS SDK):
 """
 
 from mezon.models import ApiMessageMention
-
-
-def compute_mention_indices(text: str, at_name: str) -> tuple[int, int]:
-    """
-    Compute the start (s) and end (e) indices for a mention in a text.
-
-    Args:
-        text: The full message text.
-        at_name: The mention token including the leading '@' (e.g. '@Alice').
-
-    Returns:
-        A (s, e) tuple such that text[s:e] == at_name.
-
-    Raises:
-        ValueError: If the mention token is not found in the text.
-    """
-    s = text.index(at_name)
-    e = s + len(at_name)
-    return s, e
+from tests.helpers import compute_mention_indices
 
 
 class TestMentionIndices:
@@ -94,22 +76,28 @@ class TestMentionIndices:
         assert e2 == expected_e2
         assert text[s2:e2] == f"@{user2}"
 
-    def test_buggy_formula_produces_invalid_indices(self) -> None:
+    def test_buggy_formula_vs_correct_formula(self) -> None:
         """
-        Demonstrate that the old (buggy) formula gives s > e.
-        This test documents the original bug and confirms it is fixed.
+        Regression: old formula gives s > e (invalid); new formula gives s < e (valid).
+
+        Old (buggy):  s = len(u1) + len(u2) + 6,  e = len(u2) + 6  →  s > e ✗
+        New (correct): s = text.index("@u2"),       e = s + len("@u2")  →  s < e ✓
         """
         user1 = "Alice"
         user2 = "Bob"
+        separator = " Hey! "
+        text = f"@{user1}{separator}@{user2} Multiple mentions test"
 
-        # The old buggy formula from test_multiple_mentions
+        # Old buggy formula
         s_buggy = len(user1) + len(user2) + 6
         e_buggy = len(user2) + 6
+        assert s_buggy > e_buggy, "Old formula must produce invalid s > e"
 
-        # s > e is invalid — start must be strictly less than end
-        assert s_buggy > e_buggy, (
-            "Old formula should have s > e (the documented bug). "
-            "If this assertion fails, the formula was already corrected."
+        # New correct formula via helper
+        s_new, e_new = compute_mention_indices(text, f"@{user2}")
+        assert s_new < e_new, "New formula must produce valid s < e"
+        assert text[s_new:e_new] == f"@{user2}", (
+            "New formula must slice the correct token"
         )
 
     def test_role_mention_indices(self) -> None:

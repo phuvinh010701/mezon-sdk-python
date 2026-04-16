@@ -7,6 +7,10 @@ from mezon import ChannelMessageContent
 from mezon.models import ApiMessageMention
 
 from tests.base import BaseTestSuite
+from tests.helpers import compute_mention_indices
+
+# Separator text used between the two mentions in test_multiple_mentions.
+_MULTI_MENTION_SEPARATOR = " Hey! "
 
 
 class MentionTests(BaseTestSuite):
@@ -69,16 +73,23 @@ class MentionTests(BaseTestSuite):
         try:
             channel = await self.client.channels.fetch(self.config.channel_id)
 
+            text = (
+                f"@{self.config.user_name}{_MULTI_MENTION_SEPARATOR}"
+                f"@{self.config.user_name_2} 🧪 Multiple mentions test"
+            )
+            mention1_s, mention1_e = compute_mention_indices(
+                text, f"@{self.config.user_name}"
+            )
+            mention2_s, mention2_e = compute_mention_indices(
+                text, f"@{self.config.user_name_2}"
+            )
             mention1 = ApiMessageMention(
                 user_id=self.config.user_id,
                 username=self.config.user_name,
-                s=0,
-                e=len(self.config.user_name) + 1,
+                s=mention1_s,
+                e=mention1_e,
             )
 
-            # mention2 starts right after "@{user_name} Hey! " (1 + len(user_name) + 6 chars)
-            mention2_s = len(self.config.user_name) + 1 + 6
-            mention2_e = mention2_s + len(self.config.user_name_2) + 1
             mention2 = ApiMessageMention(
                 user_id=self.config.user_id_2,
                 username=self.config.user_name_2,
@@ -87,9 +98,7 @@ class MentionTests(BaseTestSuite):
             )
 
             result = await channel.send(
-                content=ChannelMessageContent(
-                    t=f"@{self.config.user_name} Hey! @{self.config.user_name_2} 🧪 Multiple mentions test"
-                ),
+                content=ChannelMessageContent(t=text),
                 mentions=[mention1, mention2],
             )
             self.test_message_id = result.message_id
