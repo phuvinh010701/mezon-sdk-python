@@ -230,7 +230,8 @@ def main():
     """
     )
 
-    asyncio.run(run_all_tests())
+    results = asyncio.run(run_all_tests())
+    sys.exit(0 if not results.failed else 1)
 
 
 if __name__ == "__main__":
