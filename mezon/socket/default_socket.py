@@ -125,15 +125,22 @@ class Socket:
         return self.adapter.is_open()
 
     async def close(self) -> None:
-        """Close the socket connection."""
+        """Close the socket connection and wait for background tasks to finish."""
         self._intentional_close = True
 
-        if self._heartbeat_task:
+        tasks_to_cancel = []
+        if self._heartbeat_task and not self._heartbeat_task.done():
             self._heartbeat_task.cancel()
+            tasks_to_cancel.append(self._heartbeat_task)
 
-        if self._listen_task:
+        if self._listen_task and not self._listen_task.done():
             self._listen_task.cancel()
+            tasks_to_cancel.append(self._listen_task)
+
         await self.adapter.close()
+
+        if tasks_to_cancel:
+            await asyncio.gather(*tasks_to_cancel, return_exceptions=True)
 
     async def connect(
         self,
