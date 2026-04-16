@@ -28,4 +28,16 @@ jobs:
         run: uv sync --all-groups --frozen
 
       - name: Run tests
+        env:
+          MEZON_CLIENT_ID: ${{ secrets.MEZON_CLIENT_ID }}
+          MEZON_API_KEY: ${{ secrets.MEZON_API_KEY }}
+          MEZON_CLAN_ID: ${{ secrets.MEZON_CLAN_ID }}
+          MEZON_CHANNEL_ID: ${{ secrets.MEZON_CHANNEL_ID }}
+          MEZON_USER_ID: ${{ secrets.MEZON_USER_ID }}
+          MEZON_USER_NAME: ${{ secrets.MEZON_USER_NAME }}
+          MEZON_USER_ID_2: ${{ secrets.MEZON_USER_ID_2 }}
+          MEZON_USER_NAME_2: ${{ secrets.MEZON_USER_NAME_2 }}
+          MEZON_VOICE_CHANNEL_ID: ${{ secrets.MEZON_VOICE_CHANNEL_ID }}
+          MEZON_ROLE_ID: ${{ secrets.MEZON_ROLE_ID }}
+          MEZON_TOKEN_RECEIVER_ID: ${{ secrets.MEZON_TOKEN_RECEIVER_ID }}
         run: uv run pytest tests/ -v
