@@ -2,6 +2,36 @@
 
 <!-- version list -->
 
+## v1.6.22 (2026-04-16)
+
+### Features
+
+- Sync with mezon-sdk-js v2.8.44: add SSE/AI agent session event support
+  and new enum values
+
+### Bug Fixes
+
+- Fix `AI_AGENT_ENABLE` enum value: corrected from `"ai_agent_enabled_event"`
+  to `"aiagent_enabled_event"` to match protobuf field name (event was
+  silently never firing)
+
+### Changes
+
+- **`mezon/constants/enum.py`**: add `InternalAgentEvents` (SSE routing keys),
+  extend `Events` with `AI_AGENT_SESSION_STARTED/ENDED/SUMMARY_DONE` wired to
+  `InternalAgentEvents`; add `TypeMessage` values `CONTACT=16`, `LOCATION=17`,
+  `POLL=18`; add `SSEEvents` and `SSEConnectionState` enums
+- **`mezon/models.py`**: add `SSEConfig`, `SSEMessage`, `RoomInfo`,
+  `RoomMetadataEvent`, `AIAgentSessionStartedEvent`, `AIAgentSessionEndedEvent`,
+  `AIAgentSessionSummaryDoneEvent` with `Literal` type-narrowing on
+  `event_type` fields
+- **`mezon/socket/`** + **`mezon/managers/socket.py`**: `write_ephemeral_message`
+  now accepts optional `message_id` param (maps to `ChannelMessageSend.id`)
+- **`mezon/client.py`**: add `on_ai_agent_session_started()`,
+  `on_ai_agent_session_ended()`, `on_ai_agent_session_summary_done()` event
+  handler registration methods with concrete Pydantic model type signatures
+
+
 ## v1.6.21 (2026-03-11)
 
 ### Bug Fixes
