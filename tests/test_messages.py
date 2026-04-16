@@ -3,9 +3,9 @@ Message operation tests for Mezon SDK.
 """
 
 import asyncio
+
 from mezon import ChannelMessageContent
 from mezon.models import ApiMessageAttachment, ApiMessageMention
-
 from tests.base import BaseTestSuite
 
 

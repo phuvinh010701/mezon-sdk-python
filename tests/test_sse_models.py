@@ -27,7 +27,6 @@ from mezon.models import (
     SSEMessage,
 )
 
-
 # ---------------------------------------------------------------------------
 # SSEConfig
 # ---------------------------------------------------------------------------
@@ -91,7 +90,9 @@ class TestSSEMessage:
         assert msg.event is None
 
     def test_all_fields(self) -> None:
-        msg = SSEMessage(id="msg-1", event="room_started", data='{"key":"val"}', timestamp=42)
+        msg = SSEMessage(
+            id="msg-1", event="room_started", data='{"key":"val"}', timestamp=42
+        )
         assert msg.id == "msg-1"
         assert msg.event == "room_started"
         assert msg.data == '{"key":"val"}'
@@ -328,7 +329,10 @@ class TestEventsAgentEntries:
         assert Events.AI_AGENT_SESSION_ENDED == InternalAgentEvents.SESSION_ENDED
 
     def test_ai_agent_session_summary_done(self) -> None:
-        assert Events.AI_AGENT_SESSION_SUMMARY_DONE == InternalAgentEvents.ROOM_SUMMARY_DONE
+        assert (
+            Events.AI_AGENT_SESSION_SUMMARY_DONE
+            == InternalAgentEvents.ROOM_SUMMARY_DONE
+        )
 
     def test_routing_key_matches_internal_agent_event(self) -> None:
         """Dispatch routing keys must match InternalAgentEvents values."""

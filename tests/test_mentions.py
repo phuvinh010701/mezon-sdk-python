@@ -3,9 +3,9 @@ Mention functionality tests for Mezon SDK.
 """
 
 import asyncio
+
 from mezon import ChannelMessageContent
 from mezon.models import ApiMessageMention
-
 from tests.base import BaseTestSuite
 from tests.helpers import compute_mention_indices
 

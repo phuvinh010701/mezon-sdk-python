@@ -3,7 +3,6 @@ Token transfer tests for Mezon SDK.
 """
 
 from mezon.models import ApiSentTokenRequest
-
 from tests.base import BaseTestSuite
 
 

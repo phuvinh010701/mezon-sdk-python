@@ -3,6 +3,7 @@ Auto-reconnect tests for Mezon SDK WebSocket.
 """
 
 import asyncio
+
 from mezon import ChannelMessageContent
 from tests.base import BaseTestSuite
 

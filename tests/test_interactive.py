@@ -6,7 +6,6 @@ from mezon import ChannelMessageContent
 from mezon.models import ButtonMessageStyle
 from mezon.structures.button_builder import ButtonBuilder
 from mezon.structures.interactive_message import InteractiveBuilder
-
 from tests.base import BaseTestSuite
 
 

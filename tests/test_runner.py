@@ -24,9 +24,9 @@ import logging
 import os
 import time
 from typing import Optional
+import sys
 
 from mezon import MezonClient
-
 from tests import (
     BinaryApiTests,
     BuzzTests,
@@ -40,7 +40,6 @@ from tests import (
 from tests.base import TestConfig, TestResults, print_test_summary
 from tests.test_quick_menu import QuickMenuTests
 from tests.test_tokens import TokenTests
-
 
 # ============================================================================
 # CONFIGURATION - Set via environment variables
