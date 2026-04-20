@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.7.1 (2026-04-20)
+
+### Bug Fixes
+
+- Allow partial user profile update payloads
+  ([`9170fe2`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9170fe2683cb43ff41dcd23139c773c7393b26e9))
+
+
 ## v1.7.0 (2026-04-16)
 
 ### Bug Fixes
