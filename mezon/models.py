@@ -984,10 +984,10 @@ class UserProfileUpdatedEvent(BaseModel):
     """User profile updated event"""
 
     user_id: int
-    display_name: str
-    avatar: str
-    about_me: str
-    channel_id: int
+    display_name: Optional[str] = None
+    avatar: Optional[str] = None
+    about_me: Optional[str] = None
+    channel_id: Optional[int] = None
     clan_id: int
 
 
