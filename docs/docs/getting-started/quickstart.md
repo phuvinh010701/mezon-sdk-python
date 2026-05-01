@@ -4,13 +4,13 @@ Build your first Mezon bot in minutes.
 
 ## Prerequisites
 
-- Mezon Bot ID and API Key (obtain from Mezon platform)
+- Mezon bot ID and API key
 - Python 3.10+
 - `mezon-sdk` installed
 
-## Basic Bot
+## Basic bot
 
-Create a file `bot.py`:
+Create `bot.py`:
 
 ```python
 import asyncio
@@ -19,33 +19,26 @@ from mezon import MezonClient
 from mezon.models import ChannelMessageContent
 from mezon.protobuf.api import api_pb2
 
-# Initialize the client
 client = MezonClient(
     client_id="YOUR_BOT_ID",
     api_key="YOUR_API_KEY",
 )
 
-# Handle incoming messages
 async def handle_message(message: api_pb2.ChannelMessage):
-    # Ignore messages from the bot itself
     if message.sender_id == client.client_id:
         return
 
-    # Parse message content
-    message_content = json.loads(message.content)
-    text = message_content.get("t", "")
+    payload = json.loads(message.content)
+    text = payload.get("t", "")
 
-    # Respond to !hello command
     if text.startswith("!hello"):
         channel = await client.channels.fetch(message.channel_id)
         await channel.send(
             content=ChannelMessageContent(t="Hello! I'm a Mezon bot")
         )
 
-# Register the event handler
 client.on_channel_message(handle_message)
 
-# Run the bot
 async def main():
     await client.login()
     print("Bot is running...")
@@ -55,23 +48,21 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Run your bot:
+Run it:
 
 ```bash
 python bot.py
 ```
 
-## What's Happening?
+## What is happening
 
-1. **`MezonClient`** - The main entry point that handles authentication and connections
-2. **`client.login()`** - Authenticates with the Mezon API and establishes a WebSocket connection
-3. **`client.on_channel_message()`** - Registers a handler for incoming messages
-4. **`client.channels.fetch()`** - Gets a channel object to send messages
-5. **`channel.send()`** - Sends a message to the channel
+1. `MezonClient` stores credentials and prepares event/caching infrastructure.
+2. `client.login()` authenticates, initializes managers, and opens the real-time socket.
+3. `client.on_channel_message(...)` registers a handler for incoming channel messages.
+4. `client.channels.fetch(...)` resolves a `TextChannel` object.
+5. `channel.send(...)` writes a chat message through the socket manager.
 
-## Adding More Features
-
-### Reply to Messages
+## Replying to a message
 
 ```python
 async def handle_message(message: api_pb2.ChannelMessage):
@@ -79,22 +70,20 @@ async def handle_message(message: api_pb2.ChannelMessage):
         return
 
     channel = await client.channels.fetch(message.channel_id)
-    msg = channel.messages.get(message.message_id)
-    await msg.reply(content=ChannelMessageContent(t="Got your message!"))
+    msg = await channel.messages.fetch(message.message_id)
+    await msg.reply(content=ChannelMessageContent(t="Got your message"))
 ```
 
-### Send Ephemeral Messages
-
-Ephemeral messages are only visible to a specific user:
+## Sending an ephemeral response
 
 ```python
 await channel.send_ephemeral(
-    receiver_id=message.sender_id,
-    content=ChannelMessageContent(text="Only you can see this!")
+    receiver_ids=[message.sender_id],
+    content=ChannelMessageContent(text="Only you can see this"),
 )
 ```
 
-### Handle Multiple Events
+## Handling more events
 
 ```python
 from mezon.protobuf.rtapi import realtime_pb2
@@ -109,9 +98,7 @@ client.on_channel_created(on_channel_created)
 client.on_user_channel_added(on_user_joined)
 ```
 
-## Environment Variables
-
-For production, use environment variables:
+## Use environment variables in production
 
 ```python
 import os
@@ -122,9 +109,10 @@ client = MezonClient(
 )
 ```
 
-## Next Steps
+## Next steps
 
-- [Event Handling](../guide/events.md) - Learn about all available events
-- [Sending Messages](../guide/messaging.md) - Advanced messaging features
-- [Interactive Messages](../guide/interactive.md) - Buttons and forms
-- [FastAPI Integration](../examples/fastapi.md) - Build a web API with your bot
+- [Client Configuration](../guide/client.md)
+- [Event Handling](../guide/events.md)
+- [Sending Messages](../guide/messaging.md)
+- [Interactive Messages](../guide/interactive.md)
+- [FastAPI Integration](../examples/fastapi.md)

@@ -1,122 +1,84 @@
 # TextChannel
 
-Represents a text channel on Mezon.
+`TextChannel` đại diện cho một channel có thể gửi message trong clan hoặc DM flow.
 
-## Accessing Channels
+## Getting a channel
 
 ```python
-# From client
-channel = await client.channels.fetch("channel_id")
+channel = await client.channels.fetch(123456789)
 
-# From clan
-clan = await client.clans.get("clan_id")
+clan = await client.clans.fetch(987654321)
 await clan.load_channels()
-channel = await clan.channels.get("channel_id")
+channel = await clan.channels.fetch(123456789)
 ```
 
 ## Properties
 
 | Property | Type | Description |
-|----------|------|-------------|
-| `id` | `str` | Channel ID |
-| `name` | `str` | Channel name |
-| `channel_type` | `int` | Type of channel |
-| `is_private` | `bool` | Whether channel is private |
-| `messages` | `MessageManager` | Message cache manager |
+|---|---|---|
+| `id` | `int | None` | Channel ID |
+| `name` | `str | None` | Channel label |
+| `channel_type` | `int | None` | Raw channel type |
+| `is_private` | `bool` | Public/private state |
+| `category_id` | `int` | Category ID if present |
+| `category_name` | `str` | Category name if present |
+| `parent_id` | `int` | Parent channel/thread grouping |
+| `meeting_code` | `str` | Meeting code for voice-like flows |
+| `messages` | `CacheManager[int, Message]` | Message fetch/cache helper |
+| `clan` | `Clan` | Owning clan |
 
-## Methods
-
-### `send(...) -> ChannelMessageAck`
-
-Send a message to the channel.
+## `send(...) -> ChannelMessageAck`
 
 ```python
-from mezon.models import ChannelMessageContent, ApiMessageMention, ApiMessageAttachment
+from mezon.models import ChannelMessageContent
 
-result = await channel.send(
-    content=ChannelMessageContent(t="Hello!"),
-    mentions=None,      # Optional[List[ApiMessageMention]]
-    attachments=None,   # Optional[List[ApiMessageAttachment]]
+ack = await channel.send(
+    content=ChannelMessageContent(t="Hello"),
+    mentions=None,
+    attachments=None,
+    mention_everyone=None,
+    anonymous_message=None,
+    topic_id=None,
+    code=None,
 )
 ```
 
-**Parameters:**
+Returns a `ChannelMessageAck` that includes the new `message_id`.
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `content` | `ChannelMessageContent` | Message content |
-| `mentions` | `List[ApiMessageMention]` | User mentions |
-| `attachments` | `List[ApiMessageAttachment]` | Attachments |
-
-**Returns:** `ChannelMessageAck` with `message_id`
-
-### `send_ephemeral(...) -> None`
-
-Send an ephemeral message (only visible to one user).
+## `send_ephemeral(...)`
 
 ```python
 await channel.send_ephemeral(
-    receiver_id="user_id",
-    content=ChannelMessageContent(text="Only you see this!")
+    receiver_ids=[123456789],
+    content=ChannelMessageContent(text="Private response"),
 )
 ```
 
-**Parameters:**
+### Parameters
 
 | Parameter | Type | Description |
-|-----------|------|-------------|
-| `receiver_id` | `str` | User who will see the message |
-| `content` | `ChannelMessageContent` | Message content |
+|---|---|---|
+| `receiver_ids` | `list[int]` | Recipients who can see the message |
+| `content` | `Any` | Usually `ChannelMessageContent` |
+| `reference_message_id` | `int | None` | Reference an existing message |
+| `mentions` | `list[ApiMessageMention] | None` | Mentions |
+| `attachments` | `list[ApiMessageAttachment] | None` | Attachments |
+| `mention_everyone` | `bool | None` | Mention everyone |
+| `anonymous_message` | `bool | None` | Anonymous flag |
+| `topic_id` | `int | None` | Topic/thread target |
+| `code` | `int` | Defaults to `TypeMessage.EPHEMERAL` |
 
-### `messages.get(message_id: str) -> Message`
-
-Get a message object by ID.
-
-```python
-message = channel.messages.get("message_id")
-
-# Then use message methods
-await message.reply(content=ChannelMessageContent(t="Reply!"))
-await message.update(content=ChannelMessageContent(t="Updated!"))
-```
-
-## Example
+## Working with messages
 
 ```python
-from mezon.models import ChannelMessageContent, ApiMessageMention
-
-# Fetch channel
-channel = await client.channels.fetch("channel_id")
-
-# Send message
-sent = await channel.send(
-    content=ChannelMessageContent(t="Hello @user!"),
-    mentions=[ApiMessageMention(user_id="user_id")]
-)
-
-print(f"Sent message: {sent.message_id}")
-
-# Send ephemeral
-await channel.send_ephemeral(
-    receiver_id="user_id",
-    content=ChannelMessageContent(text="Private message!")
-)
-
-# Get and reply to a message
-message = channel.messages.get(sent.message_id)
-await message.reply(content=ChannelMessageContent(t="Self-reply!"))
+message = await channel.messages.fetch(987654321)
+await message.reply(content=ChannelMessageContent(t="Reply"))
+await message.update(content=ChannelMessageContent(t="Edited"))
+await message.react(emoji_id=1, emoji="thumbsup", count=1)
 ```
 
-## Channel Types
+## Notes
 
-```python
-from mezon.constants import ChannelType
-
-ChannelType.TEXT           # Text channel
-ChannelType.VOICE          # Voice channel
-ChannelType.DM             # Direct message
-ChannelType.GROUP_DM       # Group DM
-ChannelType.CATEGORY       # Category
-ChannelType.ANNOUNCEMENT   # Announcement
-ChannelType.FORUM          # Forum
-```
+- `channel.messages.fetch(...)` loads through the cache/database fetcher.
+- `channel.messages.get(...)` only returns an in-memory cached value.
+- Message and channel IDs in this SDK are integers, even if your app stores them as strings externally.

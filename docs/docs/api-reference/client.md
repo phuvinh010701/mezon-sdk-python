@@ -1,200 +1,169 @@
 # MezonClient
 
-The main entry point for interacting with the Mezon platform.
+`MezonClient` is the main SDK entry point for authentication, real-time connectivity, token sending, and event registration.
 
 ## Constructor
 
 ```python
+import logging
 from mezon import MezonClient
 
 client = MezonClient(
-    client_id: str,
-    api_key: str,
-    host: str = "gw.mezon.ai",
-    port: str = "443",
-    use_ssl: bool = True,
-    timeout: int = 7000,
-    enable_logging: bool = False,
-    log_level: int = logging.INFO,
+    client_id="YOUR_BOT_ID",
+    api_key="YOUR_API_KEY",
+    host="gw.mezon.ai",
+    port="443",
+    use_ssl=True,
+    timeout=7000,
+    mmn_api_url="https://dong.mezon.ai/mmn-api/",
+    zk_api_url="https://dong.mezon.ai/zk-api/",
+    log_level=logging.INFO,
+    enable_logging=False,
 )
 ```
 
-### Parameters
+## Parameters
 
 | Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `client_id` | `str` | Required | Your bot's client ID |
-| `api_key` | `str` | Required | Your API key |
-| `host` | `str` | `"gw.mezon.ai"` | API host |
-| `port` | `str` | `"443"` | API port |
-| `use_ssl` | `bool` | `True` | Use SSL connection |
-| `timeout` | `int` | `7000` | Request timeout in ms |
+|---|---|---:|---|
+| `client_id` | `str | int` | required | Bot ID |
+| `api_key` | `str` | required | API key |
+| `host` | `str` | `"gw.mezon.ai"` | Login/API host |
+| `port` | `str` | `"443"` | Login/API port |
+| `use_ssl` | `bool` | `True` | TLS for HTTP/WebSocket URLs |
+| `timeout` | `int` | `7000` | Timeout in milliseconds |
+| `mmn_api_url` | `str` | Mezon default | MMN API endpoint |
+| `zk_api_url` | `str` | Mezon default | ZK API endpoint |
+| `log_level` | `int` | `logging.INFO` | Logging level |
 | `enable_logging` | `bool` | `False` | Enable SDK logging |
-| `log_level` | `int` | `logging.INFO` | Python logging level |
 
-## Properties
+## Main properties
 
 | Property | Type | Description |
-|----------|------|-------------|
-| `client_id` | `str` | The bot's client ID |
-| `channels` | `CacheManager[int, TextChannel]` | Channel manager |
-| `clans` | `CacheManager[int, Clan]` | Clan manager |
-| `users` | `CacheManager[int, User]` | User manager |
-| `session_manager` | `SessionManager` | Session management |
-| `socket_manager` | `SocketManager` | WebSocket management |
-| `channel_manager` | `ChannelManager` | Channel management |
-| `event_manager` | `EventManager` | Event management |
-| `api_client` | `MezonApi` | HTTP API client |
+|---|---|---|
+| `client_id` | `int` | Authenticated bot ID |
+| `clans` | `CacheManager[int, Clan]` | Clan fetch/cache layer |
+| `channels` | `CacheManager[int, TextChannel]` | Channel fetch/cache layer |
+| `users` | `CacheManager[int, User]` | User fetch/cache layer |
+| `event_manager` | `EventManager` | Event registration/dispatch |
+| `message_db` | `MessageDB` | SQLite-backed message cache |
+| `session_manager` | `SessionManager` | Active session holder |
+| `socket_manager` | `SocketManager` | WebSocket write and connect operations |
+| `channel_manager` | `ChannelManager` | Channel-related API helpers |
+| `api_client` | `MezonApi` | Authenticated HTTP API client |
 
-## Methods
+## Authentication lifecycle
 
-### Authentication
-
-#### `login(enable_auto_reconnect: bool = True) -> None`
-
-Authenticate and connect to Mezon.
+### `login(enable_auto_reconnect: bool = True) -> None`
 
 ```python
 await client.login()
 await client.login(enable_auto_reconnect=False)
 ```
 
-#### `close_socket() -> None`
+Authenticates, initializes managers from the returned session URLs, connects the socket, and prepares MMN/ZK support.
 
-Close the WebSocket connection.
+### `get_session() -> Session`
+
+```python
+session = await client.get_session()
+print(session.token)
+```
+
+Fetches a fresh session without fully logging the client in.
+
+### `close_socket() -> None`
 
 ```python
 await client.close_socket()
 ```
 
-### Messaging
+Closes the active WebSocket connection.
 
-#### `send_message(...) -> ChannelMessageAck`
+## Messaging methods
 
-Send a message to a channel (legacy method).
+### `send_message(...)`
+
+Legacy direct send helper:
 
 ```python
-from mezon.models import ApiMessageMention, ApiMessageAttachment, ApiMessageRef
-
-result = await client.send_message(
-    clan_id="clan_id",
-    channel_id="channel_id",
+await client.send_message(
+    clan_id=987654321,
+    channel_id=123456789,
     mode=1,
     is_public=True,
-    msg="Hello!",
-    mentions=None,      # Optional[List[ApiMessageMention]]
-    attachments=None,   # Optional[List[ApiMessageAttachment]]
-    ref=None,           # Optional[List[ApiMessageRef]]
+    msg="Hello from legacy API",
 )
 ```
 
-#### `send_token(request: ApiSentTokenRequest) -> AddTxResponse`
+Prefer `TextChannel.send(...)` for most applications.
 
-Send tokens to a user.
+### `send_token(token_event: ApiSentTokenRequest) -> AddTxResponse`
 
 ```python
 from mezon.models import ApiSentTokenRequest
 
 result = await client.send_token(
     ApiSentTokenRequest(
-        receiver_id="user_id",
+        receiver_id=123456789,
         amount=10,
         note="Thanks!",
     )
 )
 ```
 
-### Friends
+## Friend-related helpers
 
-#### `get_list_friends(limit: int, state: int = None, cursor: str = None) -> List`
-
-Get list of friends.
+### `get_list_friends(limit: int, state: int = None, cursor: str = None)`
 
 ```python
 friends = await client.get_list_friends(limit=100)
 ```
 
-#### `accept_friend(user_id: str) -> None`
-
-Accept a friend request.
+### `accept_friend(user_id: str) -> None`
 
 ```python
-await client.accept_friend(user_id="user_id")
+await client.accept_friend(user_id="123456789")
 ```
 
-#### `add_friend(username: str, user_id: str) -> None`
-
-Add a friend.
+### `add_friend(username: str, user_id: str) -> None`
 
 ```python
-await client.add_friend(username="username", user_id="user_id")
+await client.add_friend(username="alice", user_id="123456789")
 ```
 
-### Event Handlers
+## Event helper methods
 
-#### `on(event_name: str, handler: Callable) -> None`
+The client exposes convenience registration methods on top of `EventManager`, including:
 
-Register a generic event handler.
+- `on_channel_message(...)`
+- `on_channel_created(...)`
+- `on_channel_updated(...)`
+- `on_channel_deleted(...)`
+- `on_token_send(...)`
+- `on_message_reaction(...)`
+- `on_channel_user_removed(...)`
+- `on_user_channel_added(...)`
+- `on_user_clan_removed(...)`
+- `on_give_coffee(...)`
+- `on_role_event(...)`
+- `on_clan_event_created(...)`
+- `on_message_button_clicked(...)`
+- `on_streaming_joined_event(...)`
+- `on_streaming_leaved_event(...)`
+- `on_dropdown_box_selected(...)`
+- `on_webrtc_signaling_fwd(...)`
+- `on_voice_started_event(...)`
+- `on_voice_ended_event(...)`
+- `on_voice_joined_event(...)`
+- `on_voice_leaved_event(...)`
+- `on_quick_menu_event(...)`
+- `on_ai_agent_enabled_event(...)`
+- `on_ai_agent_session_started(...)`
+- `on_ai_agent_session_ended(...)`
+- `on_ai_agent_session_summary_done(...)`
+- `on_role_assign(...)`
+- `on_notification(...)`
+- `on_add_clan_user(...)`
 
-```python
-from mezon import Events
-
-async def handler(data):
-    print(data)
-
-client.on(Events.VOICE_STARTED_EVENT, handler)
-```
-
-#### `on_channel_message(handler: Callable) -> None`
-
-Handle channel messages.
-
-```python
-async def handler(message: api_pb2.ChannelMessage):
-    print(message.content)
-
-client.on_channel_message(handler)
-```
-
-#### `on_channel_created(handler: Callable) -> None`
-
-Handle channel creation.
-
-```python
-async def handler(event: realtime_pb2.ChannelCreatedEvent):
-    print(event.channel_id)
-
-client.on_channel_created(handler)
-```
-
-#### `on_channel_updated(handler: Callable) -> None`
-
-Handle channel updates.
-
-#### `on_channel_deleted(handler: Callable) -> None`
-
-Handle channel deletion.
-
-#### `on_user_channel_added(handler: Callable) -> None`
-
-Handle user joining channel.
-
-#### `on_user_channel_removed(handler: Callable) -> None`
-
-Handle user leaving channel.
-
-#### `on_add_clan_user(handler: Callable) -> None`
-
-Handle user joining clan.
-
-#### `on_clan_event_created(handler: Callable) -> None`
-
-Handle clan event creation.
-
-#### `on_message_button_clicked(handler: Callable) -> None`
-
-Handle message button clicks.
-
-#### `on_notification(handler: Callable) -> None`
-
-Handle notifications.
+For usage examples, see [Event Handling](../guide/events.md).
