@@ -22,9 +22,9 @@ Environment Variables:
 import asyncio
 import logging
 import os
+import sys
 import time
 from typing import Optional
-import sys
 
 from mezon import MezonClient
 from tests import (
@@ -192,7 +192,7 @@ async def run_all_tests(
 
         traceback.print_exc()
     finally:
-        await client.close_socket()
+        await client.disconnect()
 
     return results
 

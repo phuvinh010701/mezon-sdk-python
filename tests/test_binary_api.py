@@ -36,9 +36,13 @@ class BinaryApiTests(BaseTestSuite):
         """Test: List channels with binary protobuf response."""
         try:
             session = await self.client.get_session()
+            channel_detail = await self.client.api_client.get_channel_detail(
+                token=session.token,
+                channel_id=self.config.channel_id,
+            )
             result = await self.client.api_client.list_channel_descs(
                 token=session.token,
-                channel_type=0,
+                channel_type=channel_detail.type,
                 clan_id=self.config.clan_id,
                 limit=20,
             )

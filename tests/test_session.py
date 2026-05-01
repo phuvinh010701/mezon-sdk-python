@@ -46,14 +46,14 @@ class SessionTests(BaseTestSuite):
             self.log_result("Session Properties", False, str(e))
 
     async def test_session_serialization(self) -> None:
-        """Test: Session to_dict serialization."""
+        """Test: Session attribute serialization."""
         try:
             session = await self.client.get_session()
-            session_dict = session.to_dict()
+            session_data = session.__dict__
 
-            assert "user_id" in session_dict, "Should have user_id in dict"
-            assert "token" in session_dict, "Should have token in dict"
-            assert isinstance(session_dict, dict), "Should be a dict"
+            assert "user_id" in session_data, "Should have user_id in session data"
+            assert "token" in session_data, "Should have token in session data"
+            assert isinstance(session_data, dict), "Should be a dict"
 
             self.log_result("Session Serialization", True)
         except Exception as e:

@@ -1359,4 +1359,5 @@ class MezonClient:
                 pass
 
         await self.close_socket()
+        await self.message_db.close()
         logger.info("Client disconnected")
