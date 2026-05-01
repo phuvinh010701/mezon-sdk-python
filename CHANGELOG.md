@@ -2,6 +2,56 @@
 
 <!-- version list -->
 
+## v1.7.2 (2026-05-01)
+
+### Bug Fixes
+
+- Close message db, avoid keep event loop
+  ([`94d36fc`](https://github.com/phuvinh010701/mezon-sdk-python/commit/94d36fcfe853374ad67e6202263e52d7090efa5c))
+
+### Chores
+
+- **deps**: Bump pydantic from 2.12.5 to 2.13.2
+  ([`b4e3833`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b4e3833ef9a89d4ff30459d07c6be7a2d3692183))
+
+- **deps**: Bump pydantic from 2.13.2 to 2.13.3
+  ([`643b1af`](https://github.com/phuvinh010701/mezon-sdk-python/commit/643b1af800c14bd1ea45650c202a347ebe562256))
+
+- **deps**: Update mkdocs requirement from >=1.5.0 to >=1.6.1
+  ([`3fbe143`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3fbe1433e08fc2e1b868bfa606b98e0a371a65de))
+
+- **deps**: Update mkdocs-material requirement from >=9.5.0 to >=9.7.6
+  ([`8c4b0a5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8c4b0a5b07dfddd27b23ae7281aa2f64bbe19864))
+
+- **deps-dev**: Bump fastapi from 0.135.3 to 0.136.0
+  ([`742c4e4`](https://github.com/phuvinh010701/mezon-sdk-python/commit/742c4e4b8839df9e34d69f8db5671a3c0acc091f))
+
+- **deps-dev**: Bump fastapi from 0.136.0 to 0.136.1
+  ([`33ba137`](https://github.com/phuvinh010701/mezon-sdk-python/commit/33ba137639a144593762c6e382b4133102af527f))
+
+- **deps-dev**: Bump ruff from 0.15.10 to 0.15.11
+  ([`b9736f9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b9736f9bbe5f84dea745282f67451481d797dd20))
+
+- **deps-dev**: Bump ruff from 0.15.11 to 0.15.12
+  ([`8d2863d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8d2863d8b62ab59ba8791d62e5709a8ba1fa7b81))
+
+### Continuous Integration
+
+- **deps**: Bump actions/checkout from 4 to 6
+  ([`6b362f9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6b362f90fcfcb28ea8a75f32bde9dbe6df90cd6d))
+
+- **deps**: Bump actions/setup-python from 5 to 6
+  ([`3efe4af`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3efe4afe98969fee195db3d2a87c910474a88e02))
+
+- **deps**: Bump astral-sh/setup-uv from 5 to 7
+  ([`9d465f5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9d465f57be5c7bbfd7c2e235cd328f9f96add6fb))
+
+### Documentation
+
+- Update document relate to new ts sdk
+  ([`f594a76`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f594a76102cb8e348697695623e1777d19ce8a49))
+
+
 ## v1.7.1 (2026-04-20)
 
 ### Bug Fixes
