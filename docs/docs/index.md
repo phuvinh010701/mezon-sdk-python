@@ -74,7 +74,7 @@ asyncio.run(main())
 
     ---
 
-    Learn about events, messaging, and more
+    Learn about client setup, sessions, events, messaging, caching, and troubleshooting
 
     [:octicons-arrow-right-24: Read the Guide](guide/client.md)
 
@@ -82,7 +82,7 @@ asyncio.run(main())
 
     ---
 
-    Complete API documentation
+    Browse MezonClient, managers, structures, builders, and models
 
     [:octicons-arrow-right-24: API Reference](api-reference/client.md)
 

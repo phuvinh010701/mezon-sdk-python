@@ -1,108 +1,51 @@
 # Token Sending
 
-The SDK allows you to send tokens to other users on the Mezon platform.
+The SDK can send MMN-backed token transfers through `client.send_token(...)` after `login()` has initialized the MMN and ZK clients.
 
-## Overview
-
-Token sending uses:
-
-- **ZK Proof Generation** - Zero-knowledge proofs for transaction authentication
-- **Nonce Management** - Automatic nonce handling for each transaction
-- **Transaction Signing** - Signatures using ephemeral key pairs
-
-## Basic Usage
+## Basic usage
 
 ```python
 from mezon.models import ApiSentTokenRequest
-from mmn import AddTxResponse
 
-# Send tokens to a user
-result: AddTxResponse = await client.send_token(
+result = await client.send_token(
     ApiSentTokenRequest(
-        receiver_id="user_id",
-        amount=10,  # Amount in tokens
+        receiver_id=123456789,
+        amount=10,
         note="Thanks for your help!",
     )
 )
 
-# Check result
 if result.ok:
-    print(f"Success! TX Hash: {result.tx_hash}")
+    print(result.tx_hash)
 else:
-    print(f"Failed: {result.error}")
+    print(result.error)
 ```
 
-## Request Parameters
+## Request fields
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `receiver_id` | `str` | Yes | Recipient user ID |
-| `amount` | `int` | Yes | Token amount |
-| `note` | `str` | No | Transaction note |
-| `sender_name` | `str` | No | Custom sender display name |
-| `sender_id` | `str` | No | Override sender ID |
-| `extra_attribute` | `str` | No | Additional metadata |
-| `mmn_extra_info` | `dict` | No | MMN-specific extra info |
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `receiver_id` | `int | str` | yes | Recipient user ID |
+| `amount` | `int` | yes | Amount to transfer |
+| `note` | `str | None` | no | Human-readable note |
+| `sender_name` | `str | None` | no | Override sender display name |
+| `sender_id` | `str | None` | no | Optional sender override |
+| `extra_attribute` | `str | None` | no | Extra metadata |
+| `mmn_extra_info` | `dict | None` | no | Additional MMN payload |
 
-## Advanced Usage
-
-```python
-result = await client.send_token(
-    ApiSentTokenRequest(
-        receiver_id="user_id",
-        amount=10,
-        note="Event reward",
-        sender_name="My Bot",
-        extra_attribute="event_2024",
-        mmn_extra_info={
-            "event_id": "12345",
-            "reward_type": "participation",
-        },
-    )
-)
-```
-
-## Error Handling
-
-```python
-try:
-    result = await client.send_token(
-        ApiSentTokenRequest(
-            receiver_id="user_id",
-            amount=1,
-            note="Test",
-        )
-    )
-
-    if not result.ok:
-        print(f"Transaction failed: {result.error}")
-    else:
-        print(f"TX Hash: {result.tx_hash}")
-
-except ValueError as e:
-    # MMN client not initialized
-    print(f"MMN unavailable: {e}")
-except Exception as e:
-    print(f"Error: {e}")
-```
-
-## In Message Handlers
-
-Common pattern - reward users for actions:
+## Example inside a message handler
 
 ```python
 import json
 from mezon.models import ApiSentTokenRequest, ChannelMessageContent
+from mezon.protobuf.api import api_pb2
 
 async def handle_message(message: api_pb2.ChannelMessage):
     if message.sender_id == client.client_id:
         return
 
-    content = json.loads(message.content)
-    text = content.get("t", "")
-
-    if text == "!daily":
-        # Send daily reward
+    payload = json.loads(message.content)
+    if payload.get("t") == "!daily":
         result = await client.send_token(
             ApiSentTokenRequest(
                 receiver_id=message.sender_id,
@@ -112,15 +55,12 @@ async def handle_message(message: api_pb2.ChannelMessage):
         )
 
         channel = await client.channels.fetch(message.channel_id)
-
         if result.ok:
-            await channel.send(
-                content=ChannelMessageContent(t="You received 10 tokens!")
-            )
+            await channel.send(content=ChannelMessageContent(t="You received 10 tokens"))
         else:
             await channel.send_ephemeral(
-                receiver_id=message.sender_id,
-                content=ChannelMessageContent(text=f"Failed: {result.error}")
+                receiver_ids=[message.sender_id],
+                content=ChannelMessageContent(text=f"Failed: {result.error}"),
             )
 
 client.on_channel_message(handle_message)
@@ -128,23 +68,17 @@ client.on_channel_message(handle_message)
 
 ## Requirements
 
-Before using `send_token`:
+Before calling `send_token(...)`:
 
-1. Client must be logged in (`await client.login()`)
-2. Bot must have sufficient token balance
-3. Receiver user ID must be valid
+- `await client.login()` must have completed successfully
+- MMN and ZK endpoints must be reachable
+- the bot must have permission/balance to send tokens
 
-The SDK automatically initializes MMN and ZK clients during login.
-
-## Token Events
-
-Listen for token-related events:
+## Token events
 
 ```python
-from mezon import Events
-
 async def on_token_sent(event):
-    print(f"Token sent: {event}")
+    print(event)
 
-client.on(Events.TOKEN_SEND, on_token_sent)
+client.on_token_send(on_token_sent)
 ```

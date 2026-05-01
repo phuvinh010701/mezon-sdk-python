@@ -1,123 +1,72 @@
 # Clan
 
-Represents a clan (server/community) on Mezon.
+`Clan` represents a Mezon community/server and provides access to channels, voice presence, and role operations.
 
-## Accessing Clans
+## Getting a clan
 
 ```python
-clan = await client.clans.get("clan_id")
+clan = await client.clans.fetch(987654321)
+print(clan.id, clan.name)
 ```
 
 ## Properties
 
 | Property | Type | Description |
-|----------|------|-------------|
-| `id` | `str` | Clan ID |
+|---|---|---|
+| `id` | `int` | Clan ID |
 | `name` | `str` | Clan name |
-| `channels` | `CacheManager` | Channel manager for the clan |
-| `users` | `CacheManager` | User manager for the clan |
+| `welcome_channel_id` | `int` | Configured welcome channel |
+| `channels` | `CacheManager[int, TextChannel]` | Clan-scoped channel cache |
+| `client` | `MezonClient` | Owning client |
+| `api_client` | `MezonApi` | Authenticated API client |
+| `session_token` | `str` | Session token used for API calls |
 
-## Methods
-
-### `load_channels() -> None`
-
-Load all channels in the clan.
+## `load_channels() -> None`
 
 ```python
 await clan.load_channels()
+channel = await clan.channels.fetch(123456789)
 ```
 
-### `list_channel_voice_users(...) -> ApiVoiceChannelUserList`
+Loads clan text channels via the API and populates both clan-local and global channel caches.
 
-List users in voice channels.
-
-```python
-voice_users = await clan.list_channel_voice_users(
-    channel_id=None,      # Optional: specific channel
-    channel_type=None,    # Optional: channel type filter
-    limit=100,            # Optional: max results
-    state=None,           # Optional: state filter
-    cursor=None,          # Optional: pagination cursor
-)
-```
-
-**Parameters:**
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `channel_id` | `str` | `None` | Specific channel to query |
-| `channel_type` | `int` | `None` | Channel type filter |
-| `limit` | `int` | `100` | Maximum results |
-| `state` | `int` | `None` | State filter |
-| `cursor` | `str` | `None` | Pagination cursor |
-
-**Returns:** `ApiVoiceChannelUserList`
-
-### `list_roles(...) -> List`
-
-List all roles in the clan.
+## `list_channel_voice_users(...) -> ApiVoiceChannelUserList`
 
 ```python
-roles = await clan.list_roles(
-    limit=100,
-    state=None,
-    cursor=None,
-)
-```
-
-**Parameters:**
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `limit` | `int` | `100` | Maximum results |
-| `state` | `int` | `None` | State filter |
-| `cursor` | `str` | `None` | Pagination cursor |
-
-### `update_role(role_id: str, request: dict) -> None`
-
-Update a role.
-
-```python
-await clan.update_role(
-    role_id="role_id",
-    request={
-        "title": "New Role Name",
-        "permissions": ["SEND_MESSAGE", "READ_MESSAGES"],
-    }
-)
-```
-
-**Parameters:**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `role_id` | `str` | Role ID to update |
-| `request` | `dict` | Update data |
-
-## Example
-
-```python
-# Get clan
-clan = await client.clans.get("clan_id")
-
-# Load channels
-await clan.load_channels()
-
-# Access a channel
-channel = await clan.channels.get("channel_id")
-
-# List voice users
 voice_users = await clan.list_channel_voice_users()
-for user in voice_users:
-    print(f"In voice: {user}")
-
-# List and update roles
-roles = await clan.list_roles()
-for role in roles:
-    print(f"Role: {role.title}")
-
-await clan.update_role(
-    role_id=roles[0].id,
-    request={"title": "Updated Role"}
+voice_users = await clan.list_channel_voice_users(
+    channel_id=123456789,
+    limit=100,
 )
 ```
+
+### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---:|---|
+| `channel_id` | `int` | `0` | Optional specific channel |
+| `channel_type` | `int | None` | voice default | Override the voice channel type filter |
+| `limit` | `int` | `500` | Max results, must satisfy `0 < limit <= 500` |
+| `state` | `int | None` | `None` | API state filter |
+| `cursor` | `str | None` | `None` | Pagination cursor |
+
+## `list_roles(...) -> ApiRoleListEventResponse`
+
+```python
+roles_response = await clan.list_roles(limit=100)
+print(roles_response.roles)
+```
+
+## `update_role(role_id: int, request: dict) -> bool`
+
+```python
+await clan.update_role(
+    role_id=123,
+    request={"title": "Moderator"},
+)
+```
+
+## Notes
+
+- `Clan` does not eagerly load every channel on creation; call `load_channels()` when you want clan-scoped channel access.
+- For simple channel access, `client.channels.fetch(...)` is often enough.

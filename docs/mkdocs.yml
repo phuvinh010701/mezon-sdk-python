@@ -60,6 +60,7 @@ nav:
       - Quick Start: getting-started/quickstart.md
   - Guide:
       - Client Configuration: guide/client.md
+      - Session Management: guide/session-management.md
       - Event Handling: guide/events.md
       - Sending Messages: guide/messaging.md
       - Channels: guide/channels.md
@@ -68,10 +69,13 @@ nav:
       - Token Sending: guide/tokens.md
       - Interactive Messages: guide/interactive.md
       - Message Caching: guide/caching.md
+      - Troubleshooting: guide/troubleshooting.md
   - API Reference:
       - MezonClient: api-reference/client.md
+      - Managers: api-reference/managers.md
       - Clan: api-reference/clan.md
       - TextChannel: api-reference/channel.md
+      - User: api-reference/user.md
       - Message: api-reference/message.md
       - Builders: api-reference/builders.md
       - Models: api-reference/models.md
@@ -80,6 +84,7 @@ nav:
       - Basic Bot: examples/basic-bot.md
       - FastAPI Integration: examples/fastapi.md
       - Advanced Patterns: examples/advanced.md
+  - Contributing: contributing.md
   - Changelog: changelog.md
 
 extra:

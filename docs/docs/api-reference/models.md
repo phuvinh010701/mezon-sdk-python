@@ -1,52 +1,54 @@
 # Models
 
-Pydantic models for API requests and responses.
+This page covers the Pydantic models most commonly used directly by SDK consumers.
 
-## Message Models
+## Base conversion helper
 
-### ChannelMessageContent
+Many models inherit from `MezonBaseModel` and provide `from_protobuf(...)` for converting protobuf payloads into Pydantic objects.
 
-Message content structure.
+## Message models
+
+### `ChannelMessageContent`
+
+Used to build outgoing message payloads.
 
 ```python
 from mezon.models import ChannelMessageContent
 
 content = ChannelMessageContent(
-    t="Message text",              # Text content
-    text="Alternative text field", # Alternative text field
-    embed=[...],                   # Embed objects
-    components=[...],              # Interactive components
+    t="Hello",
+    text="Alternative text field",
+    embed=[],
+    components=[],
 )
 ```
 
+Common fields:
+
 | Field | Type | Description |
-|-------|------|-------------|
-| `t` | `str` | Message text |
-| `text` | `str` | Alternative text field |
-| `embed` | `List[dict]` | Embed objects |
-| `components` | `List[dict]` | Interactive components |
+|---|---|---|
+| `t` | `str | None` | Primary text field |
+| `text` | `str | None` | Alternate text field used in some examples |
+| `embed` | `list | None` | Embed/interactive payloads |
+| `components` | `list | None` | Message components such as buttons |
 
-### ApiMessageMention
-
-User mention in a message.
+### `ApiMessageMention`
 
 ```python
 from mezon.models import ApiMessageMention
 
-mention = ApiMessageMention(
-    user_id="user_id_here",
-    username="optional_username",
-)
+mention = ApiMessageMention(user_id=123456789)
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `user_id` | `str` | User ID to mention |
-| `username` | `str` | Optional username |
+Useful fields include:
 
-### ApiMessageAttachment
+- `user_id`
+- `username`
+- `role_id`
+- `rolename`
+- `s` / `e` for mention offsets
 
-Message attachment.
+### `ApiMessageAttachment`
 
 ```python
 from mezon.models import ApiMessageAttachment
@@ -59,187 +61,111 @@ attachment = ApiMessageAttachment(
 )
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `url` | `str` | Attachment URL |
-| `filename` | `str` | File name |
-| `filetype` | `str` | MIME type |
-| `size` | `int` | File size in bytes |
+Common fields include `url`, `filename`, `filetype`, `size`, `width`, `height`, `thumbnail`, and `duration`.
 
-### ApiMessageRef
+### `ApiMessageRef`
 
-Message reference (for replies).
+Used for reply/reference metadata.
 
 ```python
 from mezon.models import ApiMessageRef
 
 ref = ApiMessageRef(
-    message_id="original_message_id",
+    message_ref_id=987654321,
+    message_sender_id=123456789,
+    content="Original message",
 )
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `message_id` | `str` | Referenced message ID |
+`ApiMessageRef` carries more than just an ID: sender metadata, optional content preview, attachment flags, and channel context may be included.
 
-### ChannelMessageAck
+### `ChannelMessageAck`
 
-Message send acknowledgment.
+Returned by send/update operations.
 
 ```python
-result = await channel.send(...)
-print(result.message_id)
+ack = await channel.send(content=ChannelMessageContent(t="Hello"))
+print(ack.message_id)
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `message_id` | `str` | Sent message ID |
+## Session model
 
-## Token Models
+### `ApiSession`
 
-### ApiSentTokenRequest
+```python
+session = await client.get_session()
+print(session.token, session.ws_url)
+```
 
-Token sending request.
+Fields include:
+
+- `token`
+- `refresh_token`
+- `user_id`
+- `api_url`
+- `id_token`
+- `ws_url`
+
+## Clan and channel descriptions
+
+### `ApiClanDesc`
+
+Represents a clan description returned by clan-list APIs. Common fields include `clan_id`, `clan_name`, `creator_id`, `logo`, `banner`, and `welcome_channel_id`.
+
+### `ApiChannelDescription`
+
+Represents a channel description returned by channel APIs. Common fields include:
+
+- `channel_id`
+- `channel_label`
+- `category_id`
+- `category_name`
+- `clan_id`
+- `type`
+- `channel_private`
+- `meeting_code`
+- `user_ids`
+
+## Token model
+
+### `ApiSentTokenRequest`
 
 ```python
 from mezon.models import ApiSentTokenRequest
 
 request = ApiSentTokenRequest(
-    receiver_id="user_id",
+    receiver_id=123456789,
     amount=10,
-    note="Thanks!",
-    sender_name="Bot Name",      # Optional
-    sender_id="custom_sender",   # Optional
-    extra_attribute="metadata",  # Optional
-    mmn_extra_info={...},        # Optional
+    note="Reward",
 )
 ```
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `receiver_id` | `str` | Yes | Recipient user ID |
-| `amount` | `int` | Yes | Token amount |
-| `note` | `str` | No | Transaction note |
-| `sender_name` | `str` | No | Custom sender name |
-| `sender_id` | `str` | No | Override sender ID |
-| `extra_attribute` | `str` | No | Extra metadata |
-| `mmn_extra_info` | `dict` | No | MMN-specific info |
+| Field | Type | Description |
+|---|---|---|
+| `receiver_id` | `int | str` | Recipient user ID |
+| `amount` | `int` | Amount to transfer |
+| `note` | `str | None` | Transfer note |
+| `sender_name` | `str | None` | Optional sender display name |
+| `sender_id` | `str | None` | Optional sender override |
+| `extra_attribute` | `str | None` | Extra metadata |
+| `mmn_extra_info` | `dict | None` | MMN-specific payload |
 
-## Interactive Field Options
+## Interactive form option models
 
-### SelectFieldOption
-
-Option for select dropdowns.
+### `SelectFieldOption`
 
 ```python
 from mezon.models import SelectFieldOption
 
-option = SelectFieldOption(
-    label="Display Text",
-    value="option_value",
-)
+option = SelectFieldOption(label="Vietnam", value="vn")
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `label` | `str` | Display text |
-| `value` | `str` | Option value |
-
-### RadioFieldOption
-
-Option for radio buttons.
+### `RadioFieldOption`
 
 ```python
 from mezon.models import RadioFieldOption
 
-option = RadioFieldOption(
-    label="Option Label",
-    value="option_value",
-    description="Optional description",
-)
+option = RadioFieldOption(label="Pro", value="pro", description="Advanced")
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `label` | `str` | Display text |
-| `value` | `str` | Option value |
-| `description` | `str` | Optional description |
-
-## Clan & Channel Models
-
-### ApiClanDesc
-
-Clan description/info.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `clan_id` | `str` | Clan ID |
-| `clan_name` | `str` | Clan name |
-| `creator_id` | `str` | Creator user ID |
-| `logo` | `str` | Logo URL |
-| `banner` | `str` | Banner URL |
-
-### ApiChannelDescription
-
-Channel description/info.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `channel_id` | `str` | Channel ID |
-| `channel_label` | `str` | Channel name |
-| `channel_type` | `int` | Channel type |
-| `clan_id` | `str` | Parent clan ID |
-| `category_id` | `str` | Parent category ID |
-
-### ApiVoiceChannelUserList
-
-Voice channel user list.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `voice_channel_users` | `List` | List of users in voice |
-
-## Session Models
-
-### ApiSession
-
-Authentication session.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `token` | `str` | JWT access token |
-| `refresh_token` | `str` | Refresh token |
-| `created` | `bool` | Whether newly created |
-
-## Usage Example
-
-```python
-from mezon.models import (
-    ChannelMessageContent,
-    ApiMessageMention,
-    ApiMessageAttachment,
-    ApiSentTokenRequest,
-    SelectFieldOption,
-)
-
-# Send message with mentions and attachments
-await channel.send(
-    content=ChannelMessageContent(t="Hello @user!"),
-    mentions=[ApiMessageMention(user_id="123")],
-    attachments=[
-        ApiMessageAttachment(
-            url="https://example.com/image.png",
-            filename="image.png"
-        )
-    ]
-)
-
-# Send tokens
-await client.send_token(
-    ApiSentTokenRequest(
-        receiver_id="user_id",
-        amount=10,
-        note="Reward!"
-    )
-)
-```
+These option models are passed into `InteractiveBuilder` field helpers.
