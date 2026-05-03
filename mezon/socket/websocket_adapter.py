@@ -24,7 +24,6 @@ from aiolimiter import AsyncLimiter
 from websockets.asyncio.client import ClientConnection
 from websockets.protocol import State
 
-from mezon.api.utils import build_url
 from mezon.constants.rate_limit import (
     WEBSOCKET_PB_RATE_LIMIT,
     WEBSOCKET_PB_RATE_LIMIT_PERIOD,
@@ -46,7 +45,7 @@ class WebSocketAdapter(ABC):
 
     @abstractmethod
     async def connect(
-        self, scheme: str, host: str, port: str, create_status: bool, token: str
+        self, scheme: str, ws_url: str, create_status: bool, token: str
     ) -> None:
         """
         Connect to WebSocket server.
@@ -109,20 +108,14 @@ class WebSocketAdapterPb(WebSocketAdapter):
         self._rate_limiter = AsyncLimiter(rate_limit, rate_limit_period)
 
     async def connect(
-        self, scheme: str, host: str, port: str, create_status: bool, token: str
+        self, scheme: str, ws_url: str, create_status: bool, token: str
     ) -> None:
         """Connect to WebSocket server with protobuf protocol."""
-        url = build_url(
-            scheme,
-            host,
-            port,
-            "ws",
-            query={
-                "lang": "en",
-                "status": str(create_status).lower(),
-                "token": token,
-                "format": "protobuf",
-            },
+        url = (
+            f"{scheme}://{ws_url}/ws?lang=en"
+            f"&status={str(create_status).lower()}"
+            f"&token={token}"
+            f"&format=protobuf"
         )
         logger.debug(f"Connecting to WebSocket server with URL: {url}")
         self._socket = await websockets.connect(

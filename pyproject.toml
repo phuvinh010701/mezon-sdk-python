@@ -34,6 +34,7 @@ dev = [
     "uvicorn>=0.40.0",
     "python-dotenv>=1.2.1",
     "mypy-protobuf>=5.0.0",
+    "pytest-cov>=7.1.0",
 ]
 
 [tool.semantic_release]
@@ -80,6 +81,22 @@ autoescape = true
 allowed_tags = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "style", "refactor", "test"]
 minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=mezon --cov-report=term --cov-fail-under=85"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+omit = [
+    "mezon/protobuf/*",
+    "mezon/protobuf/**/*",
+]
+
+[tool.coverage.report]
+omit = [
+    "mezon/protobuf/*",
+    "mezon/protobuf/**/*",
+]
 
 [tool.ruff]
 extend-exclude = [

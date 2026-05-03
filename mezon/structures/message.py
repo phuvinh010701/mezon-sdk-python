@@ -111,7 +111,7 @@ class Message:
                 message_sender_username=user.clan_nick
                 or user.display_name
                 or user.username,
-                mesages_sender_avatar=user.clan_avatar or user.avatar,
+                message_sender_avatar=user.clan_avatar or user.avatar,
                 content=json.dumps(self.content)
                 if isinstance(self.content, dict)
                 else str(self.content),

@@ -16,10 +16,13 @@ limitations under the License.
 
 import asyncio
 import inspect
+import json
 import logging
 from collections.abc import Callable
 from typing import Any, Literal
+from urllib.parse import urlencode
 
+import aiohttp
 from mmn import (
     AddTxResponse,
     EphemeralKeyPair,
@@ -36,7 +39,7 @@ from mmn import (
 
 from mezon.api.mezon_api import MezonApi
 from mezon.api.utils import build_url, parse_url_components
-from mezon.constants import ChannelType, Events, TypeMessage
+from mezon.constants import ChannelType, Events, SSEEvents, TypeMessage
 from mezon.managers.cache import CacheManager
 from mezon.managers.channel import ChannelManager
 from mezon.managers.event import EventManager
@@ -54,6 +57,8 @@ from mezon.models import (
     ChannelMessage,
     ChannelMessageContent,
     ChannelUpdatedEvent,
+    RoomMetadataEvent,
+    SSEMessage,
     UserInitData,
 )
 from mezon.protobuf.api import api_pb2
@@ -121,6 +126,7 @@ class MezonClient:
         timeout: int = DEFAULT_TIMEOUT_MS,
         mmn_api_url: str = DEFAULT_MMN_API,
         zk_api_url: str = DEFAULT_ZK_API,
+        agent_event_url: str | None = None,
         log_level: int = logging.INFO,
         enable_logging: bool = False,
     ):
@@ -136,6 +142,7 @@ class MezonClient:
             timeout: The timeout for requests in milliseconds
             mmn_api_url: The URL for the MMN API
             zk_api_url: The URL for the ZK API
+            agent_event_url: Base URL for AI agent SSE endpoints
             log_level: The logging level (default: logging.INFO)
             enable_logging: Whether to enable logging output (default: True)
         """
@@ -146,6 +153,7 @@ class MezonClient:
         self.api_key = api_key
         self.mmn_api_url = mmn_api_url
         self.zk_api_url = zk_api_url
+        self.agent_event_url = agent_event_url
         self.use_ssl = use_ssl
         self.login_url = build_url(use_ssl and "https" or "http", host=host, port=port)
         self.timeout_ms = timeout
@@ -159,6 +167,12 @@ class MezonClient:
 
         self.event_manager = EventManager()
         self.message_db = MessageDB()
+        self._agent_sse_session: aiohttp.ClientSession | None = None
+        self._agent_sse_task: asyncio.Task | None = None
+        self._agent_sse_response: aiohttp.ClientResponse | None = None
+        self._enable_auto_reconnect = False
+        self._is_hard_disconnect = False
+        self._reconnect_task: asyncio.Task | None = None
 
         logger.info(f"MezonClient initialized for client_id: {client_id}")
 
@@ -219,6 +233,7 @@ class MezonClient:
         ws_url_components = parse_url_components(
             sock_session.ws_url, use_ssl=self.use_ssl
         )
+        ws_url = sock_session.ws_url.removeprefix("wss://").removeprefix("ws://")
 
         self.api_client = MezonApi(
             self.client_id,
@@ -233,8 +248,7 @@ class MezonClient:
 
         if not hasattr(self, "socket_manager"):
             self.socket_manager = SocketManager(
-                host=ws_url_components["hostname"],
-                port=ws_url_components["port"],
+                ws_url=ws_url,
                 use_ssl=ws_url_components["use_ssl"],
                 api_client=self.api_client,
                 event_manager=self.event_manager,
@@ -292,6 +306,114 @@ class MezonClient:
             await handler(*args, **kwargs)
         else:
             handler(*args, **kwargs)
+
+    def _build_agent_sse_url(self, path: str) -> str:
+        if not self.agent_event_url:
+            raise ValueError("agent_event_url is not configured")
+
+        base_url = self.agent_event_url.rstrip("/")
+        clean_path = path.lstrip("/")
+        query = urlencode({"appid": self.client_id, "token": self.api_key})
+        return f"{base_url}/{clean_path}?{query}"
+
+    async def _emit_ai_agent_event(self, message: SSEMessage) -> None:
+        try:
+            data = json.loads(message.data)
+        except json.JSONDecodeError:
+            logger.warning("Failed to parse AI agent SSE message: %s", message.data)
+            return
+
+        event_type = data.get("event_type")
+        if not event_type:
+            return
+
+        event_model: RoomMetadataEvent
+        routed_event: str
+        if event_type == "room_started":
+            event_model = AIAgentSessionStartedEvent.model_validate(data)
+            routed_event = Events.AI_AGENT_SESSION_STARTED
+        elif event_type == "room_ended":
+            event_model = AIAgentSessionEndedEvent.model_validate(data)
+            routed_event = Events.AI_AGENT_SESSION_ENDED
+        elif event_type == "room_summary_done":
+            event_model = AIAgentSessionSummaryDoneEvent.model_validate(data)
+            routed_event = Events.AI_AGENT_SESSION_SUMMARY_DONE
+        else:
+            return
+
+        await self.event_manager.emit(routed_event, event_model)
+
+    async def _run_agent_sse(self, path: str) -> None:
+        url = self._build_agent_sse_url(path)
+        headers = {"Accept": "text/event-stream"}
+
+        async with aiohttp.ClientSession(
+            timeout=self.api_client.client_timeout
+        ) as session:
+            self._agent_sse_session = session
+            async with session.get(url, headers=headers) as response:
+                response.raise_for_status()
+                self._agent_sse_response = response
+                await self.event_manager.emit(SSEEvents.OPEN, {"url": url})
+
+                event_type: str | None = None
+                data_lines: list[str] = []
+                message_id: str | None = None
+
+                async for raw_line in response.content:
+                    line = raw_line.decode("utf-8").strip()
+
+                    if not line:
+                        if data_lines:
+                            await self._emit_ai_agent_event(
+                                SSEMessage(
+                                    id=message_id,
+                                    event=event_type,
+                                    data="\n".join(data_lines),
+                                    timestamp=int(
+                                        asyncio.get_running_loop().time() * 1000
+                                    ),
+                                )
+                            )
+                        event_type = None
+                        data_lines = []
+                        message_id = None
+                        continue
+
+                    if line.startswith(":"):
+                        continue
+                    if line.startswith("event:"):
+                        event_type = line[6:].strip()
+                        continue
+                    if line.startswith("id:"):
+                        message_id = line[3:].strip()
+                        continue
+                    if line.startswith("data:"):
+                        data_lines.append(line[5:].lstrip())
+
+    async def connect_ai_agent_sse(self, path: str = "api/sse/metadata") -> None:
+        if self._agent_sse_task and not self._agent_sse_task.done():
+            return
+        self._agent_sse_task = asyncio.create_task(self._run_agent_sse(path))
+
+    async def disconnect_ai_agent_sse(self) -> None:
+        if self._agent_sse_task and not self._agent_sse_task.done():
+            self._agent_sse_task.cancel()
+            try:
+                await self._agent_sse_task
+            except asyncio.CancelledError:
+                pass
+
+        if self._agent_sse_response is not None:
+            self._agent_sse_response.close()
+            self._agent_sse_response = None
+
+        if self._agent_sse_session is not None and not self._agent_sse_session.closed:
+            await self._agent_sse_session.close()
+            self._agent_sse_session = None
+
+        await self.event_manager.emit(SSEEvents.CLOSE)
+        self._agent_sse_task = None
 
     async def login(self, enable_auto_reconnect: bool = True) -> None:
         """
@@ -1358,6 +1480,7 @@ class MezonClient:
             except (asyncio.CancelledError, RuntimeError, Exception):
                 pass
 
+        await self.disconnect_ai_agent_sse()
         await self.close_socket()
         await self.message_db.close()
         logger.info("Client disconnected")

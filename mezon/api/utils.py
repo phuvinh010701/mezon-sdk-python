@@ -79,7 +79,7 @@ def build_url(
     Returns:
         str: URL string
     """
-    netloc = f"{host}" if port else f"{host}:{port}"
+    netloc = f"{host}:{port}" if port else f"{host}"
     return urlunparse((scheme, netloc, path, params, urlencode(query), fragment))
 
 
