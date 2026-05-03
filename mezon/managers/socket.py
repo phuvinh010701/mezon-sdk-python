@@ -29,16 +29,14 @@ class SocketManager:
 
     def __init__(
         self,
-        host: str,
-        port: str,
+        ws_url: str,
         use_ssl: bool,
         api_client: MezonApi,
         event_manager: EventManager,
         mezon_client: "MezonClient",
         message_db: MessageDB,
     ):
-        self.host = host
-        self.port = port
+        self.ws_url = ws_url
         self.use_ssl = use_ssl
         self.api_client = api_client
         self.event_manager = event_manager
@@ -46,8 +44,7 @@ class SocketManager:
         self.message_db = message_db
         self.adapter = WebSocketAdapterPb()
         self.socket = Socket(
-            host=host,
-            port=port,
+            ws_url=ws_url,
             use_ssl=use_ssl,
             adapter=self.adapter,
             event_manager=event_manager,

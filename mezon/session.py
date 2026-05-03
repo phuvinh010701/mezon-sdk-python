@@ -56,7 +56,7 @@ class Session:
     def restore_ws_url(self, ws_url: str) -> str:
         # TODO: Restore the ws url to the correct protocol
         # for now assume it returns wss:// if not provided
-        if not ws_url.startswith("wss://") or not ws_url.startswith("ws://"):
+        if not ws_url.startswith("wss://") and not ws_url.startswith("ws://"):
             ws_url = f"wss://{ws_url}"
         return ws_url
 

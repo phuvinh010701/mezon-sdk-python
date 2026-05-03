@@ -1490,7 +1490,7 @@ class ChannelMessage(BaseModel):
 
         return cls.model_validate(
             {
-                "id": dict["id"],
+                "message_id": dict["id"],
                 "clan_id": dict["clan_id"],
                 "channel_id": dict["channel_id"],
                 "sender_id": dict["sender_id"],

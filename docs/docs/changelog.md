@@ -2,6 +2,16 @@
 
 All notable changes to the Mezon SDK Python.
 
+## Unreleased
+
+### Bug Fixes
+
+- Normalize `ws_url` without corrupting existing `ws://` or `wss://` prefixes.
+- Build API URLs with the correct `host:port` combination.
+- Match regenerated protobuf `Envelope.cid` typing by using integer command IDs.
+- Initialize reconnect state eagerly so `disconnect()` remains safe after early login failures.
+- Add focused regression tests for socket/protobuf/login compatibility and keep reconnect integration coverage in the test runner.
+
 ## v1.6.2 (2025-12-03)
 
 ### Bug Fixes

@@ -61,8 +61,7 @@ class Socket:
 
     def __init__(
         self,
-        host: str,
-        port: str,
+        ws_url: str,
         use_ssl: bool = False,
         adapter: Optional[WebSocketAdapterPb] = None,
         send_timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS,
@@ -72,21 +71,19 @@ class Socket:
         Initialize Socket.
 
         Args:
-            host: Server host
-            port: Server port
+            ws_url: WebSocket host/path returned by authenticate
             use_ssl: Whether to use SSL (wss://)
             adapter: WebSocket adapter instance
             send_timeout_ms: Timeout for send operations
             event_manager: EventManager instance for handling events
         """
-        self.host = host
-        self.port = port
+        self.ws_url = ws_url
         self.use_ssl = use_ssl
         self.websocket_scheme = use_ssl and "wss" or "ws"
         self.send_timeout_ms = send_timeout_ms
         self.event_manager = event_manager or EventManager()
 
-        self.cids: dict[str, PromiseExecutor] = {}
+        self.cids: dict[int, PromiseExecutor] = {}
         self.next_cid = 1
 
         self.adapter = adapter or WebSocketAdapterPb()
@@ -104,14 +101,14 @@ class Socket:
 
         self._intentional_close = False
 
-    def generate_cid(self) -> str:
+    def generate_cid(self) -> int:
         """
         Generate a unique command ID for RPC calls.
 
         Returns:
-            Command ID as string
+            Command ID as integer
         """
-        cid = str(self.next_cid)
+        cid = self.next_cid
         self.next_cid += 1
         return cid
 
@@ -182,8 +179,7 @@ class Socket:
             await asyncio.wait_for(
                 self.adapter.connect(
                     self.websocket_scheme,
-                    self.host,
-                    self.port,
+                    self.ws_url,
                     create_status,
                     session.token,
                 ),
