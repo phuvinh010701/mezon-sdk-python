@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v1.8.0 (2026-05-03)
+
+### Features
+
+- Upgrade reflect 2.8.46 ts sdk
+  ([`d0c5075`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d0c50751b9827af6d6ad6732b043efdfdf6acbf8))
+
+### Refactoring
+
+- Remove binary perf compare, add unit test, test cov
+  ([`9de4256`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9de425693fe9069666b45878894bbc8b61d11bb2))
+
+
 ## v1.7.2 (2026-05-01)
 
 ### Bug Fixes
