@@ -59,6 +59,30 @@ asyncio.run(main())
 - Token sending support
 - Message caching with SQLite
 
+## Testing
+
+Pytest is the primary path for focused unit and regression coverage.
+
+For regression coverage around socket/protobuf/login behavior, run:
+
+```bash
+uv run pytest tests/unit/test_socket_regressions.py
+```
+
+You can also run the broader pytest suite with:
+
+```bash
+uv run pytest tests/
+```
+
+For broader integration coverage against a real Mezon environment, set the required `MEZON_*` environment variables and run:
+
+```bash
+uv run python -m tests.test_runner
+```
+
+The integration runner includes the reconnect/login suite in `tests/test_reconnect.py`.
+
 ## Links
 
 - [PyPI Package](https://pypi.org/project/mezon-sdk/)

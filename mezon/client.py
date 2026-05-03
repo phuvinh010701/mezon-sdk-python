@@ -23,7 +23,6 @@ from typing import Any, Literal
 from urllib.parse import urlencode
 
 import aiohttp
-
 from mmn import (
     AddTxResponse,
     EphemeralKeyPair,
@@ -348,7 +347,9 @@ class MezonClient:
         url = self._build_agent_sse_url(path)
         headers = {"Accept": "text/event-stream"}
 
-        async with aiohttp.ClientSession(timeout=self.api_client.client_timeout) as session:
+        async with aiohttp.ClientSession(
+            timeout=self.api_client.client_timeout
+        ) as session:
             self._agent_sse_session = session
             async with session.get(url, headers=headers) as response:
                 response.raise_for_status()
@@ -369,7 +370,9 @@ class MezonClient:
                                     id=message_id,
                                     event=event_type,
                                     data="\n".join(data_lines),
-                                    timestamp=int(asyncio.get_running_loop().time() * 1000),
+                                    timestamp=int(
+                                        asyncio.get_running_loop().time() * 1000
+                                    ),
                                 )
                             )
                         event_type = None
