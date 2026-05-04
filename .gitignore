@@ -218,4 +218,5 @@ __marimo__/
 .DS_Store
 # Mezon cache
 /mezon-cache
-docs/
+docs/site/
+.omc/
