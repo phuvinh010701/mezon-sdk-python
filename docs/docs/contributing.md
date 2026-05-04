@@ -24,6 +24,41 @@ uv run ruff format
 pytest
 ```
 
+## Testing socket / protobuf / login changes
+
+Use pytest as the primary path for focused unit and regression coverage.
+
+Start with a deterministic regression run that does not require network access:
+
+```bash
+uv run pytest tests/unit/test_socket_regressions.py
+```
+
+For a broader local sweep of unit/model tests, run:
+
+```bash
+uv run pytest tests/
+```
+
+When you need to verify real login and reconnect behavior, run the integration suite with environment variables configured:
+
+```bash
+uv run python -m tests.test_runner
+```
+
+The integration runner requires these environment variables:
+
+- `MEZON_CLIENT_ID`
+- `MEZON_API_KEY`
+- `MEZON_CLAN_ID`
+- `MEZON_CHANNEL_ID`
+- `MEZON_USER_ID`
+- `MEZON_USER_NAME`
+- `MEZON_USER_ID_2`
+- `MEZON_USER_NAME_2`
+
+Use the focused regression test for protocol compatibility bugs such as `ws_url` normalization, URL building, integer `cid` handling, and safe disconnect cleanup.
+
 ## Docs structure
 
 The documentation site is driven by:
