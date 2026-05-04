@@ -3,7 +3,6 @@ Clan operation tests for Mezon SDK.
 """
 
 from mezon import ChannelType
-
 from tests.base import BaseTestSuite
 
 

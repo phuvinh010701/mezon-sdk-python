@@ -1,7 +1,7 @@
 import base64
 import json
 from typing import Any, Optional
-from urllib.parse import urlparse
+from urllib.parse import urlencode, urlparse, urlunparse
 
 import aiohttp
 from google.protobuf.message import DecodeError
@@ -26,6 +26,7 @@ def build_headers(
     basic_auth: Optional[tuple[str | int, str]] = None,
     accept_binary: bool = False,
     send_binary: bool = False,
+    additional_headers: dict[str, Any] = {},
 ) -> dict[str, Any]:
     """
     Build headers for API requests.
@@ -43,6 +44,8 @@ def build_headers(
         "Accept": "application/proto" if accept_binary else "application/json",
         "Content-Type": "application/proto" if send_binary else "application/json",
     }
+    if additional_headers:
+        headers.update(additional_headers)
     if bearer_token:
         headers["Authorization"] = f"Bearer {bearer_token}"
     elif basic_auth:
@@ -50,6 +53,34 @@ def build_headers(
         credentials = base64.b64encode(f"{username}:{password}".encode())
         headers["Authorization"] = f"Basic {credentials}"
     return headers
+
+
+def build_url(
+    scheme: str,
+    host: str,
+    port: str | int = "",
+    path: str = "",
+    params: str = "",
+    query: dict[str, Any] = {},
+    fragment: str = "",
+) -> str:
+    """
+    Build URL for API requests.
+
+    Args:
+        scheme (str): Scheme string
+        host (str): Host string
+        port (str | int): Port string or integer
+        path (str): Path string
+        params (str): Params string
+        query (dict[str, Any]): Query dictionary
+        fragment (str): Fragment string
+
+    Returns:
+        str: URL string
+    """
+    netloc = f"{host}:{port}" if port else f"{host}"
+    return urlunparse((scheme, netloc, path, params, urlencode(query), fragment))
 
 
 def build_body(body: BaseModel | dict[str, Any]) -> str:
@@ -70,20 +101,20 @@ def build_body(body: BaseModel | dict[str, Any]) -> str:
         raise ValueError(f"Invalid body type: {type(body)}")
 
 
-def parse_url_components(url: str) -> dict[str, Any]:
+def parse_url_components(url: str, use_ssl: bool = False) -> dict[str, Any]:
     """
     Parse URL components.
 
     Args:
         url (str): URL string to parse
-
+        use_ssl (bool): Whether to use SSL
     Returns:
         dict[str, Any]: Dictionary with scheme, hostname, use_ssl, and port
     """
     parsed_url = urlparse(url)
 
     port = parsed_url.port
-    use_ssl = parsed_url.scheme == "https"
+    use_ssl = use_ssl or is_schema_secure(parsed_url.scheme)
     if port is None:
         port = "443" if use_ssl else "80"
     else:
@@ -95,6 +126,19 @@ def parse_url_components(url: str) -> dict[str, Any]:
         "use_ssl": use_ssl,
         "port": port,
     }
+
+
+def is_schema_secure(schema: str) -> bool:
+    """
+    Check if schema is secure.
+
+    Args:
+        schema (str): Schema string
+
+    Returns:
+        bool: True if schema is secure
+    """
+    return schema == "https" or schema == "wss"
 
 
 def build_params(params: Optional[dict[str, Any]] = None) -> dict[str, Any]:

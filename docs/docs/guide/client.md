@@ -1,123 +1,120 @@
 # Client Configuration
 
-The `MezonClient` is the main entry point for interacting with the Mezon platform.
+`MezonClient` là entry point chính để xác thực, khởi tạo managers, kết nối WebSocket, và đăng ký event handlers.
 
 ## Initialization
 
 ```python
-from mezon import MezonClient
 import logging
+from mezon import MezonClient
 
 client = MezonClient(
     client_id="YOUR_BOT_ID",
     api_key="YOUR_API_KEY",
-    host="gw.mezon.ai",      # Optional: API host
-    port="443",               # Optional: API port
-    use_ssl=True,             # Optional: Use SSL
-    timeout=7000,             # Optional: Request timeout in ms
-    enable_logging=True,      # Optional: Enable logging
-    log_level=logging.INFO,   # Optional: Log level
+    host="gw.mezon.ai",
+    port="443",
+    use_ssl=True,
+    timeout=7000,
+    mmn_api_url="https://dong.mezon.ai/mmn-api/",
+    zk_api_url="https://dong.mezon.ai/zk-api/",
+    enable_logging=True,
+    log_level=logging.INFO,
 )
 ```
 
-## Parameters
+## Constructor parameters
 
 | Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `client_id` | `str` | Required | Your bot's client ID |
-| `api_key` | `str` | Required | Your API key |
-| `host` | `str` | `"gw.mezon.ai"` | API host |
-| `port` | `str` | `"443"` | API port |
-| `use_ssl` | `bool` | `True` | Use SSL connection |
+|---|---|---:|---|
+| `client_id` | `str | int` | required | Bot/client ID |
+| `api_key` | `str` | required | API key used for authentication |
+| `host` | `str` | `"gw.mezon.ai"` | Login/API host |
+| `port` | `str` | `"443"` | Login/API port |
+| `use_ssl` | `bool` | `True` | Use TLS for HTTP and WebSocket URLs |
 | `timeout` | `int` | `7000` | Request timeout in milliseconds |
+| `mmn_api_url` | `str` | Mezon MMN default | Token transfer backend |
+| `zk_api_url` | `str` | Mezon ZK default | ZK proof backend |
 | `enable_logging` | `bool` | `False` | Enable SDK logging |
 | `log_level` | `int` | `logging.INFO` | Python logging level |
 
-## Authentication
-
-Call `login()` to authenticate and establish connections:
+## What `login()` does
 
 ```python
-async def main():
-    await client.login()
-    print(f"Logged in as {client.client_id}")
-```
-
-The login process:
-
-1. Authenticates with the Mezon API using your credentials
-2. Obtains a JWT session token
-3. Establishes a WebSocket connection for real-time events
-4. Initializes managers (session, socket, channel, event, cache)
-
-## Auto-Reconnection
-
-By default, the client automatically reconnects if the connection is lost:
-
-```python
-await client.login(enable_auto_reconnect=True)  # Default
-```
-
-To disable auto-reconnection:
-
-```python
+await client.login()
 await client.login(enable_auto_reconnect=False)
 ```
 
-## Accessing Managers
+`login()` performs these steps:
 
-After login, you can access various managers:
+1. Authenticates through `SessionManager` and retrieves a session token.
+2. Rebuilds API and socket managers from the session URLs returned by the server.
+3. Connects the transport socket and joins clan chats / DM channels.
+4. Initializes MMN and ZK clients for token sending.
+5. Optionally enables automatic reconnect handlers.
+
+## Common properties after login
+
+| Property | Type | Description |
+|---|---|---|
+| `client.client_id` | `int` | Authenticated bot ID |
+| `client.clans` | `CacheManager[int, Clan]` | Clan cache/fetch entrypoint |
+| `client.channels` | `CacheManager[int, TextChannel]` | Channel cache/fetch entrypoint |
+| `client.users` | `CacheManager[int, User]` | User cache/fetch entrypoint |
+| `client.session_manager` | `SessionManager` | Holds the active `Session` |
+| `client.socket_manager` | `SocketManager` | WebSocket/write operations |
+| `client.channel_manager` | `ChannelManager` | DM/channel API helpers |
+| `client.event_manager` | `EventManager` | Event registration and dispatch |
+| `client.api_client` | `MezonApi` | Authenticated HTTP client |
+
+## Accessing channels and clans
 
 ```python
-# Channel manager - fetch and manage channels
-channel = await client.channels.fetch("channel_id")
+channel = await client.channels.fetch(123456789)
+clan = await client.clans.fetch(987654321)
 
-# Clan manager - access clans
-clan = await client.clans.get("clan_id")
-
-# Session manager - access session info
-session = client.session_manager.get_session()
-print(f"Token: {session.token}")
-
-# Socket manager - access WebSocket
-socket = client.socket_manager.get_socket()
+await clan.load_channels()
+channel = await clan.channels.fetch(123456789)
 ```
 
-## Graceful Shutdown
+Use `fetch(...)` when the object may need to be loaded. Use `get(...)` only when you know it is already cached.
 
-Always close connections when shutting down:
+## Event registration
 
 ```python
-import signal
+from mezon.protobuf.api import api_pb2
+
+async def handle_message(message: api_pb2.ChannelMessage):
+    if message.sender_id == client.client_id:
+        return
+
+client.on_channel_message(handle_message)
+```
+
+For a complete list of helpers such as `on_channel_updated`, `on_token_send`, `on_quick_menu_event`, and `on_notification`, see [Event Handling](events.md).
+
+## Reconnect behavior
+
+By default, `login()` enables automatic reconnect:
+
+```python
+await client.login(enable_auto_reconnect=True)
+```
+
+When reconnecting, the client rebuilds its managers from a fresh session and reconnects the socket. Handlers registered on `client.event_manager` stay attached to the client instance.
+
+## Shutdown
+
+Close the socket when your process exits:
+
+```python
 import asyncio
 
-async def shutdown(client):
-    print("Shutting down...")
-    if client.socket_manager:
-        await client.socket_manager.disconnect()
-
 async def main():
-    client = MezonClient(client_id="...", api_key="...")
     await client.login()
-
-    loop = asyncio.get_event_loop()
-    for sig in (signal.SIGTERM, signal.SIGINT):
-        loop.add_signal_handler(
-            sig,
-            lambda: asyncio.create_task(shutdown(client))
-        )
-
-    await asyncio.Event().wait()
+    try:
+        await asyncio.Event().wait()
+    finally:
+        await client.close_socket()
 ```
 
-## Timeout Configuration
-
-Increase timeout for slow connections:
-
-```python
-client = MezonClient(
-    client_id="...",
-    api_key="...",
-    timeout=15000  # 15 seconds
-)
-```
+`close_socket()` shuts down the active WebSocket connection. If you build your own app lifecycle, prefer calling this method instead of reaching into lower-level socket objects.

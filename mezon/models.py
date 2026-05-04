@@ -15,14 +15,16 @@ limitations under the License.
 """
 
 import json
+import logging
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from google.protobuf import json_format
 from pydantic import BaseModel, Field
 
 from mezon.protobuf.api import api_pb2
-from mezon.protobuf.rtapi import realtime_pb2
+
+logger = logging.getLogger(__name__)
 
 
 def protobuf_to_pydantic(proto_message, pydantic_class: type[BaseModel]) -> BaseModel:
@@ -91,12 +93,13 @@ class ApiClanDescList(MezonBaseModel):
     clandesc: list[ApiClanDesc] = []
 
 
-class ApiSession(BaseModel):
+class ApiSession(MezonBaseModel):
     refresh_token: Optional[str] = None
     token: Optional[str] = None
-    user_id: int
+    user_id: Optional[int] = None
     api_url: Optional[str] = None
     id_token: Optional[str] = None
+    ws_url: Optional[str] = None
 
 
 class ApiAccountApp(BaseModel):
@@ -157,21 +160,14 @@ class ApiChannelDescription(BaseModel):
 
     @classmethod
     def from_protobuf(
-        cls,
-        message: realtime_pb2.ChannelCreatedEvent
-        | realtime_pb2.ChannelUpdatedEvent
-        | api_pb2.ChannelDescription,
+        cls, message: api_pb2.ChannelDescription
     ) -> "ApiChannelDescription":
-        if isinstance(message, api_pb2.ChannelDescription):
-            channel_type_value = message.type
-        else:
-            channel_type_value = message.channel_type
-
+        """Convert API protobuf ChannelDescription to Pydantic model."""
         json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
         data_dict = json.loads(json_data)
 
-        if channel_type_value is not None:
-            data_dict["type"] = channel_type_value
+        if message.type is not None:
+            data_dict["type"] = message.type
 
         return cls.model_validate(data_dict)
 
@@ -192,6 +188,8 @@ class ApiMessageAttachment(BaseModel):
     size: Optional[int] = None
     url: Optional[str] = None
     width: Optional[int] = None
+    thumbnail: Optional[str] = None
+    duration: Optional[int] = None
     channel_id: Optional[int] = None
     mode: Optional[int] = None
     channel_label: Optional[str] = None
@@ -883,20 +881,19 @@ class UserProfileRedis(BaseModel):
     """User profile from Redis"""
 
     user_id: int
-    username: str
-    avatar: str
-    display_name: str
-    about_me: str
-    custom_status: str
-    create_time_second: int
-    fcm_tokens: list[FCMTokens]
-    online: bool
-    metadata: str
-    is_disabled: bool
-    joined_clans: list[int]
-    pubkey: str
-    mezon_id: str
-    app_token: str
+    username: Optional[str] = None
+    avatar: Optional[str] = None
+    display_name: Optional[str] = None
+    user_status: Optional[str] = None
+    status: Optional[str] = None
+    online: Optional[bool] = None
+    fcm_tokens: list[FCMTokens] = Field(default_factory=list)
+    joined_clans: list[int] = Field(default_factory=list)
+    app_token: Optional[str] = None
+    create_time_second: Optional[int] = None
+    app_url: Optional[str] = None
+    is_bot: Optional[bool] = None
+    voip_token: Optional[str] = None
 
 
 class AddUsers(BaseModel):
@@ -908,22 +905,16 @@ class AddUsers(BaseModel):
     display_name: str
 
 
-class ChannelDescription(BaseModel):
-    """Channel description for events"""
-
-    pass  # Will be same as ApiChannelDescription
-
-
 class UserChannelAddedEvent(BaseModel):
     """User channel added event"""
 
-    channel_desc: ChannelDescription
-    users: list[UserProfileRedis]
-    status: str
     clan_id: int
+    channel_desc: Optional[ApiChannelDescription] = None
+    users: list[UserProfileRedis] = Field(default_factory=list)
+    status: Optional[str] = None
     caller: Optional[UserProfileRedis] = None
-    create_time_second: int
-    active: int
+    create_time_seconds: Optional[int] = None
+    active: Optional[int] = None
 
 
 class UserChannelRemoved(BaseModel):
@@ -968,10 +959,12 @@ class MessageTypingEvent(BaseModel):
     """Message typing event"""
 
     channel_id: int
-    mode: int
-    is_public: bool
-    clan_id: int
     sender_id: int
+    sender_username: Optional[str] = None
+    sender_display_name: Optional[str] = None
+    mode: Optional[int] = None
+    is_public: Optional[bool] = None
+    clan_id: Optional[int] = None
     channel_label: Optional[str] = None
 
 
@@ -991,10 +984,10 @@ class UserProfileUpdatedEvent(BaseModel):
     """User profile updated event"""
 
     user_id: int
-    display_name: str
-    avatar: str
-    about_me: str
-    channel_id: int
+    display_name: Optional[str] = None
+    avatar: Optional[str] = None
+    about_me: Optional[str] = None
+    channel_id: Optional[int] = None
     clan_id: int
 
 
@@ -1002,22 +995,22 @@ class VoiceJoinedEvent(BaseModel):
     """Voice joined event"""
 
     clan_id: int
-    clan_name: str
-    id: str
-    participant: str
     user_id: int
-    voice_channel_label: str
     voice_channel_id: int
+    clan_name: Optional[str] = None
+    id: Optional[str] = None
+    participant: Optional[str] = None
+    voice_channel_label: Optional[str] = None
     last_screenshot: Optional[str] = None
 
 
 class VoiceLeavedEvent(BaseModel):
     """Voice leaved event"""
 
-    id: str
     clan_id: int
     voice_channel_id: int
     voice_user_id: int
+    id: Optional[str] = None
 
 
 class VoiceStartedEvent(BaseModel):
@@ -1070,47 +1063,52 @@ class ChannelUpdatedEvent(BaseModel):
     """Channel updated event"""
 
     clan_id: int
-    category_id: int
-    creator_id: int
-    parent_id: int
     channel_id: int
-    channel_label: str
+    category_id: Optional[int] = None
+    creator_id: Optional[int] = None
+    parent_id: Optional[int] = None
+    channel_label: Optional[str] = None
     channel_type: Optional[int] = None
-    status: int
-    meeting_code: str
-    is_error: bool
-    channel_private: bool
-    app_url: str
-    e2ee: int
-    topic: str
-    age_restricted: int
-    active: int
+    status: Optional[int] = None
+    meeting_code: Optional[str] = None
+    is_error: Optional[bool] = None
+    channel_private: Optional[bool] = None
+    app_id: Optional[int] = None
+    e2ee: Optional[int] = None
+    topic: Optional[str] = None
+    age_restricted: Optional[int] = None
+    active: Optional[int] = None
+    count_mess_unread: Optional[int] = None
+    user_ids: list[int] = Field(default_factory=list)
+    role_ids: list[int] = Field(default_factory=list)
+    channel_avatar: Optional[str] = None
 
 
 class ChannelCreatedEvent(BaseModel):
     """Channel created event"""
 
     clan_id: int
-    category_id: int
-    creator_id: int
-    parent_id: int
     channel_id: int
-    channel_label: str
-    channel_private: int
+    category_id: Optional[int] = None
+    creator_id: Optional[int] = None
+    parent_id: Optional[int] = None
+    channel_label: Optional[str] = None
+    channel_private: Optional[int] = None
     channel_type: Optional[int] = None
-    status: int
-    app_url: str
-    clan_name: str
+    status: Optional[int] = None
+    app_id: Optional[int] = None
+    clan_name: Optional[str] = None
+    channel_avatar: Optional[str] = None
 
 
 class ChannelDeletedEvent(BaseModel):
     """Channel deleted event"""
 
     clan_id: int
-    category_id: int
-    parent_id: int
     channel_id: int
-    deletor: str
+    category_id: Optional[int] = None
+    parent_id: Optional[int] = None
+    deletor: Optional[str] = None
 
 
 class ClanUpdatedEvent(BaseModel):
@@ -1202,7 +1200,7 @@ class ChannelMessageRemove(BaseModel):
 class ChannelMessageAck(BaseModel):
     """Channel message acknowledgement"""
 
-    channel_id: int
+    channel_id: Optional[int] = None
     mode: Optional[int] = None
     message_id: Optional[int] = None
     code: Optional[int] = 0
@@ -1228,6 +1226,12 @@ class Ping(BaseModel):
     pass
 
 
+class Pong(BaseModel):
+    """Pong message"""
+
+    pass
+
+
 class Rpc(BaseModel):
     """RPC call"""
 
@@ -1235,34 +1239,57 @@ class Rpc(BaseModel):
     payload: Any
 
 
-class ChannelMessageRaw(BaseModel):
-    """Raw channel message data from protobuf"""
+class ChannelMessage(BaseModel):
+    """A message sent on a channel"""
 
-    id: int = Field(alias="message_id")
+    message_id: int
     clan_id: int
     channel_id: int
     sender_id: int
+
     content: dict[str, Any] = Field(default_factory=dict)
-    reactions: list[ApiMessageReaction] = Field(default_factory=list)
+
     mentions: list[ApiMessageMention] = Field(default_factory=list)
     attachments: list[ApiMessageAttachment] = Field(default_factory=list)
+    reactions: list[ApiMessageReaction] = Field(default_factory=list)
     references: list[ApiMessageRef] = Field(default_factory=list)
+
+    username: Optional[str] = None
+    avatar: Optional[str] = None
+    display_name: Optional[str] = None
+    clan_nick: Optional[str] = None
+    clan_avatar: Optional[str] = None
+    channel_label: Optional[str] = None
+    clan_logo: Optional[str] = None
+    category_name: Optional[str] = None
+
     create_time_seconds: Optional[int] = None
+    update_time_seconds: Optional[int] = None
+    mode: Optional[int] = None
+    is_public: Optional[bool] = None
+    hide_editted: Optional[bool] = None
     topic_id: Optional[int] = None
+    code: Optional[int] = None
+    referenced_message: Optional[bytes] = None
 
     class Config:
         populate_by_name = True
 
+    @property
+    def id(self) -> int:
+        """Alias for message_id (backward compatibility)"""
+        return self.message_id
+
     @classmethod
-    def from_protobuf(cls, message: api_pb2.ChannelMessage) -> "ChannelMessageRaw":
+    def from_protobuf(cls, message: api_pb2.ChannelMessage) -> "ChannelMessage":
         """
-        Create a ChannelMessageRaw from a protobuf ChannelMessage.
+        Create a ChannelMessage from a protobuf ChannelMessage.
 
         Args:
             message: Protobuf ChannelMessage object
 
         Returns:
-            ChannelMessageRaw instance
+            ChannelMessage instance
         """
 
         def safe_json_parse(value: Optional[str | bytes], default):
@@ -1274,20 +1301,131 @@ class ChannelMessageRaw(BaseModel):
             except (json.JSONDecodeError, TypeError, UnicodeDecodeError):
                 return default
 
+        def decode_protobuf_mentions(data: bytes) -> list[ApiMessageMention]:
+            """Decode protobuf bytes to list of mentions"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                mention_list = api_pb2.MessageMentionList()
+                mention_list.ParseFromString(data)
+                return [
+                    ApiMessageMention(
+                        id=m.id,
+                        user_id=m.user_id,
+                        username=m.username,
+                        role_id=m.role_id,
+                        rolename=m.rolename,
+                        s=m.s,
+                        e=m.e,
+                    )
+                    for m in mention_list.mentions
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode mentions: {e}")
+                return []
+
+        def decode_protobuf_attachments(data: bytes) -> list[ApiMessageAttachment]:
+            """Decode protobuf bytes to list of attachments"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                attachment_list = api_pb2.MessageAttachmentList()
+                attachment_list.ParseFromString(data)
+                return [
+                    ApiMessageAttachment(
+                        filename=a.filename,
+                        filetype=a.filetype,
+                        height=a.height,
+                        size=a.size,
+                        url=a.url,
+                        width=a.width,
+                        thumbnail=a.thumbnail,
+                        duration=a.duration,
+                    )
+                    for a in attachment_list.attachments
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode attachments: {e}")
+                return []
+
+        def decode_protobuf_reactions(data: bytes) -> list[ApiMessageReaction]:
+            """Decode protobuf bytes to list of reactions"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                reaction_list = api_pb2.MessageReactionList()
+                reaction_list.ParseFromString(data)
+                return [
+                    ApiMessageReaction(
+                        action=r.action,
+                        emoji_id=r.emoji_id,
+                        emoji=r.emoji,
+                        id=r.id,
+                        sender_id=r.sender_id,
+                        sender_name=r.sender_name,
+                        sender_avatar=r.sender_avatar,
+                        count=r.count,
+                    )
+                    for r in reaction_list.reactions
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode reactions: {e}")
+                return []
+
+        def decode_protobuf_references(data: bytes) -> list[ApiMessageRef]:
+            """Decode protobuf bytes to list of references"""
+            if not data or not isinstance(data, bytes):
+                return []
+            try:
+                ref_list = api_pb2.MessageRefList()
+                ref_list.ParseFromString(data)
+                return [
+                    ApiMessageRef(
+                        message_id=r.message_id,
+                        message_ref_id=r.message_ref_id,
+                        ref_type=r.ref_type,
+                        message_sender_id=r.message_sender_id,
+                        message_sender_username=r.message_sender_username,
+                        message_sender_display_name=r.message_sender_display_name,
+                        message_sender_avatar=r.mesages_sender_avatar,
+                        has_attachment=r.has_attachment,
+                        message_sender_clan_nick=r.message_sender_clan_nick,
+                        content=r.content,
+                    )
+                    for r in ref_list.refs
+                ]
+            except Exception as e:
+                logger.error(f"Failed to decode references: {e}")
+                return []
+
         return cls(
             message_id=message.message_id,
             clan_id=message.clan_id,
             channel_id=message.channel_id,
             sender_id=message.sender_id,
             content=safe_json_parse(getattr(message, "content", None), {}),
-            reactions=safe_json_parse(getattr(message, "reactions", None), []),
-            mentions=safe_json_parse(getattr(message, "mentions", None), []),
-            attachments=safe_json_parse(getattr(message, "attachments", None), [])
-            if isinstance(message.attachments, list)
-            else [],
-            references=safe_json_parse(getattr(message, "references", None), []),
+            mentions=decode_protobuf_mentions(getattr(message, "mentions", b"")),
+            attachments=decode_protobuf_attachments(
+                getattr(message, "attachments", b"")
+            ),
+            reactions=decode_protobuf_reactions(getattr(message, "reactions", b"")),
+            references=decode_protobuf_references(getattr(message, "references", b"")),
+            username=getattr(message, "username", None),
+            avatar=getattr(message, "avatar", None),
+            display_name=getattr(message, "display_name", None),
+            clan_nick=getattr(message, "clan_nick", None),
+            clan_avatar=getattr(message, "clan_avatar", None),
+            channel_label=getattr(message, "channel_label", None),
+            clan_logo=getattr(message, "clan_logo", None),
+            category_name=getattr(message, "category_name", None),
             create_time_seconds=getattr(message, "create_time_seconds", None),
+            update_time_seconds=getattr(message, "update_time_seconds", None),
+            mode=getattr(message, "mode", None),
+            is_public=getattr(message, "is_public", None),
+            hide_editted=getattr(message, "hide_editted", None),
             topic_id=getattr(message, "topic_id", None),
+            code=getattr(message, "code", None),
+            referenced_message=getattr(message, "referenced_message", None),
         )
 
     def to_message_dict(self) -> dict[str, Any]:
@@ -1320,9 +1458,9 @@ class ChannelMessageRaw(BaseModel):
         }
 
     @classmethod
-    def from_db_dict(cls, dict: dict[str, Any]) -> "ChannelMessageRaw":
+    def from_db_dict(cls, dict: dict[str, Any]) -> "ChannelMessage":
         """
-        Create a ChannelMessageRaw from a database dictionary.
+        Create a ChannelMessage from a database dictionary.
         """
         reactions_data = (
             json.loads(dict["reactions"])
@@ -1352,7 +1490,7 @@ class ChannelMessageRaw(BaseModel):
 
         return cls.model_validate(
             {
-                "id": dict["id"],
+                "message_id": dict["id"],
                 "clan_id": dict["clan_id"],
                 "channel_id": dict["channel_id"],
                 "sender_id": dict["sender_id"],
@@ -1421,3 +1559,171 @@ class UserInitData(BaseModel):
             Dictionary suitable for User class initialization
         """
         return self.model_dump(by_alias=True)
+
+
+# SSE / AI Agent Models
+
+
+class SSEConfig(MezonBaseModel):
+    """Server-Sent Events connection configuration."""
+
+    url: str
+    app_id: str
+    token: str
+    auto_reconnect: Optional[bool] = True
+    reconnect_delay: Optional[int] = None
+    max_reconnect_attempts: Optional[int] = None
+    headers: Optional[dict[str, str]] = None
+
+
+class SSEMessage(MezonBaseModel):
+    """A message received over a Server-Sent Events connection."""
+
+    id: Optional[str] = None
+    event: Optional[str] = None
+    data: str
+    timestamp: int
+
+
+class RoomInfo(MezonBaseModel):
+    """Room info embedded in AI agent metadata events."""
+
+    room_id: str
+    room_name: str
+
+
+class RoomMetadataEvent(MezonBaseModel):
+    """Base room metadata event received from AI agent SSE stream.
+
+    ``event_type`` is the value carried inside the SSE data payload
+    (e.g. ``"room_started"``).  It is *not* the same as the internal
+    routing key used by ``Events``/``InternalAgentEvents`` — the dispatch
+    layer translates between the two, mirroring the JS SDK
+    ``_emitAIAgentEvent`` switch.
+    """
+
+    event_id: str
+    event_type: str
+    timestamp: str
+    room: RoomInfo
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class AIAgentSessionStartedEvent(RoomMetadataEvent):
+    """AI agent session started.
+
+    SSE payload ``event_type`` value; dispatch routing key is
+    ``Events.AI_AGENT_SESSION_STARTED`` (``"session_started"``).
+    """
+
+    event_type: Literal["room_started"] = "room_started"
+
+
+class AIAgentSessionEndedEvent(RoomMetadataEvent):
+    """AI agent session ended.
+
+    SSE payload ``event_type`` value; dispatch routing key is
+    ``Events.AI_AGENT_SESSION_ENDED`` (``"session_ended"``).
+    """
+
+    event_type: Literal["room_ended"] = "room_ended"
+
+
+class AIAgentSessionSummaryDoneEvent(RoomMetadataEvent):
+    """AI agent session summary completed.
+
+    SSE payload ``event_type`` value matches the dispatch routing key
+    ``Events.AI_AGENT_SESSION_SUMMARY_DONE`` (``"room_summary_done"``).
+    """
+
+    event_type: Literal["room_summary_done"] = "room_summary_done"
+
+
+# Envelope message type to Pydantic model mapping
+ENVELOPE_TO_PYDANTIC_MAP: dict[str, type[BaseModel]] = {
+    # Channel operations
+    "channel_message": ChannelMessage,
+    "channel_message_ack": ChannelMessageAck,
+    "channel_message_send": ChannelMessageSend,
+    "channel_message_update": ChannelMessageUpdate,
+    "channel_message_remove": ChannelMessageRemove,
+    "channel_join": ChannelJoin,
+    "channel_leave": ChannelLeave,
+    # Clan operations
+    "clan_join": ClanJoin,
+    # Events
+    "channel_created_event": ChannelCreatedEvent,
+    "channel_deleted_event": ChannelDeletedEvent,
+    "channel_updated_event": ChannelUpdatedEvent,
+    "clan_updated_event": ClanUpdatedEvent,
+    "clan_profile_updated_event": ClanProfileUpdatedEvent,
+    "custom_status_event": CustomStatusEvent,
+    "message_typing_event": MessageTypingEvent,
+    "last_seen_message_event": LastSeenMessageEvent,
+    "last_pin_message_event": LastPinMessageEvent,
+    "voice_joined_event": VoiceJoinedEvent,
+    "voice_leaved_event": VoiceLeavedEvent,
+    "voice_started_event": VoiceStartedEvent,
+    "voice_ended_event": VoiceEndedEvent,
+    "streaming_joined_event": StreamingJoinedEvent,
+    "streaming_leaved_event": StreamingLeavedEvent,
+    "user_channel_added_event": UserChannelAddedEvent,
+    "user_channel_removed_event": UserChannelRemoved,
+    "user_clan_removed_event": UserClanRemovedEvent,
+    "user_profile_updated_event": UserProfileUpdatedEvent,
+    "check_name_existed_event": ClanNameExistedEvent,
+    "give_coffee_event": GiveCoffeeEvent,
+    "token_sent_event": TokenSentEvent,
+    "dropdown_box_selected": DropdownBoxSelected,
+    "notifications": NotificationEvent,
+    # Socket messages
+    "ping": Ping,
+    "pong": Pong,
+    "rpc": Rpc,
+    "error": SocketError,
+}
+
+
+def convert_envelope_to_pydantic(
+    field_name: str, protobuf_message: Any
+) -> BaseModel | Any:
+    """
+    Convert a protobuf envelope message to its corresponding Pydantic model.
+
+    This function automatically converts protobuf messages to Pydantic models based on
+    the ENVELOPE_TO_PYDANTIC_MAP. If no mapping exists, returns the original protobuf.
+
+    Args:
+        field_name: The envelope field name (from WhichOneof)
+        protobuf_message: The protobuf message instance
+
+    Returns:
+        Pydantic model instance if mapping exists and has from_protobuf(),
+        otherwise returns the original protobuf message
+
+    Example:
+        >>> envelope = parse_protobuf(message_bytes)
+        >>> field_name = envelope.WhichOneof("message")
+        >>> payload = getattr(envelope, field_name)
+        >>> pydantic_model = convert_envelope_to_pydantic(field_name, payload)
+        >>> # pydantic_model is now a Pydantic instance, not protobuf
+    """
+    pydantic_class = ENVELOPE_TO_PYDANTIC_MAP.get(field_name)
+
+    if pydantic_class:
+        try:
+            if hasattr(pydantic_class, "from_protobuf"):
+                return pydantic_class.from_protobuf(protobuf_message)
+            else:
+                return protobuf_to_pydantic(protobuf_message, pydantic_class)
+        except Exception as e:
+            import logging
+
+            logger = logging.getLogger(__name__)
+            logger.error(
+                f"Failed to convert {field_name} to Pydantic: {e}. "
+                f"Falling back to protobuf object."
+            )
+            return protobuf_message
+
+    return protobuf_message

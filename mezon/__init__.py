@@ -20,6 +20,8 @@ from .constants import (
     ChannelStreamMode,
     ChannelType,
     Events,
+    SSEConnectionState,
+    SSEEvents,
     TypeMessage,
 )
 
@@ -48,8 +50,9 @@ from .models import (
     # Client Models
     ChannelMessageContent,
     MessagePayLoad,
-    # Socket Models
     Presence,
+    SSEConfig,
+    SSEMessage,
 )
 from .session import Session
 
@@ -91,11 +94,15 @@ __all__ = [
     "MessagePayLoad",
     "ChannelMessageAck",
     "Presence",
+    "SSEConfig",
+    "SSEMessage",
     "Channel",
     # Constants
     "Events",
     "ChannelType",
     "ChannelStreamMode",
+    "SSEEvents",
+    "SSEConnectionState",
     "TypeMessage",
     # Socket
     "WebSocketAdapter",

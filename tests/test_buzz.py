@@ -3,9 +3,9 @@ Message buzz functionality tests for Mezon SDK.
 """
 
 import asyncio
+
 from mezon import ChannelMessageContent, TypeMessage
 from mezon.models import ApiMessageMention
-
 from tests.base import BaseTestSuite
 
 

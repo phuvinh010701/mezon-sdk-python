@@ -18,7 +18,6 @@ import asyncio
 import logging
 from abc import ABC, abstractmethod
 from typing import Any, Optional
-from urllib.parse import quote
 
 import websockets
 from aiolimiter import AsyncLimiter
@@ -46,7 +45,7 @@ class WebSocketAdapter(ABC):
 
     @abstractmethod
     async def connect(
-        self, scheme: str, host: str, port: str, create_status: bool, token: str
+        self, scheme: str, ws_url: str, create_status: bool, token: str
     ) -> None:
         """
         Connect to WebSocket server.
@@ -109,10 +108,16 @@ class WebSocketAdapterPb(WebSocketAdapter):
         self._rate_limiter = AsyncLimiter(rate_limit, rate_limit_period)
 
     async def connect(
-        self, scheme: str, host: str, port: str, create_status: bool, token: str
+        self, scheme: str, ws_url: str, create_status: bool, token: str
     ) -> None:
         """Connect to WebSocket server with protobuf protocol."""
-        url = f"{scheme}{host}:{port}/ws?lang=en&status={quote(str(create_status).lower())}&token={quote(token)}&format=protobuf"
+        url = (
+            f"{scheme}://{ws_url}/ws?lang=en"
+            f"&status={str(create_status).lower()}"
+            f"&token={token}"
+            f"&format=protobuf"
+        )
+        logger.debug(f"Connecting to WebSocket server with URL: {url}")
         self._socket = await websockets.connect(
             url,
             subprotocols=["protobuf"],

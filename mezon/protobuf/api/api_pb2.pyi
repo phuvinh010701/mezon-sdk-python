@@ -120,6 +120,22 @@ DECREMENT: Operator.ValueType  # 4
 """Override the leaderboard operator with DECREMENT."""
 Global___Operator: _TypeAlias = Operator  # noqa: Y015
 
+class _PollType:
+    ValueType = _typing.NewType("ValueType", _builtins.int)
+    V: _TypeAlias = ValueType  # noqa: Y015
+
+class _PollTypeEnumTypeWrapper(_enum_type_wrapper._EnumTypeWrapper[_PollType.ValueType], _builtins.type):
+    DESCRIPTOR: _descriptor.EnumDescriptor
+    SINGLE: _PollType.ValueType  # 0
+    MULTIPLE: _PollType.ValueType  # 1
+
+class PollType(_PollType, metaclass=_PollTypeEnumTypeWrapper):
+    """Poll type: SINGLE = one choice, MULTIPLE = multiple choices."""
+
+SINGLE: PollType.ValueType  # 0
+MULTIPLE: PollType.ValueType  # 1
+Global___PollType: _TypeAlias = PollType  # noqa: Y015
+
 @_typing.final
 class Account(_message.Message):
     """A user with additional account details. Always the current user."""
@@ -828,7 +844,7 @@ class MessageRef(_message.Message):
     REF_TYPE_FIELD_NUMBER: _builtins.int
     MESSAGE_SENDER_ID_FIELD_NUMBER: _builtins.int
     MESSAGE_SENDER_USERNAME_FIELD_NUMBER: _builtins.int
-    MESAGES_SENDER_AVATAR_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_AVATAR_FIELD_NUMBER: _builtins.int
     MESSAGE_SENDER_CLAN_NICK_FIELD_NUMBER: _builtins.int
     MESSAGE_SENDER_DISPLAY_NAME_FIELD_NUMBER: _builtins.int
     message_id: _builtins.int
@@ -845,7 +861,7 @@ class MessageRef(_message.Message):
     """original message sender"""
     message_sender_username: _builtins.str
     """original message sendre username"""
-    mesages_sender_avatar: _builtins.str
+    message_sender_avatar: _builtins.str
     """original message sender avatar"""
     message_sender_clan_nick: _builtins.str
     """original sender clan nick name"""
@@ -861,11 +877,11 @@ class MessageRef(_message.Message):
         ref_type: _builtins.int = ...,
         message_sender_id: _builtins.int = ...,
         message_sender_username: _builtins.str = ...,
-        mesages_sender_avatar: _builtins.str = ...,
+        message_sender_avatar: _builtins.str = ...,
         message_sender_clan_nick: _builtins.str = ...,
         message_sender_display_name: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["content", b"content", "has_attachment", b"has_attachment", "mesages_sender_avatar", b"mesages_sender_avatar", "message_id", b"message_id", "message_ref_id", b"message_ref_id", "message_sender_clan_nick", b"message_sender_clan_nick", "message_sender_display_name", b"message_sender_display_name", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "ref_type", b"ref_type"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["content", b"content", "has_attachment", b"has_attachment", "message_id", b"message_id", "message_ref_id", b"message_ref_id", "message_sender_avatar", b"message_sender_avatar", "message_sender_clan_nick", b"message_sender_clan_nick", "message_sender_display_name", b"message_sender_display_name", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "ref_type", b"ref_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___MessageRef: _TypeAlias = MessageRef  # noqa: Y015
@@ -1516,7 +1532,7 @@ class RegistFcmDeviceTokenResponse(_message.Message):
     PLATFORM_FIELD_NUMBER: _builtins.int
     token: _builtins.str
     """The token"""
-    device_id: _builtins.int
+    device_id: _builtins.str
     """"""
     platform: _builtins.str
     """"""
@@ -1524,7 +1540,7 @@ class RegistFcmDeviceTokenResponse(_message.Message):
         self,
         *,
         token: _builtins.str = ...,
-        device_id: _builtins.int = ...,
+        device_id: _builtins.str = ...,
         platform: _builtins.str = ...,
     ) -> None: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["device_id", b"device_id", "platform", b"platform", "token", b"token"]  # noqa: Y015
@@ -1772,6 +1788,63 @@ class ListClanUsersRequest(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___ListClanUsersRequest: _TypeAlias = ListClanUsersRequest  # noqa: Y015
+
+@_typing.final
+class ListClanUsersStatusRequest(_message.Message):
+    """List clan members' custom status strings (user_status) by clan."""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    """The clan ID to list from."""
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListClanUsersStatusRequest: _TypeAlias = ListClanUsersStatusRequest  # noqa: Y015
+
+@_typing.final
+class ClanUserStatusEntry(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    USER_ID_FIELD_NUMBER: _builtins.int
+    USER_STATUS_FIELD_NUMBER: _builtins.int
+    user_id: _builtins.int
+    user_status: _builtins.str
+    def __init__(
+        self,
+        *,
+        user_id: _builtins.int = ...,
+        user_status: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["user_id", b"user_id", "user_status", b"user_status"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ClanUserStatusEntry: _TypeAlias = ClanUserStatusEntry  # noqa: Y015
+
+@_typing.final
+class ClanUserStatusList(_message.Message):
+    """User id and custom status text for members of a clan."""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_USER_STATUSES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def clan_user_statuses(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanUserStatusEntry]: ...
+    def __init__(
+        self,
+        *,
+        clan_user_statuses: _abc.Iterable[Global___ClanUserStatusEntry] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_user_statuses", b"clan_user_statuses"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ClanUserStatusList: _TypeAlias = ClanUserStatusList  # noqa: Y015
 
 @_typing.final
 class ListNotificationsRequest(_message.Message):
@@ -2078,6 +2151,7 @@ class Session(_message.Message):
     API_URL_FIELD_NUMBER: _builtins.int
     ID_TOKEN_FIELD_NUMBER: _builtins.int
     WS_URL_FIELD_NUMBER: _builtins.int
+    SESSION_ID_FIELD_NUMBER: _builtins.int
     created: _builtins.bool
     """True if the corresponding account was just created, false otherwise."""
     token: _builtins.str
@@ -2094,6 +2168,8 @@ class Session(_message.Message):
     """id token for zklogin"""
     ws_url: _builtins.str
     """ws_url"""
+    session_id: _builtins.str
+    """session id"""
     def __init__(
         self,
         *,
@@ -2105,8 +2181,9 @@ class Session(_message.Message):
         api_url: _builtins.str = ...,
         id_token: _builtins.str = ...,
         ws_url: _builtins.str = ...,
+        session_id: _builtins.str = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_url", b"api_url", "created", b"created", "id_token", b"id_token", "is_remember", b"is_remember", "refresh_token", b"refresh_token", "token", b"token", "user_id", b"user_id", "ws_url", b"ws_url"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_url", b"api_url", "created", b"created", "id_token", b"id_token", "is_remember", b"is_remember", "refresh_token", b"refresh_token", "session_id", b"session_id", "token", b"token", "user_id", b"user_id", "ws_url", b"ws_url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___Session: _TypeAlias = Session  # noqa: Y015
@@ -4019,6 +4096,64 @@ class LeaveThreadRequest(_message.Message):
 Global___LeaveThreadRequest: _TypeAlias = LeaveThreadRequest  # noqa: Y015
 
 @_typing.final
+class ArchiveChannelRequest(_message.Message):
+    """Archive channel/thread inactive (archived)."""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    channel_id: _builtins.int
+    """Channel (thread) ID to inactive."""
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ArchiveChannelRequest: _TypeAlias = ArchiveChannelRequest  # noqa: Y015
+
+@_typing.final
+class ListArchivedChannelDescsRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    """The clan of this list archived channels"""
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListArchivedChannelDescsRequest: _TypeAlias = ListArchivedChannelDescsRequest  # noqa: Y015
+
+@_typing.final
+class ListArchivedChannelDescsResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CHANNELDESC_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def channeldesc(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelDescription]:
+        """A list of channel."""
+
+    def __init__(
+        self,
+        *,
+        channeldesc: _abc.Iterable[Global___ChannelDescription] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channeldesc", b"channeldesc"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListArchivedChannelDescsResponse: _TypeAlias = ListArchivedChannelDescsResponse  # noqa: Y015
+
+@_typing.final
 class Role(_message.Message):
     """Role record"""
 
@@ -5340,6 +5475,72 @@ class UploadAttachment(_message.Message):
 Global___UploadAttachment: _TypeAlias = UploadAttachment  # noqa: Y015
 
 @_typing.final
+class MultipartUploadAttachment(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    FILENAME_FIELD_NUMBER: _builtins.int
+    URLS_FIELD_NUMBER: _builtins.int
+    UPLOAD_ID_FIELD_NUMBER: _builtins.int
+    filename: _builtins.str
+    """The name of file that need to upload"""
+    upload_id: _builtins.str
+    """the upload id"""
+    @_builtins.property
+    def urls(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]:
+        """The url"""
+
+    def __init__(
+        self,
+        *,
+        filename: _builtins.str = ...,
+        urls: _abc.Iterable[_builtins.str] | None = ...,
+        upload_id: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["filename", b"filename", "upload_id", b"upload_id", "urls", b"urls"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MultipartUploadAttachment: _TypeAlias = MultipartUploadAttachment  # noqa: Y015
+
+@_typing.final
+class MultipartUploadAttachmentPart(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    PART_NUMBER_FIELD_NUMBER: _builtins.int
+    E_TAG_FIELD_NUMBER: _builtins.int
+    part_number: _builtins.int
+    e_tag: _builtins.str
+    def __init__(
+        self,
+        *,
+        part_number: _builtins.int = ...,
+        e_tag: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["e_tag", b"e_tag", "part_number", b"part_number"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MultipartUploadAttachmentPart: _TypeAlias = MultipartUploadAttachmentPart  # noqa: Y015
+
+@_typing.final
+class MultipartUploadAttachmentFinishRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    UPLOAD_ID_FIELD_NUMBER: _builtins.int
+    PARTS_FIELD_NUMBER: _builtins.int
+    upload_id: _builtins.str
+    @_builtins.property
+    def parts(self) -> _containers.RepeatedCompositeFieldContainer[Global___MultipartUploadAttachmentPart]: ...
+    def __init__(
+        self,
+        *,
+        upload_id: _builtins.str = ...,
+        parts: _abc.Iterable[Global___MultipartUploadAttachmentPart] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["parts", b"parts", "upload_id", b"upload_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___MultipartUploadAttachmentFinishRequest: _TypeAlias = MultipartUploadAttachmentFinishRequest  # noqa: Y015
+
+@_typing.final
 class SearchMessageRequest(_message.Message):
     DESCRIPTOR: _descriptor.Descriptor
 
@@ -6094,6 +6295,44 @@ class CheckDuplicateClanNameResponse(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___CheckDuplicateClanNameResponse: _TypeAlias = CheckDuplicateClanNameResponse  # noqa: Y015
+
+@_typing.final
+class CheckDuplicateNameRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    NAME_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    CONDITION_ID_FIELD_NUMBER: _builtins.int
+    name: _builtins.str
+    type: _builtins.int
+    condition_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        name: _builtins.str = ...,
+        type: _builtins.int = ...,
+        condition_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["condition_id", b"condition_id", "name", b"name", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CheckDuplicateNameRequest: _TypeAlias = CheckDuplicateNameRequest  # noqa: Y015
+
+@_typing.final
+class CheckDuplicateNameResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    IS_DUPLICATE_FIELD_NUMBER: _builtins.int
+    is_duplicate: _builtins.bool
+    def __init__(
+        self,
+        *,
+        is_duplicate: _builtins.bool = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["is_duplicate", b"is_duplicate"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CheckDuplicateNameResponse: _TypeAlias = CheckDuplicateNameResponse  # noqa: Y015
 
 @_typing.final
 class ClanStickerAddRequest(_message.Message):
@@ -9908,33 +10147,82 @@ class MessageReactionList(_message.Message):
 Global___MessageReactionList: _TypeAlias = MessageReactionList  # noqa: Y015
 
 @_typing.final
-class ListClanBadgeCountRequest(_message.Message):
+class ListChannelBadgeCountRequest(_message.Message):
     DESCRIPTOR: _descriptor.Descriptor
 
     CLAN_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
     clan_id: _builtins.int
+    limit: _builtins.int
+    page: _builtins.int
     def __init__(
         self,
         *,
         clan_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        page: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "limit", b"limit", "page", b"page"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___ListClanBadgeCountRequest: _TypeAlias = ListClanBadgeCountRequest  # noqa: Y015
+Global___ListChannelBadgeCountRequest: _TypeAlias = ListChannelBadgeCountRequest  # noqa: Y015
+
+@_typing.final
+class ListChannelBadgeCountResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CHANNELDESC_FIELD_NUMBER: _builtins.int
+    TOTAL_COUNT_FIELD_NUMBER: _builtins.int
+    total_count: _builtins.int
+    @_builtins.property
+    def channeldesc(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelDescription]: ...
+    def __init__(
+        self,
+        *,
+        channeldesc: _abc.Iterable[Global___ChannelDescription] | None = ...,
+        total_count: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channeldesc", b"channeldesc", "total_count", b"total_count"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListChannelBadgeCountResponse: _TypeAlias = ListChannelBadgeCountResponse  # noqa: Y015
+
+@_typing.final
+class ClanBadgeCount(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    BADGE_FIELD_NUMBER: _builtins.int
+    HAS_UNREAD_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    badge: _builtins.int
+    has_unread: _builtins.bool
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        badge: _builtins.int = ...,
+        has_unread: _builtins.bool = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["badge", b"badge", "clan_id", b"clan_id", "has_unread", b"has_unread"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ClanBadgeCount: _TypeAlias = ClanBadgeCount  # noqa: Y015
 
 @_typing.final
 class ListClanBadgeCountResponse(_message.Message):
     DESCRIPTOR: _descriptor.Descriptor
 
-    BADGE_COUNT_FIELD_NUMBER: _builtins.int
-    badge_count: _builtins.int
+    LIST_BADGE_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def list_badge(self) -> _containers.RepeatedCompositeFieldContainer[Global___ClanBadgeCount]: ...
     def __init__(
         self,
         *,
-        badge_count: _builtins.int = ...,
+        list_badge: _abc.Iterable[Global___ClanBadgeCount] | None = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["badge_count", b"badge_count"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["list_badge", b"list_badge"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___ListClanBadgeCountResponse: _TypeAlias = ListClanBadgeCountResponse  # noqa: Y015
@@ -10576,3 +10864,344 @@ class MutedChannelList(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___MutedChannelList: _TypeAlias = MutedChannelList  # noqa: Y015
+
+@_typing.final
+class NotificationBatchRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    @_typing.final
+    class NotificationsEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.int
+        @_builtins.property
+        def value(self) -> Global___NotificationList: ...
+        def __init__(
+            self,
+            *,
+            key: _builtins.int = ...,
+            value: Global___NotificationList | None = ...,
+        ) -> None: ...
+        _HasFieldArgType: _TypeAlias = _typing.Literal["value", b"value"]  # noqa: Y015
+        def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
+        def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+    NOTIFICATIONS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def notifications(self) -> _containers.MessageMap[_builtins.int, Global___NotificationList]: ...
+    def __init__(
+        self,
+        *,
+        notifications: _abc.Mapping[_builtins.int, Global___NotificationList] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["notifications", b"notifications"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___NotificationBatchRequest: _TypeAlias = NotificationBatchRequest  # noqa: Y015
+
+@_typing.final
+class CreatePollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    QUESTION_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    EXPIRE_HOURS_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    channel_id: _builtins.int
+    clan_id: _builtins.int
+    question: _builtins.str
+    expire_hours: _builtins.int
+    type: Global___PollType.ValueType
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    def __init__(
+        self,
+        *,
+        channel_id: _builtins.int = ...,
+        clan_id: _builtins.int = ...,
+        question: _builtins.str = ...,
+        answers: _abc.Iterable[_builtins.str] | None = ...,
+        expire_hours: _builtins.int = ...,
+        type: Global___PollType.ValueType = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answers", b"answers", "channel_id", b"channel_id", "clan_id", b"clan_id", "expire_hours", b"expire_hours", "question", b"question", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CreatePollRequest: _TypeAlias = CreatePollRequest  # noqa: Y015
+
+@_typing.final
+class CreatePollResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    QUESTION_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    ANSWER_COUNTS_FIELD_NUMBER: _builtins.int
+    EXP_FIELD_NUMBER: _builtins.int
+    IS_CLOSED_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    TOTAL_VOTES_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    question: _builtins.str
+    exp: _builtins.int
+    is_closed: _builtins.bool
+    creator_id: _builtins.int
+    type: Global___PollType.ValueType
+    total_votes: _builtins.int
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedCompositeFieldContainer[Global___PollAnswer]: ...
+    @_builtins.property
+    def answer_counts(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        question: _builtins.str = ...,
+        answers: _abc.Iterable[Global___PollAnswer] | None = ...,
+        answer_counts: _abc.Iterable[_builtins.int] | None = ...,
+        exp: _builtins.int = ...,
+        is_closed: _builtins.bool = ...,
+        creator_id: _builtins.int = ...,
+        type: Global___PollType.ValueType = ...,
+        total_votes: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_counts", b"answer_counts", "answers", b"answers", "creator_id", b"creator_id", "exp", b"exp", "is_closed", b"is_closed", "message_id", b"message_id", "poll_id", b"poll_id", "question", b"question", "total_votes", b"total_votes", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CreatePollResponse: _TypeAlias = CreatePollResponse  # noqa: Y015
+
+@_typing.final
+class VotePollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    ANSWER_INDICES_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    @_builtins.property
+    def answer_indices(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        answer_indices: _abc.Iterable[_builtins.int] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_indices", b"answer_indices", "channel_id", b"channel_id", "message_id", b"message_id", "poll_id", b"poll_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___VotePollRequest: _TypeAlias = VotePollRequest  # noqa: Y015
+
+@_typing.final
+class VotePollResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    MY_ANSWER_INDICES_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def my_answer_indices(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        my_answer_indices: _abc.Iterable[_builtins.int] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["my_answer_indices", b"my_answer_indices"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___VotePollResponse: _TypeAlias = VotePollResponse  # noqa: Y015
+
+@_typing.final
+class ClosePollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "poll_id", b"poll_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ClosePollRequest: _TypeAlias = ClosePollRequest  # noqa: Y015
+
+@_typing.final
+class GetPollRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    channel_id: _builtins.int
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "poll_id", b"poll_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___GetPollRequest: _TypeAlias = GetPollRequest  # noqa: Y015
+
+@_typing.final
+class PollAnswer(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    INDEX_FIELD_NUMBER: _builtins.int
+    LABEL_FIELD_NUMBER: _builtins.int
+    index: _builtins.int
+    label: _builtins.str
+    def __init__(
+        self,
+        *,
+        index: _builtins.int = ...,
+        label: _builtins.str = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["index", b"index", "label", b"label"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___PollAnswer: _TypeAlias = PollAnswer  # noqa: Y015
+
+@_typing.final
+class PollVoterDetail(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    ANSWER_INDEX_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    answer_index: _builtins.int
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        answer_index: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_index", b"answer_index", "user_ids", b"user_ids"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___PollVoterDetail: _TypeAlias = PollVoterDetail  # noqa: Y015
+
+@_typing.final
+class GetPollResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    POLL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    QUESTION_FIELD_NUMBER: _builtins.int
+    ANSWERS_FIELD_NUMBER: _builtins.int
+    ANSWER_COUNTS_FIELD_NUMBER: _builtins.int
+    EXP_FIELD_NUMBER: _builtins.int
+    IS_CLOSED_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    TOTAL_VOTES_FIELD_NUMBER: _builtins.int
+    VOTER_DETAILS_FIELD_NUMBER: _builtins.int
+    poll_id: _builtins.int
+    message_id: _builtins.int
+    question: _builtins.str
+    exp: _builtins.int
+    is_closed: _builtins.bool
+    creator_id: _builtins.int
+    type: Global___PollType.ValueType
+    total_votes: _builtins.int
+    @_builtins.property
+    def answers(self) -> _containers.RepeatedCompositeFieldContainer[Global___PollAnswer]: ...
+    @_builtins.property
+    def answer_counts(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    @_builtins.property
+    def voter_details(self) -> _containers.RepeatedCompositeFieldContainer[Global___PollVoterDetail]: ...
+    def __init__(
+        self,
+        *,
+        poll_id: _builtins.int = ...,
+        message_id: _builtins.int = ...,
+        question: _builtins.str = ...,
+        answers: _abc.Iterable[Global___PollAnswer] | None = ...,
+        answer_counts: _abc.Iterable[_builtins.int] | None = ...,
+        exp: _builtins.int = ...,
+        is_closed: _builtins.bool = ...,
+        creator_id: _builtins.int = ...,
+        type: Global___PollType.ValueType = ...,
+        total_votes: _builtins.int = ...,
+        voter_details: _abc.Iterable[Global___PollVoterDetail] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["answer_counts", b"answer_counts", "answers", b"answers", "creator_id", b"creator_id", "exp", b"exp", "is_closed", b"is_closed", "message_id", b"message_id", "poll_id", b"poll_id", "question", b"question", "total_votes", b"total_votes", "type", b"type", "voter_details", b"voter_details"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___GetPollResponse: _TypeAlias = GetPollResponse  # noqa: Y015
+
+@_typing.final
+class ListUserOnlineRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    LIMIT_FIELD_NUMBER: _builtins.int
+    PAGE_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    limit: _builtins.int
+    page: _builtins.int
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        limit: _builtins.int = ...,
+        page: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "limit", b"limit", "page", b"page"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListUserOnlineRequest: _TypeAlias = ListUserOnlineRequest  # noqa: Y015
+
+@_typing.final
+class ListUserOnlineResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    USERS_FIELD_NUMBER: _builtins.int
+    TOTAL_COUNT_FIELD_NUMBER: _builtins.int
+    total_count: _builtins.int
+    @_builtins.property
+    def users(self) -> _containers.RepeatedCompositeFieldContainer[Global___User]: ...
+    def __init__(
+        self,
+        *,
+        users: _abc.Iterable[Global___User] | None = ...,
+        total_count: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["total_count", b"total_count", "users", b"users"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListUserOnlineResponse: _TypeAlias = ListUserOnlineResponse  # noqa: Y015
+
+@_typing.final
+class NoParams(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+Global___NoParams: _TypeAlias = NoParams  # noqa: Y015

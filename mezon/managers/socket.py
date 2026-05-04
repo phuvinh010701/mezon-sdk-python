@@ -1,6 +1,8 @@
 import asyncio
 from typing import TYPE_CHECKING, Any, Optional
 
+from tenacity import retry, stop_after_attempt, wait_exponential
+
 if TYPE_CHECKING:
     from mezon.client import MezonClient
 
@@ -27,16 +29,14 @@ class SocketManager:
 
     def __init__(
         self,
-        host: str,
-        port: str,
+        ws_url: str,
         use_ssl: bool,
         api_client: MezonApi,
         event_manager: EventManager,
         mezon_client: "MezonClient",
         message_db: MessageDB,
     ):
-        self.host = host
-        self.port = port
+        self.ws_url = ws_url
         self.use_ssl = use_ssl
         self.api_client = api_client
         self.event_manager = event_manager
@@ -44,8 +44,7 @@ class SocketManager:
         self.message_db = message_db
         self.adapter = WebSocketAdapterPb()
         self.socket = Socket(
-            host=host,
-            port=port,
+            ws_url=ws_url,
             use_ssl=use_ssl,
             adapter=self.adapter,
             event_manager=event_manager,
@@ -79,6 +78,11 @@ class SocketManager:
         """
         return self.socket.is_open()
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1.5, max=15),
+        reraise=True,
+    )
     async def connect_socket(self, token: str) -> None:
         """
         Connect to the socket and join all clans.
@@ -126,6 +130,7 @@ class SocketManager:
         avatar: Optional[str] = None,
         code: Optional[int] = None,
         topic_id: Optional[int] = None,
+        message_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         return await self.socket.write_ephemeral_message(
             receiver_ids=receiver_ids,
@@ -142,6 +147,7 @@ class SocketManager:
             avatar=avatar,
             code=code,
             topic_id=topic_id,
+            message_id=message_id,
         )
 
     async def write_chat_message(

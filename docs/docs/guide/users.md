@@ -1,120 +1,70 @@
 # Users
 
-Working with users in the Mezon SDK.
+`User` đại diện cho người dùng Mezon và chủ yếu hữu ích cho DM flows hoặc khi bạn cần thông tin sender đã được cache.
 
-## Accessing Users
+## Fetching a user
 
 ```python
-# Get a user from cache
-user = await client.users.get("user_id")
-
-print(f"User ID: {user.id}")
+user = await client.users.fetch(123456789)
+print(user.id, user.username, user.display_name)
 ```
 
-## Sending Direct Messages
+Use `fetch(...)` when the user may need to be resolved by the SDK. `get(...)` only works for already-cached users.
 
-Send a DM to a user:
+## Send a DM
 
 ```python
 from mezon.models import ChannelMessageContent
 
-user = await client.users.get("user_id")
+user = await client.users.fetch(123456789)
 await user.send_dm_message(
-    content=ChannelMessageContent(t="Hello via DM!")
+    content=ChannelMessageContent(t="Hello via DM")
 )
 ```
 
-## Friends
+If the user does not already have a DM channel, the SDK creates one first.
 
-### List Friends
-
-```python
-friends = await client.get_list_friends(
-    limit=100,
-    state=None,   # Optional filter
-    cursor=None   # For pagination
-)
-
-for friend in friends:
-    print(f"Friend: {friend}")
-```
-
-### Add Friend
+## Friend helpers on the client
 
 ```python
-await client.add_friend(
-    username="friend_username",
-    user_id="friend_user_id"
-)
+friends = await client.get_list_friends(limit=100)
+await client.add_friend(username="alice", user_id="123456789")
+await client.accept_friend(user_id="123456789")
 ```
 
-### Accept Friend Request
-
-```python
-await client.accept_friend(user_id="user_id")
-```
-
-## User Events
-
-### User Joined Channel
+## User-related events
 
 ```python
 from mezon.protobuf.rtapi import realtime_pb2
 
 async def on_user_joined(event: realtime_pb2.UserChannelAdded):
-    print(f"User {event.user_id} joined channel {event.channel_id}")
+    print(event.user_id, event.channel_id)
+
+async def on_user_left(event: realtime_pb2.UserChannelRemoved):
+    print(event.user_id, event.channel_id)
+
+async def on_user_joined_clan(event: realtime_pb2.AddClanUserEvent):
+    print(event.user_id, event.clan_id)
 
 client.on_user_channel_added(on_user_joined)
-```
-
-### User Left Channel
-
-```python
-async def on_user_left(event: realtime_pb2.UserChannelRemoved):
-    print(f"User {event.user_id} left channel {event.channel_id}")
-
-client.on_user_channel_removed(on_user_left)
-```
-
-### User Joined Clan
-
-```python
-async def on_user_joined_clan(event: realtime_pb2.AddClanUserEvent):
-    print(f"User joined clan: {event.clan_id}")
-
+client.on_channel_user_removed(on_user_left)
 client.on_add_clan_user(on_user_joined_clan)
 ```
 
-### User Left Clan
+## Working with message senders
 
 ```python
-from mezon import Events
+from mezon.models import ChannelMessageContent
+from mezon.protobuf.api import api_pb2
 
-async def on_user_left_clan(event):
-    print(f"User left clan")
-
-client.on(Events.USER_CLAN_REMOVED, on_user_left_clan)
-```
-
-## Message Author
-
-When handling messages, access the sender:
-
-```python
 async def handle_message(message: api_pb2.ChannelMessage):
-    sender_id = message.sender_id
-
-    # Check if it's the bot
-    if sender_id == client.client_id:
+    if message.sender_id == client.client_id:
         return
 
-    # Get user object
-    user = await client.users.get(sender_id)
-
-    # Reply or DM
+    user = await client.users.fetch(message.sender_id)
     channel = await client.channels.fetch(message.channel_id)
     await channel.send(
-        content=ChannelMessageContent(t=f"Hello <@{sender_id}>!")
+        content=ChannelMessageContent(t=f"Hello {user.display_name or user.username}!")
     )
 
 client.on_channel_message(handle_message)

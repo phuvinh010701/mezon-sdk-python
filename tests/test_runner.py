@@ -27,12 +27,19 @@ import time
 from typing import Optional
 
 from mezon import MezonClient
-
-from tests import BinaryApiTests, BuzzTests, ClanTests, InteractiveTests, MentionTests, MessageTests, SessionTests, UserTests
+from tests import (
+    BuzzTests,
+    ClanTests,
+    InteractiveTests,
+    MentionTests,
+    MessageTests,
+    SessionTests,
+    UserTests,
+)
 from tests.base import TestConfig, TestResults, print_test_summary
 from tests.test_quick_menu import QuickMenuTests
+from tests.test_reconnect import ReconnectTests
 from tests.test_tokens import TokenTests
-
 
 # ============================================================================
 # CONFIGURATION - Set via environment variables
@@ -161,8 +168,8 @@ async def run_all_tests(
             ("INTERACTIVE UI", InteractiveTests(client, config, results)),
             ("USER OPERATIONS", UserTests(client, config, results)),
             ("CLAN OPERATIONS", ClanTests(client, config, results)),
-            ("BINARY API", BinaryApiTests(client, config, results)),
             ("SESSION MANAGEMENT", SessionTests(client, config, results)),
+            ("WEBSOCKET RECONNECT", ReconnectTests(client, config, results)),
             ("QUICK MENU", QuickMenuTests(client, config, results)),
             ("TOKEN TRANSFERS", TokenTests(client, config, results)),
         ]
@@ -185,7 +192,7 @@ async def run_all_tests(
 
         traceback.print_exc()
     finally:
-        await client.close_socket()
+        await client.disconnect()
 
     return results
 
@@ -204,7 +211,6 @@ def main():
 ║  • Interactive UI (buttons, embeds, forms, multi-row)                        ║
 ║  • Users & DM (fetch, send DM, cache)                                        ║
 ║  • Clans (channels, roles, voice, cache)                                     ║
-║  • Binary API (protobuf vs JSON, performance comparison)                     ║
 ║  • Session (get, refresh, properties, serialization)                         ║
 ║  • WebSocket Reconnect (auto-reconnect, hard disconnect, functionality)      ║
 ║  • Quick Menu (add, delete)                                                  ║
@@ -213,7 +219,8 @@ def main():
 ║                                                                              ║
 ║  Required environment variables:                                             ║
 ║    MEZON_CLIENT_ID, MEZON_API_KEY, MEZON_CLAN_ID,                            ║
-║    MEZON_CHANNEL_ID, MEZON_USER_ID                                           ║
+║    MEZON_CHANNEL_ID, MEZON_USER_ID, MEZON_USER_NAME,                         ║
+║    MEZON_USER_ID_2, MEZON_USER_NAME_2                                        ║
 ║                                                                              ║
 ║  Optional environment variables:                                             ║
 ║    MEZON_VOICE_CHANNEL_ID, MEZON_ROLE_ID,                                    ║
@@ -222,7 +229,8 @@ def main():
     """
     )
 
-    asyncio.run(run_all_tests())
+    results = asyncio.run(run_all_tests())
+    sys.exit(0 if not results.failed else 1)
 
 
 if __name__ == "__main__":

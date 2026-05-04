@@ -16,10 +16,13 @@ limitations under the License.
 
 import asyncio
 import inspect
+import json
 import logging
 from collections.abc import Callable
 from typing import Any, Literal
+from urllib.parse import urlencode
 
+import aiohttp
 from mmn import (
     AddTxResponse,
     EphemeralKeyPair,
@@ -35,8 +38,8 @@ from mmn import (
 )
 
 from mezon.api.mezon_api import MezonApi
-from mezon.api.utils import parse_url_components
-from mezon.constants import ChannelType, Events, TypeMessage
+from mezon.api.utils import build_url, parse_url_components
+from mezon.constants import ChannelType, Events, SSEEvents, TypeMessage
 from mezon.managers.cache import CacheManager
 from mezon.managers.channel import ChannelManager
 from mezon.managers.event import EventManager
@@ -44,11 +47,18 @@ from mezon.managers.session import SessionManager
 from mezon.managers.socket import SocketManager
 from mezon.messages.db import MessageDB
 from mezon.models import (
+    AIAgentSessionEndedEvent,
+    AIAgentSessionStartedEvent,
+    AIAgentSessionSummaryDoneEvent,
     ApiChannelDescription,
     ApiQuickMenuAccess,
     ApiSentTokenRequest,
+    ChannelCreatedEvent,
+    ChannelMessage,
     ChannelMessageContent,
-    ChannelMessageRaw,
+    ChannelUpdatedEvent,
+    RoomMetadataEvent,
+    SSEMessage,
     UserInitData,
 )
 from mezon.protobuf.api import api_pb2
@@ -116,6 +126,7 @@ class MezonClient:
         timeout: int = DEFAULT_TIMEOUT_MS,
         mmn_api_url: str = DEFAULT_MMN_API,
         zk_api_url: str = DEFAULT_ZK_API,
+        agent_event_url: str | None = None,
         log_level: int = logging.INFO,
         enable_logging: bool = False,
     ):
@@ -131,6 +142,7 @@ class MezonClient:
             timeout: The timeout for requests in milliseconds
             mmn_api_url: The URL for the MMN API
             zk_api_url: The URL for the ZK API
+            agent_event_url: Base URL for AI agent SSE endpoints
             log_level: The logging level (default: logging.INFO)
             enable_logging: Whether to enable logging output (default: True)
         """
@@ -141,7 +153,9 @@ class MezonClient:
         self.api_key = api_key
         self.mmn_api_url = mmn_api_url
         self.zk_api_url = zk_api_url
-        self.login_url = f"{use_ssl and 'https' or 'http'}://{host}:{port}"
+        self.agent_event_url = agent_event_url
+        self.use_ssl = use_ssl
+        self.login_url = build_url(use_ssl and "https" or "http", host=host, port=port)
         self.timeout_ms = timeout
         self.clans: CacheManager[int, Clan] = CacheManager(None, max_size=1000)
         self.channels: CacheManager[int, TextChannel] = CacheManager(
@@ -153,6 +167,12 @@ class MezonClient:
 
         self.event_manager = EventManager()
         self.message_db = MessageDB()
+        self._agent_sse_session: aiohttp.ClientSession | None = None
+        self._agent_sse_task: asyncio.Task | None = None
+        self._agent_sse_response: aiohttp.ClientResponse | None = None
+        self._enable_auto_reconnect = False
+        self._is_hard_disconnect = False
+        self._reconnect_task: asyncio.Task | None = None
 
         logger.info(f"MezonClient initialized for client_id: {client_id}")
 
@@ -207,19 +227,29 @@ class MezonClient:
         Args:
             sock_session: Session object with authentication token
         """
-        url_components = parse_url_components(sock_session.api_url)
+        url_components = parse_url_components(
+            sock_session.api_url, use_ssl=self.use_ssl
+        )
+        ws_url_components = parse_url_components(
+            sock_session.ws_url, use_ssl=self.use_ssl
+        )
+        ws_url = sock_session.ws_url.removeprefix("wss://").removeprefix("ws://")
+
         self.api_client = MezonApi(
             self.client_id,
             self.api_key,
-            f"{url_components['scheme']}://{url_components['hostname']}:{url_components['port']}",
+            build_url(
+                url_components["scheme"],
+                url_components["hostname"],
+                url_components["port"],
+            ),
             self.timeout_ms,
         )
 
         if not hasattr(self, "socket_manager"):
             self.socket_manager = SocketManager(
-                host=url_components["hostname"],
-                port=url_components["port"],
-                use_ssl=url_components["use_ssl"],
+                ws_url=ws_url,
+                use_ssl=ws_url_components["use_ssl"],
                 api_client=self.api_client,
                 event_manager=self.event_manager,
                 mezon_client=self,
@@ -277,6 +307,114 @@ class MezonClient:
         else:
             handler(*args, **kwargs)
 
+    def _build_agent_sse_url(self, path: str) -> str:
+        if not self.agent_event_url:
+            raise ValueError("agent_event_url is not configured")
+
+        base_url = self.agent_event_url.rstrip("/")
+        clean_path = path.lstrip("/")
+        query = urlencode({"appid": self.client_id, "token": self.api_key})
+        return f"{base_url}/{clean_path}?{query}"
+
+    async def _emit_ai_agent_event(self, message: SSEMessage) -> None:
+        try:
+            data = json.loads(message.data)
+        except json.JSONDecodeError:
+            logger.warning("Failed to parse AI agent SSE message: %s", message.data)
+            return
+
+        event_type = data.get("event_type")
+        if not event_type:
+            return
+
+        event_model: RoomMetadataEvent
+        routed_event: str
+        if event_type == "room_started":
+            event_model = AIAgentSessionStartedEvent.model_validate(data)
+            routed_event = Events.AI_AGENT_SESSION_STARTED
+        elif event_type == "room_ended":
+            event_model = AIAgentSessionEndedEvent.model_validate(data)
+            routed_event = Events.AI_AGENT_SESSION_ENDED
+        elif event_type == "room_summary_done":
+            event_model = AIAgentSessionSummaryDoneEvent.model_validate(data)
+            routed_event = Events.AI_AGENT_SESSION_SUMMARY_DONE
+        else:
+            return
+
+        await self.event_manager.emit(routed_event, event_model)
+
+    async def _run_agent_sse(self, path: str) -> None:
+        url = self._build_agent_sse_url(path)
+        headers = {"Accept": "text/event-stream"}
+
+        async with aiohttp.ClientSession(
+            timeout=self.api_client.client_timeout
+        ) as session:
+            self._agent_sse_session = session
+            async with session.get(url, headers=headers) as response:
+                response.raise_for_status()
+                self._agent_sse_response = response
+                await self.event_manager.emit(SSEEvents.OPEN, {"url": url})
+
+                event_type: str | None = None
+                data_lines: list[str] = []
+                message_id: str | None = None
+
+                async for raw_line in response.content:
+                    line = raw_line.decode("utf-8").strip()
+
+                    if not line:
+                        if data_lines:
+                            await self._emit_ai_agent_event(
+                                SSEMessage(
+                                    id=message_id,
+                                    event=event_type,
+                                    data="\n".join(data_lines),
+                                    timestamp=int(
+                                        asyncio.get_running_loop().time() * 1000
+                                    ),
+                                )
+                            )
+                        event_type = None
+                        data_lines = []
+                        message_id = None
+                        continue
+
+                    if line.startswith(":"):
+                        continue
+                    if line.startswith("event:"):
+                        event_type = line[6:].strip()
+                        continue
+                    if line.startswith("id:"):
+                        message_id = line[3:].strip()
+                        continue
+                    if line.startswith("data:"):
+                        data_lines.append(line[5:].lstrip())
+
+    async def connect_ai_agent_sse(self, path: str = "api/sse/metadata") -> None:
+        if self._agent_sse_task and not self._agent_sse_task.done():
+            return
+        self._agent_sse_task = asyncio.create_task(self._run_agent_sse(path))
+
+    async def disconnect_ai_agent_sse(self) -> None:
+        if self._agent_sse_task and not self._agent_sse_task.done():
+            self._agent_sse_task.cancel()
+            try:
+                await self._agent_sse_task
+            except asyncio.CancelledError:
+                pass
+
+        if self._agent_sse_response is not None:
+            self._agent_sse_response.close()
+            self._agent_sse_response = None
+
+        if self._agent_sse_session is not None and not self._agent_sse_session.closed:
+            await self._agent_sse_session.close()
+            self._agent_sse_session = None
+
+        await self.event_manager.emit(SSEEvents.CLOSE)
+        self._agent_sse_task = None
+
     async def login(self, enable_auto_reconnect: bool = True) -> None:
         """
         Authenticate and initialize the client.
@@ -287,10 +425,9 @@ class MezonClient:
         session = await self.get_session()
         await self.initialize_managers(session)
 
-        if session.user_id:
-            self.ephemeral_key_pair = self.get_ephemeral_key_pair()
-            self.address = self.get_address_from_user_id(self.client_id)
-            self.zk_proof = await self.get_zk_proof()
+        self.ephemeral_key_pair = self.get_ephemeral_key_pair()
+        self.address = self.get_address_from_user_id(self.client_id)
+        self.zk_proof = await self.get_zk_proof()
 
         self._enable_auto_reconnect = enable_auto_reconnect
         self._is_hard_disconnect = False
@@ -628,16 +765,14 @@ class MezonClient:
             menu_type=menu_type,
         )
 
-    async def _init_channel_message_cache(
-        self, message: api_pb2.ChannelMessage
-    ) -> None:
+    async def _init_channel_message_cache(self, message: ChannelMessage) -> None:
         """
         Initialize channel message cache when receiving a message.
 
         Args:
-            message: The channel message from protobuf
+            message: The channel message (Pydantic model or protobuf)
         """
-        message_raw = ChannelMessageRaw.from_protobuf(message)
+        message_raw = message
 
         try:
             await self.message_db.save_message(message_raw.to_db_dict())
@@ -672,12 +807,12 @@ class MezonClient:
 
         channel.messages.set(message_raw.id, message_obj)
 
-    async def _init_user_clan_cache(self, message: api_pb2.ChannelMessage) -> None:
+    async def _init_user_clan_cache(self, message: ChannelMessage) -> None:
         """
         Initialize user and clan cache when receiving a message.
 
         Args:
-            message: The channel message from protobuf
+            message: The channel message
         """
 
         all_dm_channels = self.channel_manager.get_all_dm_channels()
@@ -713,14 +848,31 @@ class MezonClient:
 
     async def _update_cache_channel(
         self,
-        message: realtime_pb2.ChannelCreatedEvent | realtime_pb2.ChannelUpdatedEvent,
+        message: ChannelCreatedEvent | ChannelUpdatedEvent,
     ) -> None:
         clan = self.clans.get(message.clan_id)
         if not clan:
             return
 
+        channel_description = ApiChannelDescription(
+            channel_id=message.channel_id,
+            clan_id=message.clan_id,
+            category_id=message.category_id,
+            creator_id=message.creator_id,
+            parent_id=message.parent_id,
+            channel_label=message.channel_label,
+            type=message.channel_type,
+            channel_private=message.channel_private,
+            clan_name=message.clan_name
+            if isinstance(message, ChannelCreatedEvent)
+            else None,
+            channel_avatar=message.channel_avatar
+            if hasattr(message, "channel_avatar")
+            else None,
+        )
+
         channel = TextChannel(
-            ApiChannelDescription.from_protobuf(message),
+            channel_description,
             clan,
             self.socket_manager,
             self.message_db,
@@ -745,9 +897,7 @@ class MezonClient:
         self._register_event_handler(Events.CHANNEL_MESSAGE, handler)
 
     @auto_bind(Events.CHANNEL_MESSAGE)
-    async def _handle_channel_message_default(
-        self, message: api_pb2.ChannelMessage
-    ) -> None:
+    async def _handle_channel_message_default(self, message: ChannelMessage) -> None:
         """
         Default handler for ``ChannelMessage`` events.
 
@@ -774,7 +924,8 @@ class MezonClient:
 
     @auto_bind(Events.CHANNEL_CREATED)
     async def _handle_channel_created_default(
-        self, message: realtime_pb2.ChannelCreatedEvent
+        self,
+        message: ChannelCreatedEvent,
     ) -> None:
         """
         Default handler for channel created events.
@@ -798,7 +949,8 @@ class MezonClient:
 
     @auto_bind(Events.CHANNEL_UPDATED)
     async def _handle_channel_updated_default(
-        self, message: realtime_pb2.ChannelUpdatedEvent
+        self,
+        message: ChannelUpdatedEvent,
     ) -> None:
         """
         Default handler for ``ChannelUpdatedEvent``.
@@ -1102,6 +1254,39 @@ class MezonClient:
         """
         self._register_event_handler(Events.AI_AGENT_ENABLE, handler)
 
+    def on_ai_agent_session_started(
+        self, handler: Callable[[AIAgentSessionStartedEvent], None]
+    ) -> None:
+        """
+        Register a handler for AI agent session started events (SSE).
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent session starts.
+        """
+        self._register_event_handler(Events.AI_AGENT_SESSION_STARTED, handler)
+
+    def on_ai_agent_session_ended(
+        self, handler: Callable[[AIAgentSessionEndedEvent], None]
+    ) -> None:
+        """
+        Register a handler for AI agent session ended events (SSE).
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent session ends.
+        """
+        self._register_event_handler(Events.AI_AGENT_SESSION_ENDED, handler)
+
+    def on_ai_agent_session_summary_done(
+        self, handler: Callable[[AIAgentSessionSummaryDoneEvent], None]
+    ) -> None:
+        """
+        Register a handler for AI agent session summary done events (SSE).
+
+        Args:
+            handler (Callable): Callback to invoke when an AI agent session summary is ready.
+        """
+        self._register_event_handler(Events.AI_AGENT_SESSION_SUMMARY_DONE, handler)
+
     def on_role_assign(
         self, handler: Callable[[realtime_pb2.RoleAssignedEvent], None]
     ) -> None:
@@ -1295,5 +1480,7 @@ class MezonClient:
             except (asyncio.CancelledError, RuntimeError, Exception):
                 pass
 
+        await self.disconnect_ai_agent_sse()
         await self.close_socket()
+        await self.message_db.close()
         logger.info("Client disconnected")

@@ -22,6 +22,7 @@ from google.protobuf import json_format
 from pydantic import BaseModel
 
 from mezon.managers.event import EventManager
+from mezon.models import convert_envelope_to_pydantic
 from mezon.protobuf.rtapi import realtime_pb2
 from mezon.protobuf.utils import parse_protobuf
 from mezon.utils.logger import get_logger
@@ -60,8 +61,7 @@ class Socket:
 
     def __init__(
         self,
-        host: str,
-        port: str,
+        ws_url: str,
         use_ssl: bool = False,
         adapter: Optional[WebSocketAdapterPb] = None,
         send_timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS,
@@ -71,21 +71,19 @@ class Socket:
         Initialize Socket.
 
         Args:
-            host: Server host
-            port: Server port
+            ws_url: WebSocket host/path returned by authenticate
             use_ssl: Whether to use SSL (wss://)
             adapter: WebSocket adapter instance
             send_timeout_ms: Timeout for send operations
             event_manager: EventManager instance for handling events
         """
-        self.host = host
-        self.port = port
+        self.ws_url = ws_url
         self.use_ssl = use_ssl
-        self.websocket_scheme = "wss://" if use_ssl else "ws://"
+        self.websocket_scheme = use_ssl and "wss" or "ws"
         self.send_timeout_ms = send_timeout_ms
         self.event_manager = event_manager or EventManager()
 
-        self.cids: dict[str, PromiseExecutor] = {}
+        self.cids: dict[int, PromiseExecutor] = {}
         self.next_cid = 1
 
         self.adapter = adapter or WebSocketAdapterPb()
@@ -103,14 +101,14 @@ class Socket:
 
         self._intentional_close = False
 
-    def generate_cid(self) -> str:
+    def generate_cid(self) -> int:
         """
         Generate a unique command ID for RPC calls.
 
         Returns:
-            Command ID as string
+            Command ID as integer
         """
-        cid = str(self.next_cid)
+        cid = self.next_cid
         self.next_cid += 1
         return cid
 
@@ -124,15 +122,31 @@ class Socket:
         return self.adapter.is_open()
 
     async def close(self) -> None:
-        """Close the socket connection."""
+        """Close the socket connection and wait for background tasks to finish."""
         self._intentional_close = True
 
-        if self._heartbeat_task:
+        tasks_to_cancel = []
+        if self._heartbeat_task and not self._heartbeat_task.done():
             self._heartbeat_task.cancel()
+            tasks_to_cancel.append(self._heartbeat_task)
 
-        if self._listen_task:
+        if self._listen_task and not self._listen_task.done():
             self._listen_task.cancel()
+            tasks_to_cancel.append(self._listen_task)
+
         await self.adapter.close()
+
+        if tasks_to_cancel:
+            try:
+                await asyncio.wait_for(
+                    asyncio.gather(*tasks_to_cancel, return_exceptions=True),
+                    timeout=5.0,
+                )
+            except asyncio.TimeoutError:
+                logger.warning("Timed out waiting for background tasks to cancel")
+
+        self._heartbeat_task = None
+        self._listen_task = None
 
     async def connect(
         self,
@@ -165,8 +179,7 @@ class Socket:
             await asyncio.wait_for(
                 self.adapter.connect(
                     self.websocket_scheme,
-                    self.host,
-                    self.port,
+                    self.ws_url,
                     create_status,
                     session.token,
                 ),
@@ -190,8 +203,6 @@ class Socket:
             async for message in self.adapter._socket:
                 if isinstance(message, bytes):
                     envelope = parse_protobuf(message)
-                    logger.debug(f"Received envelope: {envelope}")
-
                     if envelope.cid:
                         executor = self.cids.get(envelope.cid)
                         if executor:
@@ -340,8 +351,17 @@ class Socket:
 
         field_name = envelope.WhichOneof("message")
         if field_name:
-            payload = envelope.__getattribute__(field_name)
-            await self.event_manager.emit(field_name, payload)
+            protobuf_payload = envelope.__getattribute__(field_name)
+
+            pydantic_payload = convert_envelope_to_pydantic(
+                field_name, protobuf_payload
+            )
+
+            logger.debug(
+                f"Emitting event: {field_name} with payload: {pydantic_payload}"
+            )
+
+            await self.event_manager.emit(field_name, pydantic_payload)
 
     async def _send_envelope_with_field(
         self,
@@ -640,6 +660,7 @@ class Socket:
         avatar: Optional[str] = None,
         code: Optional[int] = None,
         topic_id: Optional[int] = None,
+        message_id: Optional[int] = None,
     ) -> ChannelMessageAck:
         ephemeral_message_send = EphemeralMessageBuilder.build(
             receiver_ids=receiver_ids,
@@ -656,6 +677,7 @@ class Socket:
             avatar=avatar,
             code=code,
             topic_id=topic_id,
+            message_id=message_id,
         )
 
         response = await self._send_envelope_with_field(

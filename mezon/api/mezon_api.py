@@ -149,7 +149,11 @@ class MezonApi:
             ApiSession: Session object containing authentication details
         """
 
-        headers = build_headers(basic_auth=(basic_auth_username, basic_auth_password))
+        headers = build_headers(
+            basic_auth=(basic_auth_username, basic_auth_password),
+            send_binary=True,
+            additional_headers={"Accept": "application/x-protobuf"},
+        )
         body = build_body(body=body)
 
         response = await self.call_api(
@@ -158,8 +162,10 @@ class MezonApi:
             query_params={},
             body=body,
             headers=headers,
+            accept_binary=True,
+            response_proto_class=api_pb2.Session,
         )
-        return ApiSession.model_validate(response)
+        return ApiSession.from_protobuf(response)
 
     async def list_clans_descs(
         self,

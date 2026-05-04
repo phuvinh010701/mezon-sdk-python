@@ -3,6 +3,7 @@ Auto-reconnect tests for Mezon SDK WebSocket.
 """
 
 import asyncio
+
 from mezon import ChannelMessageContent
 from tests.base import BaseTestSuite
 
@@ -194,11 +195,6 @@ class ReconnectTests(BaseTestSuite):
             # Close the socket first
             await self.client.socket_manager.socket.close()
 
-            print(
-                self.client.socket_manager.socket.adapter.is_open(),
-                "===========================================",
-            )
-
             # Wait for socket to be disconnected
             await asyncio.sleep(0.5)
             assert not await self.client.socket_manager.is_connected(), (
@@ -239,6 +235,9 @@ class ReconnectTests(BaseTestSuite):
             # Verify reconnection
             is_reconnected = await self.client.socket_manager.is_connected()
             assert is_reconnected, "Socket should be reconnected"
+            assert self.client.socket_manager.socket.adapter.is_open(), (
+                "Adapter should be open after reconnect before sending"
+            )
             print("    ℹ️  Socket successfully reconnected and ready to send")
 
             # Test functionality: Send a message

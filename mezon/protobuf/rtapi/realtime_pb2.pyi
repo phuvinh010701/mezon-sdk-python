@@ -134,10 +134,12 @@ class Envelope(_message.Message):
     BAN_USER_EVENT_FIELD_NUMBER: _builtins.int
     ACTIVE_ARCHIVED_THREAD_FIELD_NUMBER: _builtins.int
     ALLOW_ANONYMOUS_EVENT_FIELD_NUMBER: _builtins.int
-    UPDATE_LOCALCACHE_EVENT_FIELD_NUMBER: _builtins.int
+    API_REQUEST_EVENT_FIELD_NUMBER: _builtins.int
     CLAN_CREATED_EVENT_FIELD_NUMBER: _builtins.int
     AIAGENT_ENABLED_EVENT_FIELD_NUMBER: _builtins.int
-    cid: _builtins.str
+    LIST_CHANNEL_USERS_BANNED_EVENT_FIELD_NUMBER: _builtins.int
+    REFRESH_SESSION_EVENT_FIELD_NUMBER: _builtins.int
+    cid: _builtins.int
     @_builtins.property
     def channel(self) -> Global___Channel:
         """A response from a channel join operation."""
@@ -497,7 +499,7 @@ class Envelope(_message.Message):
         """Config Allow Anonymous"""
 
     @_builtins.property
-    def update_localcache_event(self) -> Global___UpdateLocalCacheEvent:
+    def api_request_event(self) -> Global___ApiRequestEvent:
         """Message sending to another server for update localcache"""
 
     @_builtins.property
@@ -505,11 +507,21 @@ class Envelope(_message.Message):
         """Clan Created Event"""
 
     @_builtins.property
-    def aiagent_enabled_event(self) -> Global___AIAgentEnabledEvent: ...
+    def aiagent_enabled_event(self) -> Global___AIAgentEnabledEvent:
+        """Voice Agent Event"""
+
+    @_builtins.property
+    def list_channel_users_banned_event(self) -> Global___ListChannelUsersBannedEvent:
+        """Ban Channel User Event"""
+
+    @_builtins.property
+    def refresh_session_event(self) -> _api_pb2.Session:
+        """Refresh session event"""
+
     def __init__(
         self,
         *,
-        cid: _builtins.str = ...,
+        cid: _builtins.int = ...,
         channel: Global___Channel | None = ...,
         clan_join: Global___ClanJoin | None = ...,
         channel_join: Global___ChannelJoin | None = ...,
@@ -600,40 +612,43 @@ class Envelope(_message.Message):
         ban_user_event: Global___BannedUserEvent | None = ...,
         active_archived_thread: Global___ActiveArchivedThread | None = ...,
         allow_anonymous_event: Global___AllowAnonymousEvent | None = ...,
-        update_localcache_event: Global___UpdateLocalCacheEvent | None = ...,
+        api_request_event: Global___ApiRequestEvent | None = ...,
         clan_created_event: Global___ClanCreatedEvent | None = ...,
         aiagent_enabled_event: Global___AIAgentEnabledEvent | None = ...,
+        list_channel_users_banned_event: Global___ListChannelUsersBannedEvent | None = ...,
+        refresh_session_event: _api_pb2.Session | None = ...,
     ) -> None: ...
-    _HasFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "update_localcache_event", b"update_localcache_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
+    _HasFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "api_request_event", b"api_request_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_channel_users_banned_event", b"list_channel_users_banned_event", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "refresh_session_event", b"refresh_session_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "update_localcache_event", b"update_localcache_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "api_request_event", b"api_request_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_channel_users_banned_event", b"list_channel_users_banned_event", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "refresh_session_event", b"refresh_session_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-    _WhichOneofReturnType_message: _TypeAlias = _typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread", "allow_anonymous_event", "update_localcache_event", "clan_created_event", "aiagent_enabled_event"]  # noqa: Y015
+    _WhichOneofReturnType_message: _TypeAlias = _typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread", "allow_anonymous_event", "api_request_event", "clan_created_event", "aiagent_enabled_event", "list_channel_users_banned_event", "refresh_session_event"]  # noqa: Y015
     _WhichOneofArgType_message: _TypeAlias = _typing.Literal["message", b"message"]  # noqa: Y015
     def WhichOneof(self, oneof_group: _WhichOneofArgType_message) -> _WhichOneofReturnType_message | None: ...
 
 Global___Envelope: _TypeAlias = Envelope  # noqa: Y015
 
 @_typing.final
-class UpdateLocalCacheEvent(_message.Message):
+class ApiRequestEvent(_message.Message):
     DESCRIPTOR: _descriptor.Descriptor
 
-    PARAMS1_FIELD_NUMBER: _builtins.int
-    PARAMS2_FIELD_NUMBER: _builtins.int
-    @_builtins.property
-    def params1(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
-    @_builtins.property
-    def params2(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    API_INDEX_FIELD_NUMBER: _builtins.int
+    API_NAME_FIELD_NUMBER: _builtins.int
+    BODY_FIELD_NUMBER: _builtins.int
+    api_index: _builtins.int
+    api_name: _builtins.str
+    body: _builtins.bytes
     def __init__(
         self,
         *,
-        params1: _abc.Iterable[_builtins.int] | None = ...,
-        params2: _abc.Iterable[_builtins.int] | None = ...,
+        api_index: _builtins.int = ...,
+        api_name: _builtins.str = ...,
+        body: _builtins.bytes = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["params1", b"params1", "params2", b"params2"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_index", b"api_index", "api_name", b"api_name", "body", b"body"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
-Global___UpdateLocalCacheEvent: _TypeAlias = UpdateLocalCacheEvent  # noqa: Y015
+Global___ApiRequestEvent: _TypeAlias = ApiRequestEvent  # noqa: Y015
 
 @_typing.final
 class FollowEvent(_message.Message):
@@ -676,6 +691,23 @@ class BannedUserEvent(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___BannedUserEvent: _TypeAlias = BannedUserEvent  # noqa: Y015
+
+@_typing.final
+class ListChannelUsersBannedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    BANNED_USER_IDS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def banned_user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
+    def __init__(
+        self,
+        *,
+        banned_user_ids: _abc.Iterable[_builtins.int] | None = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["banned_user_ids", b"banned_user_ids"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___ListChannelUsersBannedEvent: _TypeAlias = ListChannelUsersBannedEvent  # noqa: Y015
 
 @_typing.final
 class ChannelCanvas(_message.Message):
@@ -2818,7 +2850,7 @@ class UserPresence(_message.Message):
     USER_STATUS_FIELD_NUMBER: _builtins.int
     user_id: _builtins.int
     """The user this presence belongs to."""
-    session_id: _builtins.str
+    session_id: _builtins.int
     """A unique session ID identifying the particular connection, because the user may have many."""
     username: _builtins.str
     """The username for display purposes."""
@@ -2834,7 +2866,7 @@ class UserPresence(_message.Message):
         self,
         *,
         user_id: _builtins.int = ...,
-        session_id: _builtins.str = ...,
+        session_id: _builtins.int = ...,
         username: _builtins.str = ...,
         status: _wrappers_pb2.StringValue | None = ...,
         is_mobile: _builtins.bool = ...,
@@ -3755,35 +3787,39 @@ class ListDataSocket(_message.Message):
     DESCRIPTOR: _descriptor.Descriptor
 
     API_NAME_FIELD_NUMBER: _builtins.int
-    LIST_UNREAD_MSG_INDICATOR_REQ_FIELD_NUMBER: _builtins.int
-    UNREAD_MSG_INDICATOR_FIELD_NUMBER: _builtins.int
-    LIST_CLAN_BADGE_COUNT_REQ_FIELD_NUMBER: _builtins.int
+    LIST_CHANNEL_BADGE_COUNT_REQ_FIELD_NUMBER: _builtins.int
+    CHANNEL_BADGE_COUNT_FIELD_NUMBER: _builtins.int
     CLAN_BADGE_COUNT_FIELD_NUMBER: _builtins.int
     LIST_LOGED_DEVICE_FIELD_NUMBER: _builtins.int
+    LIST_USER_ONLINE_REQ_FIELD_NUMBER: _builtins.int
+    USER_ONLINE_LIST_FIELD_NUMBER: _builtins.int
     api_name: _builtins.str
     @_builtins.property
-    def list_unread_msg_indicator_req(self) -> _api_pb2.ListClanUnreadMsgIndicatorRequest: ...
+    def list_channel_badge_count_req(self) -> _api_pb2.ListChannelBadgeCountRequest: ...
     @_builtins.property
-    def unread_msg_indicator(self) -> _api_pb2.ListClanUnreadMsgIndicatorResponse: ...
-    @_builtins.property
-    def list_clan_badge_count_req(self) -> _api_pb2.ListClanBadgeCountRequest: ...
+    def channel_badge_count(self) -> _api_pb2.ListChannelBadgeCountResponse: ...
     @_builtins.property
     def clan_badge_count(self) -> _api_pb2.ListClanBadgeCountResponse: ...
     @_builtins.property
     def list_loged_device(self) -> _api_pb2.LogedDeviceList: ...
+    @_builtins.property
+    def list_user_online_req(self) -> _api_pb2.ListUserOnlineRequest: ...
+    @_builtins.property
+    def user_online_list(self) -> _api_pb2.ListUserOnlineResponse: ...
     def __init__(
         self,
         *,
         api_name: _builtins.str = ...,
-        list_unread_msg_indicator_req: _api_pb2.ListClanUnreadMsgIndicatorRequest | None = ...,
-        unread_msg_indicator: _api_pb2.ListClanUnreadMsgIndicatorResponse | None = ...,
-        list_clan_badge_count_req: _api_pb2.ListClanBadgeCountRequest | None = ...,
+        list_channel_badge_count_req: _api_pb2.ListChannelBadgeCountRequest | None = ...,
+        channel_badge_count: _api_pb2.ListChannelBadgeCountResponse | None = ...,
         clan_badge_count: _api_pb2.ListClanBadgeCountResponse | None = ...,
         list_loged_device: _api_pb2.LogedDeviceList | None = ...,
+        list_user_online_req: _api_pb2.ListUserOnlineRequest | None = ...,
+        user_online_list: _api_pb2.ListUserOnlineResponse | None = ...,
     ) -> None: ...
-    _HasFieldArgType: _TypeAlias = _typing.Literal["clan_badge_count", b"clan_badge_count", "list_clan_badge_count_req", b"list_clan_badge_count_req", "list_loged_device", b"list_loged_device", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "unread_msg_indicator", b"unread_msg_indicator"]  # noqa: Y015
+    _HasFieldArgType: _TypeAlias = _typing.Literal["channel_badge_count", b"channel_badge_count", "clan_badge_count", b"clan_badge_count", "list_channel_badge_count_req", b"list_channel_badge_count_req", "list_loged_device", b"list_loged_device", "list_user_online_req", b"list_user_online_req", "user_online_list", b"user_online_list"]  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_name", b"api_name", "clan_badge_count", b"clan_badge_count", "list_clan_badge_count_req", b"list_clan_badge_count_req", "list_loged_device", b"list_loged_device", "list_unread_msg_indicator_req", b"list_unread_msg_indicator_req", "unread_msg_indicator", b"unread_msg_indicator"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["api_name", b"api_name", "channel_badge_count", b"channel_badge_count", "clan_badge_count", b"clan_badge_count", "list_channel_badge_count_req", b"list_channel_badge_count_req", "list_loged_device", b"list_loged_device", "list_user_online_req", b"list_user_online_req", "user_online_list", b"user_online_list"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___ListDataSocket: _TypeAlias = ListDataSocket  # noqa: Y015
@@ -3963,3 +3999,65 @@ class AIAgentEnabledEvent(_message.Message):
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
 
 Global___AIAgentEnabledEvent: _TypeAlias = AIAgentEnabledEvent  # noqa: Y015
+
+@_typing.final
+class GotifyMessage(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    @_typing.final
+    class ExtrasEntry(_message.Message):
+        DESCRIPTOR: _descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: _builtins.int
+        VALUE_FIELD_NUMBER: _builtins.int
+        key: _builtins.str
+        value: _builtins.str
+        def __init__(
+            self,
+            *,
+            key: _builtins.str = ...,
+            value: _builtins.str = ...,
+        ) -> None: ...
+        _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
+        def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+    ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_FIELD_NUMBER: _builtins.int
+    TITLE_FIELD_NUMBER: _builtins.int
+    IMAGE_FIELD_NUMBER: _builtins.int
+    PRIORITY_FIELD_NUMBER: _builtins.int
+    USERS_FIELD_NUMBER: _builtins.int
+    EXTRAS_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    id: _builtins.int
+    channel_id: _builtins.int
+    message: _builtins.str
+    title: _builtins.str
+    image: _builtins.str
+    priority: _builtins.int
+    app_id: _builtins.int
+    sender_id: _builtins.int
+    @_builtins.property
+    def users(self) -> _containers.RepeatedScalarFieldContainer[_builtins.str]: ...
+    @_builtins.property
+    def extras(self) -> _containers.ScalarMap[_builtins.str, _builtins.str]: ...
+    def __init__(
+        self,
+        *,
+        id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        message: _builtins.str = ...,
+        title: _builtins.str = ...,
+        image: _builtins.str = ...,
+        priority: _builtins.int = ...,
+        users: _abc.Iterable[_builtins.str] | None = ...,
+        extras: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
+        app_id: _builtins.int = ...,
+        sender_id: _builtins.int = ...,
+    ) -> None: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "channel_id", b"channel_id", "extras", b"extras", "id", b"id", "image", b"image", "message", b"message", "priority", b"priority", "sender_id", b"sender_id", "title", b"title", "users", b"users"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___GotifyMessage: _TypeAlias = GotifyMessage  # noqa: Y015

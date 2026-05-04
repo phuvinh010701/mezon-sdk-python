@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  test:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --all-groups --frozen
+
+      - name: Run tests
+        env:
+          MEZON_CLIENT_ID: ${{ secrets.MEZON_CLIENT_ID }}
+          MEZON_API_KEY: ${{ secrets.MEZON_API_KEY }}
+          MEZON_CLAN_ID: ${{ secrets.MEZON_CLAN_ID }}
+          MEZON_CHANNEL_ID: ${{ secrets.MEZON_CHANNEL_ID }}
+          MEZON_USER_ID: ${{ secrets.MEZON_USER_ID }}
+          MEZON_USER_NAME: ${{ secrets.MEZON_USER_NAME }}
+          MEZON_USER_ID_2: ${{ secrets.MEZON_USER_ID_2 }}
+          MEZON_USER_NAME_2: ${{ secrets.MEZON_USER_NAME_2 }}
+          MEZON_VOICE_CHANNEL_ID: ${{ secrets.MEZON_VOICE_CHANNEL_ID }}
+          MEZON_ROLE_ID: ${{ secrets.MEZON_ROLE_ID }}
+          MEZON_TOKEN_RECEIVER_ID: ${{ secrets.MEZON_TOKEN_RECEIVER_ID }}
+        run: uv run pytest tests/ -v

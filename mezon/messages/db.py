@@ -20,7 +20,7 @@ from typing import Any, Optional
 
 import aiosqlite
 
-from mezon.models import ChannelMessageRaw
+from mezon.models import ChannelMessage
 from mezon.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -139,7 +139,7 @@ class MessageDB:
 
     async def get_message_by_id(
         self, message_id: int, channel_id: int
-    ) -> Optional[ChannelMessageRaw]:
+    ) -> Optional[ChannelMessage]:
         """
         Retrieve a message by its ID and channel ID.
 
@@ -165,7 +165,7 @@ class MessageDB:
         if not row:
             return None
 
-        return ChannelMessageRaw.from_db_dict(dict(row))
+        return ChannelMessage.from_db_dict(dict(row))
 
     async def get_messages_by_channel(
         self, channel_id: str, limit: int = 50, offset: int = 0

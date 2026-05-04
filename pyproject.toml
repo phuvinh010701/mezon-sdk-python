@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mezon-sdk"
-version = "1.6.15"
+version = "1.8.0"
 description = "Mezon Python SDK - A Python implementation of the Mezon TypeScript SDK"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -34,10 +34,11 @@ dev = [
     "uvicorn>=0.40.0",
     "python-dotenv>=1.2.1",
     "mypy-protobuf>=5.0.0",
+    "pytest-cov>=7.1.0",
 ]
 
 [tool.semantic_release]
-version_toml = ["pyproject.toml:project.version", "mezon/__init__.py:__version__"]
+version_toml = ["pyproject.toml:project.version"]
 branch = "master"
 upload_to_pypi = false
 upload_to_release = true
@@ -80,6 +81,22 @@ autoescape = true
 allowed_tags = ["build", "chore", "ci", "docs", "feat", "fix", "perf", "style", "refactor", "test"]
 minor_tags = ["feat"]
 patch_tags = ["fix", "perf"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=mezon --cov-report=term --cov-fail-under=85"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+omit = [
+    "mezon/protobuf/*",
+    "mezon/protobuf/**/*",
+]
+
+[tool.coverage.report]
+omit = [
+    "mezon/protobuf/*",
+    "mezon/protobuf/**/*",
+]
 
 [tool.ruff]
 extend-exclude = [

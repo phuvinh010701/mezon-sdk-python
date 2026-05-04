@@ -3,7 +3,6 @@ User operation tests for Mezon SDK.
 """
 
 from mezon import ChannelMessageContent
-
 from tests.base import BaseTestSuite
 
 

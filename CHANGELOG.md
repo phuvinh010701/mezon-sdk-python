@@ -2,6 +2,278 @@
 
 <!-- version list -->
 
+## v1.8.0 (2026-05-03)
+
+### Features
+
+- Upgrade reflect 2.8.46 ts sdk
+  ([`d0c5075`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d0c50751b9827af6d6ad6732b043efdfdf6acbf8))
+
+### Refactoring
+
+- Remove binary perf compare, add unit test, test cov
+  ([`9de4256`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9de425693fe9069666b45878894bbc8b61d11bb2))
+
+
+## v1.7.2 (2026-05-01)
+
+### Bug Fixes
+
+- Close message db, avoid keep event loop
+  ([`94d36fc`](https://github.com/phuvinh010701/mezon-sdk-python/commit/94d36fcfe853374ad67e6202263e52d7090efa5c))
+
+### Chores
+
+- **deps**: Bump pydantic from 2.12.5 to 2.13.2
+  ([`b4e3833`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b4e3833ef9a89d4ff30459d07c6be7a2d3692183))
+
+- **deps**: Bump pydantic from 2.13.2 to 2.13.3
+  ([`643b1af`](https://github.com/phuvinh010701/mezon-sdk-python/commit/643b1af800c14bd1ea45650c202a347ebe562256))
+
+- **deps**: Update mkdocs requirement from >=1.5.0 to >=1.6.1
+  ([`3fbe143`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3fbe1433e08fc2e1b868bfa606b98e0a371a65de))
+
+- **deps**: Update mkdocs-material requirement from >=9.5.0 to >=9.7.6
+  ([`8c4b0a5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8c4b0a5b07dfddd27b23ae7281aa2f64bbe19864))
+
+- **deps-dev**: Bump fastapi from 0.135.3 to 0.136.0
+  ([`742c4e4`](https://github.com/phuvinh010701/mezon-sdk-python/commit/742c4e4b8839df9e34d69f8db5671a3c0acc091f))
+
+- **deps-dev**: Bump fastapi from 0.136.0 to 0.136.1
+  ([`33ba137`](https://github.com/phuvinh010701/mezon-sdk-python/commit/33ba137639a144593762c6e382b4133102af527f))
+
+- **deps-dev**: Bump ruff from 0.15.10 to 0.15.11
+  ([`b9736f9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b9736f9bbe5f84dea745282f67451481d797dd20))
+
+- **deps-dev**: Bump ruff from 0.15.11 to 0.15.12
+  ([`8d2863d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8d2863d8b62ab59ba8791d62e5709a8ba1fa7b81))
+
+### Continuous Integration
+
+- **deps**: Bump actions/checkout from 4 to 6
+  ([`6b362f9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6b362f90fcfcb28ea8a75f32bde9dbe6df90cd6d))
+
+- **deps**: Bump actions/setup-python from 5 to 6
+  ([`3efe4af`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3efe4afe98969fee195db3d2a87c910474a88e02))
+
+- **deps**: Bump astral-sh/setup-uv from 5 to 7
+  ([`9d465f5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9d465f57be5c7bbfd7c2e235cd328f9f96add6fb))
+
+### Documentation
+
+- Update document relate to new ts sdk
+  ([`f594a76`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f594a76102cb8e348697695623e1777d19ce8a49))
+
+
+## v1.7.1 (2026-04-20)
+
+### Bug Fixes
+
+- Allow partial user profile update payloads
+  ([`9170fe2`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9170fe2683cb43ff41dcd23139c773c7393b26e9))
+
+
+## v1.7.0 (2026-04-16)
+
+### Bug Fixes
+
+- Address code review items #1-3
+  ([`a701cb6`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a701cb6bc06e1773ce97a9c166de0362794b0e40))
+
+- Resolve conflict
+  ([`4b68bfe`](https://github.com/phuvinh010701/mezon-sdk-python/commit/4b68bfe1448df7ff6b7fd0d3f2f8046a1437c572))
+
+- Resolve integration test failures
+  ([`3bef172`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3bef172dacbd657ae9c0374de9a604ce84502539))
+
+### Chores
+
+- Bump version to 1.6.22 and update CHANGELOG
+  ([`c8436b9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/c8436b991b72d62ab77877a47287b3400f46cdd5))
+
+- Update mezon-sdk version to 1.6.22 and clean up test files by removing unnecessary blank lines
+  ([`ccc87d9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ccc87d998e3bbad9d93d6b7893462c6d9552a826))
+
+### Continuous Integration
+
+- Add GitHub Actions workflow to run unit tests on PR to dev
+  ([`7606b8c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/7606b8cba213955ad295c099da02ead2ba717245))
+
+- Add uv caching and use --frozen flag
+  ([`a2c1974`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a2c19749305df54b1612e0a966f37480f89facfa))
+
+- Inject Mezon secrets as env vars in test step
+  ([`b055b48`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b055b483932fcb2046d17f40ee12c9a4c3979263))
+
+### Features
+
+- Sync with mezon-sdk-js v2.8.44
+  ([`397c936`](https://github.com/phuvinh010701/mezon-sdk-python/commit/397c936c7c43264a021c644604dd98520b2817e9))
+
+### Testing
+
+- Add unit tests for SSE/AI agent models and enums (v2.8.44)
+  ([`3675f0b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3675f0b2452754e8fcc51c546d240aa06fedffb3))
+
+
+## v1.6.22 (2026-04-16)
+
+### Bug Fixes
+
+- Correct mention s/e index computation for multiple mentions
+  ([`8096252`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8096252f0cb7a98589ea79c5e673b90a56ebcb73))
+
+### Chores
+
+- **deps**: Bump aiohttp from 3.13.3 to 3.13.4
+  ([`db786a3`](https://github.com/phuvinh010701/mezon-sdk-python/commit/db786a30da5d7e3812db4d4dc481707a4ce47c6e))
+
+- **deps**: Bump aiohttp from 3.13.4 to 3.13.5
+  ([`0c96e73`](https://github.com/phuvinh010701/mezon-sdk-python/commit/0c96e73a8c735ca567d4321719a7b2d6cee7b99d))
+
+- **deps**: Bump protobuf from 7.34.0 to 7.34.1
+  ([`340287c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/340287cb465251cee15237326dfcc997295df918))
+
+- **deps**: Bump pyjwt from 2.11.0 to 2.12.1
+  ([`48e7277`](https://github.com/phuvinh010701/mezon-sdk-python/commit/48e7277ea9e406ad64e62d455a2561daeae4ce6d))
+
+- **deps-dev**: Bump build from 1.4.0 to 1.4.2
+  ([`b13e207`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b13e2078c845c3d2924d9afd27135c11b3072fa4))
+
+- **deps-dev**: Bump build from 1.4.2 to 1.4.3
+  ([`52e5a31`](https://github.com/phuvinh010701/mezon-sdk-python/commit/52e5a312a552890138519122b03d6c88cff38233))
+
+- **deps-dev**: Bump fastapi from 0.135.1 to 0.135.2
+  ([`6610ce2`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6610ce24b0bee43924039753b61d27bd0746b4a2))
+
+- **deps-dev**: Bump fastapi from 0.135.2 to 0.135.3
+  ([`57a7127`](https://github.com/phuvinh010701/mezon-sdk-python/commit/57a71271efb771749985d186f5e8a293b21469e1))
+
+- **deps-dev**: Bump pytest from 9.0.2 to 9.0.3
+  ([`aef32f5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/aef32f59dc19f64dff70e8fcd2177add4b1b22d3))
+
+- **deps-dev**: Bump ruff from 0.15.5 to 0.15.6
+  ([`cb86034`](https://github.com/phuvinh010701/mezon-sdk-python/commit/cb8603409100d95c3e4ae2c45236ce979e5018cd))
+
+- **deps-dev**: Bump ruff from 0.15.6 to 0.15.7
+  ([`b6e78e9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b6e78e937e8434cd6fb04f0b01225a3c19106611))
+
+- **deps-dev**: Bump ruff from 0.15.7 to 0.15.8
+  ([`57e6a80`](https://github.com/phuvinh010701/mezon-sdk-python/commit/57e6a80fdb7b3dd0beedbecb22b234b3c04723e2))
+
+- **deps-dev**: Bump ruff from 0.15.8 to 0.15.9
+  ([`3773106`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3773106e1a457aa5ea183de5e239cbf953da468a))
+
+- **deps-dev**: Bump ruff from 0.15.9 to 0.15.10
+  ([`d0630dc`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d0630dc79c862358e61722cc58e918b4216318bb))
+
+- **deps-dev**: Bump uvicorn from 0.41.0 to 0.42.0
+  ([`00b2e8c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/00b2e8c89f50ae25bf8216e3cc6a92d8ab36b2cd))
+
+- **deps-dev**: Bump uvicorn from 0.42.0 to 0.44.0
+  ([`9e0672a`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9e0672a9bb3793723f3786190c3c391f2819075f))
+
+### Refactoring
+
+- **tests**: Eliminate magic numbers and promote mention helper
+  ([`6883eb1`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6883eb14951b96bff078a0736cdc267c983fe188))
+
+
+## v1.6.21 (2026-03-11)
+
+### Bug Fixes
+
+- Update channel event handling and model definitions
+  ([`b544983`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b544983e0a3d5d29f03c3996ba3793c4032a7346))
+
+
+## v1.6.20 (2026-03-11)
+
+### Bug Fixes
+
+- Decode message ref, message attachment, message mentions
+  ([`e74f7f1`](https://github.com/phuvinh010701/mezon-sdk-python/commit/e74f7f1c631d05623c7a1264132ec0097b2a285f))
+
+- Decode message ref, message attachment, message mentions
+  ([`e69b70e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/e69b70e4d96b746276c6c265e06c633b53163774))
+
+### Chores
+
+- **deps**: Bump protobuf from 6.33.5 to 7.34.0
+  ([`38402d5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/38402d553b7d13bc5c25b6285f60041c54eee743))
+
+- **deps-dev**: Bump fastapi from 0.129.0 to 0.131.0
+  ([`c1e0e1e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/c1e0e1e83f36f7a63bda7f61fb3ea57e68c15b8f))
+
+- **deps-dev**: Bump fastapi from 0.131.0 to 0.135.1
+  ([`f1675a0`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f1675a094b6ea4dc1257c7d3c0bdae5e81988c50))
+
+- **deps-dev**: Bump python-dotenv from 1.2.1 to 1.2.2
+  ([`e66222d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/e66222d9971b1ebe97d688bf388118d493d0277b))
+
+- **deps-dev**: Bump ruff from 0.15.1 to 0.15.2
+  ([`d55a58b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d55a58bbb6b0573c1f038db5e875f16caeb38dde))
+
+- **deps-dev**: Bump ruff from 0.15.2 to 0.15.4
+  ([`b0961e8`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b0961e89975323c1a34197850bd077878f7f5b16))
+
+- **deps-dev**: Bump ruff from 0.15.4 to 0.15.5
+  ([`44aee69`](https://github.com/phuvinh010701/mezon-sdk-python/commit/44aee6974f237cec3c84451711008860461c4b7f))
+
+- **deps-dev**: Bump uvicorn from 0.40.0 to 0.41.0
+  ([`24e167e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/24e167e458e2ab8dccdbcde31641ff7ea179393c))
+
+
+## v1.6.19 (2026-02-18)
+
+### Bug Fixes
+
+- Streamline session initialization in MezonClient and update ApiSession model to use optional
+  fields
+  ([`8992b49`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8992b4951152e731b3fe20382ff545ccf87b1047))
+
+
+## v1.6.18 (2026-02-18)
+
+### Bug Fixes
+
+- Enhance URL handling in MezonClient and related modules by introducing build_url function and
+  updating session management
+  ([`2ef41fb`](https://github.com/phuvinh010701/mezon-sdk-python/commit/2ef41fbf016cef6238284d11d57d9c958709fa36))
+
+
+## v1.6.17 (2026-02-18)
+
+### Bug Fixes
+
+- Remove retry decorator from init_all_dm_channels and add it to connect_socket for improved error
+  handling
+  ([`0e81975`](https://github.com/phuvinh010701/mezon-sdk-python/commit/0e8197517fea57dbae2c67a08c6536b1fe34b840))
+
+
+## v1.6.16 (2026-02-17)
+
+### Bug Fixes
+
+- Add retry mechanism in MezonClient for improved error handling
+  ([`31c2d8c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/31c2d8cd0ff47c4c2152267e0449821ee5909c71))
+
+### Chores
+
+- Add protobuf dependency to pyproject.toml and update uv.lock for consistency
+  ([`839053d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/839053d70807c2132a645a5f6eb017e1bb17f6f6))
+
+- Remove version from __init__.py in version_toml for streamlined version management
+  ([`a0dc9e5`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a0dc9e5bc43edccf0a7a98cd164ecca5fed6eb88))
+
+- Update version_toml format in pyproject.toml for improved clarity
+  ([`5108a1e`](https://github.com/phuvinh010701/mezon-sdk-python/commit/5108a1e4dc02459684d83267eef79eac61e60a7c))
+
+- Update version_toml in pyproject.toml to include version from __init__.py for better version
+  management
+  ([`6d49f74`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6d49f74366efa67d8b51085171ba9d6a40310c97))
+
+
 ## v1.6.15 (2026-02-16)
 
 ### Bug Fixes
