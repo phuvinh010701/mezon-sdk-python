@@ -1387,7 +1387,7 @@ class ChannelMessage(BaseModel):
                         message_sender_id=r.message_sender_id,
                         message_sender_username=r.message_sender_username,
                         message_sender_display_name=r.message_sender_display_name,
-                        message_sender_avatar=r.mesages_sender_avatar,
+                        message_sender_avatar=r.message_sender_avatar,
                         has_attachment=r.has_attachment,
                         message_sender_clan_nick=r.message_sender_clan_nick,
                         content=r.content,
