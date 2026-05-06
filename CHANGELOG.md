@@ -2,6 +2,31 @@
 
 <!-- version list -->
 
+## v1.8.1 (2026-05-06)
+
+### Bug Fixes
+
+- Typo ChannelMesages sender avatar
+  ([`903bc7b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/903bc7b439ff9aee10605ddbe19c0b418c6aa1f6))
+
+### Chores
+
+- Add cname for github pages
+  ([`f80ea8c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f80ea8c740d8b49b3858711cddcd756b04067b09))
+
+- Update site_url docs
+  ([`ef9a449`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ef9a449a41e98cef909763216f6b238cc2d8c47d))
+
+- **deps-dev**: Bump build from 1.4.3 to 1.5.0
+  ([`4a2f548`](https://github.com/phuvinh010701/mezon-sdk-python/commit/4a2f548449011a03f52c1697371e7b8eae6384f8))
+
+- **deps-dev**: Bump mypy-protobuf from 5.0.0 to 5.1.0
+  ([`d2bb624`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d2bb624e684c1e40b6fc9fe361b01bbca7f0f1aa))
+
+- **deps-dev**: Bump uvicorn from 0.44.0 to 0.46.0
+  ([`e80b57c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/e80b57cee1c0696f91aebedacbbed322569837b5))
+
+
 ## v1.8.0 (2026-05-03)
 
 ### Features
