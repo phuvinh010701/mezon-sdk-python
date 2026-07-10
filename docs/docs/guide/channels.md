@@ -61,6 +61,7 @@ message = await channel.messages.fetch(987654321)
 await message.reply(content=ChannelMessageContent(t="Reply"))
 await message.update(content=ChannelMessageContent(t="Edited"))
 await message.react(emoji_id=1, emoji="thumbsup", count=1)
+await message.delete()
 ```
 
 `channel.messages.fetch(...)` loads through the message cache/database layer. `get(...)` only works if the message is already cached in memory.

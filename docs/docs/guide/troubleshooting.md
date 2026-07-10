@@ -29,14 +29,11 @@ Common causes:
 Typical pattern:
 
 ```python
-import json
-
 async def handle_message(message):
     if message.sender_id == client.client_id:
         return
 
-    payload = json.loads(message.content)
-    text = payload.get("t", "")
+    text = message.content.get("t", "") if isinstance(message.content, dict) else ""
 ```
 
 ## `get(...)` returns `None`

@@ -81,9 +81,9 @@ Use `fetch(...)` when the object may need to be loaded. Use `get(...)` only when
 ## Event registration
 
 ```python
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
 

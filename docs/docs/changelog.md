@@ -6,6 +6,9 @@ All notable changes to the Mezon SDK Python.
 
 ### Bug Fixes
 
+- Send channel message update/delete through WebSocket `api_request_event` requests (`UpdateChannelMessage` / `DeleteChannelMessage`) to match the current server contract.
+- Refresh docs for current event payloads: `on_channel_message` receives `mezon.models.ChannelMessage`, and `message.content` is already parsed when possible.
+- Update installation docs for the current Python and dependency requirements.
 - Normalize `ws_url` without corrupting existing `ws://` or `wss://` prefixes.
 - Build API URLs with the correct `host:port` combination.
 - Match regenerated protobuf `Envelope.cid` typing by using integer command IDs.

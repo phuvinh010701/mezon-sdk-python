@@ -40,7 +40,6 @@ async def get_roles(clan_id: int):
 ## Plugin-style message dispatch
 
 ```python
-import json
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -57,7 +56,7 @@ class Plugin(ABC):
 
 class GreetingPlugin(Plugin):
     async def on_message(self, client, message):
-        payload = json.loads(message.content)
+        payload = message.content if isinstance(message.content, dict) else {}
         if payload.get("t") == "!hi":
             channel = await client.channels.fetch(message.channel_id)
             await channel.send(content=ChannelMessageContent(t="Hello!"))

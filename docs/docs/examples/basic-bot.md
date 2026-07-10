@@ -6,11 +6,9 @@ A simple bot that responds to commands and demonstrates replies, ephemeral messa
 
 ```python
 import asyncio
-import json
 import logging
 from mezon import ButtonBuilder, ButtonMessageStyle, MezonClient
-from mezon.models import ApiSentTokenRequest, ChannelMessageContent
-from mezon.protobuf.api import api_pb2
+from mezon.models import ApiSentTokenRequest, ChannelMessage, ChannelMessageContent
 
 client = MezonClient(
     client_id="YOUR_BOT_ID",
@@ -19,15 +17,15 @@ client = MezonClient(
     log_level=logging.INFO,
 )
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
 
-    payload = json.loads(message.content)
+    payload = message.content if isinstance(message.content, dict) else {}
     text = payload.get("t", "").strip()
 
     channel = await client.channels.fetch(message.channel_id)
-    msg = await channel.messages.fetch(message.message_id)
+    msg = await channel.messages.fetch(message.id)
 
     if text == "!help":
         await msg.reply(

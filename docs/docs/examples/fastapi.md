@@ -5,14 +5,12 @@ Run a Mezon bot alongside a FastAPI application lifecycle.
 ## Full example
 
 ```python
-import json
 import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from mezon import MezonClient
-from mezon.models import ApiSentTokenRequest, ChannelMessageContent
-from mezon.protobuf.api import api_pb2
+from mezon.models import ApiSentTokenRequest, ChannelMessage, ChannelMessageContent
 from mezon.protobuf.rtapi import realtime_pb2
 
 client = MezonClient(
@@ -22,12 +20,11 @@ client = MezonClient(
     log_level=logging.INFO,
 )
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
 
-    payload = json.loads(message.content)
-    text = payload.get("t", "")
+    text = message.content.get("t", "") if isinstance(message.content, dict) else ""
 
     if text.startswith("!hello"):
         channel = await client.channels.fetch(message.channel_id)

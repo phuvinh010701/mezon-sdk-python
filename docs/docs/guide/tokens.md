@@ -36,16 +36,14 @@ else:
 ## Example inside a message handler
 
 ```python
-import json
-from mezon.models import ApiSentTokenRequest, ChannelMessageContent
-from mezon.protobuf.api import api_pb2
+from mezon.models import ApiSentTokenRequest, ChannelMessage, ChannelMessageContent
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
 
-    payload = json.loads(message.content)
-    if payload.get("t") == "!daily":
+    text = message.content.get("t", "") if isinstance(message.content, dict) else ""
+    if text == "!daily":
         result = await client.send_token(
             ApiSentTokenRequest(
                 receiver_id=message.sender_id,

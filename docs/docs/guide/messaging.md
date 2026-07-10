@@ -91,10 +91,22 @@ await message.reply(
 ```python
 message = await channel.messages.fetch(987654321)
 
-await message.update(
+ack = await message.update(
     content=ChannelMessageContent(t="Updated text")
 )
 ```
+
+`Message.update(...)` uses the active WebSocket connection and is sent as the server's `UpdateChannelMessage` API request event.
+
+## Delete a message
+
+```python
+message = await channel.messages.fetch(987654321)
+
+ack = await message.delete()
+```
+
+`Message.delete(...)` also uses the active WebSocket connection and is sent as the server's `DeleteChannelMessage` API request event.
 
 ## React to a message
 
@@ -154,16 +166,14 @@ Prefer `TextChannel.send(...)` unless you explicitly need the lower-level shape.
 ## Common handler pattern
 
 ```python
-import json
-from mezon.models import ChannelMessageContent
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage, ChannelMessageContent
 
-async def handle_message(event: api_pb2.ChannelMessage):
+async def handle_message(event: ChannelMessage):
     if event.sender_id == client.client_id:
         return
 
-    data = json.loads(event.content)
-    if data.get("t") == "!ping":
+    text = event.content.get("t", "") if isinstance(event.content, dict) else ""
+    if text == "!ping":
         channel = await client.channels.fetch(event.channel_id)
         await channel.send(content=ChannelMessageContent(t="Pong!"))
 

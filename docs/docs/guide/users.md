@@ -54,10 +54,9 @@ client.on_add_clan_user(on_user_joined_clan)
 ## Working with message senders
 
 ```python
-from mezon.models import ChannelMessageContent
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage, ChannelMessageContent
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
 
