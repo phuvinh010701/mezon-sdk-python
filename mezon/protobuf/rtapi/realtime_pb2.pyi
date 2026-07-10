@@ -30,10 +30,10 @@ import builtins as _builtins
 import sys
 import typing as _typing
 
-if sys.version_info >= (3, 10):
-    from typing import TypeAlias as _TypeAlias
+if sys.version_info >= (3, 11):
+    from typing import TypeAlias as _TypeAlias, Never as _Never
 else:
-    from typing_extensions import TypeAlias as _TypeAlias
+    from typing_extensions import TypeAlias as _TypeAlias, Never as _Never
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -139,6 +139,9 @@ class Envelope(_message.Message):
     AIAGENT_ENABLED_EVENT_FIELD_NUMBER: _builtins.int
     LIST_CHANNEL_USERS_BANNED_EVENT_FIELD_NUMBER: _builtins.int
     REFRESH_SESSION_EVENT_FIELD_NUMBER: _builtins.int
+    CHANNEL_ARCHIVE_EVENT_FIELD_NUMBER: _builtins.int
+    TOPIC_IN_MESSAGE_EVENT_FIELD_NUMBER: _builtins.int
+    SCREEN_SHARE_EVENT_FIELD_NUMBER: _builtins.int
     cid: _builtins.int
     @_builtins.property
     def channel(self) -> Global___Channel:
@@ -518,6 +521,18 @@ class Envelope(_message.Message):
     def refresh_session_event(self) -> _api_pb2.Session:
         """Refresh session event"""
 
+    @_builtins.property
+    def channel_archive_event(self) -> Global___ChannelArchiveEvent:
+        """Channel archive / unarchive event"""
+
+    @_builtins.property
+    def topic_in_message_event(self) -> Global___TopicInMessageEvent:
+        """Topic in message event"""
+
+    @_builtins.property
+    def screen_share_event(self) -> Global___ScreenShareEvent:
+        """share screen event"""
+
     def __init__(
         self,
         *,
@@ -617,16 +632,75 @@ class Envelope(_message.Message):
         aiagent_enabled_event: Global___AIAgentEnabledEvent | None = ...,
         list_channel_users_banned_event: Global___ListChannelUsersBannedEvent | None = ...,
         refresh_session_event: _api_pb2.Session | None = ...,
+        channel_archive_event: Global___ChannelArchiveEvent | None = ...,
+        topic_in_message_event: Global___TopicInMessageEvent | None = ...,
+        screen_share_event: Global___ScreenShareEvent | None = ...,
     ) -> None: ...
-    _HasFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "api_request_event", b"api_request_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_channel_users_banned_event", b"list_channel_users_banned_event", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "refresh_session_event", b"refresh_session_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
+    _HasFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "api_request_event", b"api_request_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_archive_event", b"channel_archive_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_channel_users_banned_event", b"list_channel_users_banned_event", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "refresh_session_event", b"refresh_session_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "screen_share_event", b"screen_share_event", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "topic_in_message_event", b"topic_in_message_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "api_request_event", b"api_request_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_channel_users_banned_event", b"list_channel_users_banned_event", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "refresh_session_event", b"refresh_session_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active_archived_thread", b"active_archived_thread", "add_clan_user_event", b"add_clan_user_event", "add_friend", b"add_friend", "aiagent_enabled_event", b"aiagent_enabled_event", "allow_anonymous_event", b"allow_anonymous_event", "api_request_event", b"api_request_event", "ban_user_event", b"ban_user_event", "block_friend", b"block_friend", "canvas_event", b"canvas_event", "category_event", b"category_event", "channel", b"channel", "channel_app_event", b"channel_app_event", "channel_archive_event", b"channel_archive_event", "channel_created_event", b"channel_created_event", "channel_deleted_event", b"channel_deleted_event", "channel_join", b"channel_join", "channel_leave", b"channel_leave", "channel_message", b"channel_message", "channel_message_ack", b"channel_message_ack", "channel_message_remove", b"channel_message_remove", "channel_message_send", b"channel_message_send", "channel_message_update", b"channel_message_update", "channel_presence_event", b"channel_presence_event", "channel_updated_event", b"channel_updated_event", "check_name_existed_event", b"check_name_existed_event", "cid", b"cid", "clan_created_event", b"clan_created_event", "clan_deleted_event", b"clan_deleted_event", "clan_event_created", b"clan_event_created", "clan_join", b"clan_join", "clan_profile_updated_event", b"clan_profile_updated_event", "clan_updated_event", b"clan_updated_event", "custom_status_event", b"custom_status_event", "delete_account_event", b"delete_account_event", "dropdown_box_selected", b"dropdown_box_selected", "ephemeral_message_send", b"ephemeral_message_send", "error", b"error", "event_emoji", b"event_emoji", "follow_event", b"follow_event", "give_coffee_event", b"give_coffee_event", "handle_participant_meet_state_event", b"handle_participant_meet_state_event", "incoming_call_push", b"incoming_call_push", "join_channel_app_data", b"join_channel_app_data", "last_pin_message_event", b"last_pin_message_event", "last_seen_message_event", b"last_seen_message_event", "list_activity", b"list_activity", "list_channel_users_banned_event", b"list_channel_users_banned_event", "list_data_socket", b"list_data_socket", "mark_as_read", b"mark_as_read", "meet_participant_event", b"meet_participant_event", "message", b"message", "message_button_clicked", b"message_button_clicked", "message_reaction_event", b"message_reaction_event", "message_typing_event", b"message_typing_event", "noti_user_channel", b"noti_user_channel", "notifications", b"notifications", "permission_changed_event", b"permission_changed_event", "permission_set_event", b"permission_set_event", "ping", b"ping", "pong", b"pong", "quick_menu_event", b"quick_menu_event", "refresh_session_event", b"refresh_session_event", "remove_friend", b"remove_friend", "role_assign_event", b"role_assign_event", "role_event", b"role_event", "rpc", b"rpc", "screen_share_event", b"screen_share_event", "sd_topic_event", b"sd_topic_event", "status", b"status", "status_follow", b"status_follow", "status_presence_event", b"status_presence_event", "status_unfollow", b"status_unfollow", "status_update", b"status_update", "sticker_create_event", b"sticker_create_event", "sticker_delete_event", b"sticker_delete_event", "sticker_update_event", b"sticker_update_event", "stream_data", b"stream_data", "stream_presence_event", b"stream_presence_event", "streaming_ended_event", b"streaming_ended_event", "streaming_joined_event", b"streaming_joined_event", "streaming_leaved_event", b"streaming_leaved_event", "streaming_started_event", b"streaming_started_event", "token_sent_event", b"token_sent_event", "topic_in_message_event", b"topic_in_message_event", "transfer_ownership_event", b"transfer_ownership_event", "un_block_friend", b"un_block_friend", "unmute_event", b"unmute_event", "unpin_message_event", b"unpin_message_event", "user_channel_added_event", b"user_channel_added_event", "user_channel_removed_event", b"user_channel_removed_event", "user_clan_removed_event", b"user_clan_removed_event", "user_profile_updated_event", b"user_profile_updated_event", "user_status_event", b"user_status_event", "voice_ended_event", b"voice_ended_event", "voice_joined_event", b"voice_joined_event", "voice_leaved_event", b"voice_leaved_event", "voice_reaction_send", b"voice_reaction_send", "voice_started_event", b"voice_started_event", "webhook_event", b"webhook_event", "webrtc_signaling_fwd", b"webrtc_signaling_fwd"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-    _WhichOneofReturnType_message: _TypeAlias = _typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread", "allow_anonymous_event", "api_request_event", "clan_created_event", "aiagent_enabled_event", "list_channel_users_banned_event", "refresh_session_event"]  # noqa: Y015
+    _WhichOneofReturnType_message: _TypeAlias = _typing.Literal["channel", "clan_join", "channel_join", "channel_leave", "channel_message", "channel_message_ack", "channel_message_send", "channel_message_update", "channel_message_remove", "channel_presence_event", "error", "notifications", "rpc", "status", "status_follow", "status_presence_event", "status_unfollow", "status_update", "stream_data", "stream_presence_event", "ping", "pong", "message_typing_event", "last_seen_message_event", "message_reaction_event", "voice_joined_event", "voice_leaved_event", "voice_started_event", "voice_ended_event", "channel_created_event", "channel_deleted_event", "channel_updated_event", "last_pin_message_event", "custom_status_event", "user_channel_added_event", "user_channel_removed_event", "user_clan_removed_event", "clan_updated_event", "clan_profile_updated_event", "check_name_existed_event", "user_profile_updated_event", "add_clan_user_event", "clan_event_created", "role_assign_event", "clan_deleted_event", "give_coffee_event", "sticker_create_event", "sticker_update_event", "sticker_delete_event", "role_event", "event_emoji", "streaming_joined_event", "streaming_leaved_event", "streaming_started_event", "streaming_ended_event", "permission_set_event", "permission_changed_event", "token_sent_event", "message_button_clicked", "unmute_event", "webrtc_signaling_fwd", "list_activity", "dropdown_box_selected", "incoming_call_push", "sd_topic_event", "follow_event", "channel_app_event", "user_status_event", "remove_friend", "webhook_event", "noti_user_channel", "join_channel_app_data", "canvas_event", "unpin_message_event", "category_event", "handle_participant_meet_state_event", "delete_account_event", "ephemeral_message_send", "block_friend", "voice_reaction_send", "mark_as_read", "list_data_socket", "quick_menu_event", "un_block_friend", "meet_participant_event", "transfer_ownership_event", "add_friend", "ban_user_event", "active_archived_thread", "allow_anonymous_event", "api_request_event", "clan_created_event", "aiagent_enabled_event", "list_channel_users_banned_event", "refresh_session_event", "channel_archive_event", "topic_in_message_event", "screen_share_event"]  # noqa: Y015
     _WhichOneofArgType_message: _TypeAlias = _typing.Literal["message", b"message"]  # noqa: Y015
     def WhichOneof(self, oneof_group: _WhichOneofArgType_message) -> _WhichOneofReturnType_message | None: ...
 
 Global___Envelope: _TypeAlias = Envelope  # noqa: Y015
+
+@_typing.final
+class ScreenShareEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    VOICE_CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
+    IS_SHARING_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    voice_channel_id: _builtins.int
+    user_id: _builtins.int
+    is_sharing: _builtins.bool
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        voice_channel_id: _builtins.int = ...,
+        user_id: _builtins.int = ...,
+        is_sharing: _builtins.bool = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "is_sharing", b"is_sharing", "user_id", b"user_id", "voice_channel_id", b"voice_channel_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
+
+Global___ScreenShareEvent: _TypeAlias = ScreenShareEvent  # noqa: Y015
+
+@_typing.final
+class TopicInMessageEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    RPL_FIELD_NUMBER: _builtins.int
+    LSNT_FIELD_NUMBER: _builtins.int
+    TP_ID_FIELD_NUMBER: _builtins.int
+    message_id: _builtins.int
+    rpl: _builtins.int
+    lsnt: _builtins.int
+    tp_id: _builtins.str
+    def __init__(
+        self,
+        *,
+        message_id: _builtins.int = ...,
+        rpl: _builtins.int = ...,
+        lsnt: _builtins.int = ...,
+        tp_id: _builtins.str = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["lsnt", b"lsnt", "message_id", b"message_id", "rpl", b"rpl", "tp_id", b"tp_id"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
+
+Global___TopicInMessageEvent: _TypeAlias = TopicInMessageEvent  # noqa: Y015
 
 @_typing.final
 class ApiRequestEvent(_message.Message):
@@ -645,8 +719,11 @@ class ApiRequestEvent(_message.Message):
         api_name: _builtins.str = ...,
         body: _builtins.bytes = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["api_index", b"api_index", "api_name", b"api_name", "body", b"body"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ApiRequestEvent: _TypeAlias = ApiRequestEvent  # noqa: Y015
 
@@ -657,6 +734,11 @@ class FollowEvent(_message.Message):
     def __init__(
         self,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___FollowEvent: _TypeAlias = FollowEvent  # noqa: Y015
 
@@ -687,8 +769,11 @@ class BannedUserEvent(_message.Message):
         clan_id: _builtins.int = ...,
         ban_time: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "ban_time", b"ban_time", "banner_id", b"banner_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___BannedUserEvent: _TypeAlias = BannedUserEvent  # noqa: Y015
 
@@ -704,8 +789,11 @@ class ListChannelUsersBannedEvent(_message.Message):
         *,
         banned_user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["banned_user_ids", b"banned_user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ListChannelUsersBannedEvent: _TypeAlias = ListChannelUsersBannedEvent  # noqa: Y015
 
@@ -749,8 +837,11 @@ class ChannelCanvas(_message.Message):
         channel_id: _builtins.int = ...,
         status: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "content", b"content", "creator_id", b"creator_id", "editor_id", b"editor_id", "id", b"id", "is_default", b"is_default", "status", b"status", "title", b"title"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelCanvas: _TypeAlias = ChannelCanvas  # noqa: Y015
 
@@ -774,8 +865,11 @@ class IncomingCallPush(_message.Message):
         channel_id: _builtins.int = ...,
         caller_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "json_data", b"json_data", "receiver_id", b"receiver_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___IncomingCallPush: _TypeAlias = IncomingCallPush  # noqa: Y015
 
@@ -802,8 +896,11 @@ class WebrtcSignalingFwd(_message.Message):
         channel_id: _builtins.int = ...,
         caller_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["caller_id", b"caller_id", "channel_id", b"channel_id", "data_type", b"data_type", "json_data", b"json_data", "receiver_id", b"receiver_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___WebrtcSignalingFwd: _TypeAlias = WebrtcSignalingFwd  # noqa: Y015
 
@@ -830,8 +927,11 @@ class SFUSignalingFwd(_message.Message):
         json_data: _builtins.str = ...,
         user_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "data_type", b"data_type", "json_data", b"json_data", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___SFUSignalingFwd: _TypeAlias = SFUSignalingFwd  # noqa: Y015
 
@@ -861,6 +961,7 @@ class AddClanUserEvent(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "invitor", b"invitor", "user", b"user"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___AddClanUserEvent: _TypeAlias = AddClanUserEvent  # noqa: Y015
 
@@ -894,8 +995,11 @@ class RoleAssignedEvent(_message.Message):
         user_ids_assigned: _abc.Iterable[_builtins.int] | None = ...,
         user_ids_removed: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["ClanId", b"ClanId", "role_id", b"role_id", "user_ids_assigned", b"user_ids_assigned", "user_ids_removed", b"user_ids_removed"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___RoleAssignedEvent: _TypeAlias = RoleAssignedEvent  # noqa: Y015
 
@@ -917,8 +1021,11 @@ class PermissionRoleChannel(_message.Message):
         permission_id: _builtins.int = ...,
         active: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "permission_id", b"permission_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___PermissionRoleChannel: _TypeAlias = PermissionRoleChannel  # noqa: Y015
 
@@ -964,8 +1071,11 @@ class HashtagDm(_message.Message):
         channel_private: _builtins.int = ...,
         parent_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___HashtagDm: _TypeAlias = HashtagDm  # noqa: Y015
 
@@ -1023,6 +1133,7 @@ class ChannelDescription(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "clan_id", b"clan_id", "clan_name", b"clan_name", "last_sent_message", b"last_sent_message", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelDescription: _TypeAlias = ChannelDescription  # noqa: Y015
 
@@ -1065,8 +1176,11 @@ class ClanEmoji(_message.Message):
         logo: _builtins.str = ...,
         clan_name: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "id", b"id", "logo", b"logo", "shortname", b"shortname", "src", b"src"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ClanEmoji: _TypeAlias = ClanEmoji  # noqa: Y015
 
@@ -1112,6 +1226,7 @@ class Channel(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "chanel_label", b"chanel_label", "clan_logo", b"clan_logo", "id", b"id", "presences", b"presences", "self", b"self"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___Channel: _TypeAlias = Channel  # noqa: Y015
 
@@ -1129,8 +1244,11 @@ class ClanJoin(_message.Message):
         *,
         clan_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ClanJoin: _TypeAlias = ClanJoin  # noqa: Y015
 
@@ -1160,8 +1278,11 @@ class ChannelJoin(_message.Message):
         channel_type: _builtins.int = ...,
         is_public: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelJoin: _TypeAlias = ChannelJoin  # noqa: Y015
 
@@ -1191,8 +1312,11 @@ class ChannelLeave(_message.Message):
         channel_type: _builtins.int = ...,
         is_public: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "is_public", b"is_public"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelLeave: _TypeAlias = ChannelLeave  # noqa: Y015
 
@@ -1248,6 +1372,7 @@ class ChannelMessageAck(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "code", b"code", "create_time_seconds", b"create_time_seconds", "message_id", b"message_id", "persistent", b"persistent", "update_time_seconds", b"update_time_seconds", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelMessageAck: _TypeAlias = ChannelMessageAck  # noqa: Y015
 
@@ -1271,6 +1396,7 @@ class EphemeralMessageSend(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["message", b"message", "receiver_ids", b"receiver_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___EphemeralMessageSend: _TypeAlias = EphemeralMessageSend  # noqa: Y015
 
@@ -1280,7 +1406,11 @@ class QuickMenuDataEvent(_message.Message):
 
     MENU_NAME_FIELD_NUMBER: _builtins.int
     MESSAGE_FIELD_NUMBER: _builtins.int
+    SENDER_ID_FIELD_NUMBER: _builtins.int
+    MESSAGE_SENDER_ID_FIELD_NUMBER: _builtins.int
     menu_name: _builtins.str
+    sender_id: _builtins.int
+    message_sender_id: _builtins.int
     @_builtins.property
     def message(self) -> Global___ChannelMessageSend: ...
     def __init__(
@@ -1288,11 +1418,14 @@ class QuickMenuDataEvent(_message.Message):
         *,
         menu_name: _builtins.str = ...,
         message: Global___ChannelMessageSend | None = ...,
+        sender_id: _builtins.int = ...,
+        message_sender_id: _builtins.int = ...,
     ) -> None: ...
     _HasFieldArgType: _TypeAlias = _typing.Literal["message", b"message"]  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["menu_name", b"menu_name", "message", b"message"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["menu_name", b"menu_name", "message", b"message", "message_sender_id", b"message_sender_id", "sender_id", b"sender_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___QuickMenuDataEvent: _TypeAlias = QuickMenuDataEvent  # noqa: Y015
 
@@ -1322,8 +1455,11 @@ class VoiceReactionSend(_message.Message):
         sender_id: _builtins.int = ...,
         media_type: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "emojis", b"emojis", "media_type", b"media_type", "sender_id", b"sender_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___VoiceReactionSend: _TypeAlias = VoiceReactionSend  # noqa: Y015
 
@@ -1347,8 +1483,11 @@ class MarkAsRead(_message.Message):
         category_id: _builtins.int = ...,
         clan_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___MarkAsRead: _TypeAlias = MarkAsRead  # noqa: Y015
 
@@ -1424,8 +1563,11 @@ class ChannelMessageSend(_message.Message):
         topic_id: _builtins.int = ...,
         id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["anonymous_message", b"anonymous_message", "attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "code", b"code", "content", b"content", "id", b"id", "is_public", b"is_public", "mention_everyone", b"mention_everyone", "mentions", b"mentions", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelMessageSend: _TypeAlias = ChannelMessageSend  # noqa: Y015
 
@@ -1446,6 +1588,7 @@ class ChannelMessageUpdate(_message.Message):
     HIDE_EDITTED_FIELD_NUMBER: _builtins.int
     TOPIC_ID_FIELD_NUMBER: _builtins.int
     IS_UPDATE_MSG_TOPIC_FIELD_NUMBER: _builtins.int
+    CREATE_TIME_SECONDS_FIELD_NUMBER: _builtins.int
     clan_id: _builtins.int
     """The clan that channel belong to."""
     channel_id: _builtins.int
@@ -1464,6 +1607,8 @@ class ChannelMessageUpdate(_message.Message):
     """topic id"""
     is_update_msg_topic: _builtins.bool
     """update message topic"""
+    create_time_seconds: _builtins.int
+    """original message create time (seconds)"""
     @_builtins.property
     def mentions(self) -> _containers.RepeatedCompositeFieldContainer[_api_pb2.MessageMention]:
         """The mentions"""
@@ -1486,9 +1631,13 @@ class ChannelMessageUpdate(_message.Message):
         hide_editted: _builtins.bool = ...,
         topic_id: _builtins.int = ...,
         is_update_msg_topic: _builtins.bool = ...,
+        create_time_seconds: _builtins.int = ...,
     ) -> None: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "hide_editted", b"hide_editted", "is_public", b"is_public", "is_update_msg_topic", b"is_update_msg_topic", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "topic_id", b"topic_id"]  # noqa: Y015
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "create_time_seconds", b"create_time_seconds", "hide_editted", b"hide_editted", "is_public", b"is_public", "is_update_msg_topic", b"is_update_msg_topic", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelMessageUpdate: _TypeAlias = ChannelMessageUpdate  # noqa: Y015
 
@@ -1538,8 +1687,11 @@ class ChannelMessageRemove(_message.Message):
         mentions: _builtins.bytes = ...,
         references: _builtins.bytes = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "has_attachment", b"has_attachment", "is_public", b"is_public", "mentions", b"mentions", "message_id", b"message_id", "mode", b"mode", "references", b"references", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelMessageRemove: _TypeAlias = ChannelMessageRemove  # noqa: Y015
 
@@ -1581,8 +1733,11 @@ class ChannelPresenceEvent(_message.Message):
         category_name: _builtins.str = ...,
         mode: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "channel_id", b"channel_id", "clan_logo", b"clan_logo", "joins", b"joins", "leaves", b"leaves", "mode", b"mode"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelPresenceEvent: _TypeAlias = ChannelPresenceEvent  # noqa: Y015
 
@@ -1649,8 +1804,11 @@ class Error(_message.Message):
             key: _builtins.str = ...,
             value: _builtins.str = ...,
         ) -> None: ...
+        _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+        def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
         _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+        def WhichOneof(self, oneof_group: _Never) -> None: ...
 
     CODE_FIELD_NUMBER: _builtins.int
     MESSAGE_FIELD_NUMBER: _builtins.int
@@ -1670,8 +1828,11 @@ class Error(_message.Message):
         message: _builtins.str = ...,
         context: _abc.Mapping[_builtins.str, _builtins.str] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["code", b"code", "context", b"context", "message", b"message"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___Error: _TypeAlias = Error  # noqa: Y015
 
@@ -1691,8 +1852,11 @@ class Notifications(_message.Message):
         *,
         notifications: _abc.Iterable[_api_pb2.Notification] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["notifications", b"notifications"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___Notifications: _TypeAlias = Notifications  # noqa: Y015
 
@@ -1720,8 +1884,11 @@ class AddFriend(_message.Message):
         display_name: _builtins.str = ...,
         avatar: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "display_name", b"display_name", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___AddFriend: _TypeAlias = AddFriend  # noqa: Y015
 
@@ -1737,8 +1904,11 @@ class RemoveFriend(_message.Message):
         *,
         user_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___RemoveFriend: _TypeAlias = RemoveFriend  # noqa: Y015
 
@@ -1754,8 +1924,11 @@ class BlockFriend(_message.Message):
         *,
         user_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___BlockFriend: _TypeAlias = BlockFriend  # noqa: Y015
 
@@ -1791,8 +1964,11 @@ class UnblockFriend(_message.Message):
         status: _builtins.str = ...,
         user_status: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["avatar", b"avatar", "display_name", b"display_name", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UnblockFriend: _TypeAlias = UnblockFriend  # noqa: Y015
 
@@ -1805,6 +1981,11 @@ class Ping(_message.Message):
     def __init__(
         self,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___Ping: _TypeAlias = Ping  # noqa: Y015
 
@@ -1817,6 +1998,11 @@ class Pong(_message.Message):
     def __init__(
         self,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___Pong: _TypeAlias = Pong  # noqa: Y015
 
@@ -1836,8 +2022,11 @@ class Status(_message.Message):
         *,
         presences: _abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["presences", b"presences"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___Status: _TypeAlias = Status  # noqa: Y015
 
@@ -1863,8 +2052,11 @@ class StatusFollow(_message.Message):
         user_ids: _abc.Iterable[_builtins.int] | None = ...,
         usernames: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["user_ids", b"user_ids", "usernames", b"usernames"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StatusFollow: _TypeAlias = StatusFollow  # noqa: Y015
 
@@ -1890,8 +2082,11 @@ class StatusPresenceEvent(_message.Message):
         joins: _abc.Iterable[Global___UserPresence] | None = ...,
         leaves: _abc.Iterable[Global___UserPresence] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["joins", b"joins", "leaves", b"leaves"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StatusPresenceEvent: _TypeAlias = StatusPresenceEvent  # noqa: Y015
 
@@ -1961,8 +2156,11 @@ class LastPinMessageEvent(_message.Message):
         message_attachment: _builtins.str = ...,
         message_created_time: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "message_attachment", b"message_attachment", "message_content", b"message_content", "message_created_time", b"message_created_time", "message_id", b"message_id", "message_sender_avatar", b"message_sender_avatar", "message_sender_id", b"message_sender_id", "message_sender_username", b"message_sender_username", "mode", b"mode", "operation", b"operation", "timestamp_seconds", b"timestamp_seconds", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___LastPinMessageEvent: _TypeAlias = LastPinMessageEvent  # noqa: Y015
 
@@ -2000,8 +2198,11 @@ class LastSeenMessageEvent(_message.Message):
         timestamp_seconds: _builtins.int = ...,
         badge_count: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["badge_count", b"badge_count", "channel_id", b"channel_id", "clan_id", b"clan_id", "message_id", b"message_id", "mode", b"mode", "timestamp_seconds", b"timestamp_seconds"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___LastSeenMessageEvent: _TypeAlias = LastSeenMessageEvent  # noqa: Y015
 
@@ -2047,8 +2248,11 @@ class MessageTypingEvent(_message.Message):
         sender_display_name: _builtins.str = ...,
         topic_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_public", b"is_public", "mode", b"mode", "sender_display_name", b"sender_display_name", "sender_id", b"sender_id", "sender_username", b"sender_username", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___MessageTypingEvent: _TypeAlias = MessageTypingEvent  # noqa: Y015
 
@@ -2078,8 +2282,11 @@ class VoiceLeavedEvent(_message.Message):
         voice_channel_id: _builtins.int = ...,
         voice_user_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id", "voice_user_id", b"voice_user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___VoiceLeavedEvent: _TypeAlias = VoiceLeavedEvent  # noqa: Y015
 
@@ -2125,8 +2332,11 @@ class VoiceJoinedEvent(_message.Message):
         voice_channel_id: _builtins.int = ...,
         last_screenshot: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "last_screenshot", b"last_screenshot", "participant", b"participant", "user_id", b"user_id", "voice_channel_id", b"voice_channel_id", "voice_channel_label", b"voice_channel_label"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___VoiceJoinedEvent: _TypeAlias = VoiceJoinedEvent  # noqa: Y015
 
@@ -2152,8 +2362,11 @@ class VoiceStartedEvent(_message.Message):
         clan_id: _builtins.int = ...,
         voice_channel_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___VoiceStartedEvent: _TypeAlias = VoiceStartedEvent  # noqa: Y015
 
@@ -2179,8 +2392,11 @@ class VoiceEndedEvent(_message.Message):
         clan_id: _builtins.int = ...,
         voice_channel_id: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "voice_channel_id", b"voice_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___VoiceEndedEvent: _TypeAlias = VoiceEndedEvent  # noqa: Y015
 
@@ -2210,8 +2426,11 @@ class StreamingLeavedEvent(_message.Message):
         streaming_channel_id: _builtins.str = ...,
         streaming_user_id: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "id", b"id", "streaming_channel_id", b"streaming_channel_id", "streaming_user_id", b"streaming_user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StreamingLeavedEvent: _TypeAlias = StreamingLeavedEvent  # noqa: Y015
 
@@ -2253,8 +2472,11 @@ class StreamingJoinedEvent(_message.Message):
         streaming_channel_label: _builtins.str = ...,
         streaming_channel_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "participant", b"participant", "streaming_channel_id", b"streaming_channel_id", "streaming_channel_label", b"streaming_channel_label", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StreamingJoinedEvent: _TypeAlias = StreamingJoinedEvent  # noqa: Y015
 
@@ -2284,8 +2506,11 @@ class StreamingStartedEvent(_message.Message):
         streaming_url: _builtins.str = ...,
         is_streaming: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "is_streaming", b"is_streaming", "streaming_url", b"streaming_url"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StreamingStartedEvent: _TypeAlias = StreamingStartedEvent  # noqa: Y015
 
@@ -2307,8 +2532,11 @@ class StreamingEndedEvent(_message.Message):
         clan_id: _builtins.int = ...,
         channel_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StreamingEndedEvent: _TypeAlias = StreamingEndedEvent  # noqa: Y015
 
@@ -2368,8 +2596,11 @@ class ChannelCreatedEvent(_message.Message):
         clan_name: _builtins.str = ...,
         channel_avatar: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "parent_id", b"parent_id", "status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelCreatedEvent: _TypeAlias = ChannelCreatedEvent  # noqa: Y015
 
@@ -2401,8 +2632,11 @@ class CategoryEvent(_message.Message):
         id: _builtins.int = ...,
         status: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category_name", b"category_name", "clan_id", b"clan_id", "creator_id", b"creator_id", "id", b"id", "status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___CategoryEvent: _TypeAlias = CategoryEvent  # noqa: Y015
 
@@ -2444,6 +2678,7 @@ class RoleEvent(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["active_permission_ids", b"active_permission_ids", "remove_permission_ids", b"remove_permission_ids", "role", b"role", "status", b"status", "user_add_ids", b"user_add_ids", "user_id", b"user_id", "user_remove_ids", b"user_remove_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___RoleEvent: _TypeAlias = RoleEvent  # noqa: Y015
 
@@ -2475,8 +2710,11 @@ class ChannelDeletedEvent(_message.Message):
         channel_id: _builtins.int = ...,
         deletor: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id", "deletor", b"deletor", "parent_id", b"parent_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelDeletedEvent: _TypeAlias = ChannelDeletedEvent  # noqa: Y015
 
@@ -2496,8 +2734,11 @@ class ClanDeletedEvent(_message.Message):
         clan_id: _builtins.int = ...,
         deletor: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "deletor", b"deletor"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ClanDeletedEvent: _TypeAlias = ClanDeletedEvent  # noqa: Y015
 
@@ -2541,8 +2782,11 @@ class StickerCreateEvent(_message.Message):
         logo: _builtins.str = ...,
         clan_name: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "logo", b"logo", "shortname", b"shortname", "source", b"source", "sticker_id", b"sticker_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StickerCreateEvent: _TypeAlias = StickerCreateEvent  # noqa: Y015
 
@@ -2566,8 +2810,11 @@ class StickerUpdateEvent(_message.Message):
         sticker_id: _builtins.int = ...,
         user_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["shortname", b"shortname", "sticker_id", b"sticker_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StickerUpdateEvent: _TypeAlias = StickerUpdateEvent  # noqa: Y015
 
@@ -2587,8 +2834,11 @@ class StickerDeleteEvent(_message.Message):
         sticker_id: _builtins.int = ...,
         user_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["sticker_id", b"sticker_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StickerDeleteEvent: _TypeAlias = StickerDeleteEvent  # noqa: Y015
 
@@ -2684,10 +2934,115 @@ class ChannelUpdatedEvent(_message.Message):
         role_ids: _abc.Iterable[_builtins.int] | None = ...,
         channel_avatar: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "count_mess_unread", b"count_mess_unread", "creator_id", b"creator_id", "e2ee", b"e2ee", "is_error", b"is_error", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "role_ids", b"role_ids", "status", b"status", "topic", b"topic", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelUpdatedEvent: _TypeAlias = ChannelUpdatedEvent  # noqa: Y015
+
+@_typing.final
+class ChannelArchiveEvent(_message.Message):
+    """Emitted when a channel/thread is archived or activated from archive."""
+
+    DESCRIPTOR: _descriptor.Descriptor
+
+    CLAN_ID_FIELD_NUMBER: _builtins.int
+    CATEGORY_ID_FIELD_NUMBER: _builtins.int
+    CREATOR_ID_FIELD_NUMBER: _builtins.int
+    PARENT_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_ID_FIELD_NUMBER: _builtins.int
+    CHANNEL_LABEL_FIELD_NUMBER: _builtins.int
+    CHANNEL_TYPE_FIELD_NUMBER: _builtins.int
+    STATUS_FIELD_NUMBER: _builtins.int
+    MEETING_CODE_FIELD_NUMBER: _builtins.int
+    IS_ERROR_FIELD_NUMBER: _builtins.int
+    CHANNEL_PRIVATE_FIELD_NUMBER: _builtins.int
+    APP_ID_FIELD_NUMBER: _builtins.int
+    E2EE_FIELD_NUMBER: _builtins.int
+    TOPIC_FIELD_NUMBER: _builtins.int
+    AGE_RESTRICTED_FIELD_NUMBER: _builtins.int
+    ACTIVE_FIELD_NUMBER: _builtins.int
+    COUNT_MESS_UNREAD_FIELD_NUMBER: _builtins.int
+    USER_IDS_FIELD_NUMBER: _builtins.int
+    ROLE_IDS_FIELD_NUMBER: _builtins.int
+    CHANNEL_AVATAR_FIELD_NUMBER: _builtins.int
+    clan_id: _builtins.int
+    """clan id"""
+    category_id: _builtins.int
+    """category"""
+    creator_id: _builtins.int
+    """creator"""
+    parent_id: _builtins.int
+    """parent id"""
+    channel_id: _builtins.int
+    """channel id"""
+    channel_label: _builtins.str
+    """channel label"""
+    channel_type: _builtins.int
+    """channel type"""
+    status: _builtins.int
+    """status"""
+    meeting_code: _builtins.str
+    """meeting code"""
+    is_error: _builtins.bool
+    """error"""
+    channel_private: _builtins.bool
+    """channel private"""
+    app_id: _builtins.int
+    """app url"""
+    e2ee: _builtins.int
+    """e2ee"""
+    topic: _builtins.str
+    """topic"""
+    age_restricted: _builtins.int
+    """"""
+    active: _builtins.int
+    """0 = archived, 1 = active"""
+    count_mess_unread: _builtins.int
+    """count message unread"""
+    channel_avatar: _builtins.str
+    """"""
+    @_builtins.property
+    def user_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
+        """The users to add."""
+
+    @_builtins.property
+    def role_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]:
+        """This is the role that needs to be added to the channel"""
+
+    def __init__(
+        self,
+        *,
+        clan_id: _builtins.int = ...,
+        category_id: _builtins.int = ...,
+        creator_id: _builtins.int = ...,
+        parent_id: _builtins.int = ...,
+        channel_id: _builtins.int = ...,
+        channel_label: _builtins.str = ...,
+        channel_type: _builtins.int = ...,
+        status: _builtins.int = ...,
+        meeting_code: _builtins.str = ...,
+        is_error: _builtins.bool = ...,
+        channel_private: _builtins.bool = ...,
+        app_id: _builtins.int = ...,
+        e2ee: _builtins.int = ...,
+        topic: _builtins.str = ...,
+        age_restricted: _builtins.int = ...,
+        active: _builtins.int = ...,
+        count_mess_unread: _builtins.int = ...,
+        user_ids: _abc.Iterable[_builtins.int] | None = ...,
+        role_ids: _abc.Iterable[_builtins.int] | None = ...,
+        channel_avatar: _builtins.str = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "age_restricted", b"age_restricted", "app_id", b"app_id", "category_id", b"category_id", "channel_avatar", b"channel_avatar", "channel_id", b"channel_id", "channel_label", b"channel_label", "channel_private", b"channel_private", "channel_type", b"channel_type", "clan_id", b"clan_id", "count_mess_unread", b"count_mess_unread", "creator_id", b"creator_id", "e2ee", b"e2ee", "is_error", b"is_error", "meeting_code", b"meeting_code", "parent_id", b"parent_id", "role_ids", b"role_ids", "status", b"status", "topic", b"topic", "user_ids", b"user_ids"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
+
+Global___ChannelArchiveEvent: _TypeAlias = ChannelArchiveEvent  # noqa: Y015
 
 @_typing.final
 class StatusUnfollow(_message.Message):
@@ -2705,8 +3060,11 @@ class StatusUnfollow(_message.Message):
         *,
         user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StatusUnfollow: _TypeAlias = StatusUnfollow  # noqa: Y015
 
@@ -2730,6 +3088,7 @@ class StatusUpdate(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["status", b"status"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StatusUpdate: _TypeAlias = StatusUpdate  # noqa: Y015
 
@@ -2759,8 +3118,11 @@ class Stream(_message.Message):
         clan_id: _builtins.int = ...,
         label: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "label", b"label", "mode", b"mode"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___Stream: _TypeAlias = Stream  # noqa: Y015
 
@@ -2798,6 +3160,7 @@ class StreamData(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["data", b"data", "reliable", b"reliable", "sender", b"sender", "stream", b"stream"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StreamData: _TypeAlias = StreamData  # noqa: Y015
 
@@ -2833,6 +3196,7 @@ class StreamPresenceEvent(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["joins", b"joins", "leaves", b"leaves", "stream", b"stream"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___StreamPresenceEvent: _TypeAlias = StreamPresenceEvent  # noqa: Y015
 
@@ -2876,6 +3240,7 @@ class UserPresence(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["is_mobile", b"is_mobile", "session_id", b"session_id", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UserPresence: _TypeAlias = UserPresence  # noqa: Y015
 
@@ -2913,8 +3278,11 @@ class CustomStatusEvent(_message.Message):
         time_reset: _builtins.int = ...,
         no_clear: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "no_clear", b"no_clear", "status", b"status", "time_reset", b"time_reset", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___CustomStatusEvent: _TypeAlias = CustomStatusEvent  # noqa: Y015
 
@@ -2966,6 +3334,7 @@ class UserChannelAdded(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["active", b"active", "caller", b"caller", "channel_desc", b"channel_desc", "clan_id", b"clan_id", "create_time_seconds", b"create_time_seconds", "status", b"status", "users", b"users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UserChannelAdded: _TypeAlias = UserChannelAdded  # noqa: Y015
 
@@ -3001,8 +3370,11 @@ class UserChannelRemoved(_message.Message):
         clan_id: _builtins.int = ...,
         badge_counts: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["badge_counts", b"badge_counts", "channel_id", b"channel_id", "channel_type", b"channel_type", "clan_id", b"clan_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UserChannelRemoved: _TypeAlias = UserChannelRemoved  # noqa: Y015
 
@@ -3026,8 +3398,11 @@ class UserClanRemoved(_message.Message):
         clan_id: _builtins.int = ...,
         user_ids: _abc.Iterable[_builtins.int] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "user_ids", b"user_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UserClanRemoved: _TypeAlias = UserClanRemoved  # noqa: Y015
 
@@ -3059,8 +3434,11 @@ class ClanCreatedEvent(_message.Message):
         creator_id: _builtins.int = ...,
         welcome_channel_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "clan_name", b"clan_name", "creator_id", b"creator_id", "logo", b"logo", "welcome_channel_id", b"welcome_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ClanCreatedEvent: _TypeAlias = ClanCreatedEvent  # noqa: Y015
 
@@ -3126,8 +3504,11 @@ class ClanUpdatedEvent(_message.Message):
         description: _builtins.str = ...,
         prevent_anonymous: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["about", b"about", "banner", b"banner", "clan_id", b"clan_id", "clan_name", b"clan_name", "community_banner", b"community_banner", "description", b"description", "is_community", b"is_community", "is_onboarding", b"is_onboarding", "logo", b"logo", "onboarding_banner", b"onboarding_banner", "prevent_anonymous", b"prevent_anonymous", "status", b"status", "welcome_channel_id", b"welcome_channel_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ClanUpdatedEvent: _TypeAlias = ClanUpdatedEvent  # noqa: Y015
 
@@ -3157,8 +3538,11 @@ class ClanProfileUpdatedEvent(_message.Message):
         clan_avatar: _builtins.str = ...,
         clan_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_avatar", b"clan_avatar", "clan_id", b"clan_id", "clan_nick", b"clan_nick", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ClanProfileUpdatedEvent: _TypeAlias = ClanProfileUpdatedEvent  # noqa: Y015
 
@@ -3200,8 +3584,11 @@ class UserProfileUpdatedEvent(_message.Message):
         clan_id: _builtins.int = ...,
         encrypt_private_key: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["about_me", b"about_me", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "encrypt_private_key", b"encrypt_private_key", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UserProfileUpdatedEvent: _TypeAlias = UserProfileUpdatedEvent  # noqa: Y015
 
@@ -3219,8 +3606,11 @@ class ConfirmLinkMezonOTPData(_message.Message):
         type: _builtins.int = ...,
         value: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["type", b"type", "value", b"value"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ConfirmLinkMezonOTPData: _TypeAlias = ConfirmLinkMezonOTPData  # noqa: Y015
 
@@ -3294,8 +3684,11 @@ class UserProfileRedis(_message.Message):
         is_bot: _builtins.bool = ...,
         voip_token: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["app_token", b"app_token", "app_url", b"app_url", "avatar", b"avatar", "create_time_second", b"create_time_second", "display_name", b"display_name", "fcm_tokens", b"fcm_tokens", "is_bot", b"is_bot", "joined_clans", b"joined_clans", "online", b"online", "status", b"status", "user_id", b"user_id", "user_status", b"user_status", "username", b"username", "voip_token", b"voip_token"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UserProfileRedis: _TypeAlias = UserProfileRedis  # noqa: Y015
 
@@ -3319,8 +3712,11 @@ class FCMTokens(_message.Message):
         token_id: _builtins.str = ...,
         platform: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["device_id", b"device_id", "platform", b"platform", "token_id", b"token_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___FCMTokens: _TypeAlias = FCMTokens  # noqa: Y015
 
@@ -3352,8 +3748,11 @@ class CheckNameExistedEvent(_message.Message):
         type: _builtins.int = ...,
         clan_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "condition_id", b"condition_id", "exist", b"exist", "name", b"name", "type", b"type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___CheckNameExistedEvent: _TypeAlias = CheckNameExistedEvent  # noqa: Y015
 
@@ -3387,8 +3786,11 @@ class NotificationChannelCategorySetting(_message.Message):
         channel_category_title: _builtins.str = ...,
         action: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_category_label", b"channel_category_label", "channel_category_title", b"channel_category_title", "id", b"id", "notification_setting_type", b"notification_setting_type"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___NotificationChannelCategorySetting: _TypeAlias = NotificationChannelCategorySetting  # noqa: Y015
 
@@ -3430,8 +3832,11 @@ class EventEmoji(_message.Message):
         clan_name: _builtins.str = ...,
         is_for_sale: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "category", b"category", "clan_id", b"clan_id", "clan_name", b"clan_name", "id", b"id", "is_for_sale", b"is_for_sale", "logo", b"logo", "short_name", b"short_name", "source", b"source", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___EventEmoji: _TypeAlias = EventEmoji  # noqa: Y015
 
@@ -3459,8 +3864,11 @@ class PermissionSetEvent(_message.Message):
         channel_id: _builtins.int = ...,
         permission_updates: _abc.Iterable[_api_pb2.PermissionUpdate] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["caller", b"caller", "channel_id", b"channel_id", "permission_updates", b"permission_updates", "role_id", b"role_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___PermissionSetEvent: _TypeAlias = PermissionSetEvent  # noqa: Y015
 
@@ -3490,8 +3898,11 @@ class PermissionChangedEvent(_message.Message):
         remove_permissions: _abc.Iterable[_api_pb2.PermissionUpdate] | None = ...,
         default_permissions: _abc.Iterable[_api_pb2.PermissionUpdate] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["add_permissions", b"add_permissions", "channel_id", b"channel_id", "default_permissions", b"default_permissions", "remove_permissions", b"remove_permissions", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___PermissionChangedEvent: _TypeAlias = PermissionChangedEvent  # noqa: Y015
 
@@ -3521,8 +3932,11 @@ class MessageButtonClicked(_message.Message):
         user_id: _builtins.int = ...,
         extra_data: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["button_id", b"button_id", "channel_id", b"channel_id", "extra_data", b"extra_data", "message_id", b"message_id", "sender_id", b"sender_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___MessageButtonClicked: _TypeAlias = MessageButtonClicked  # noqa: Y015
 
@@ -3546,8 +3960,11 @@ class UnmuteEvent(_message.Message):
         category_id: _builtins.int = ...,
         clan_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["category_id", b"category_id", "channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UnmuteEvent: _TypeAlias = UnmuteEvent  # noqa: Y015
 
@@ -3563,8 +3980,11 @@ class ListActivity(_message.Message):
         *,
         acts: _abc.Iterable[_api_pb2.UserActivity] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["acts", b"acts"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ListActivity: _TypeAlias = ListActivity  # noqa: Y015
 
@@ -3595,8 +4015,11 @@ class DropdownBoxSelected(_message.Message):
         user_id: _builtins.int = ...,
         values: _abc.Iterable[_builtins.str] | None = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "message_id", b"message_id", "selectbox_id", b"selectbox_id", "sender_id", b"sender_id", "user_id", b"user_id", "values", b"values"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___DropdownBoxSelected: _TypeAlias = DropdownBoxSelected  # noqa: Y015
 
@@ -3635,6 +4058,7 @@ class SdTopicEvent(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "last_sent_message", b"last_sent_message", "message", b"message", "message_id", b"message_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___SdTopicEvent: _TypeAlias = SdTopicEvent  # noqa: Y015
 
@@ -3661,8 +4085,11 @@ class ChannelAppEvent(_message.Message):
         channel_id: _builtins.int = ...,
         action: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ChannelAppEvent: _TypeAlias = ChannelAppEvent  # noqa: Y015
 
@@ -3680,8 +4107,11 @@ class UserStatusEvent(_message.Message):
         user_id: _builtins.int = ...,
         custom_status: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["custom_status", b"custom_status", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UserStatusEvent: _TypeAlias = UserStatusEvent  # noqa: Y015
 
@@ -3702,8 +4132,11 @@ class JoinChannelAppData(_message.Message):
         username: _builtins.str = ...,
         hash: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["hash", b"hash", "user_id", b"user_id", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___JoinChannelAppData: _TypeAlias = JoinChannelAppData  # noqa: Y015
 
@@ -3727,8 +4160,11 @@ class UnpinMessageEvent(_message.Message):
         channel_id: _builtins.int = ...,
         clan_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "id", b"id", "message_id", b"message_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___UnpinMessageEvent: _TypeAlias = UnpinMessageEvent  # noqa: Y015
 
@@ -3760,8 +4196,11 @@ class HandleParticipantMeetStateEvent(_message.Message):
         state: _builtins.int = ...,
         room_name: _builtins.str = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "display_name", b"display_name", "room_name", b"room_name", "state", b"state"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___HandleParticipantMeetStateEvent: _TypeAlias = HandleParticipantMeetStateEvent  # noqa: Y015
 
@@ -3777,8 +4216,11 @@ class DeleteAccountEvent(_message.Message):
         *,
         user_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___DeleteAccountEvent: _TypeAlias = DeleteAccountEvent  # noqa: Y015
 
@@ -3821,6 +4263,7 @@ class ListDataSocket(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["api_name", b"api_name", "channel_badge_count", b"channel_badge_count", "clan_badge_count", b"clan_badge_count", "list_channel_badge_count_req", b"list_channel_badge_count_req", "list_loged_device", b"list_loged_device", "list_user_online_req", b"list_user_online_req", "user_online_list", b"user_online_list"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ListDataSocket: _TypeAlias = ListDataSocket  # noqa: Y015
 
@@ -3847,8 +4290,11 @@ class MeetParticipantEvent(_message.Message):
         clan_id: _builtins.int = ...,
         action: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["action", b"action", "channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___MeetParticipantEvent: _TypeAlias = MeetParticipantEvent  # noqa: Y015
 
@@ -3869,8 +4315,11 @@ class TransferOwnershipEvent(_message.Message):
         prev_owner: _builtins.int = ...,
         curr_owner: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["clan_id", b"clan_id", "curr_owner", b"curr_owner", "prev_owner", b"prev_owner"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___TransferOwnershipEvent: _TypeAlias = TransferOwnershipEvent  # noqa: Y015
 
@@ -3888,8 +4337,11 @@ class ActiveArchivedThread(_message.Message):
         clan_id: _builtins.int = ...,
         channel_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ActiveArchivedThread: _TypeAlias = ActiveArchivedThread  # noqa: Y015
 
@@ -3907,8 +4359,11 @@ class AllowAnonymousEvent(_message.Message):
         clan_id: _builtins.int = ...,
         allow: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["allow", b"allow", "clan_id", b"clan_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___AllowAnonymousEvent: _TypeAlias = AllowAnonymousEvent  # noqa: Y015
 
@@ -3972,6 +4427,7 @@ class FcmDataPayload(_message.Message):
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "body", b"body", "command_type", b"command_type", "is_dm", b"is_dm", "is_e2ee", b"is_e2ee", "mention_here", b"mention_here", "mentions", b"mentions", "message", b"message", "priority", b"priority", "receiver_id", b"receiver_id", "references", b"references", "title", b"title", "user_role_ids", b"user_role_ids", "user_sent_ids", b"user_sent_ids"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___FcmDataPayload: _TypeAlias = FcmDataPayload  # noqa: Y015
 
@@ -3995,8 +4451,11 @@ class AIAgentEnabledEvent(_message.Message):
         room_name: _builtins.str = ...,
         enabled: _builtins.bool = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "enabled", b"enabled", "room_name", b"room_name"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___AIAgentEnabledEvent: _TypeAlias = AIAgentEnabledEvent  # noqa: Y015
 
@@ -4018,8 +4477,11 @@ class GotifyMessage(_message.Message):
             key: _builtins.str = ...,
             value: _builtins.str = ...,
         ) -> None: ...
+        _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+        def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
         _ClearFieldArgType: _TypeAlias = _typing.Literal["key", b"key", "value", b"value"]  # noqa: Y015
         def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+        def WhichOneof(self, oneof_group: _Never) -> None: ...
 
     ID_FIELD_NUMBER: _builtins.int
     CHANNEL_ID_FIELD_NUMBER: _builtins.int
@@ -4057,7 +4519,10 @@ class GotifyMessage(_message.Message):
         app_id: _builtins.int = ...,
         sender_id: _builtins.int = ...,
     ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
     _ClearFieldArgType: _TypeAlias = _typing.Literal["app_id", b"app_id", "channel_id", b"channel_id", "extras", b"extras", "id", b"id", "image", b"image", "message", b"message", "priority", b"priority", "sender_id", b"sender_id", "title", b"title", "users", b"users"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___GotifyMessage: _TypeAlias = GotifyMessage  # noqa: Y015
