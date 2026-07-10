@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Any, Optional, TypeVar
+from typing import Any, Optional, TypeVar, Union
 
 import google.protobuf.message
 from google.protobuf import json_format
@@ -48,6 +48,15 @@ from .websocket_adapter import WebSocketAdapterPb
 logger = get_logger(__name__)
 
 T = TypeVar("T", bound=BaseModel)
+
+PREFIX_RAW = 0xFF
+RAW_HEADER_LENGTH = 7
+CODE_FIN = 0xFF
+
+API_NAME_INDEX = {
+    "UpdateChannelMessage": 181,
+    "DeleteChannelMessage": 182,
+}
 
 
 class Socket:
@@ -85,6 +94,7 @@ class Socket:
 
         self.cids: dict[int, PromiseExecutor] = {}
         self.next_cid = 1
+        self._raw_streams: dict[int, list[bytes]] = {}
 
         self.adapter = adapter or WebSocketAdapterPb()
 
@@ -202,6 +212,20 @@ class Socket:
         try:
             async for message in self.adapter._socket:
                 if isinstance(message, bytes):
+                    api_response = self._parse_api_response(message)
+                    if api_response is not None:
+                        executor = self.cids.get(api_response["cid"])
+                        if executor:
+                            if api_response["code"] != 0:
+                                executor.reject(api_response)
+                            else:
+                                executor.resolve(api_response)
+                        else:
+                            logger.debug(
+                                f"No executor found for api response cid: {api_response['cid']}"
+                            )
+                        continue
+
                     envelope = parse_protobuf(message)
                     if envelope.cid:
                         executor = self.cids.get(envelope.cid)
@@ -228,6 +252,38 @@ class Socket:
                         asyncio.create_task(asyncio.to_thread(self.ondisconnect, None))
                 except Exception as callback_error:
                     logger.error(f"Error in disconnect callback: {callback_error}")
+
+    def _parse_api_response(self, message: bytes) -> Optional[dict[str, Any]]:
+        """Parse raw chunked API responses returned for api_request_event."""
+        if not message or message[0] != PREFIX_RAW:
+            return None
+
+        if len(message) < RAW_HEADER_LENGTH:
+            logger.error("Raw API response packet too small to contain headers")
+            return None
+
+        cid = int.from_bytes(message[1:3], "big")
+        code = int.from_bytes(message[3:7], "big")
+        payload = message[RAW_HEADER_LENGTH:]
+
+        response_code = (code >> 16) & 0xFFFF
+        fin_flag = code & 0xFFFF
+
+        chunks = self._raw_streams.setdefault(cid, [])
+        if fin_flag == CODE_FIN:
+            if payload:
+                chunks.append(payload)
+            body = b"".join(chunks)
+            self._raw_streams.pop(cid, None)
+            return {
+                "cid": cid,
+                "api_response": True,
+                "code": response_code,
+                "body": body,
+            }
+
+        chunks.append(payload)
+        return None
 
     async def _start_listen(self) -> None:
         """Start the heartbeat ping-pong and listen tasks."""
@@ -288,7 +344,7 @@ class Socket:
 
     async def _send_with_cid(
         self, message: realtime_pb2.Envelope, timeout_ms: int = None
-    ) -> Optional[realtime_pb2.Envelope]:
+    ) -> Optional[Union[realtime_pb2.Envelope, dict[str, Any]]]:
         """
         Send message with command ID and wait for response.
         Matches TypeScript implementation pattern.
@@ -383,6 +439,31 @@ class Socket:
         envelope = realtime_pb2.Envelope()
         getattr(envelope, field_name).CopyFrom(message)
         return await self._send_with_cid(envelope, timeout_ms)
+
+    async def _send_api_request(
+        self,
+        api_name: str,
+        body: bytes,
+        timeout_ms: Optional[int] = None,
+    ) -> bytes:
+        api_index = API_NAME_INDEX.get(api_name)
+        if api_index is None:
+            raise ValueError(f"Unknown API: {api_name}")
+
+        api_request = realtime_pb2.ApiRequestEvent(
+            api_index=api_index,
+            api_name=api_name,
+            body=body,
+        )
+        response = await self._send_envelope_with_field(
+            "api_request_event", api_request, timeout_ms
+        )
+
+        if isinstance(response, dict) and response.get("api_response"):
+            return response["body"]
+
+        logger.debug(f"API response: {response}")
+        raise Exception(f"Server did not return an {api_name} API response.")
 
     def _handle_response(
         self,
@@ -576,14 +657,23 @@ class Socket:
             is_update_msg_topic=is_update_msg_topic,
         )
 
-        response = await self._send_envelope_with_field(
-            "channel_message_update", channel_message_update
+        response_body = await self._send_api_request(
+            "UpdateChannelMessage",
+            channel_message_update.SerializeToString(),
         )
-        return self._handle_response(
-            response,
-            "channel_message_ack",
-            ChannelMessageAck,
-            "Server did not return a channel_message_update acknowledgement.",
+        updated = realtime_pb2.ChannelMessageUpdate()
+        updated.ParseFromString(response_body)
+        return ChannelMessageAck(
+            channel_id=channel_id or updated.channel_id,
+            mode=mode,
+            message_id=message_id or updated.message_id,
+            code=1,
+            username="",
+            create_time="",
+            update_time="",
+            persistence=False,
+            clan_id=clan_id or updated.clan_id,
+            is_public=is_public,
         )
 
     async def write_message_reaction(
@@ -739,7 +829,6 @@ class Socket:
         Returns:
             ChannelMessageAck: Acknowledgement of the deletion
         """
-        envelope = realtime_pb2.Envelope()
         channel_message_remove = realtime_pb2.ChannelMessageRemove(
             clan_id=clan_id,
             channel_id=channel_id,
@@ -750,14 +839,24 @@ class Socket:
         if topic_id:
             channel_message_remove.topic_id = topic_id
 
-        envelope.channel_message_remove.CopyFrom(channel_message_remove)
-        response = await self._send_with_cid(envelope)
+        response_body = await self._send_api_request(
+            "DeleteChannelMessage",
+            channel_message_remove.SerializeToString(),
+        )
+        removed = realtime_pb2.ChannelMessageRemove()
+        removed.ParseFromString(response_body)
 
-        return self._handle_response(
-            response,
-            "channel_message_ack",
-            ChannelMessageAck,
-            "Server did not return a channel_message_remove acknowledgement.",
+        return ChannelMessageAck(
+            channel_id=channel_id or removed.channel_id,
+            mode=mode,
+            message_id=message_id or removed.message_id,
+            code=2,
+            username="",
+            create_time="",
+            update_time="",
+            persistence=False,
+            clan_id=clan_id or removed.clan_id,
+            is_public=is_public,
         )
 
     async def write_message_typing(
