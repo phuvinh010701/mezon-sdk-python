@@ -5,7 +5,7 @@ Build your first Mezon bot in minutes.
 ## Prerequisites
 
 - Mezon bot ID and API key
-- Python 3.10+
+- Python 3.13+
 - `mezon-sdk` installed
 
 ## Basic bot
@@ -14,22 +14,19 @@ Create `bot.py`:
 
 ```python
 import asyncio
-import json
 from mezon import MezonClient
-from mezon.models import ChannelMessageContent
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage, ChannelMessageContent
 
 client = MezonClient(
     client_id="YOUR_BOT_ID",
     api_key="YOUR_API_KEY",
 )
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
 
-    payload = json.loads(message.content)
-    text = payload.get("t", "")
+    text = message.content.get("t", "") if isinstance(message.content, dict) else ""
 
     if text.startswith("!hello"):
         channel = await client.channels.fetch(message.channel_id)
@@ -65,12 +62,12 @@ python bot.py
 ## Replying to a message
 
 ```python
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
 
     channel = await client.channels.fetch(message.channel_id)
-    msg = await channel.messages.fetch(message.message_id)
+    msg = await channel.messages.fetch(message.id)
     await msg.reply(content=ChannelMessageContent(t="Got your message"))
 ```
 

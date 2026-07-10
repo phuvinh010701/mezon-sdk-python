@@ -43,6 +43,22 @@ class TestDefaultSocketExtended:
         envelope.channel_message.content = '{"t":"secret"}'
         return envelope
 
+    def make_update_body(self):
+        message = realtime_pb2.ChannelMessageUpdate(
+            clan_id=1,
+            channel_id=2,
+            message_id=9,
+        )
+        return message.SerializeToString()
+
+    def make_remove_body(self):
+        message = realtime_pb2.ChannelMessageRemove(
+            clan_id=1,
+            channel_id=2,
+            message_id=9,
+        )
+        return message.SerializeToString()
+
     def test_handle_response_returns_model_and_raises_when_missing(self):
         socket = Socket(ws_url="socket.example.com", adapter=ClosedAdapter())
         envelope = self.make_ack_envelope()
@@ -90,11 +106,16 @@ class TestDefaultSocketExtended:
         socket._send_envelope_with_field = AsyncMock(
             side_effect=[
                 self.make_ack_envelope(),
-                self.make_ack_envelope(),
                 self.make_channel_message_envelope(),
             ]
         )
         socket._send_with_cid = AsyncMock(return_value=self.make_ack_envelope())
+        socket._send_api_request = AsyncMock(
+            side_effect=[
+                self.make_update_body(),
+                self.make_remove_body(),
+            ]
+        )
 
         ack1 = await socket.write_chat_message(1, 2, 3, True, {"t": "hello"})
         ack2 = await socket.update_chat_message(1, 2, 3, True, 9, {"t": "updated"})
@@ -102,9 +123,25 @@ class TestDefaultSocketExtended:
         ack4 = await socket.remove_chat_message(1, 2, 3, True, 9, 99)
 
         assert ack1.message_id == 2
-        assert ack2.channel_id == 1
+        assert ack2.channel_id == 2
         assert ack3.channel_id == 1
-        assert ack4.channel_id == 1
+        assert ack4.channel_id == 2
+
+    def test_parse_api_response_collects_raw_chunks(self):
+        socket = Socket(ws_url="socket.example.com", adapter=ClosedAdapter())
+
+        first = bytes([0xFF, 0x00, 0x07, 0x00, 0x00, 0x00, 0x00]) + b"hel"
+        final = bytes([0xFF, 0x00, 0x07, 0x00, 0x00, 0x00, 0xFF]) + b"lo"
+
+        assert socket._parse_api_response(first) is None
+        response = socket._parse_api_response(final)
+
+        assert response == {
+            "cid": 7,
+            "api_response": True,
+            "code": 0,
+            "body": b"hello",
+        }
 
     @pytest.mark.asyncio
     async def test_typing_and_status_helpers_return_dicts(self):

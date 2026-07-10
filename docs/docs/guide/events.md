@@ -9,11 +9,11 @@ The SDK provides an event-driven architecture for handling real-time events from
 The client provides convenient methods for common events:
 
 ```python
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage
 from mezon.protobuf.rtapi import realtime_pb2
 
 # Message events
-async def on_message(message: api_pb2.ChannelMessage):
+async def on_message(message: ChannelMessage):
     print(f"Message: {message.content}")
 
 client.on_channel_message(on_message)

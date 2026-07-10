@@ -44,10 +44,12 @@ The SDK constructs the `ApiMessageRef` payload automatically from the current me
 ## `update(...) -> ChannelMessageAck`
 
 ```python
-await message.update(
+ack = await message.update(
     content=ChannelMessageContent(t="Edited content")
 )
 ```
+
+This edits the message through the realtime WebSocket transport. The server now handles this as an `api_request_event` for `UpdateChannelMessage`; callers should keep using `Message.update(...)`.
 
 ## `react(...)`
 
@@ -67,10 +69,10 @@ Optional arguments:
 ## `delete(...)`
 
 ```python
-await message.delete()
+ack = await message.delete()
 ```
 
-Deletes the message from the underlying channel.
+Deletes the message from the underlying channel through the realtime WebSocket transport. The server now handles this as an `api_request_event` for `DeleteChannelMessage`; callers should keep using `Message.delete(...)`.
 
 ## Notes
 

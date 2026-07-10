@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.10 or higher
+- Python 3.13 or higher
 
 ## Using pip
 
@@ -33,9 +33,12 @@ The SDK automatically installs these dependencies:
 | pydantic | >=2.12.3 | Data validation and settings |
 | aiohttp | >=3.9.0 | Async HTTP client |
 | websockets | >=12.0 | WebSocket protocol |
-| protobuf | >=4.25.0 | Protocol Buffers serialization |
+| protobuf | >=6.33.2 | Protocol Buffers serialization |
 | pyjwt | >=2.8.0 | JWT token handling |
 | aiosqlite | >=0.20.0 | Async SQLite for message caching |
+| mmn-sdk | ==1.0.1 | Token transfer support |
+| aiolimiter | >=1.2.1 | WebSocket send rate limiting |
+| tenacity | >=9.1.2 | Retry handling |
 
 ## Development Installation
 

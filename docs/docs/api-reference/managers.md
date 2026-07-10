@@ -45,8 +45,11 @@ await client.socket_manager.connect_socket(session.token)
 await client.socket_manager.write_chat_message(...)
 await client.socket_manager.write_ephemeral_message(...)
 await client.socket_manager.update_chat_message(...)
+await client.socket_manager.remove_chat_message(...)
 await client.socket_manager.write_message_reaction(...)
 ```
+
+`update_chat_message(...)` and `remove_chat_message(...)` are socket operations. Internally they emit `api_request_event` envelopes for `UpdateChannelMessage` and `DeleteChannelMessage`, matching the current server contract.
 
 ## ChannelManager
 

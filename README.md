@@ -17,15 +17,14 @@ pip install mezon-sdk
 ```python
 import asyncio
 from mezon import MezonClient
-from mezon.models import ChannelMessageContent
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage, ChannelMessageContent
 
 client = MezonClient(
     client_id="YOUR_BOT_ID",
     api_key="YOUR_API_KEY",
 )
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
     channel = await client.channels.fetch(message.channel_id)

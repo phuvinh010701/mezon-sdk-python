@@ -102,15 +102,15 @@ async def search_messages(channel_id: str, keyword: str):
 
 ```python
 from mezon.messages.db import MessageDB
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage
 
-async def handle_message(message: api_pb2.ChannelMessage):
+async def handle_message(message: ChannelMessage):
     # Message is automatically cached by the SDK
 
     # Later, retrieve from cache
     async with MessageDB() as db:
         cached = await db.get_message_by_id(
-            message_id=message.message_id,
+            message_id=message.id,
             channel_id=message.channel_id
         )
         if cached:

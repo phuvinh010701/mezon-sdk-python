@@ -69,11 +69,11 @@ client.on(Events.CHANNEL_MESSAGE, handler)
 ### Convenient Methods
 
 ```python
-from mezon.protobuf.api import api_pb2
+from mezon.models import ChannelMessage
 from mezon.protobuf.rtapi import realtime_pb2
 
 # Message
-async def on_message(msg: api_pb2.ChannelMessage):
+async def on_message(msg: ChannelMessage):
     print(msg.content)
 
 client.on_channel_message(on_message)
