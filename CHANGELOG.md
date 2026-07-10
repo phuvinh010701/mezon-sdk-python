@@ -2,6 +2,53 @@
 
 <!-- version list -->
 
+## v1.8.2 (2026-07-10)
+
+### Bug Fixes
+
+- Route message mutations through websocket api
+  ([`ab1fb95`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ab1fb9536a7e096f375d01177505668f0c9a7d51))
+
+### Chores
+
+- Update generated protobuf files
+  ([`6521cf1`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6521cf15115253dbf9ffcd96975e16f2c2563ac1))
+
+- **deps**: Bump aiohttp from 3.13.5 to 3.14.1
+  ([`13cedbc`](https://github.com/phuvinh010701/mezon-sdk-python/commit/13cedbcf8be5e75367fccf55855f3ea086d67699))
+
+- **deps**: Bump protobuf from 7.34.1 to 7.35.1
+  ([`ac8b8cc`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ac8b8ccd6cd6c7e58a1f4b54ebdbd27bf6626de6))
+
+- **deps**: Bump pydantic from 2.13.3 to 2.13.4
+  ([`127347f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/127347fcb7ab08616dbff7b9ce6d89d877bba8ff))
+
+- **deps**: Bump pyjwt from 2.12.1 to 2.13.0
+  ([`9671554`](https://github.com/phuvinh010701/mezon-sdk-python/commit/96715544cf2eab7040e40f7076e5882ef1f4d4b2))
+
+- **deps-dev**: Bump ruff from 0.15.12 to 0.15.17
+  ([`3b5a971`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3b5a9719657076735fb10dfb2056ffb4d486ed37))
+
+- **deps-dev**: Bump uvicorn from 0.46.0 to 0.49.0
+  ([`41cc14f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/41cc14f9d6a06201bc233aa30cc2c514d72c703a))
+
+### Continuous Integration
+
+- Target dependabot updates to dev
+  ([`3833e0f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3833e0f9b78a0f35c9c85dc138b5bd85284d48e4))
+
+- **deps**: Bump actions/checkout from 6 to 7
+  ([`c111bf7`](https://github.com/phuvinh010701/mezon-sdk-python/commit/c111bf7a0bfa6385b8c84a3b36b3b36cbc39bf3e))
+
+### Documentation
+
+- Preserve github pages custom domain
+  ([`fcb88f2`](https://github.com/phuvinh010701/mezon-sdk-python/commit/fcb88f23301d1ee588a48ba96ae054bcc1fec1eb))
+
+- Refresh message and setup examples
+  ([`6993658`](https://github.com/phuvinh010701/mezon-sdk-python/commit/6993658df49ac0f0ac76fdee5b23253cdaef1c7f))
+
+
 ## v1.8.1 (2026-05-06)
 
 ### Bug Fixes
