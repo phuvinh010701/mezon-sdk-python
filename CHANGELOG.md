@@ -2,6 +2,129 @@
 
 <!-- version list -->
 
+## v1.8.3 (2026-08-28)
+
+### Bug Fixes
+
+- **client**: Close temporary/replaced MezonApi clients to stop session leaks
+  ([`07bdd8d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/07bdd8d580c3532cc5893a59d634475e2009bda8))
+
+- **skill**: Correct compile-proto-python to pull from mezon-protocol repo
+  ([`ea7ad2c`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ea7ad2c50f6a0653b41c01154b660ecd20e8a814))
+
+### Chores
+
+- **deps**: Bump aiohttp from 3.14.1 to 3.14.3
+  ([`f96fbb6`](https://github.com/phuvinh010701/mezon-sdk-python/commit/f96fbb621b480b14be6e28a782a728180beb585b))
+
+- **deps**: Bump protobuf from 7.35.1 to 7.36.0
+  ([`732b22f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/732b22f8114af7cb34e3b1aee28006d1fb3506c5))
+
+- **deps**: Bump websockets from 16.0 to 16.1
+  ([`ef7670d`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ef7670d40a5c03fe609fceb3ec8ee5a832193ebf))
+
+- **deps**: Bump websockets from 16.1 to 16.1.1
+  ([`2eabfe9`](https://github.com/phuvinh010701/mezon-sdk-python/commit/2eabfe9514d2224982763a382bb376e1e5b1cd1d))
+
+- **deps**: Bump websockets from 16.1.1 to 17.0.1
+  ([`96cb645`](https://github.com/phuvinh010701/mezon-sdk-python/commit/96cb6459d10c0a3455ef7e0bfbc36c35c01e6590))
+
+- **deps**: Update mkdocs-material requirement from >=9.7.6 to >=9.7.7
+  ([`dc751a2`](https://github.com/phuvinh010701/mezon-sdk-python/commit/dc751a25f229099fb55074add9ddc2f575419aad))
+
+- **deps-dev**: Bump build from 1.5.0 to 1.5.1
+  ([`817b667`](https://github.com/phuvinh010701/mezon-sdk-python/commit/817b6674250edea1eb66cd28de32be71eeec3d06))
+
+- **deps-dev**: Bump fastapi from 0.136.1 to 0.139.2
+  ([`96f7873`](https://github.com/phuvinh010701/mezon-sdk-python/commit/96f7873c80bf9c1e8fda5215a87b2bd6c8c97341))
+
+- **deps-dev**: Bump fastapi from 0.139.2 to 0.141.1
+  ([`3027b5b`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3027b5bff3d89e0a2711521f662eb055da460bf5))
+
+- **deps-dev**: Bump pytest-asyncio from 1.3.0 to 1.4.0
+  ([`acb238f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/acb238f82eb349c3f83d0a1839da3538468370a0))
+
+- **deps-dev**: Bump python-dotenv from 1.2.2 to 1.2.3
+  ([`60b8058`](https://github.com/phuvinh010701/mezon-sdk-python/commit/60b8058061435b3bff5a976f9eceffa77f9bd22f))
+
+- **deps-dev**: Bump ruff from 0.15.17 to 0.15.21
+  ([`1635212`](https://github.com/phuvinh010701/mezon-sdk-python/commit/16352125b8b5ab4ad2f3c9d526b1b21f0135af03))
+
+- **deps-dev**: Bump ruff from 0.15.21 to 0.16.1
+  ([`8ca4864`](https://github.com/phuvinh010701/mezon-sdk-python/commit/8ca486461ca0b2ae097e7a68ff252191a5d63b50))
+
+- **deps-dev**: Bump ruff from 0.16.1 to 0.16.3
+  ([`78432cd`](https://github.com/phuvinh010701/mezon-sdk-python/commit/78432cd68f9a6cccbd173903096f2e611ec209e1))
+
+- **deps-dev**: Bump ruff from 0.16.3 to 0.16.4
+  ([`7ec3bbd`](https://github.com/phuvinh010701/mezon-sdk-python/commit/7ec3bbd12ef91a31773330f175f467ac50922100))
+
+- **deps-dev**: Bump twine from 6.2.0 to 7.0.0
+  ([`4e50dea`](https://github.com/phuvinh010701/mezon-sdk-python/commit/4e50deab513b3d16100838393b46ebd7934f6b31))
+
+- **deps-dev**: Bump uvicorn from 0.49.0 to 0.51.0
+  ([`7d61748`](https://github.com/phuvinh010701/mezon-sdk-python/commit/7d61748656da8f77aa57b344d914a4329f03ccfc))
+
+- **deps-dev**: Bump uvicorn from 0.51.0 to 0.52.0
+  ([`1caf56f`](https://github.com/phuvinh010701/mezon-sdk-python/commit/1caf56f565d7479fb166977a24dfb29288b6ea21))
+
+- **deps-dev**: Bump uvicorn from 0.52.0 to 0.52.1
+  ([`a81ea00`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a81ea00bdf5ac7b7adf51e424f14c20632c339cc))
+
+- **deps-dev**: Bump uvicorn from 0.52.1 to 0.52.4
+  ([`c97bd65`](https://github.com/phuvinh010701/mezon-sdk-python/commit/c97bd6599cabb6350a7cfd9021da5bf41ade8abe))
+
+- **proto**: Regenerate protobuf stubs from mezon-protocol@a471019
+  ([`ee56fc8`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ee56fc88c7d2617809102ecf9c7f49ef7f4d71e4))
+
+### Code Style
+
+- Apply ruff lint fixes and formatting
+  ([`9823e36`](https://github.com/phuvinh010701/mezon-sdk-python/commit/9823e36f5db46a0ebde1e36d25077dd8606c07d2))
+
+- Ruff format follow-up
+  ([`dbba078`](https://github.com/phuvinh010701/mezon-sdk-python/commit/dbba078a6dfa52f8cb74f1bf94f8fc233d2e9d61))
+
+### Continuous Integration
+
+- **deps**: Bump actions/setup-python from 6 to 7
+  ([`3a94810`](https://github.com/phuvinh010701/mezon-sdk-python/commit/3a94810fda975a8ad4dfda03ce7898ccafff4e31))
+
+### Documentation
+
+- Fix outdated/broken API references and add missing coverage
+  ([`b1e9439`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b1e943929b0712af27af088ca4841fc115638106))
+
+### Performance Improvements
+
+- **api**: Reuse a single aiohttp ClientSession per MezonApi instance
+  ([`ef9eec8`](https://github.com/phuvinh010701/mezon-sdk-python/commit/ef9eec8ed10d92a0e15b0279f24f5b296502b992))
+
+- **api**: Scope rate limiter per instance, cache clan list lookups
+  ([`46ad005`](https://github.com/phuvinh010701/mezon-sdk-python/commit/46ad0054c6bb2c1bbde789430ebe7ecd3630a58f))
+
+- **cache**: De-duplicate in-flight fetches and make eviction real LRU
+  ([`b983214`](https://github.com/phuvinh010701/mezon-sdk-python/commit/b98321483df6e1b75106f2dc69a9100d3eed0d70))
+
+- **client**: Stop rebuilding User cache entries on every message
+  ([`a45b689`](https://github.com/phuvinh010701/mezon-sdk-python/commit/a45b68962f704c239f3a2392ce8618cb7200cc9c))
+
+- **db**: Enable WAL journal mode and NORMAL synchronous
+  ([`4204454`](https://github.com/phuvinh010701/mezon-sdk-python/commit/4204454227f2d283dc8ecdeac470d9f5396e288b))
+
+- **event**: Pre-partition handlers by kind instead of per-emit
+  ([`d098512`](https://github.com/phuvinh010701/mezon-sdk-python/commit/d09851299c7e58ab1c8cb15b115cc2cfcec84bde))
+
+- **models**: Use MessageToDict instead of MessageToJson round-trip
+  ([`287f1b2`](https://github.com/phuvinh010701/mezon-sdk-python/commit/287f1b2d0a1340aed32699f4e20029f2b1c40813))
+
+- **socket**: Make event-emit debug logging lazy
+  ([`fc9ab29`](https://github.com/phuvinh010701/mezon-sdk-python/commit/fc9ab293087c1662dd195cd0d2f104906766784b))
+
+- **socket,db**: Bound background tasks, lock db connect, expire raw streams
+  ([`920f79a`](https://github.com/phuvinh010701/mezon-sdk-python/commit/920f79a22efc2aaa52325d905897337d9de820be))
+
+
 ## v1.8.2 (2026-07-10)
 
 ### Bug Fixes
