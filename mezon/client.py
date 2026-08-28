@@ -173,6 +173,7 @@ class MezonClient:
         self._enable_auto_reconnect = False
         self._is_hard_disconnect = False
         self._reconnect_task: asyncio.Task | None = None
+        self._clan_descs_by_id: dict[int, Any] = {}
 
         logger.info(f"MezonClient initialized for client_id: {client_id}")
 
@@ -585,6 +586,47 @@ class MezonClient:
 
         self.event_manager.on(event_name, wrapper)
 
+    async def _get_clan_desc(self, clan_id: int, token: str) -> Any:
+        """
+        Look up a clan description by ID, reusing a cached full clan list.
+
+        ``list_clans_descs`` returns every clan the bot belongs to, so once
+        fetched it can serve lookups for any clan_id without another round
+        trip. Falls back to a fresh fetch if the id isn't found (e.g. the
+        bot joined a new clan after the cache was built).
+
+        Args:
+            clan_id: The clan ID to look up
+            token: Bearer token for authentication
+
+        Returns:
+            The matching clan description, or None if not found
+        """
+        if clan_id in self._clan_descs_by_id:
+            return self._clan_descs_by_id[clan_id]
+
+        # Only worth a second round trip if we already had a (possibly
+        # stale) cache; a first-ever fetch either has the clan or it truly
+        # doesn't exist yet.
+        had_cache = bool(self._clan_descs_by_id)
+
+        async def refresh() -> None:
+            clans_response = await self.api_client.list_clans_descs(token=token)
+            self._clan_descs_by_id = {
+                desc.clan_id: desc
+                for desc in (
+                    clans_response.clandesc
+                    if clans_response and clans_response.clandesc
+                    else []
+                )
+            }
+
+        await refresh()
+        if clan_id not in self._clan_descs_by_id and had_cache:
+            await refresh()
+
+        return self._clan_descs_by_id.get(clan_id)
+
     async def get_channel_from_id(self, channel_id: int) -> TextChannel:
         """
         Get a channel by ID, creating necessary clan objects if needed.
@@ -611,16 +653,7 @@ class MezonClient:
 
         clan = self.clans.get(clan_id)
         if not clan:
-            clans_response = await self.api_client.list_clans_descs(token=session.token)
-            clan_desc = None
-            for desc in (
-                clans_response.clandesc
-                if clans_response and clans_response.clandesc
-                else []
-            ):
-                if desc.clan_id == clan_id:
-                    clan_desc = desc
-                    break
+            clan_desc = await self._get_clan_desc(clan_id, session.token)
 
             if clan_desc:
                 clan = Clan(

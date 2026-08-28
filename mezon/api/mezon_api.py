@@ -66,10 +66,17 @@ class MezonApi:
     # Keep ENDPOINTS for backward compatibility during migration
     ENDPOINTS = {**REST_ENDPOINTS, **RPC_ENDPOINTS}
 
-    _rate_limiter = AsyncLimiter(max_rate=1, time_period=1.25)
+    DEFAULT_RATE_LIMIT = 1
+    DEFAULT_RATE_PERIOD = 1.25
 
     def __init__(
-        self, client_id: str | int, api_key: str, base_url: str, timeout_ms: int
+        self,
+        client_id: str | int,
+        api_key: str,
+        base_url: str,
+        timeout_ms: int,
+        rate_limit: float = DEFAULT_RATE_LIMIT,
+        rate_period: float = DEFAULT_RATE_PERIOD,
     ):
         """
         Initialize Mezon API client.
@@ -79,12 +86,18 @@ class MezonApi:
             api_key: API key for authentication
             base_url: Base URL for API
             timeout_ms: Timeout in milliseconds
+            rate_limit: Max requests allowed per `rate_period` seconds for
+                *this* instance (each MezonApi instance gets its own budget)
+            rate_period: Period in seconds over which `rate_limit` applies
         """
         self.client_id = int(client_id)
         self.api_key = api_key
         self.base_url = base_url
         self.timeout_ms = timeout_ms
         self.client_timeout = aiohttp.ClientTimeout(total=timeout_ms / 1000)
+        self._rate_limiter = AsyncLimiter(
+            max_rate=rate_limit, time_period=rate_period
+        )
         self._session: aiohttp.ClientSession | None = None
         self._session_lock = asyncio.Lock()
 
