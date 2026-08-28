@@ -10149,25 +10149,22 @@ Global___GenerateMeetTokenRequest: _TypeAlias = GenerateMeetTokenRequest  # noqa
 class MeetParticipantRequest(_message.Message):
     DESCRIPTOR: _descriptor.Descriptor
 
-    USERNAME_FIELD_NUMBER: _builtins.int
-    ROOM_NAME_FIELD_NUMBER: _builtins.int
+    USER_ID_FIELD_NUMBER: _builtins.int
     CHANNEL_ID_FIELD_NUMBER: _builtins.int
     CLAN_ID_FIELD_NUMBER: _builtins.int
-    username: _builtins.str
-    room_name: _builtins.str
+    user_id: _builtins.int
     channel_id: _builtins.int
     clan_id: _builtins.int
     def __init__(
         self,
         *,
-        username: _builtins.str = ...,
-        room_name: _builtins.str = ...,
+        user_id: _builtins.int = ...,
         channel_id: _builtins.int = ...,
         clan_id: _builtins.int = ...,
     ) -> None: ...
     _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "room_name", b"room_name", "username", b"username"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channel_id", b"channel_id", "clan_id", b"clan_id", "user_id", b"user_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
     def WhichOneof(self, oneof_group: _Never) -> None: ...
 
@@ -10529,11 +10526,13 @@ class Message2InboxRequest(_message.Message):
     ATTACHMENTS_FIELD_NUMBER: _builtins.int
     REACTIONS_FIELD_NUMBER: _builtins.int
     REFERENCES_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
     message_id: _builtins.int
     channel_id: _builtins.int
     clan_id: _builtins.int
     avatar: _builtins.str
     content: _builtins.str
+    topic_id: _builtins.int
     @_builtins.property
     def mentions(self) -> _containers.RepeatedCompositeFieldContainer[Global___MessageMention]: ...
     @_builtins.property
@@ -10554,10 +10553,11 @@ class Message2InboxRequest(_message.Message):
         attachments: _abc.Iterable[Global___MessageAttachment] | None = ...,
         reactions: _abc.Iterable[Global___MessageReaction] | None = ...,
         references: _abc.Iterable[Global___MessageRef] | None = ...,
+        topic_id: _builtins.int = ...,
     ) -> None: ...
     _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "mentions", b"mentions", "message_id", b"message_id", "reactions", b"reactions", "references", b"references"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachments", b"attachments", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "mentions", b"mentions", "message_id", b"message_id", "reactions", b"reactions", "references", b"references", "topic_id", b"topic_id"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
     def WhichOneof(self, oneof_group: _Never) -> None: ...
 
@@ -11034,6 +11034,7 @@ class DirectFcmProto(_message.Message):
     HAS_MORE_ATTACHMENT_FIELD_NUMBER: _builtins.int
     IS_MENTION_ROLE_FIELD_NUMBER: _builtins.int
     MESSAGE_ID_FIELD_NUMBER: _builtins.int
+    TOPIC_ID_FIELD_NUMBER: _builtins.int
     title: _builtins.str
     link: _builtins.str
     content: _builtins.str
@@ -11049,6 +11050,7 @@ class DirectFcmProto(_message.Message):
     attachment_type: _builtins.str
     has_more_attachment: _builtins.bool
     message_id: _builtins.int
+    topic_id: _builtins.int
     @_builtins.property
     def mention_ids(self) -> _containers.RepeatedScalarFieldContainer[_builtins.int]: ...
     @_builtins.property
@@ -11079,10 +11081,11 @@ class DirectFcmProto(_message.Message):
         has_more_attachment: _builtins.bool = ...,
         is_mention_role: _abc.Iterable[_builtins.bool] | None = ...,
         message_id: _builtins.int = ...,
+        topic_id: _builtins.int = ...,
     ) -> None: ...
     _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachment_link", b"attachment_link", "attachment_type", b"attachment_type", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "create_time_seconds", b"create_time_seconds", "display_name", b"display_name", "has_more_attachment", b"has_more_attachment", "is_mention_role", b"is_mention_role", "link", b"link", "mention_ids", b"mention_ids", "message_id", b"message_id", "position_e", b"position_e", "position_s", b"position_s", "sender_id", b"sender_id", "title", b"title", "update_time_seconds", b"update_time_seconds", "username", b"username"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["attachment_link", b"attachment_link", "attachment_type", b"attachment_type", "avatar", b"avatar", "channel_id", b"channel_id", "clan_id", b"clan_id", "content", b"content", "create_time_seconds", b"create_time_seconds", "display_name", b"display_name", "has_more_attachment", b"has_more_attachment", "is_mention_role", b"is_mention_role", "link", b"link", "mention_ids", b"mention_ids", "message_id", b"message_id", "position_e", b"position_e", "position_s", b"position_s", "sender_id", b"sender_id", "title", b"title", "topic_id", b"topic_id", "update_time_seconds", b"update_time_seconds", "username", b"username"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
     def WhichOneof(self, oneof_group: _Never) -> None: ...
 
@@ -12343,6 +12346,52 @@ class ListUserOnlineResponse(_message.Message):
     def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___ListUserOnlineResponse: _TypeAlias = ListUserOnlineResponse  # noqa: Y015
+
+@_typing.final
+class SearchCtrlKRequest(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    TEXT_FIELD_NUMBER: _builtins.int
+    TYPE_FIELD_NUMBER: _builtins.int
+    text: _builtins.str
+    type: _builtins.int
+    def __init__(
+        self,
+        *,
+        text: _builtins.str = ...,
+        type: _builtins.int = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["text", b"text", "type", b"type"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
+
+Global___SearchCtrlKRequest: _TypeAlias = SearchCtrlKRequest  # noqa: Y015
+
+@_typing.final
+class SearchCtrlKResponse(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    USERS_FIELD_NUMBER: _builtins.int
+    CHANNELS_FIELD_NUMBER: _builtins.int
+    @_builtins.property
+    def users(self) -> _containers.RepeatedCompositeFieldContainer[Global___User]: ...
+    @_builtins.property
+    def channels(self) -> _containers.RepeatedCompositeFieldContainer[Global___ChannelDescription]: ...
+    def __init__(
+        self,
+        *,
+        users: _abc.Iterable[Global___User] | None = ...,
+        channels: _abc.Iterable[Global___ChannelDescription] | None = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["channels", b"channels", "users", b"users"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
+
+Global___SearchCtrlKResponse: _TypeAlias = SearchCtrlKResponse  # noqa: Y015
 
 @_typing.final
 class NoParams(_message.Message):
