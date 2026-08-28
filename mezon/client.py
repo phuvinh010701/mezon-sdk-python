@@ -210,15 +210,19 @@ class MezonClient:
         Returns:
             The session for the client.
         """
-        temp_session_manager = SessionManager(
-            api_client=MezonApi(
-                self.client_id,
-                self.api_key,
-                self.login_url,
-                self.timeout_ms,
-            )
+        temp_api_client = MezonApi(
+            self.client_id,
+            self.api_key,
+            self.login_url,
+            self.timeout_ms,
         )
-        session = await temp_session_manager.authenticate(self.client_id, self.api_key)
+        temp_session_manager = SessionManager(api_client=temp_api_client)
+        try:
+            session = await temp_session_manager.authenticate(
+                self.client_id, self.api_key
+            )
+        finally:
+            await temp_api_client.close()
         return Session(session)
 
     async def initialize_managers(self, sock_session: Session) -> None:
@@ -235,6 +239,10 @@ class MezonClient:
             sock_session.ws_url, use_ssl=self.use_ssl
         )
         ws_url = sock_session.ws_url.removeprefix("wss://").removeprefix("ws://")
+
+        old_api_client = getattr(self, "api_client", None)
+        if old_api_client is not None:
+            await old_api_client.close()
 
         self.api_client = MezonApi(
             self.client_id,
