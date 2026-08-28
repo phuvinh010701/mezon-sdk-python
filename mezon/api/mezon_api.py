@@ -95,9 +95,7 @@ class MezonApi:
         self.base_url = base_url
         self.timeout_ms = timeout_ms
         self.client_timeout = aiohttp.ClientTimeout(total=timeout_ms / 1000)
-        self._rate_limiter = AsyncLimiter(
-            max_rate=rate_limit, time_period=rate_period
-        )
+        self._rate_limiter = AsyncLimiter(max_rate=rate_limit, time_period=rate_period)
         self._session: aiohttp.ClientSession | None = None
         self._session_lock = asyncio.Lock()
 
