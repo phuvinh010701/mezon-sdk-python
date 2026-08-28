@@ -33,19 +33,17 @@ message_db = MessageDB(db_path="./custom-path/messages.db")
 ```python
 from mezon.messages.db import MessageDB
 
+
 async def work_with_cache():
     async with MessageDB() as db:
         # Get messages by channel
         messages = await db.get_messages_by_channel(
-            channel_id="channel_123",
-            limit=50,
-            offset=0
+            channel_id="channel_123", limit=50, offset=0
         )
 
         # Get specific message
         message = await db.get_message_by_id(
-            message_id="msg_456",
-            channel_id="channel_123"
+            message_id="msg_456", channel_id="channel_123"
         )
 
         # Count messages
@@ -83,17 +81,12 @@ Using `aiosqlite` provides:
 ```python
 from mezon.messages.db import MessageDB
 
+
 async def search_messages(channel_id: str, keyword: str):
     async with MessageDB() as db:
-        messages = await db.get_messages_by_channel(
-            channel_id=channel_id,
-            limit=1000
-        )
+        messages = await db.get_messages_by_channel(channel_id=channel_id, limit=1000)
 
-        matching = [
-            msg for msg in messages
-            if keyword.lower() in msg.content.lower()
-        ]
+        matching = [msg for msg in messages if keyword.lower() in msg.content.lower()]
 
         return matching
 ```
@@ -104,17 +97,18 @@ async def search_messages(channel_id: str, keyword: str):
 from mezon.messages.db import MessageDB
 from mezon.models import ChannelMessage
 
+
 async def handle_message(message: ChannelMessage):
     # Message is automatically cached by the SDK
 
     # Later, retrieve from cache
     async with MessageDB() as db:
         cached = await db.get_message_by_id(
-            message_id=message.id,
-            channel_id=message.channel_id
+            message_id=message.id, channel_id=message.channel_id
         )
         if cached:
             print(f"Found in cache: {cached.content}")
+
 
 client.on_channel_message(handle_message)
 ```

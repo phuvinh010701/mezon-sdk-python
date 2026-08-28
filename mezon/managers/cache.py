@@ -15,13 +15,9 @@ limitations under the License.
 """
 
 from collections import OrderedDict
+from collections.abc import Awaitable, Callable, Iterator
 from typing import (
-    Awaitable,
-    Callable,
     Generic,
-    Iterator,
-    List,
-    Optional,
     TypeVar,
 )
 
@@ -46,7 +42,7 @@ class Collection(Generic[K, V]):
         """Get the number of items in the collection."""
         return len(self._data)
 
-    def get(self, key: K) -> Optional[V]:
+    def get(self, key: K) -> V | None:
         """
         Get a value by key.
 
@@ -83,7 +79,7 @@ class Collection(Generic[K, V]):
             return True
         return False
 
-    def first(self) -> Optional[V]:
+    def first(self) -> V | None:
         """
         Get the first value in the collection.
 
@@ -94,7 +90,7 @@ class Collection(Generic[K, V]):
             return None
         return next(iter(self._data.values()))
 
-    def first_key(self) -> Optional[K]:
+    def first_key(self) -> K | None:
         """
         Get the first key in the collection.
 
@@ -121,7 +117,7 @@ class Collection(Generic[K, V]):
                 result.set(key, value)
         return result
 
-    def map(self, fn: Callable[[V], T]) -> List[T]:
+    def map(self, fn: Callable[[V], T]) -> list[T]:
         """
         Map over the collection values.
 
@@ -206,7 +202,7 @@ class CacheManager(Generic[K, V]):
         """Get the current cache size."""
         return self.cache.size
 
-    def get(self, id: K) -> Optional[V]:
+    def get(self, id: K) -> V | None:
         """
         Get a value from the cache by ID.
 
@@ -256,7 +252,7 @@ class CacheManager(Generic[K, V]):
         self.set(id, fetched)
         return fetched
 
-    def first(self) -> Optional[V]:
+    def first(self) -> V | None:
         """
         Get the first value in the cache.
 
@@ -277,7 +273,7 @@ class CacheManager(Generic[K, V]):
         """
         return self.cache.filter(fn)
 
-    def map(self, fn: Callable[[V], T]) -> List[T]:
+    def map(self, fn: Callable[[V], T]) -> list[T]:
         """
         Map over the cache values.
 

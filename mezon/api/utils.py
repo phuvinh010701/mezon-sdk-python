@@ -1,6 +1,6 @@
 import base64
 import json
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlencode, urlparse, urlunparse
 
 import aiohttp
@@ -22,8 +22,8 @@ BINARY_CONTENT_TYPES = (
 
 
 def build_headers(
-    bearer_token: Optional[str] = None,
-    basic_auth: Optional[tuple[str | int, str]] = None,
+    bearer_token: str | None = None,
+    basic_auth: tuple[str | int, str] | None = None,
     accept_binary: bool = False,
     send_binary: bool = False,
     additional_headers: dict[str, Any] = {},
@@ -141,7 +141,7 @@ def is_schema_secure(schema: str) -> bool:
     return schema == "https" or schema == "wss"
 
 
-def build_params(params: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+def build_params(params: dict[str, Any] | None = None) -> dict[str, Any]:
     """
     Build parameters for API requests, filtering out None values.
 
@@ -197,7 +197,7 @@ async def parse_binary_response(
 async def parse_response(
     resp: aiohttp.ClientResponse,
     accept_binary: bool,
-    response_proto_class: Optional[type],
+    response_proto_class: type | None,
 ) -> Any:
     """
     Parse API response based on content type.

@@ -44,9 +44,7 @@ The SDK constructs the `ApiMessageRef` payload automatically from the current me
 ## `update(...) -> ChannelMessageAck`
 
 ```python
-ack = await message.update(
-    content=ChannelMessageContent(t="Edited content")
-)
+ack = await message.update(content=ChannelMessageContent(t="Edited content"))
 ```
 
 This edits the message through the realtime WebSocket transport. The server now handles this as an `api_request_event` for `UpdateChannelMessage`; callers should keep using `Message.update(...)`.

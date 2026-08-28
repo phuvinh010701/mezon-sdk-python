@@ -72,21 +72,27 @@ client.on(Events.CHANNEL_MESSAGE, handler)
 from mezon.models import ChannelMessage
 from mezon.protobuf.rtapi import realtime_pb2
 
+
 # Message
 async def on_message(msg: ChannelMessage):
     print(msg.content)
 
+
 client.on_channel_message(on_message)
+
 
 # Channel created
 async def on_created(event: realtime_pb2.ChannelCreatedEvent):
     print(event.channel_id)
 
+
 client.on_channel_created(on_created)
+
 
 # User joined channel
 async def on_joined(event: realtime_pb2.UserChannelAdded):
     print(f"{event.user_id} joined {event.channel_id}")
+
 
 client.on_user_channel_added(on_joined)
 ```
@@ -96,8 +102,10 @@ client.on_user_channel_added(on_joined)
 ```python
 from mezon import Events
 
+
 async def handler(data):
     print(f"Event: {data}")
+
 
 client.on(Events.VOICE_STARTED_EVENT, handler)
 client.on(Events.GIVE_COFFEE, handler)
@@ -112,9 +120,11 @@ Both sync and async handlers are supported:
 async def async_handler(data):
     await some_operation()
 
+
 # Sync
 def sync_handler(data):
     print(data)
+
 
 client.on(Events.GIVE_COFFEE, async_handler)
 client.on(Events.GIVE_COFFEE, sync_handler)
@@ -128,9 +138,11 @@ Register multiple handlers for the same event:
 async def log_message(msg):
     print(f"Log: {msg}")
 
+
 async def process_message(msg):
     # Process...
     pass
+
 
 client.on_channel_message(log_message)
 client.on_channel_message(process_message)

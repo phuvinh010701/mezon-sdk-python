@@ -16,7 +16,7 @@ limitations under the License.
 
 import json
 import os
-from typing import Any, Optional
+from typing import Any
 
 import aiosqlite
 
@@ -40,7 +40,7 @@ class MessageDB:
         """
         self.db_path = db_path
         self._ensure_directory()
-        self.db: Optional[aiosqlite.Connection] = None
+        self.db: aiosqlite.Connection | None = None
         self._initialized = False
 
     def _ensure_directory(self) -> None:
@@ -139,7 +139,7 @@ class MessageDB:
 
     async def get_message_by_id(
         self, message_id: int, channel_id: int
-    ) -> Optional[ChannelMessage]:
+    ) -> ChannelMessage | None:
         """
         Retrieve a message by its ID and channel ID.
 
@@ -262,7 +262,7 @@ class MessageDB:
         logger.info(f"Cleared {deleted_count} messages from channel {channel_id}")
         return deleted_count
 
-    async def get_message_count(self, channel_id: Optional[str] = None) -> int:
+    async def get_message_count(self, channel_id: str | None = None) -> int:
         """
         Get the total number of messages in the database or in a specific channel.
 

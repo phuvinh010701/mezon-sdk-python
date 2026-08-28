@@ -17,6 +17,7 @@ client = MezonClient(
     log_level=logging.INFO,
 )
 
+
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
@@ -77,6 +78,7 @@ async def handle_message(message: ChannelMessage):
             )
         )
 
+
 async def handle_button(event):
     if event.button_id.startswith("vote_"):
         channel = await client.channels.fetch(event.channel_id)
@@ -86,13 +88,16 @@ async def handle_button(event):
             content=ChannelMessageContent(text=f"You voted: {vote}"),
         )
 
+
 client.on_channel_message(handle_message)
 client.on_message_button_clicked(handle_button)
+
 
 async def main():
     await client.login()
     print(f"Bot is running as {client.client_id}")
     await asyncio.Event().wait()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

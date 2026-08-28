@@ -17,9 +17,7 @@ Use `fetch(...)` when the user may need to be resolved by the SDK. `get(...)` on
 from mezon.models import ChannelMessageContent
 
 user = await client.users.fetch(123456789)
-await user.send_dm_message(
-    content=ChannelMessageContent(t="Hello via DM")
-)
+await user.send_dm_message(content=ChannelMessageContent(t="Hello via DM"))
 ```
 
 If the user does not already have a DM channel, the SDK creates one first.
@@ -37,14 +35,18 @@ await client.accept_friend(user_id="123456789")
 ```python
 from mezon.protobuf.rtapi import realtime_pb2
 
+
 async def on_user_joined(event: realtime_pb2.UserChannelAdded):
     print(event.user_id, event.channel_id)
+
 
 async def on_user_left(event: realtime_pb2.UserChannelRemoved):
     print(event.user_id, event.channel_id)
 
+
 async def on_user_joined_clan(event: realtime_pb2.AddClanUserEvent):
     print(event.user_id, event.clan_id)
+
 
 client.on_user_channel_added(on_user_joined)
 client.on_channel_user_removed(on_user_left)
@@ -56,6 +58,7 @@ client.on_add_clan_user(on_user_joined_clan)
 ```python
 from mezon.models import ChannelMessage, ChannelMessageContent
 
+
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
@@ -65,6 +68,7 @@ async def handle_message(message: ChannelMessage):
     await channel.send(
         content=ChannelMessageContent(t=f"Hello {user.display_name or user.username}!")
     )
+
 
 client.on_channel_message(handle_message)
 ```

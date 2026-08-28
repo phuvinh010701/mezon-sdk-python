@@ -83,9 +83,11 @@ Use `fetch(...)` when the object may need to be loaded. Use `get(...)` only when
 ```python
 from mezon.models import ChannelMessage
 
+
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
+
 
 client.on_channel_message(handle_message)
 ```
@@ -108,6 +110,7 @@ Close the socket when your process exits:
 
 ```python
 import asyncio
+
 
 async def main():
     await client.login()

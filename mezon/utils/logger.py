@@ -16,7 +16,6 @@ limitations under the License.
 
 import logging
 import sys
-from typing import Optional
 
 
 class ColoredFormatter(logging.Formatter):
@@ -38,8 +37,8 @@ class ColoredFormatter(logging.Formatter):
 
     def __init__(
         self,
-        fmt: Optional[str] = None,
-        datefmt: Optional[str] = None,
+        fmt: str | None = None,
+        datefmt: str | None = None,
         use_colors: bool = True,
     ):
         super().__init__(fmt, datefmt)
@@ -95,8 +94,8 @@ class ColoredFormatter(logging.Formatter):
 def setup_logger(
     name: str = "mezon",
     log_level: int = logging.INFO,
-    log_format: Optional[str] = None,
-    date_format: Optional[str] = None,
+    log_format: str | None = None,
+    date_format: str | None = None,
     use_colors: bool = True,
 ) -> logging.Logger:
     """

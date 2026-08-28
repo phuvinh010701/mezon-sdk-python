@@ -17,15 +17,15 @@ from tests.test_users import UserTests
 
 __all__ = [
     "BaseTestSuite",
-    "TestConfig",
-    "MessageTests",
-    "MentionTests",
     "BuzzTests",
-    "InteractiveTests",
-    "UserTests",
     "ClanTests",
-    "SessionTests",
-    "QuickMenuTests",
-    "TokenTests",
     "HealthTests",
+    "InteractiveTests",
+    "MentionTests",
+    "MessageTests",
+    "QuickMenuTests",
+    "SessionTests",
+    "TestConfig",
+    "TokenTests",
+    "UserTests",
 ]

@@ -8,9 +8,7 @@ SDK hỗ trợ gửi tin nhắn thường, reply, reaction, update, ephemeral me
 from mezon.models import ChannelMessageContent
 
 channel = await client.channels.fetch(123456789)
-ack = await channel.send(
-    content=ChannelMessageContent(t="Hello, world!")
-)
+ack = await channel.send(content=ChannelMessageContent(t="Hello, world!"))
 
 print(ack.message_id)
 ```
@@ -48,7 +46,7 @@ from mezon.models import ApiMessageMention, ChannelMessageContent
 
 await channel.send(
     content=ChannelMessageContent(t="Hello @alice"),
-    mentions=[ApiMessageMention(user_id=123456789)]
+    mentions=[ApiMessageMention(user_id=123456789)],
 )
 ```
 
@@ -79,9 +77,7 @@ To reply, fetch the cached `Message` object and call `reply(...)`:
 ```python
 message = await channel.messages.fetch(987654321)
 
-await message.reply(
-    content=ChannelMessageContent(t="Thanks for the context")
-)
+await message.reply(content=ChannelMessageContent(t="Thanks for the context"))
 ```
 
 `Message.reply(...)` builds the reference payload for you.
@@ -91,9 +87,7 @@ await message.reply(
 ```python
 message = await channel.messages.fetch(987654321)
 
-ack = await message.update(
-    content=ChannelMessageContent(t="Updated text")
-)
+ack = await message.update(content=ChannelMessageContent(t="Updated text"))
 ```
 
 `Message.update(...)` uses the active WebSocket connection and is sent as the server's `UpdateChannelMessage` API request event.
@@ -168,6 +162,7 @@ Prefer `TextChannel.send(...)` unless you explicitly need the lower-level shape.
 ```python
 from mezon.models import ChannelMessage, ChannelMessageContent
 
+
 async def handle_message(event: ChannelMessage):
     if event.sender_id == client.client_id:
         return
@@ -176,6 +171,7 @@ async def handle_message(event: ChannelMessage):
     if text == "!ping":
         channel = await client.channels.fetch(event.channel_id)
         await channel.send(content=ChannelMessageContent(t="Pong!"))
+
 
 client.on_channel_message(handle_message)
 ```

@@ -16,7 +16,7 @@ limitations under the License.
 
 import random
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from mezon.models import (
     AnimationConfig,
@@ -29,7 +29,7 @@ from mezon.models import (
 
 def get_random_color() -> str:
     """Generate a random hex color."""
-    return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+    return f"#{random.randint(0, 0xFFFFFF):06x}"
 
 
 class InteractiveBuilder:
@@ -47,7 +47,7 @@ class InteractiveBuilder:
         >>> interactive = builder.build()
     """
 
-    def __init__(self, title: Optional[str] = None):
+    def __init__(self, title: str | None = None):
         """
         Initialize an InteractiveBuilder.
 
@@ -105,7 +105,7 @@ class InteractiveBuilder:
         return self
 
     def set_author(
-        self, name: str, icon_url: Optional[str] = None, url: Optional[str] = None
+        self, name: str, icon_url: str | None = None, url: str | None = None
     ) -> "InteractiveBuilder":
         """
         Set the author information.
@@ -153,7 +153,7 @@ class InteractiveBuilder:
         return self
 
     def set_image(
-        self, url: str, width: Optional[str] = None, height: Optional[str] = None
+        self, url: str, width: str | None = None, height: str | None = None
     ) -> "InteractiveBuilder":
         """
         Set the main image.
@@ -174,7 +174,7 @@ class InteractiveBuilder:
         return self
 
     def set_footer(
-        self, text: str, icon_url: Optional[str] = None
+        self, text: str, icon_url: str | None = None
     ) -> "InteractiveBuilder":
         """
         Set the footer information.
@@ -219,9 +219,9 @@ class InteractiveBuilder:
         self,
         field_id: str,
         name: str,
-        placeholder: Optional[str] = None,
-        options: Optional[InputFieldOption] = None,
-        description: Optional[str] = None,
+        placeholder: str | None = None,
+        options: InputFieldOption | None = None,
+        description: str | None = None,
     ) -> "InteractiveBuilder":
         """
         Add an input field for user text entry.
@@ -259,8 +259,8 @@ class InteractiveBuilder:
         field_id: str,
         name: str,
         options: list[SelectFieldOption],
-        value_selected: Optional[SelectFieldOption] = None,
-        description: Optional[str] = None,
+        value_selected: SelectFieldOption | None = None,
+        description: str | None = None,
     ) -> "InteractiveBuilder":
         """
         Add a select dropdown field.
@@ -300,8 +300,8 @@ class InteractiveBuilder:
         field_id: str,
         name: str,
         options: list[RadioFieldOption],
-        description: Optional[str] = None,
-        max_options: Optional[int] = None,
+        description: str | None = None,
+        max_options: int | None = None,
     ) -> "InteractiveBuilder":
         """
         Add a radio button field.
@@ -334,7 +334,7 @@ class InteractiveBuilder:
         return self
 
     def add_datepicker_field(
-        self, field_id: str, name: str, description: Optional[str] = None
+        self, field_id: str, name: str, description: str | None = None
     ) -> "InteractiveBuilder":
         """
         Add a date picker field.
@@ -363,8 +363,8 @@ class InteractiveBuilder:
         self,
         field_id: str,
         config: AnimationConfig,
-        name: Optional[str] = None,
-        description: Optional[str] = None,
+        name: str | None = None,
+        description: str | None = None,
     ) -> "InteractiveBuilder":
         """
         Add an animation field.

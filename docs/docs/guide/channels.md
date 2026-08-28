@@ -82,14 +82,18 @@ If the user does not yet have a DM channel, the SDK creates one automatically be
 ```python
 from mezon.protobuf.rtapi import realtime_pb2
 
+
 async def on_channel_created(event: realtime_pb2.ChannelCreatedEvent):
     print(event.channel_id)
+
 
 async def on_channel_updated(event: realtime_pb2.ChannelUpdatedEvent):
     print(event.channel_id)
 
+
 async def on_channel_deleted(event: realtime_pb2.ChannelDeletedEvent):
     print(event.channel_id)
+
 
 client.on_channel_created(on_channel_created)
 client.on_channel_updated(on_channel_updated)
@@ -102,8 +106,10 @@ client.on_channel_deleted(on_channel_deleted)
 async def on_user_joined(event: realtime_pb2.UserChannelAdded):
     print(event.user_id, event.channel_id)
 
+
 async def on_user_left(event: realtime_pb2.UserChannelRemoved):
     print(event.user_id, event.channel_id)
+
 
 client.on_user_channel_added(on_user_joined)
 client.on_channel_user_removed(on_user_left)

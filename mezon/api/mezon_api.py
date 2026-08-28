@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Any, Optional
+from typing import Any
 
 import aiohttp
 from aiolimiter import AsyncLimiter
@@ -89,11 +89,11 @@ class MezonApi:
         self,
         method: str,
         url_path: str,
-        query_params: Optional[dict[str, Any]] = None,
-        body: Optional[str | bytes] = None,
-        headers: Optional[dict[str, Any]] = None,
+        query_params: dict[str, Any] | None = None,
+        body: str | bytes | None = None,
+        headers: dict[str, Any] | None = None,
         accept_binary: bool = False,
-        response_proto_class: Optional[type] = None,
+        response_proto_class: type | None = None,
     ) -> Any:
         """
         Make API call with optional binary protobuf request/response support.
@@ -134,7 +134,7 @@ class MezonApi:
         basic_auth_username: str | int,
         basic_auth_password: str,
         body: ApiAuthenticateRequest,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiSession:
         """
         Authenticate a app with a token against the server.
@@ -173,7 +173,7 @@ class MezonApi:
         limit: int = 0,
         state: int = 0,
         cursor: str = "",
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiClanDescList:
         """
         List clan descriptions.
@@ -220,7 +220,7 @@ class MezonApi:
         state: int = 0,
         cursor: str = "",
         is_mobile: bool = False,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiChannelDescList:
         """
         List channel descriptions.
@@ -268,7 +268,7 @@ class MezonApi:
         self,
         token: str,
         request: ApiCreateChannelDescRequest,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiChannelDescription:
         """
         Create a channel description.
@@ -313,7 +313,7 @@ class MezonApi:
         self,
         token: str,
         channel_id: int,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiChannelDescription:
         """
         Get channel detail by ID.
@@ -351,13 +351,13 @@ class MezonApi:
     async def list_channel_voice_users(
         self,
         token: str,
-        clan_id: Optional[int] = 0,
-        channel_id: Optional[int] = 0,
-        channel_type: Optional[int] = 0,
-        limit: Optional[int] = 0,
-        state: Optional[int] = 0,
-        cursor: Optional[str] = "",
-        options: Optional[dict[str, Any]] = None,
+        clan_id: int | None = 0,
+        channel_id: int | None = 0,
+        channel_type: int | None = 0,
+        limit: int | None = 0,
+        state: int | None = 0,
+        cursor: str | None = "",
+        options: dict[str, Any] | None = None,
     ) -> ApiVoiceChannelUserList:
         """
         List voice channel users.
@@ -406,7 +406,7 @@ class MezonApi:
         token: str,
         role_id: int,
         request: dict[str, Any],
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Update a role.
@@ -449,11 +449,11 @@ class MezonApi:
     async def list_roles(
         self,
         token: str,
-        clan_id: Optional[int] = None,
-        limit: Optional[int] = None,
-        state: Optional[int] = None,
-        cursor: Optional[str] = None,
-        options: Optional[dict[str, Any]] = None,
+        clan_id: int | None = None,
+        limit: int | None = None,
+        state: int | None = None,
+        cursor: str | None = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiRoleListEventResponse:
         """
         List roles in a clan.
@@ -504,7 +504,7 @@ class MezonApi:
         menu_name: str,
         menu_id: int,
         bot_id: int,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Add quick menu access for a bot.
@@ -554,14 +554,14 @@ class MezonApi:
     async def delete_quick_menu_access(
         self,
         bearer_token: str,
-        id: Optional[int] = None,
-        clan_id: Optional[int] = None,
-        bot_id: Optional[int] = None,
-        channel_id: Optional[int] = None,
-        menu_name: Optional[str] = None,
-        background: Optional[str] = None,
-        action_msg: Optional[str] = None,
-        options: Optional[dict[str, Any]] = None,
+        id: int | None = None,
+        clan_id: int | None = None,
+        bot_id: int | None = None,
+        channel_id: int | None = None,
+        menu_name: str | None = None,
+        background: str | None = None,
+        action_msg: str | None = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Delete quick menu access for a bot.
@@ -608,10 +608,10 @@ class MezonApi:
     async def list_quick_menu_access(
         self,
         bearer_token: str,
-        bot_id: Optional[int] = 0,
-        channel_id: Optional[int] = 0,
-        menu_type: Optional[int] = 0,
-        options: Optional[dict[str, Any]] = None,
+        bot_id: int | None = 0,
+        channel_id: int | None = 0,
+        menu_type: int | None = 0,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         List quick menu access items.
@@ -652,7 +652,7 @@ class MezonApi:
         self,
         bearer_token: str,
         body: dict[str, Any],
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Play media in a voice channel.

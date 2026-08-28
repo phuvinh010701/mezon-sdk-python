@@ -22,6 +22,7 @@ client = MezonClient(
     api_key="YOUR_API_KEY",
 )
 
+
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
@@ -30,16 +31,17 @@ async def handle_message(message: ChannelMessage):
 
     if text.startswith("!hello"):
         channel = await client.channels.fetch(message.channel_id)
-        await channel.send(
-            content=ChannelMessageContent(t="Hello! I'm a Mezon bot")
-        )
+        await channel.send(content=ChannelMessageContent(t="Hello! I'm a Mezon bot"))
+
 
 client.on_channel_message(handle_message)
+
 
 async def main():
     await client.login()
     print("Bot is running...")
     await asyncio.Event().wait()
+
 
 if __name__ == "__main__":
     asyncio.run(main())
@@ -85,11 +87,14 @@ await channel.send_ephemeral(
 ```python
 from mezon.protobuf.rtapi import realtime_pb2
 
+
 async def on_channel_created(event: realtime_pb2.ChannelCreatedEvent):
     print(f"New channel: {event.channel_id}")
 
+
 async def on_user_joined(event: realtime_pb2.UserChannelAdded):
     print(f"User {event.user_id} joined {event.channel_id}")
+
 
 client.on_channel_created(on_channel_created)
 client.on_user_channel_added(on_user_joined)

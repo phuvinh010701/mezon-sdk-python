@@ -111,5 +111,6 @@ async def on_button_click(event):
             content=ChannelMessageContent(text="Received!"),
         )
 
+
 client.on_message_button_clicked(on_button_click)
 ```

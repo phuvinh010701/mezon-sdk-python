@@ -30,6 +30,7 @@ After compilation the script patches the import in `realtime_pb2.py`:
 ```python
 # before (protoc default)
 from api import api_pb2 as api_dot_api__pb2
+
 # after (patched)
 from mezon.protobuf.api import api_pb2 as api_dot_api__pb2
 ```

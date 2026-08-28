@@ -49,14 +49,18 @@ from mezon import Events
 from mezon.models import ChannelMessageContent
 from mezon.protobuf.rtapi import realtime_pb2
 
+
 async def on_user_joined_clan(event: realtime_pb2.AddClanUserEvent):
     print(event.clan_id, event.user_id)
+
 
 async def on_clan_updated(event):
     print("Clan updated")
 
+
 async def on_clan_event(event):
     print("Clan event created")
+
 
 client.on_add_clan_user(on_user_joined_clan)
 client.on(Events.CLAN_UPDATED_EVENT, on_clan_updated)

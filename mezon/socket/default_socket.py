@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Any, Optional, TypeVar, Union
+from typing import Any, TypeVar
 
 import google.protobuf.message
 from google.protobuf import json_format
@@ -72,9 +72,9 @@ class Socket:
         self,
         ws_url: str,
         use_ssl: bool = False,
-        adapter: Optional[WebSocketAdapterPb] = None,
+        adapter: WebSocketAdapterPb | None = None,
         send_timeout_ms: int = DEFAULT_SEND_TIMEOUT_MS,
-        event_manager: Optional[EventManager] = None,
+        event_manager: EventManager | None = None,
     ):
         """
         Initialize Socket.
@@ -98,16 +98,16 @@ class Socket:
 
         self.adapter = adapter or WebSocketAdapterPb()
 
-        self.session: Optional[Session] = None
+        self.session: Session | None = None
 
         self._heartbeat_timeout_ms = self.DEFAULT_HEARTBEAT_TIMEOUT_MS
-        self._heartbeat_task: Optional[asyncio.Task] = None
-        self._listen_task: Optional[asyncio.Task] = None
+        self._heartbeat_task: asyncio.Task | None = None
+        self._listen_task: asyncio.Task | None = None
 
-        self.ondisconnect: Optional[callable] = None
-        self.onerror: Optional[callable] = None
-        self.onheartbeattimeout: Optional[callable] = None
-        self.onconnect: Optional[callable] = None
+        self.ondisconnect: callable | None = None
+        self.onerror: callable | None = None
+        self.onheartbeattimeout: callable | None = None
+        self.onconnect: callable | None = None
 
         self._intentional_close = False
 
@@ -152,7 +152,7 @@ class Socket:
                     asyncio.gather(*tasks_to_cancel, return_exceptions=True),
                     timeout=5.0,
                 )
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 logger.warning("Timed out waiting for background tasks to cancel")
 
         self._heartbeat_task = None
@@ -204,7 +204,7 @@ class Socket:
                     asyncio.create_task(asyncio.to_thread(self.onconnect))
 
             return session
-        except asyncio.TimeoutError:
+        except TimeoutError:
             raise TimeoutError("The socket timed out when trying to connect.")
 
     async def _listen(self) -> None:
@@ -253,7 +253,7 @@ class Socket:
                 except Exception as callback_error:
                     logger.error(f"Error in disconnect callback: {callback_error}")
 
-    def _parse_api_response(self, message: bytes) -> Optional[dict[str, Any]]:
+    def _parse_api_response(self, message: bytes) -> dict[str, Any] | None:
         """Parse raw chunked API responses returned for api_request_event."""
         if not message or message[0] != PREFIX_RAW:
             return None
@@ -344,7 +344,7 @@ class Socket:
 
     async def _send_with_cid(
         self, message: realtime_pb2.Envelope, timeout_ms: int = None
-    ) -> Optional[Union[realtime_pb2.Envelope, dict[str, Any]]]:
+    ) -> realtime_pb2.Envelope | dict[str, Any] | None:
         """
         Send message with command ID and wait for response.
         Matches TypeScript implementation pattern.
@@ -423,8 +423,8 @@ class Socket:
         self,
         field_name: str,
         message: google.protobuf.message.Message,
-        timeout_ms: Optional[int] = None,
-    ) -> Optional[realtime_pb2.Envelope]:
+        timeout_ms: int | None = None,
+    ) -> realtime_pb2.Envelope | None:
         """
         Generic method to send an envelope with a specific field set.
 
@@ -444,7 +444,7 @@ class Socket:
         self,
         api_name: str,
         body: bytes,
-        timeout_ms: Optional[int] = None,
+        timeout_ms: int | None = None,
     ) -> bytes:
         api_index = API_NAME_INDEX.get(api_name)
         if api_index is None:
@@ -467,7 +467,7 @@ class Socket:
 
     def _handle_response(
         self,
-        response: Optional[realtime_pb2.Envelope],
+        response: realtime_pb2.Envelope | None,
         field_name: str,
         model_class: type[T],
         error_message: str,
@@ -550,14 +550,14 @@ class Socket:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        references: Optional[list[ApiMessageRef]] = None,
-        anonymous_message: Optional[bool] = None,
-        mention_everyone: Optional[bool] = None,
-        avatar: Optional[str] = None,
-        code: Optional[int] = None,
-        topic_id: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        references: list[ApiMessageRef] | None = None,
+        anonymous_message: bool | None = None,
+        mention_everyone: bool | None = None,
+        avatar: str | None = None,
+        code: int | None = None,
+        topic_id: int | None = None,
     ) -> ChannelMessageAck:
         """
         Write a message to a channel.
@@ -617,11 +617,11 @@ class Socket:
         is_public: bool,
         message_id: int,
         content: ChannelMessageContent,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
         hide_editted: bool = False,
-        topic_id: Optional[int] = None,
-        is_update_msg_topic: Optional[bool] = None,
+        topic_id: int | None = None,
+        is_update_msg_topic: bool | None = None,
     ) -> ChannelMessageAck:
         """
         Update a previously sent channel message.
@@ -742,15 +742,15 @@ class Socket:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        references: Optional[list[ApiMessageRef]] = None,
-        anonymous_message: Optional[bool] = None,
-        mention_everyone: Optional[bool] = None,
-        avatar: Optional[str] = None,
-        code: Optional[int] = None,
-        topic_id: Optional[int] = None,
-        message_id: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        references: list[ApiMessageRef] | None = None,
+        anonymous_message: bool | None = None,
+        mention_everyone: bool | None = None,
+        avatar: str | None = None,
+        code: int | None = None,
+        topic_id: int | None = None,
+        message_id: int | None = None,
     ) -> ChannelMessageAck:
         ephemeral_message_send = EphemeralMessageBuilder.build(
             receiver_ids=receiver_ids,
@@ -813,7 +813,7 @@ class Socket:
         mode: int,
         is_public: bool,
         message_id: int,
-        topic_id: Optional[int] = None,
+        topic_id: int | None = None,
     ) -> ChannelMessageAck:
         """
         Remove/delete a message from a channel.
@@ -1195,7 +1195,7 @@ class Socket:
         # TODO: Implement this method
         return None
 
-    async def update_status(self, status: Optional[str] = None) -> None:
+    async def update_status(self, status: str | None = None) -> None:
         """
         Update the user's online status.
 
@@ -1203,4 +1203,4 @@ class Socket:
             status: Optional status string. If None, user appears offline.
         """
         # TODO: Implement this method
-        return None
+        return

@@ -20,6 +20,7 @@ client = MezonClient(
     log_level=logging.INFO,
 )
 
+
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
@@ -30,15 +31,19 @@ async def handle_message(message: ChannelMessage):
         channel = await client.channels.fetch(message.channel_id)
         await channel.send(content=ChannelMessageContent(t="Hello from FastAPI bot!"))
 
+
 async def on_channel_created(event: realtime_pb2.ChannelCreatedEvent):
     print(event.channel_id)
+
 
 async def on_user_joined(event: realtime_pb2.UserChannelAdded):
     print(event.user_id, event.channel_id)
 
+
 client.on_channel_message(handle_message)
 client.on_channel_created(on_channel_created)
 client.on_user_channel_added(on_user_joined)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -48,11 +53,14 @@ async def lifespan(app: FastAPI):
     finally:
         await client.close_socket()
 
+
 app = FastAPI(lifespan=lifespan)
+
 
 @app.get("/health")
 async def health():
     return {"status": "healthy"}
+
 
 @app.get("/clan/{clan_id}/voice-users")
 async def get_voice_users(clan_id: int):
@@ -60,11 +68,13 @@ async def get_voice_users(clan_id: int):
     voice_users = await clan.list_channel_voice_users()
     return {"voice_users": voice_users}
 
+
 @app.post("/channel/{channel_id}/send")
 async def send_message(channel_id: int, text: str):
     channel = await client.channels.fetch(channel_id)
     ack = await channel.send(content=ChannelMessageContent(t=text))
     return {"message_id": ack.message_id}
+
 
 @app.post("/user/{user_id}/tip")
 async def tip_user(user_id: int, amount: int = 1, note: str = "Tip"):
@@ -76,6 +86,7 @@ async def tip_user(user_id: int, amount: int = 1, note: str = "Tip"):
         )
     )
     return {"success": result.ok, "tx_hash": result.tx_hash if result.ok else None}
+
 
 @app.get("/clan/{clan_id}/roles")
 async def get_roles(clan_id: int):

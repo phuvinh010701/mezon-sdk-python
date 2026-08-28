@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from mezon.constants import TypeMessage
 from mezon.managers.cache import CacheManager
@@ -66,9 +66,9 @@ class TextChannel:
             socket_manager: Socket manager for sending messages
             message_db: Database for message caching
         """
-        self.id: Optional[int] = init_channel_data.channel_id
-        self.name: Optional[str] = init_channel_data.channel_label
-        self.channel_type: Optional[int] = init_channel_data.type
+        self.id: int | None = init_channel_data.channel_id
+        self.name: str | None = init_channel_data.channel_label
+        self.channel_type: int | None = init_channel_data.type
         self.is_private: bool = bool(init_channel_data.channel_private)
         self.category_id: int = init_channel_data.category_id or 0
         self.category_name: str = init_channel_data.category_name or ""
@@ -92,12 +92,12 @@ class TextChannel:
     async def send(
         self,
         content: ChannelMessageContent,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        mention_everyone: Optional[bool] = None,
-        anonymous_message: Optional[bool] = None,
-        topic_id: Optional[int] = None,
-        code: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        mention_everyone: bool | None = None,
+        anonymous_message: bool | None = None,
+        topic_id: int | None = None,
+        code: int | None = None,
     ) -> ChannelMessageAck:
         """
         Send a message to this channel.
@@ -133,12 +133,12 @@ class TextChannel:
         self,
         receiver_ids: list[int],
         content: Any,
-        reference_message_id: Optional[int] = None,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        mention_everyone: Optional[bool] = None,
-        anonymous_message: Optional[bool] = None,
-        topic_id: Optional[int] = None,
+        reference_message_id: int | None = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        mention_everyone: bool | None = None,
+        anonymous_message: bool | None = None,
+        topic_id: int | None = None,
         code: int = TypeMessage.EPHEMERAL,
     ) -> Any:
         """

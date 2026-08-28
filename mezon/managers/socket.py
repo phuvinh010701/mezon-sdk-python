@@ -1,5 +1,5 @@
 import asyncio
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from tenacity import retry, stop_after_attempt, wait_exponential
 
@@ -122,15 +122,15 @@ class SocketManager:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        references: Optional[list[ApiMessageRef]] = None,
-        anonymous_message: Optional[bool] = None,
-        mention_everyone: Optional[bool] = None,
-        avatar: Optional[str] = None,
-        code: Optional[int] = None,
-        topic_id: Optional[int] = None,
-        message_id: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        references: list[ApiMessageRef] | None = None,
+        anonymous_message: bool | None = None,
+        mention_everyone: bool | None = None,
+        avatar: str | None = None,
+        code: int | None = None,
+        topic_id: int | None = None,
+        message_id: int | None = None,
     ) -> ChannelMessageAck:
         return await self.socket.write_ephemeral_message(
             receiver_ids=receiver_ids,
@@ -157,14 +157,14 @@ class SocketManager:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        references: Optional[list[ApiMessageRef]] = None,
-        anonymous_message: Optional[bool] = None,
-        mention_everyone: Optional[bool] = None,
-        avatar: Optional[str] = None,
-        code: Optional[int] = None,
-        topic_id: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        references: list[ApiMessageRef] | None = None,
+        anonymous_message: bool | None = None,
+        mention_everyone: bool | None = None,
+        avatar: str | None = None,
+        code: int | None = None,
+        topic_id: int | None = None,
     ) -> ChannelMessageAck:
         return await self.socket.write_chat_message(
             clan_id=clan_id,
@@ -190,11 +190,11 @@ class SocketManager:
         is_public: bool,
         message_id: int,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
         hide_editted: bool = False,
-        topic_id: Optional[int] = None,
-        is_update_msg_topic: Optional[bool] = None,
+        topic_id: int | None = None,
+        is_update_msg_topic: bool | None = None,
     ) -> ChannelMessageAck:
         """
         Update (edit) an existing channel message.
@@ -285,7 +285,7 @@ class SocketManager:
         mode: int,
         is_public: bool,
         message_id: int,
-        topic_id: Optional[int] = None,
+        topic_id: int | None = None,
     ) -> ChannelMessageAck:
         return await self.socket.remove_chat_message(
             clan_id=clan_id,
