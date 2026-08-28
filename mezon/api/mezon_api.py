@@ -136,16 +136,18 @@ class MezonApi:
         )
 
         session = await self._get_session()
-        async with self._rate_limiter:
-            async with session.request(
+        async with (
+            self._rate_limiter,
+            session.request(
                 method,
                 f"{self.base_url}{url_path}",
                 params=query_params,
                 data=body,
                 headers=headers,
-            ) as resp:
-                resp.raise_for_status()
-                return await parse_response(resp, accept_binary, response_proto_class)
+            ) as resp,
+        ):
+            resp.raise_for_status()
+            return await parse_response(resp, accept_binary, response_proto_class)
 
     async def mezon_authenticate(
         self,

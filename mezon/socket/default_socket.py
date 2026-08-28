@@ -414,7 +414,7 @@ class Socket:
             )
 
             logger.debug(
-                f"Emitting event: {field_name} with payload: {pydantic_payload}"
+                "Emitting event: %s with payload: %s", field_name, pydantic_payload
             )
 
             await self.event_manager.emit(field_name, pydantic_payload)
