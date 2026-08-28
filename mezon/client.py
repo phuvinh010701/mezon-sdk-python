@@ -289,6 +289,7 @@ class MezonClient:
                 self.socket_manager.connect_socket(sock_session.token),
                 self.channel_manager.init_all_dm_channels(sock_session.token),
             )
+            self._seed_dm_user_cache()
 
     async def _invoke_handler(
         self, handler: EventHandler, *args: Any, **kwargs: Any
@@ -301,7 +302,9 @@ class MezonClient:
             *args (Any): Positional arguments to pass to the handler.
             **kwargs (Any): Keyword arguments to pass to the handler.
         """
-        logger.debug(f"Invoking handler {handler} with args {args} and kwargs {kwargs}")
+        logger.debug(
+            "Invoking handler %s with args %s and kwargs %s", handler, args, kwargs
+        )
         if inspect.iscoroutinefunction(handler):
             await handler(*args, **kwargs)
         else:
@@ -807,6 +810,31 @@ class MezonClient:
 
         channel.messages.set(message_raw.id, message_obj)
 
+    def _seed_dm_user_cache(self) -> None:
+        """
+        Seed the user cache with a bare ``User`` entry for every known DM channel.
+
+        Runs once after ``init_all_dm_channels`` so the per-message handler
+        doesn't have to rescan every DM channel on each incoming message.
+        """
+        all_dm_channels = self.channel_manager.get_all_dm_channels()
+        if not all_dm_channels:
+            return
+
+        for user_id, dm_channel_id in all_dm_channels.items():
+            if not user_id or self.users.get(user_id):
+                continue
+
+            user = User(
+                user_init_data=UserInitData(
+                    sender_id=user_id,
+                    dm_channel_id=dm_channel_id,
+                ),
+                socket_manager=self.socket_manager,
+                channel_manager=self.channel_manager,
+            )
+            self.users.set(user_id, user)
+
     async def _init_user_clan_cache(self, message: ChannelMessage) -> None:
         """
         Initialize user and clan cache when receiving a message.
@@ -815,25 +843,10 @@ class MezonClient:
             message: The channel message
         """
 
+        if self.users.get(message.sender_id):
+            return
+
         all_dm_channels = self.channel_manager.get_all_dm_channels()
-        user_cache = self.users.get(message.sender_id)
-
-        if not user_cache and message.sender_id != self.client_id and all_dm_channels:
-            for user_id, dm_channel_id in all_dm_channels.items():
-                if not user_id:
-                    continue
-
-                user = User(
-                    user_init_data=UserInitData(
-                        sender_id=user_id,
-                        dm_channel_id=dm_channel_id,
-                    ),
-                    socket_manager=self.socket_manager,
-                    channel_manager=self.channel_manager,
-                )
-
-                self.users.set(user_id, user)
-
         sender_dm_channel = (
             all_dm_channels.get(message.sender_id, 0) if all_dm_channels else 0
         )
@@ -1483,4 +1496,6 @@ class MezonClient:
         await self.disconnect_ai_agent_sse()
         await self.close_socket()
         await self.message_db.close()
+        if getattr(self, "api_client", None) is not None:
+            await self.api_client.close()
         logger.info("Client disconnected")
