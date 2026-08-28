@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import asyncio
 from typing import Any
 
 import aiohttp
@@ -84,6 +85,22 @@ class MezonApi:
         self.base_url = base_url
         self.timeout_ms = timeout_ms
         self.client_timeout = aiohttp.ClientTimeout(total=timeout_ms / 1000)
+        self._session: aiohttp.ClientSession | None = None
+        self._session_lock = asyncio.Lock()
+
+    async def _get_session(self) -> aiohttp.ClientSession:
+        """Get the shared ClientSession, creating it lazily on first use."""
+        if self._session is None or self._session.closed:
+            async with self._session_lock:
+                if self._session is None or self._session.closed:
+                    self._session = aiohttp.ClientSession(timeout=self.client_timeout)
+        return self._session
+
+    async def close(self) -> None:
+        """Close the shared ClientSession, if one was created."""
+        if self._session is not None and not self._session.closed:
+            await self._session.close()
+        self._session = None
 
     async def call_api(
         self,
@@ -111,23 +128,24 @@ class MezonApi:
             Any: Dict (from JSON) or protobuf message (from binary)
         """
         logger.debug(
-            f"Method: {method}, URL: {url_path}, Binary: {accept_binary}, "
-            f"Proto class: {response_proto_class}"
+            "Method: %s, URL: %s, Binary: %s, Proto class: %s",
+            method,
+            url_path,
+            accept_binary,
+            response_proto_class,
         )
 
+        session = await self._get_session()
         async with self._rate_limiter:
-            async with aiohttp.ClientSession(timeout=self.client_timeout) as session:
-                async with session.request(
-                    method,
-                    f"{self.base_url}{url_path}",
-                    params=query_params,
-                    data=body,
-                    headers=headers,
-                ) as resp:
-                    resp.raise_for_status()
-                    return await parse_response(
-                        resp, accept_binary, response_proto_class
-                    )
+            async with session.request(
+                method,
+                f"{self.base_url}{url_path}",
+                params=query_params,
+                data=body,
+                headers=headers,
+            ) as resp:
+                resp.raise_for_status()
+                return await parse_response(resp, accept_binary, response_proto_class)
 
     async def mezon_authenticate(
         self,
