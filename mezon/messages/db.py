@@ -55,6 +55,11 @@ class MessageDB:
         if self.db is None or not self._initialized:
             self.db = await aiosqlite.connect(self.db_path)
             self.db.row_factory = aiosqlite.Row
+            # WAL avoids taking a full fsync on every commit; NORMAL sync is
+            # still crash-safe under WAL (only an OS crash, not an app crash,
+            # can lose the last commit).
+            await self.db.execute("PRAGMA journal_mode=WAL")
+            await self.db.execute("PRAGMA synchronous=NORMAL")
             await self._init_tables()
             self._initialized = True
 
