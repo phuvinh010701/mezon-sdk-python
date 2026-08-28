@@ -49,7 +49,7 @@ async def on_user_left(event: realtime_pb2.UserChannelRemoved):
 
 
 client.on_user_channel_added(on_user_joined)
-client.on_user_channel_removed(on_user_left)
+client.on_channel_user_removed(on_user_left)
 
 
 # Clan events
@@ -100,7 +100,6 @@ client.on(Events.GIVE_COFFEE, handler)
 |-------|-------------|
 | `Events.CHANNEL_MESSAGE` | New message in channel |
 | `Events.MESSAGE_REACTION` | Reaction added/removed |
-| `Events.MESSAGE_TYPING_EVENT` | User is typing |
 | `Events.MESSAGE_BUTTON_CLICKED` | Button clicked |
 
 ### Channel Events
@@ -110,7 +109,6 @@ client.on(Events.GIVE_COFFEE, handler)
 | `Events.CHANNEL_CREATED` | Channel created |
 | `Events.CHANNEL_UPDATED` | Channel updated |
 | `Events.CHANNEL_DELETED` | Channel deleted |
-| `Events.CHANNEL_PRESENCE_EVENT` | User presence in channel |
 
 ### User Events
 
@@ -130,15 +128,26 @@ client.on(Events.GIVE_COFFEE, handler)
 | `Events.VOICE_JOINED_EVENT` | User joined voice |
 | `Events.VOICE_LEAVED_EVENT` | User left voice |
 
+### AI Agent Events (SSE)
+
+See [AI Agent (SSE)](ai-agent.md) for the full setup.
+
+| Event | Description |
+|-------|-------------|
+| `Events.AI_AGENT_ENABLE` | AI agent enabled for the bot |
+| `Events.AI_AGENT_SESSION_STARTED` | AI agent session started |
+| `Events.AI_AGENT_SESSION_ENDED` | AI agent session ended |
+| `Events.AI_AGENT_SESSION_SUMMARY_DONE` | AI agent session summary ready |
+
 ### Other Events
 
 | Event | Description |
 |-------|-------------|
-| `Events.CLAN_UPDATED_EVENT` | Clan settings updated |
 | `Events.CLAN_EVENT_CREATED` | Clan event created |
 | `Events.GIVE_COFFEE` | Coffee given |
 | `Events.TOKEN_SEND` | Token sent |
-| `Events.NOTIFICATION` | Notification received |
+| `Events.NOTIFICATIONS` | Notification received |
+| `Events.QUICK_MENU` | Quick menu action triggered |
 
 ## Sync vs Async Handlers
 

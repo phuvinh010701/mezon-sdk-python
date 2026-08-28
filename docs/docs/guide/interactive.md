@@ -5,8 +5,8 @@ The SDK includes builders for button components and rich interactive/embed paylo
 ## ButtonBuilder
 
 ```python
-from mezon import ButtonBuilder, ButtonMessageStyle
-from mezon.models import ChannelMessageContent
+from mezon import ButtonBuilder
+from mezon.models import ButtonMessageStyle, ChannelMessageContent
 
 buttons = ButtonBuilder()
 buttons.add_button("accept", "Accept", ButtonMessageStyle.SUCCESS)

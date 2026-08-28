@@ -82,21 +82,7 @@ Closes the active WebSocket connection.
 
 ## Messaging methods
 
-### `send_message(...)`
-
-Legacy direct send helper:
-
-```python
-await client.send_message(
-    clan_id=987654321,
-    channel_id=123456789,
-    mode=1,
-    is_public=True,
-    msg="Hello from legacy API",
-)
-```
-
-Prefer `TextChannel.send(...)` for most applications.
+Use `TextChannel.send(...)` to send messages — see [Sending Messages](../guide/messaging.md). `MezonClient` does not expose a direct send method.
 
 ### `send_token(token_event: ApiSentTokenRequest) -> AddTxResponse`
 
@@ -112,25 +98,42 @@ result = await client.send_token(
 )
 ```
 
-## Friend-related helpers
+## Quick Menu methods
 
-### `get_list_friends(limit: int, state: int = None, cursor: str = None)`
-
-```python
-friends = await client.get_list_friends(limit=100)
-```
-
-### `accept_friend(user_id: str) -> None`
+### `add_quick_menu_access(channel_id, clan_id, menu_type, action_msg, background, menu_name) -> ApiQuickMenuAccess`
 
 ```python
-await client.accept_friend(user_id="123456789")
+menu = await client.add_quick_menu_access(
+    channel_id=123456789,
+    clan_id=987654321,
+    menu_type=1,
+    action_msg="Hello!",
+    background="https://example.com/icon.png",
+    menu_name="My Menu",
+)
 ```
 
-### `add_friend(username: str, user_id: str) -> None`
+Generates the menu ID and binds it to `client.client_id` automatically. Returns `None` if there is no active session.
+
+### `delete_quick_menu_access(id=None, clan_id=None, bot_id=None, menu_name=None, background=None, action_msg=None) -> Any`
 
 ```python
-await client.add_friend(username="alice", user_id="123456789")
+await client.delete_quick_menu_access(id=menu.id)
 ```
+
+`bot_id` defaults to `client.client_id` when omitted.
+
+### `list_quick_menu_access(bot_id=None, channel_id=None, menu_type=None) -> Any`
+
+```python
+menus = await client.list_quick_menu_access(channel_id=123456789)
+```
+
+Listen for user interaction with `client.on_quick_menu_event(handler)` (`Events.QUICK_MENU`).
+
+## AI Agent (SSE)
+
+The client can stream AI agent session events over Server-Sent Events. See [AI Agent (SSE)](../guide/ai-agent.md) for the full guide, including the `agent_event_url` constructor parameter, `connect_ai_agent_sse()` / `disconnect_ai_agent_sse()`, and the four `on_ai_agent_*` event handlers.
 
 ## Event helper methods
 

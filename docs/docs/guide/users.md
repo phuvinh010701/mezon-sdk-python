@@ -22,14 +22,6 @@ await user.send_dm_message(content=ChannelMessageContent(t="Hello via DM"))
 
 If the user does not already have a DM channel, the SDK creates one first.
 
-## Friend helpers on the client
-
-```python
-friends = await client.get_list_friends(limit=100)
-await client.add_friend(username="alice", user_id="123456789")
-await client.accept_friend(user_id="123456789")
-```
-
 ## User-related events
 
 ```python

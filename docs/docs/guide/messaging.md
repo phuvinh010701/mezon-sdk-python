@@ -141,22 +141,6 @@ await channel.send_ephemeral(
 | `topic_id` | `int | None` | Thread/topic target |
 | `code` | `int` | Defaults to `TypeMessage.EPHEMERAL` |
 
-## Legacy `client.send_message(...)`
-
-The client still exposes a lower-level legacy method for direct socket writes:
-
-```python
-await client.send_message(
-    clan_id=987654321,
-    channel_id=123456789,
-    mode=1,
-    is_public=True,
-    msg="Hello from legacy API",
-)
-```
-
-Prefer `TextChannel.send(...)` unless you explicitly need the lower-level shape.
-
 ## Common handler pattern
 
 ```python

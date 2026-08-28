@@ -86,7 +86,9 @@ async def search_messages(channel_id: str, keyword: str):
     async with MessageDB() as db:
         messages = await db.get_messages_by_channel(channel_id=channel_id, limit=1000)
 
-        matching = [msg for msg in messages if keyword.lower() in msg.content.lower()]
+        matching = [
+            msg for msg in messages if keyword.lower() in msg["content"].lower()
+        ]
 
         return matching
 ```

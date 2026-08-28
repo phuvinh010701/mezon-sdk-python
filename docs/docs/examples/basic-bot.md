@@ -7,7 +7,8 @@ A simple bot that responds to commands and demonstrates replies, ephemeral messa
 ```python
 import asyncio
 import logging
-from mezon import ButtonBuilder, ButtonMessageStyle, MezonClient
+from mezon import ButtonBuilder, MezonClient
+from mezon.models import ButtonMessageStyle
 from mezon.models import ApiSentTokenRequest, ChannelMessage, ChannelMessageContent
 
 client = MezonClient(

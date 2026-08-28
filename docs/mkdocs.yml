@@ -68,6 +68,7 @@ nav:
       - Users: guide/users.md
       - Token Sending: guide/tokens.md
       - Interactive Messages: guide/interactive.md
+      - AI Agent (SSE): guide/ai-agent.md
       - Message Caching: guide/caching.md
       - Troubleshooting: guide/troubleshooting.md
   - API Reference:
