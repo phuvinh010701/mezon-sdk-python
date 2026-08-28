@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import asyncio
 from collections import OrderedDict
 from collections.abc import Awaitable, Callable, Iterator
 from typing import (
@@ -78,6 +79,11 @@ class Collection(Generic[K, V]):
             del self._data[key]
             return True
         return False
+
+    def move_to_end(self, key: K) -> None:
+        """Mark a key as most-recently-used by moving it to the end, if present."""
+        if key in self._data:
+            self._data.move_to_end(key)
 
     def first(self) -> V | None:
         """
@@ -196,6 +202,7 @@ class CacheManager(Generic[K, V]):
         self.cache: Collection[K, V] = Collection()
         self._fetcher = fetcher
         self._max_size = max_size if max_size != float("inf") else None
+        self._in_flight: dict[K, asyncio.Future[V]] = {}
 
     @property
     def size(self) -> int:
@@ -206,37 +213,51 @@ class CacheManager(Generic[K, V]):
         """
         Get a value from the cache by ID.
 
+        Marks the entry as most-recently-used on a hit, so `set`'s eviction
+        is genuinely LRU rather than pure insertion-order FIFO.
+
         Args:
             id: The key to look up
 
         Returns:
             The cached value if found, None otherwise
         """
-        return self.cache.get(id)
+        value = self.cache.get(id)
+        if value is not None:
+            self.cache.move_to_end(id)
+        return value
 
     def set(self, id: K, value: V) -> None:
         """
         Set a value in the cache.
 
-        If the cache is at max capacity, the oldest item is evicted first.
+        If the cache is at max capacity, the least-recently-used item is
+        evicted first.
 
         Args:
             id: The key
             value: The value to cache
         """
-        if self._max_size is not None and self.cache.size >= self._max_size:
-            first_key = self.cache.first_key()
-            if first_key is not None:
-                self.cache.delete(first_key)
+        if (
+            self._max_size is not None
+            and self.cache.size >= self._max_size
+            and id not in self.cache
+        ):
+            lru_key = self.cache.first_key()
+            if lru_key is not None:
+                self.cache.delete(lru_key)
 
         self.cache.set(id, value)
+        self.cache.move_to_end(id)
 
     async def fetch(self, id: K) -> V:
         """
         Fetch a value by ID, using the cache if available.
 
-        If the value is not in the cache, it will be fetched using
-        the fetcher function and then cached.
+        If the value is not in the cache, it will be fetched using the
+        fetcher function and then cached. Concurrent fetches for the same
+        uncached id share a single in-flight call instead of each firing
+        their own request against the fetcher.
 
         Args:
             id: The key to fetch
@@ -248,9 +269,23 @@ class CacheManager(Generic[K, V]):
         if existing is not None:
             return existing
 
-        fetched = await self._fetcher(id)
-        self.set(id, fetched)
-        return fetched
+        in_flight = self._in_flight.get(id)
+        if in_flight is not None:
+            return await in_flight
+
+        future: asyncio.Future[V] = asyncio.get_running_loop().create_future()
+        self._in_flight[id] = future
+        try:
+            fetched = await self._fetcher(id)
+        except BaseException as exc:
+            future.set_exception(exc)
+            raise
+        else:
+            self.set(id, fetched)
+            future.set_result(fetched)
+            return fetched
+        finally:
+            del self._in_flight[id]
 
     def first(self) -> V | None:
         """
