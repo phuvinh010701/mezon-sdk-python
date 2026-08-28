@@ -37,10 +37,8 @@ def protobuf_to_pydantic(proto_message, pydantic_class: type[BaseModel]) -> Base
     Returns:
         Pydantic model instance
     """
-    json_data = json_format.MessageToJson(
-        proto_message, preserving_proto_field_name=True
-    )
-    return pydantic_class.model_validate_json(json_data)
+    data = json_format.MessageToDict(proto_message, preserving_proto_field_name=True)
+    return pydantic_class.model_validate(data)
 
 
 # API Models
@@ -163,8 +161,7 @@ class ApiChannelDescription(BaseModel):
         cls, message: api_pb2.ChannelDescription
     ) -> "ApiChannelDescription":
         """Convert API protobuf ChannelDescription to Pydantic model."""
-        json_data = json_format.MessageToJson(message, preserving_proto_field_name=True)
-        data_dict = json.loads(json_data)
+        data_dict = json_format.MessageToDict(message, preserving_proto_field_name=True)
 
         if message.type is not None:
             data_dict["type"] = message.type
