@@ -15,6 +15,7 @@ limitations under the License.
 """
 
 import asyncio
+import time
 from typing import Any, TypeVar
 
 import google.protobuf.message
@@ -67,6 +68,7 @@ class Socket:
     DEFAULT_HEARTBEAT_TIMEOUT_MS = 10000
     DEFAULT_SEND_TIMEOUT_MS = 10000
     DEFAULT_CONNECT_TIMEOUT_MS = 30000
+    RAW_STREAM_TIMEOUT_S = 30.0
 
     def __init__(
         self,
@@ -95,6 +97,8 @@ class Socket:
         self.cids: dict[int, PromiseExecutor] = {}
         self.next_cid = 1
         self._raw_streams: dict[int, list[bytes]] = {}
+        self._raw_stream_started_at: dict[int, float] = {}
+        self._event_tasks: set[asyncio.Task] = set()
 
         self.adapter = adapter or WebSocketAdapterPb()
 
@@ -238,9 +242,11 @@ class Socket:
                             logger.debug(f"No executor found for cid: {envelope.cid}")
                     else:
                         if self.event_manager:
-                            asyncio.create_task(
+                            task = asyncio.create_task(
                                 self._emit_event_from_envelope(envelope)
                             )
+                            self._event_tasks.add(task)
+                            task.add_done_callback(self._event_tasks.discard)
         except Exception as e:
             logger.warning(f"WebSocket connection lost: {e}")
         finally:
@@ -269,12 +275,17 @@ class Socket:
         response_code = (code >> 16) & 0xFFFF
         fin_flag = code & 0xFFFF
 
+        self._evict_stale_raw_streams()
+
+        if cid not in self._raw_streams:
+            self._raw_stream_started_at[cid] = time.monotonic()
         chunks = self._raw_streams.setdefault(cid, [])
         if fin_flag == CODE_FIN:
             if payload:
                 chunks.append(payload)
             body = b"".join(chunks)
             self._raw_streams.pop(cid, None)
+            self._raw_stream_started_at.pop(cid, None)
             return {
                 "cid": cid,
                 "api_response": True,
@@ -284,6 +295,22 @@ class Socket:
 
         chunks.append(payload)
         return None
+
+    def _evict_stale_raw_streams(self) -> None:
+        """Drop raw response streams that never received a FIN chunk."""
+        if not self._raw_stream_started_at:
+            return
+
+        now = time.monotonic()
+        stale_cids = [
+            cid
+            for cid, started_at in self._raw_stream_started_at.items()
+            if now - started_at > self.RAW_STREAM_TIMEOUT_S
+        ]
+        for cid in stale_cids:
+            logger.warning(f"Dropping incomplete raw response stream for cid: {cid}")
+            self._raw_streams.pop(cid, None)
+            self._raw_stream_started_at.pop(cid, None)
 
     async def _start_listen(self) -> None:
         """Start the heartbeat ping-pong and listen tasks."""

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import asyncio
 import json
 import os
 from typing import Any
@@ -42,6 +43,7 @@ class MessageDB:
         self._ensure_directory()
         self.db: aiosqlite.Connection | None = None
         self._initialized = False
+        self._connect_lock = asyncio.Lock()
 
     def _ensure_directory(self) -> None:
         """Create the database directory if it doesn't exist."""
@@ -52,7 +54,13 @@ class MessageDB:
 
     async def _ensure_connection(self) -> None:
         """Ensure database connection is established and initialized."""
-        if self.db is None or not self._initialized:
+        if self.db is not None and self._initialized:
+            return
+
+        async with self._connect_lock:
+            if self.db is not None and self._initialized:
+                return
+
             self.db = await aiosqlite.connect(self.db_path)
             self.db.row_factory = aiosqlite.Row
             # WAL avoids taking a full fsync on every commit; NORMAL sync is
