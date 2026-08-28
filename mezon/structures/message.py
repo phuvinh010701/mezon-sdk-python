@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import json
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from mezon.models import (
     ApiMessageAttachment,
@@ -62,12 +62,12 @@ class Message:
         self.id: int = message_raw.id
         self.sender_id: int = message_raw.sender_id
         self.content: ChannelMessageContent = message_raw.content
-        self.mentions: Optional[list[ApiMessageMention]] = message_raw.mentions
-        self.attachments: Optional[list[ApiMessageAttachment]] = message_raw.attachments
-        self.reactions: Optional[list[ApiMessageReaction]] = message_raw.reactions
-        self.references: Optional[list[ApiMessageRef]] = message_raw.references
-        self.topic_id: Optional[int] = message_raw.topic_id
-        self.create_time_seconds: Optional[int] = message_raw.create_time_seconds
+        self.mentions: list[ApiMessageMention] | None = message_raw.mentions
+        self.attachments: list[ApiMessageAttachment] | None = message_raw.attachments
+        self.reactions: list[ApiMessageReaction] | None = message_raw.reactions
+        self.references: list[ApiMessageRef] | None = message_raw.references
+        self.topic_id: int | None = message_raw.topic_id
+        self.create_time_seconds: int | None = message_raw.create_time_seconds
 
         self.channel = channel
         self.socket_manager = socket_manager
@@ -75,12 +75,12 @@ class Message:
     async def reply(
         self,
         content: ChannelMessageContent,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        mention_everyone: Optional[bool] = None,
-        anonymous_message: Optional[bool] = None,
-        topic_id: Optional[int] = None,
-        code: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        mention_everyone: bool | None = None,
+        anonymous_message: bool | None = None,
+        topic_id: int | None = None,
+        code: int | None = None,
     ) -> ChannelMessageAck:
         """
         Reply to this message.
@@ -138,8 +138,8 @@ class Message:
     async def update(
         self,
         content: ChannelMessageContent,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
     ) -> ChannelMessageAck:
         """
         Update (edit) this message.
@@ -173,7 +173,7 @@ class Message:
         emoji_id: int,
         emoji: str,
         count: int,
-        id: Optional[int] = 0,
+        id: int | None = 0,
         action_delete: bool = False,
     ) -> Any:
         """

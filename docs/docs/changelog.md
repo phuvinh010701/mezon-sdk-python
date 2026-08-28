@@ -4,16 +4,53 @@ All notable changes to the Mezon SDK Python.
 
 ## Unreleased
 
+### Performance
+
+- Close temporary/replaced `MezonApi` clients to stop HTTP session leaks
+- Bound background socket tasks, lock DB connect, and expire raw streams
+- Use `MessageToDict` instead of a `MessageToJson` round-trip for protobuf message conversion
+- Pre-partition event handlers by kind instead of re-filtering on every emit
+- De-duplicate in-flight cache fetches and make cache eviction a real LRU
+- Scope the rate limiter per client instance and cache clan list lookups
+- Make event-emit debug logging lazy
+- Stop rebuilding `User` cache entries on every incoming message
+- Enable SQLite WAL journal mode and `NORMAL` synchronous for `MessageDB`
+- Reuse a single `aiohttp.ClientSession` per `MezonApi` instance
+
+## v1.8.1 (2026-05-06)
+
 ### Bug Fixes
 
-- Send channel message update/delete through WebSocket `api_request_event` requests (`UpdateChannelMessage` / `DeleteChannelMessage`) to match the current server contract.
-- Refresh docs for current event payloads: `on_channel_message` receives `mezon.models.ChannelMessage`, and `message.content` is already parsed when possible.
-- Update installation docs for the current Python and dependency requirements.
-- Normalize `ws_url` without corrupting existing `ws://` or `wss://` prefixes.
-- Build API URLs with the correct `host:port` combination.
-- Match regenerated protobuf `Envelope.cid` typing by using integer command IDs.
-- Initialize reconnect state eagerly so `disconnect()` remains safe after early login failures.
-- Add focused regression tests for socket/protobuf/login compatibility and keep reconnect integration coverage in the test runner.
+- Fix typo in `ChannelMessage` sender avatar field
+
+## v1.8.0 (2026-05-03)
+
+### Features
+
+- Sync with mezon-sdk-js v2.8.46
+
+### Other
+
+- Add unit tests and coverage reporting; remove the binary perf comparison tooling
+
+## v1.7.2 (2026-05-01)
+
+### Bug Fixes
+
+- Close the message DB properly so it no longer keeps the event loop alive
+
+## v1.7.1 (2026-04-20)
+
+### Bug Fixes
+
+- Allow partial user profile update payloads
+
+## v1.7.0 (2026-04-16)
+
+### Features
+
+- Sync with mezon-sdk-js v2.8.44
+- Add AI Agent SSE support: `agent_event_url`, `connect_ai_agent_sse()` / `disconnect_ai_agent_sse()`, and the `AI_AGENT_*` events
 
 ## v1.6.2 (2025-12-03)
 

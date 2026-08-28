@@ -24,7 +24,6 @@ import logging
 import os
 import sys
 import time
-from typing import Optional
 
 from mezon import MezonClient
 from tests import (
@@ -118,7 +117,7 @@ def get_config_from_env() -> TestConfig:
 
 
 async def run_all_tests(
-    config: Optional[TestConfig] = None,
+    config: TestConfig | None = None,
     log_level: int = logging.DEBUG,
     enable_logging: bool = True,
 ) -> TestResults:

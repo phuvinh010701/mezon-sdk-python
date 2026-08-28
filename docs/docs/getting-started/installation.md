@@ -57,6 +57,7 @@ uv pip install -e ".[dev]"
 
 ```python
 import mezon
+
 print(mezon.__version__)
 ```
 

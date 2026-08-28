@@ -5,7 +5,6 @@ Base test utilities and configuration for Mezon SDK tests.
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
 
 from mezon import MezonClient
 
@@ -34,9 +33,9 @@ class TestConfig:
     user_name: str
     user_id_2: int
     user_name_2: str
-    voice_channel_id: Optional[int] = None
-    role_id: Optional[int] = None
-    token_receiver_id: Optional[int] = None
+    voice_channel_id: int | None = None
+    role_id: int | None = None
+    token_receiver_id: int | None = None
 
 
 @dataclass
@@ -50,9 +49,9 @@ class TestResults:
         skipped (List[Tuple[str, str]]): Names and reasons for skipped tests
     """
 
-    passed: List[str] = field(default_factory=list)
-    failed: List[Tuple[str, str]] = field(default_factory=list)
-    skipped: List[Tuple[str, str]] = field(default_factory=list)
+    passed: list[str] = field(default_factory=list)
+    failed: list[tuple[str, str]] = field(default_factory=list)
+    skipped: list[tuple[str, str]] = field(default_factory=list)
 
 
 class BaseTestSuite:
@@ -76,7 +75,7 @@ class BaseTestSuite:
         self.results = results
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    def log_result(self, name: str, success: bool, error: Optional[str] = None) -> None:
+    def log_result(self, name: str, success: bool, error: str | None = None) -> None:
         """
         Log test result.
 

@@ -173,6 +173,7 @@ class MezonClient:
         self._enable_auto_reconnect = False
         self._is_hard_disconnect = False
         self._reconnect_task: asyncio.Task | None = None
+        self._clan_descs_by_id: dict[int, Any] = {}
 
         logger.info(f"MezonClient initialized for client_id: {client_id}")
 
@@ -209,15 +210,19 @@ class MezonClient:
         Returns:
             The session for the client.
         """
-        temp_session_manager = SessionManager(
-            api_client=MezonApi(
-                self.client_id,
-                self.api_key,
-                self.login_url,
-                self.timeout_ms,
-            )
+        temp_api_client = MezonApi(
+            self.client_id,
+            self.api_key,
+            self.login_url,
+            self.timeout_ms,
         )
-        session = await temp_session_manager.authenticate(self.client_id, self.api_key)
+        temp_session_manager = SessionManager(api_client=temp_api_client)
+        try:
+            session = await temp_session_manager.authenticate(
+                self.client_id, self.api_key
+            )
+        finally:
+            await temp_api_client.close()
         return Session(session)
 
     async def initialize_managers(self, sock_session: Session) -> None:
@@ -234,6 +239,10 @@ class MezonClient:
             sock_session.ws_url, use_ssl=self.use_ssl
         )
         ws_url = sock_session.ws_url.removeprefix("wss://").removeprefix("ws://")
+
+        old_api_client = getattr(self, "api_client", None)
+        if old_api_client is not None:
+            await old_api_client.close()
 
         self.api_client = MezonApi(
             self.client_id,
@@ -289,6 +298,7 @@ class MezonClient:
                 self.socket_manager.connect_socket(sock_session.token),
                 self.channel_manager.init_all_dm_channels(sock_session.token),
             )
+            self._seed_dm_user_cache()
 
     async def _invoke_handler(
         self, handler: EventHandler, *args: Any, **kwargs: Any
@@ -301,7 +311,9 @@ class MezonClient:
             *args (Any): Positional arguments to pass to the handler.
             **kwargs (Any): Keyword arguments to pass to the handler.
         """
-        logger.debug(f"Invoking handler {handler} with args {args} and kwargs {kwargs}")
+        logger.debug(
+            "Invoking handler %s with args %s and kwargs %s", handler, args, kwargs
+        )
         if inspect.iscoroutinefunction(handler):
             await handler(*args, **kwargs)
         else:
@@ -582,6 +594,47 @@ class MezonClient:
 
         self.event_manager.on(event_name, wrapper)
 
+    async def _get_clan_desc(self, clan_id: int, token: str) -> Any:
+        """
+        Look up a clan description by ID, reusing a cached full clan list.
+
+        ``list_clans_descs`` returns every clan the bot belongs to, so once
+        fetched it can serve lookups for any clan_id without another round
+        trip. Falls back to a fresh fetch if the id isn't found (e.g. the
+        bot joined a new clan after the cache was built).
+
+        Args:
+            clan_id: The clan ID to look up
+            token: Bearer token for authentication
+
+        Returns:
+            The matching clan description, or None if not found
+        """
+        if clan_id in self._clan_descs_by_id:
+            return self._clan_descs_by_id[clan_id]
+
+        # Only worth a second round trip if we already had a (possibly
+        # stale) cache; a first-ever fetch either has the clan or it truly
+        # doesn't exist yet.
+        had_cache = bool(self._clan_descs_by_id)
+
+        async def refresh() -> None:
+            clans_response = await self.api_client.list_clans_descs(token=token)
+            self._clan_descs_by_id = {
+                desc.clan_id: desc
+                for desc in (
+                    clans_response.clandesc
+                    if clans_response and clans_response.clandesc
+                    else []
+                )
+            }
+
+        await refresh()
+        if clan_id not in self._clan_descs_by_id and had_cache:
+            await refresh()
+
+        return self._clan_descs_by_id.get(clan_id)
+
     async def get_channel_from_id(self, channel_id: int) -> TextChannel:
         """
         Get a channel by ID, creating necessary clan objects if needed.
@@ -608,16 +661,7 @@ class MezonClient:
 
         clan = self.clans.get(clan_id)
         if not clan:
-            clans_response = await self.api_client.list_clans_descs(token=session.token)
-            clan_desc = None
-            for desc in (
-                clans_response.clandesc
-                if clans_response and clans_response.clandesc
-                else []
-            ):
-                if desc.clan_id == clan_id:
-                    clan_desc = desc
-                    break
+            clan_desc = await self._get_clan_desc(clan_id, session.token)
 
             if clan_desc:
                 clan = Clan(
@@ -807,6 +851,31 @@ class MezonClient:
 
         channel.messages.set(message_raw.id, message_obj)
 
+    def _seed_dm_user_cache(self) -> None:
+        """
+        Seed the user cache with a bare ``User`` entry for every known DM channel.
+
+        Runs once after ``init_all_dm_channels`` so the per-message handler
+        doesn't have to rescan every DM channel on each incoming message.
+        """
+        all_dm_channels = self.channel_manager.get_all_dm_channels()
+        if not all_dm_channels:
+            return
+
+        for user_id, dm_channel_id in all_dm_channels.items():
+            if not user_id or self.users.get(user_id):
+                continue
+
+            user = User(
+                user_init_data=UserInitData(
+                    sender_id=user_id,
+                    dm_channel_id=dm_channel_id,
+                ),
+                socket_manager=self.socket_manager,
+                channel_manager=self.channel_manager,
+            )
+            self.users.set(user_id, user)
+
     async def _init_user_clan_cache(self, message: ChannelMessage) -> None:
         """
         Initialize user and clan cache when receiving a message.
@@ -815,25 +884,10 @@ class MezonClient:
             message: The channel message
         """
 
+        if self.users.get(message.sender_id):
+            return
+
         all_dm_channels = self.channel_manager.get_all_dm_channels()
-        user_cache = self.users.get(message.sender_id)
-
-        if not user_cache and message.sender_id != self.client_id and all_dm_channels:
-            for user_id, dm_channel_id in all_dm_channels.items():
-                if not user_id:
-                    continue
-
-                user = User(
-                    user_init_data=UserInitData(
-                        sender_id=user_id,
-                        dm_channel_id=dm_channel_id,
-                    ),
-                    socket_manager=self.socket_manager,
-                    channel_manager=self.channel_manager,
-                )
-
-                self.users.set(user_id, user)
-
         sender_dm_channel = (
             all_dm_channels.get(message.sender_id, 0) if all_dm_channels else 0
         )
@@ -1483,4 +1537,6 @@ class MezonClient:
         await self.disconnect_ai_agent_sse()
         await self.close_socket()
         await self.message_db.close()
+        if getattr(self, "api_client", None) is not None:
+            await self.api_client.close()
         logger.info("Client disconnected")

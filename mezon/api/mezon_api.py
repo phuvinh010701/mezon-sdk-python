@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import Any, Optional
+import asyncio
+from typing import Any
 
 import aiohttp
 from aiolimiter import AsyncLimiter
@@ -65,10 +66,17 @@ class MezonApi:
     # Keep ENDPOINTS for backward compatibility during migration
     ENDPOINTS = {**REST_ENDPOINTS, **RPC_ENDPOINTS}
 
-    _rate_limiter = AsyncLimiter(max_rate=1, time_period=1.25)
+    DEFAULT_RATE_LIMIT = 1
+    DEFAULT_RATE_PERIOD = 1.25
 
     def __init__(
-        self, client_id: str | int, api_key: str, base_url: str, timeout_ms: int
+        self,
+        client_id: str | int,
+        api_key: str,
+        base_url: str,
+        timeout_ms: int,
+        rate_limit: float = DEFAULT_RATE_LIMIT,
+        rate_period: float = DEFAULT_RATE_PERIOD,
     ):
         """
         Initialize Mezon API client.
@@ -78,22 +86,42 @@ class MezonApi:
             api_key: API key for authentication
             base_url: Base URL for API
             timeout_ms: Timeout in milliseconds
+            rate_limit: Max requests allowed per `rate_period` seconds for
+                *this* instance (each MezonApi instance gets its own budget)
+            rate_period: Period in seconds over which `rate_limit` applies
         """
         self.client_id = int(client_id)
         self.api_key = api_key
         self.base_url = base_url
         self.timeout_ms = timeout_ms
         self.client_timeout = aiohttp.ClientTimeout(total=timeout_ms / 1000)
+        self._rate_limiter = AsyncLimiter(max_rate=rate_limit, time_period=rate_period)
+        self._session: aiohttp.ClientSession | None = None
+        self._session_lock = asyncio.Lock()
+
+    async def _get_session(self) -> aiohttp.ClientSession:
+        """Get the shared ClientSession, creating it lazily on first use."""
+        if self._session is None or self._session.closed:
+            async with self._session_lock:
+                if self._session is None or self._session.closed:
+                    self._session = aiohttp.ClientSession(timeout=self.client_timeout)
+        return self._session
+
+    async def close(self) -> None:
+        """Close the shared ClientSession, if one was created."""
+        if self._session is not None and not self._session.closed:
+            await self._session.close()
+        self._session = None
 
     async def call_api(
         self,
         method: str,
         url_path: str,
-        query_params: Optional[dict[str, Any]] = None,
-        body: Optional[str | bytes] = None,
-        headers: Optional[dict[str, Any]] = None,
+        query_params: dict[str, Any] | None = None,
+        body: str | bytes | None = None,
+        headers: dict[str, Any] | None = None,
         accept_binary: bool = False,
-        response_proto_class: Optional[type] = None,
+        response_proto_class: type | None = None,
     ) -> Any:
         """
         Make API call with optional binary protobuf request/response support.
@@ -111,30 +139,33 @@ class MezonApi:
             Any: Dict (from JSON) or protobuf message (from binary)
         """
         logger.debug(
-            f"Method: {method}, URL: {url_path}, Binary: {accept_binary}, "
-            f"Proto class: {response_proto_class}"
+            "Method: %s, URL: %s, Binary: %s, Proto class: %s",
+            method,
+            url_path,
+            accept_binary,
+            response_proto_class,
         )
 
-        async with self._rate_limiter:
-            async with aiohttp.ClientSession(timeout=self.client_timeout) as session:
-                async with session.request(
-                    method,
-                    f"{self.base_url}{url_path}",
-                    params=query_params,
-                    data=body,
-                    headers=headers,
-                ) as resp:
-                    resp.raise_for_status()
-                    return await parse_response(
-                        resp, accept_binary, response_proto_class
-                    )
+        session = await self._get_session()
+        async with (
+            self._rate_limiter,
+            session.request(
+                method,
+                f"{self.base_url}{url_path}",
+                params=query_params,
+                data=body,
+                headers=headers,
+            ) as resp,
+        ):
+            resp.raise_for_status()
+            return await parse_response(resp, accept_binary, response_proto_class)
 
     async def mezon_authenticate(
         self,
         basic_auth_username: str | int,
         basic_auth_password: str,
         body: ApiAuthenticateRequest,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiSession:
         """
         Authenticate a app with a token against the server.
@@ -173,7 +204,7 @@ class MezonApi:
         limit: int = 0,
         state: int = 0,
         cursor: str = "",
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiClanDescList:
         """
         List clan descriptions.
@@ -220,7 +251,7 @@ class MezonApi:
         state: int = 0,
         cursor: str = "",
         is_mobile: bool = False,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiChannelDescList:
         """
         List channel descriptions.
@@ -268,7 +299,7 @@ class MezonApi:
         self,
         token: str,
         request: ApiCreateChannelDescRequest,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiChannelDescription:
         """
         Create a channel description.
@@ -313,7 +344,7 @@ class MezonApi:
         self,
         token: str,
         channel_id: int,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiChannelDescription:
         """
         Get channel detail by ID.
@@ -351,13 +382,13 @@ class MezonApi:
     async def list_channel_voice_users(
         self,
         token: str,
-        clan_id: Optional[int] = 0,
-        channel_id: Optional[int] = 0,
-        channel_type: Optional[int] = 0,
-        limit: Optional[int] = 0,
-        state: Optional[int] = 0,
-        cursor: Optional[str] = "",
-        options: Optional[dict[str, Any]] = None,
+        clan_id: int | None = 0,
+        channel_id: int | None = 0,
+        channel_type: int | None = 0,
+        limit: int | None = 0,
+        state: int | None = 0,
+        cursor: str | None = "",
+        options: dict[str, Any] | None = None,
     ) -> ApiVoiceChannelUserList:
         """
         List voice channel users.
@@ -406,7 +437,7 @@ class MezonApi:
         token: str,
         role_id: int,
         request: dict[str, Any],
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Update a role.
@@ -449,11 +480,11 @@ class MezonApi:
     async def list_roles(
         self,
         token: str,
-        clan_id: Optional[int] = None,
-        limit: Optional[int] = None,
-        state: Optional[int] = None,
-        cursor: Optional[str] = None,
-        options: Optional[dict[str, Any]] = None,
+        clan_id: int | None = None,
+        limit: int | None = None,
+        state: int | None = None,
+        cursor: str | None = None,
+        options: dict[str, Any] | None = None,
     ) -> ApiRoleListEventResponse:
         """
         List roles in a clan.
@@ -504,7 +535,7 @@ class MezonApi:
         menu_name: str,
         menu_id: int,
         bot_id: int,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Add quick menu access for a bot.
@@ -554,14 +585,14 @@ class MezonApi:
     async def delete_quick_menu_access(
         self,
         bearer_token: str,
-        id: Optional[int] = None,
-        clan_id: Optional[int] = None,
-        bot_id: Optional[int] = None,
-        channel_id: Optional[int] = None,
-        menu_name: Optional[str] = None,
-        background: Optional[str] = None,
-        action_msg: Optional[str] = None,
-        options: Optional[dict[str, Any]] = None,
+        id: int | None = None,
+        clan_id: int | None = None,
+        bot_id: int | None = None,
+        channel_id: int | None = None,
+        menu_name: str | None = None,
+        background: str | None = None,
+        action_msg: str | None = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Delete quick menu access for a bot.
@@ -608,10 +639,10 @@ class MezonApi:
     async def list_quick_menu_access(
         self,
         bearer_token: str,
-        bot_id: Optional[int] = 0,
-        channel_id: Optional[int] = 0,
-        menu_type: Optional[int] = 0,
-        options: Optional[dict[str, Any]] = None,
+        bot_id: int | None = 0,
+        channel_id: int | None = 0,
+        menu_type: int | None = 0,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         List quick menu access items.
@@ -652,7 +683,7 @@ class MezonApi:
         self,
         bearer_token: str,
         body: dict[str, Any],
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ) -> Any:
         """
         Play media in a voice channel.

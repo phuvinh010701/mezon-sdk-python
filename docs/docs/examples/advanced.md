@@ -7,6 +7,7 @@ This page collects a few reusable patterns for larger bots and applications.
 ```python
 from datetime import datetime, timedelta
 
+
 class TTLCache:
     def __init__(self, ttl_seconds: int = 300):
         self.ttl = ttl_seconds
@@ -24,7 +25,9 @@ class TTLCache:
         expires = datetime.now() + timedelta(seconds=self.ttl)
         self.cache[key] = (value, expires)
 
+
 role_cache = TTLCache(ttl_seconds=300)
+
 
 async def get_roles(clan_id: int):
     cached = role_cache.get(str(clan_id))
@@ -45,6 +48,7 @@ from typing import List
 
 from mezon.models import ChannelMessageContent
 
+
 class Plugin(ABC):
     @abstractmethod
     async def on_message(self, client, message):
@@ -53,6 +57,7 @@ class Plugin(ABC):
     @abstractmethod
     def get_commands(self) -> List[str]:
         pass
+
 
 class GreetingPlugin(Plugin):
     async def on_message(self, client, message):
@@ -63,6 +68,7 @@ class GreetingPlugin(Plugin):
 
     def get_commands(self) -> List[str]:
         return ["!hi"]
+
 
 class PluginManager:
     def __init__(self, client):
@@ -75,6 +81,7 @@ class PluginManager:
     async def handle_message(self, message):
         for plugin in self.plugins:
             await plugin.on_message(self.client, message)
+
 
 plugins = PluginManager(client)
 plugins.register(GreetingPlugin())

@@ -389,6 +389,103 @@ class TestCacheManager:
         assert cache.has("key1") is True
         assert cache.has("key2") is False
 
+    def test_fetch_concurrent_calls_share_single_fetcher_call(self):
+        """Concurrent fetches for the same uncached id share one in-flight call."""
+
+        async def test():
+            call_count = []
+            started = asyncio.Event()
+            release = asyncio.Event()
+
+            async def fetcher(key):
+                call_count.append(key)
+                started.set()
+                await release.wait()
+                return f"value_{key}"
+
+            cache = CacheManager(fetcher)
+
+            task1 = asyncio.create_task(cache.fetch("key1"))
+            await started.wait()
+            task2 = asyncio.create_task(cache.fetch("key1"))
+            release.set()
+
+            result1, result2 = await asyncio.gather(task1, task2)
+
+            assert result1 == result2 == "value_key1"
+            assert len(call_count) == 1
+            assert cache.get("key1") == "value_key1"
+
+        asyncio.run(test())
+
+    def test_fetch_propagates_fetcher_exception_to_waiters(self):
+        """A failing fetch raises for both the initiator and any waiters."""
+
+        async def test():
+            started = asyncio.Event()
+            release = asyncio.Event()
+
+            async def fetcher(key):
+                started.set()
+                await release.wait()
+                raise ValueError("boom")
+
+            cache = CacheManager(fetcher)
+
+            task1 = asyncio.create_task(cache.fetch("key1"))
+            await started.wait()
+            task2 = asyncio.create_task(cache.fetch("key1"))
+            release.set()
+
+            for task in (task1, task2):
+                try:
+                    await task
+                    raise AssertionError("expected ValueError")
+                except ValueError:
+                    pass
+
+            assert cache.get("key1") is None
+            assert "key1" not in cache._in_flight
+
+        asyncio.run(test())
+
+    def test_get_marks_entry_as_recently_used(self):
+        """Test that get() moves the accessed entry to the LRU end."""
+
+        async def fetcher(key):
+            return key
+
+        cache = CacheManager(fetcher, max_size=3)
+        cache.set("key1", "value1")
+        cache.set("key2", "value2")
+        cache.set("key3", "value3")
+
+        # Touch key1 so it's no longer the least-recently-used entry.
+        cache.get("key1")
+
+        cache.set("key4", "value4")
+
+        assert cache.get("key1") == "value1"
+        assert cache.get("key2") is None  # Evicted as the new LRU entry
+        assert cache.get("key3") == "value3"
+        assert cache.get("key4") == "value4"
+
+    def test_set_existing_key_at_capacity_does_not_evict(self):
+        """Updating an already-cached key at capacity shouldn't evict anything."""
+
+        async def fetcher(key):
+            return key
+
+        cache = CacheManager(fetcher, max_size=2)
+        cache.set("key1", "value1")
+        cache.set("key2", "value2")
+
+        cache.set("key1", "updated")
+
+        assert cache.size == 2
+        assert cache.get("key1") == "updated"
+        assert cache.get("key2") == "value2"
+
     def test_fetch_multiple_times(self):
         """Test fetching same key multiple times uses cache."""
 

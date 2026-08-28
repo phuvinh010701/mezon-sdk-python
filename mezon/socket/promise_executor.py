@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import asyncio
-from typing import Any, Optional
+from typing import Any
 
 
 class PromiseExecutor:
@@ -25,7 +25,7 @@ class PromiseExecutor:
 
     def __init__(self, loop: asyncio.AbstractEventLoop):
         self.future: asyncio.Future = loop.create_future()
-        self.timeout_handle: Optional[asyncio.TimerHandle]
+        self.timeout_handle: asyncio.TimerHandle | None
 
     def resolve(self, result: Any) -> None:
         """Resolve the future with a result."""

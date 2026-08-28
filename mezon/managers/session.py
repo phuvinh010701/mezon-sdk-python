@@ -1,5 +1,3 @@
-from typing import Optional
-
 from mezon.api.mezon_api import MezonApi
 from mezon.models import (
     ApiAccountApp,
@@ -9,7 +7,7 @@ from mezon.session import Session
 
 
 class SessionManager:
-    def __init__(self, api_client: MezonApi, session: Optional[Session] = None):
+    def __init__(self, api_client: MezonApi, session: Session | None = None):
         self.api_client = api_client
         self.session = session
 

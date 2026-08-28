@@ -227,9 +227,11 @@ class TestDefaultSocketExtended:
         adapter.connect = slow_connect
         socket = Socket(ws_url="socket.example.com", adapter=adapter)
 
-        with patch(
-            "mezon.socket.default_socket.asyncio.wait_for",
-            side_effect=__import__("asyncio").TimeoutError,
+        with (
+            patch(
+                "mezon.socket.default_socket.asyncio.wait_for",
+                side_effect=__import__("asyncio").TimeoutError,
+            ),
+            pytest.raises(TimeoutError, match="timed out"),
         ):
-            with pytest.raises(TimeoutError, match="timed out"):
-                await socket.connect(SimpleNamespace(token="token"))
+            await socket.connect(SimpleNamespace(token="token"))

@@ -33,6 +33,7 @@ client = MezonClient(
     api_key="YOUR_API_KEY",
 )
 
+
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
@@ -40,11 +41,14 @@ async def handle_message(message: ChannelMessage):
     channel = await client.channels.fetch(message.channel_id)
     await channel.send(content=ChannelMessageContent(t="Hello!"))
 
+
 client.on_channel_message(handle_message)
+
 
 async def main():
     await client.login()
     await asyncio.Event().wait()
+
 
 asyncio.run(main())
 ```

@@ -7,7 +7,8 @@ A simple bot that responds to commands and demonstrates replies, ephemeral messa
 ```python
 import asyncio
 import logging
-from mezon import ButtonBuilder, ButtonMessageStyle, MezonClient
+from mezon import ButtonBuilder, MezonClient
+from mezon.models import ButtonMessageStyle
 from mezon.models import ApiSentTokenRequest, ChannelMessage, ChannelMessageContent
 
 client = MezonClient(
@@ -16,6 +17,7 @@ client = MezonClient(
     enable_logging=True,
     log_level=logging.INFO,
 )
+
 
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
@@ -77,6 +79,7 @@ async def handle_message(message: ChannelMessage):
             )
         )
 
+
 async def handle_button(event):
     if event.button_id.startswith("vote_"):
         channel = await client.channels.fetch(event.channel_id)
@@ -86,13 +89,16 @@ async def handle_button(event):
             content=ChannelMessageContent(text=f"You voted: {vote}"),
         )
 
+
 client.on_channel_message(handle_message)
 client.on_message_button_clicked(handle_button)
+
 
 async def main():
     await client.login()
     print(f"Bot is running as {client.client_id}")
     await asyncio.Event().wait()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

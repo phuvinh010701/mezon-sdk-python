@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import asyncio
 import json
 import os
-from typing import Any, Optional
+from typing import Any
 
 import aiosqlite
 
@@ -40,8 +41,9 @@ class MessageDB:
         """
         self.db_path = db_path
         self._ensure_directory()
-        self.db: Optional[aiosqlite.Connection] = None
+        self.db: aiosqlite.Connection | None = None
         self._initialized = False
+        self._connect_lock = asyncio.Lock()
 
     def _ensure_directory(self) -> None:
         """Create the database directory if it doesn't exist."""
@@ -52,9 +54,20 @@ class MessageDB:
 
     async def _ensure_connection(self) -> None:
         """Ensure database connection is established and initialized."""
-        if self.db is None or not self._initialized:
+        if self.db is not None and self._initialized:
+            return
+
+        async with self._connect_lock:
+            if self.db is not None and self._initialized:
+                return
+
             self.db = await aiosqlite.connect(self.db_path)
             self.db.row_factory = aiosqlite.Row
+            # WAL avoids taking a full fsync on every commit; NORMAL sync is
+            # still crash-safe under WAL (only an OS crash, not an app crash,
+            # can lose the last commit).
+            await self.db.execute("PRAGMA journal_mode=WAL")
+            await self.db.execute("PRAGMA synchronous=NORMAL")
             await self._init_tables()
             self._initialized = True
 
@@ -139,7 +152,7 @@ class MessageDB:
 
     async def get_message_by_id(
         self, message_id: int, channel_id: int
-    ) -> Optional[ChannelMessage]:
+    ) -> ChannelMessage | None:
         """
         Retrieve a message by its ID and channel ID.
 
@@ -262,7 +275,7 @@ class MessageDB:
         logger.info(f"Cleared {deleted_count} messages from channel {channel_id}")
         return deleted_count
 
-    async def get_message_count(self, channel_id: Optional[str] = None) -> int:
+    async def get_message_count(self, channel_id: str | None = None) -> int:
         """
         Get the total number of messages in the database or in a specific channel.
 

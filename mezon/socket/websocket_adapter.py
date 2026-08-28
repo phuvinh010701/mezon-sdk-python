@@ -17,7 +17,7 @@ limitations under the License.
 import asyncio
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 import websockets
 from aiolimiter import AsyncLimiter
@@ -40,8 +40,8 @@ class WebSocketAdapter(ABC):
     """
 
     def __init__(self):
-        self._socket: Optional[ClientConnection] = None
-        self._listen_task: Optional[asyncio.Task] = None
+        self._socket: ClientConnection | None = None
+        self._listen_task: asyncio.Task | None = None
 
     @abstractmethod
     async def connect(
@@ -57,7 +57,6 @@ class WebSocketAdapter(ABC):
             create_status: Whether to create status
             token: Authentication token
         """
-        pass
 
     @abstractmethod
     async def send(self, message: Any) -> None:
@@ -67,12 +66,10 @@ class WebSocketAdapter(ABC):
         Args:
             message: Message to send
         """
-        pass
 
     @abstractmethod
     async def close(self) -> None:
         """Close WebSocket connection."""
-        pass
 
     @abstractmethod
     def is_open(self) -> bool:
@@ -82,7 +79,6 @@ class WebSocketAdapter(ABC):
         Returns:
             True if open, False otherwise
         """
-        pass
 
 
 class WebSocketAdapterPb(WebSocketAdapter):

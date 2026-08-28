@@ -1,6 +1,4 @@
-from typing import Optional
-
-import mezon.api as api
+from mezon import api
 from mezon.constants import ChannelType
 from mezon.models import ApiChannelDescription, ApiCreateChannelDescRequest
 
@@ -25,7 +23,7 @@ class ChannelManager:
         self.api_client = api_client
         self.socket_manager = socket_manager
         self.session_manager = session_manager
-        self.all_dm_channels: Optional[dict[int, int]] = None
+        self.all_dm_channels: dict[int, int] | None = None
 
     async def init_all_dm_channels(self, session_token: str) -> None:
         """
@@ -59,7 +57,7 @@ class ChannelManager:
 
         self.all_dm_channels = dm_mapping
 
-    def get_all_dm_channels(self) -> Optional[dict[int, int]]:
+    def get_all_dm_channels(self) -> dict[int, int] | None:
         """
         Get all cached DM channels.
 

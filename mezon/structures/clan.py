@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from mezon.api import MezonApi
 from mezon.constants.enum import ChannelType
@@ -77,7 +77,7 @@ class Clan:
         self.message_db = message_db
 
         self._channels_loaded = False
-        self._loading_promise: Optional[Any] = None
+        self._loading_promise: Any | None = None
 
         async def channel_fetcher(channel_id: int) -> TextChannel:
             return await self.client.channels.fetch(channel_id)

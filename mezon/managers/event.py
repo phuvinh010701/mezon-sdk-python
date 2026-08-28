@@ -1,10 +1,28 @@
 import asyncio
 import logging
-from typing import Callable
+from collections.abc import Callable
+from dataclasses import dataclass, field
 
 from mezon.constants import Events
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class _HandlerBucket:
+    """Handlers for one event, pre-partitioned by how `emit` must run them."""
+
+    sync_default: list[Callable] = field(default_factory=list)
+    async_default: list[Callable] = field(default_factory=list)
+    user: list[Callable] = field(default_factory=list)
+
+    def is_empty(self) -> bool:
+        return not (self.sync_default or self.async_default or self.user)
+
+    def remove(self, handler: Callable) -> None:
+        for bucket in (self.sync_default, self.async_default, self.user):
+            if handler in bucket:
+                bucket.remove(handler)
 
 
 class EventManager:
@@ -16,7 +34,7 @@ class EventManager:
     """
 
     def __init__(self):
-        self.event_handlers: dict[str, list[Callable]] = {}
+        self._buckets: dict[str, _HandlerBucket] = {}
 
     def on(self, event_name: Events, handler: Callable) -> None:
         """
@@ -26,9 +44,14 @@ class EventManager:
             event_name: The name of the event to listen for
             handler: The callback function to execute when the event occurs
         """
-        if event_name not in self.event_handlers:
-            self.event_handlers[event_name] = []
-        self.event_handlers[event_name].append(handler)
+        bucket = self._buckets.setdefault(event_name, _HandlerBucket())
+        if getattr(handler, "_is_default_handler", False):
+            if asyncio.iscoroutinefunction(handler):
+                bucket.async_default.append(handler)
+            else:
+                bucket.sync_default.append(handler)
+        else:
+            bucket.user.append(handler)
 
     def off(self, event_name: Events, handler: Callable = None) -> None:
         """
@@ -38,17 +61,16 @@ class EventManager:
             event_name: The name of the event
             handler: The specific handler to remove. If None, removes all handlers for the event.
         """
-        if event_name not in self.event_handlers:
+        bucket = self._buckets.get(event_name)
+        if bucket is None:
             return
 
         if handler is None:
-            del self.event_handlers[event_name]
+            del self._buckets[event_name]
         else:
-            if handler in self.event_handlers[event_name]:
-                self.event_handlers[event_name].remove(handler)
-
-            if not self.event_handlers[event_name]:
-                del self.event_handlers[event_name]
+            bucket.remove(handler)
+            if bucket.is_empty():
+                del self._buckets[event_name]
 
     async def emit(self, event_name: Events, *args, **kwargs) -> None:
         """
@@ -62,48 +84,32 @@ class EventManager:
             *args: Positional arguments to pass to handlers
             **kwargs: Keyword arguments to pass to handlers
         """
-        if event_name not in self.event_handlers:
+        bucket = self._buckets.get(event_name)
+        if bucket is None or bucket.is_empty():
             return
 
-        handlers = self.event_handlers[event_name]
-        if not handlers:
-            return
+        for handler in bucket.sync_default:
+            try:
+                handler(*args, **kwargs)
+            except Exception as e:
+                logger.error(
+                    f"Error in sync default handler for '{event_name}': {e}",
+                    exc_info=True,
+                )
 
-        default_handlers = [
-            h for h in handlers if getattr(h, "_is_default_handler", False)
-        ]
-        user_handlers = [h for h in handlers if h not in default_handlers]
-
-        if default_handlers:
-            async_default_handlers = [
-                h for h in default_handlers if asyncio.iscoroutinefunction(h)
-            ]
-            sync_default_handlers = [
-                h for h in default_handlers if not asyncio.iscoroutinefunction(h)
-            ]
-
-            for handler in sync_default_handlers:
-                try:
-                    handler(*args, **kwargs)
-                except Exception as e:
+        if bucket.async_default:
+            try:
+                async with asyncio.TaskGroup() as tg:
+                    for handler in bucket.async_default:
+                        tg.create_task(handler(*args, **kwargs))
+            except* Exception as eg:
+                for exc in eg.exceptions:
                     logger.error(
-                        f"Error in sync default handler for '{event_name}': {e}",
-                        exc_info=True,
+                        f"Error in async default handler for '{event_name}': {exc}",
+                        exc_info=exc,
                     )
 
-            if async_default_handlers:
-                try:
-                    async with asyncio.TaskGroup() as tg:
-                        for handler in async_default_handlers:
-                            tg.create_task(handler(*args, **kwargs))
-                except* Exception as eg:
-                    for exc in eg.exceptions:
-                        logger.error(
-                            f"Error in async default handler for '{event_name}': {exc}",
-                            exc_info=exc,
-                        )
-
-        for handler in user_handlers:
+        for handler in bucket.user:
             try:
                 if asyncio.iscoroutinefunction(handler):
                     task = asyncio.create_task(handler(*args, **kwargs))
@@ -135,7 +141,5 @@ class EventManager:
         Returns:
             True if there are listeners, False otherwise
         """
-        return (
-            event_name in self.event_handlers
-            and len(self.event_handlers[event_name]) > 0
-        )
+        bucket = self._buckets.get(event_name)
+        return bucket is not None and not bucket.is_empty()

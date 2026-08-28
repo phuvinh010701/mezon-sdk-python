@@ -24,6 +24,7 @@ from aiolimiter import AsyncLimiter
 
 from mezon.api.utils import build_body, build_headers, build_params, parse_response
 
+
 async def my_function():
     async with AsyncLimiter(max_rate=1, time_period=1.25) as rate_limiter:
         ...
@@ -33,8 +34,10 @@ async def my_function():
 # ❌ BAD: Function-scoped imports
 from mezon.api.utils import build_body, build_headers, build_params, parse_response
 
+
 async def my_function():
     from aiolimiter import AsyncLimiter
+
     async with AsyncLimiter(max_rate=1, time_period=1.25) as rate_limiter:
         ...
 ```
@@ -56,6 +59,7 @@ if TYPE_CHECKING:
 from typing import Literal
 
 DiagnosticsLevel = Literal["off", "error", "info", "debug"]
+
 
 def create_service(level: DiagnosticsLevel = "off") -> MyService:
     return MyService(level=level)

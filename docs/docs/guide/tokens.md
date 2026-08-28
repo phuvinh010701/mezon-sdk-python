@@ -38,6 +38,7 @@ else:
 ```python
 from mezon.models import ApiSentTokenRequest, ChannelMessage, ChannelMessageContent
 
+
 async def handle_message(message: ChannelMessage):
     if message.sender_id == client.client_id:
         return
@@ -54,12 +55,15 @@ async def handle_message(message: ChannelMessage):
 
         channel = await client.channels.fetch(message.channel_id)
         if result.ok:
-            await channel.send(content=ChannelMessageContent(t="You received 10 tokens"))
+            await channel.send(
+                content=ChannelMessageContent(t="You received 10 tokens")
+            )
         else:
             await channel.send_ephemeral(
                 receiver_ids=[message.sender_id],
                 content=ChannelMessageContent(text=f"Failed: {result.error}"),
             )
+
 
 client.on_channel_message(handle_message)
 ```
@@ -77,6 +81,7 @@ Before calling `send_token(...)`:
 ```python
 async def on_token_sent(event):
     print(event)
+
 
 client.on_token_send(on_token_sent)
 ```

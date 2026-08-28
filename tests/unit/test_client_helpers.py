@@ -6,6 +6,8 @@ import pytest
 from mezon.client import MezonClient
 from mezon.constants import ChannelType, Events
 from mezon.models import (
+    ApiClanDesc,
+    ApiClanDescList,
     ChannelCreatedEvent,
     ChannelMessage,
     ChannelUpdatedEvent,
@@ -237,6 +239,56 @@ class TestClientHelpers:
             await client._handle_add_clan_user_default(add_event)
             join_clan_chat.assert_awaited_once_with(3)
             load_channels.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    async def test_get_clan_desc_reuses_cached_clan_list(self):
+        client = MezonClient(client_id="1", api_key="key")
+        clan_a = ApiClanDesc(clan_id=1, clan_name="A")
+        clan_b = ApiClanDesc(clan_id=2, clan_name="B")
+        client.api_client = SimpleNamespace(
+            list_clans_descs=AsyncMock(
+                return_value=ApiClanDescList(clandesc=[clan_a, clan_b])
+            )
+        )
+
+        result_a = await client._get_clan_desc(1, "token")
+        result_b = await client._get_clan_desc(2, "token")
+
+        assert result_a is clan_a
+        assert result_b is clan_b
+        client.api_client.list_clans_descs.assert_awaited_once_with(token="token")
+
+    @pytest.mark.asyncio
+    async def test_get_clan_desc_refetches_once_on_stale_cache_miss(self):
+        client = MezonClient(client_id="1", api_key="key")
+        clan_a = ApiClanDesc(clan_id=1, clan_name="A")
+        clan_c = ApiClanDesc(clan_id=3, clan_name="C")
+        client.api_client = SimpleNamespace(
+            list_clans_descs=AsyncMock(
+                side_effect=[
+                    ApiClanDescList(clandesc=[clan_a]),
+                    ApiClanDescList(clandesc=[clan_a, clan_c]),
+                ]
+            )
+        )
+
+        await client._get_clan_desc(1, "token")
+        result_c = await client._get_clan_desc(3, "token")
+
+        assert result_c is clan_c
+        assert client.api_client.list_clans_descs.await_count == 2
+
+    @pytest.mark.asyncio
+    async def test_get_clan_desc_returns_none_when_never_found(self):
+        client = MezonClient(client_id="1", api_key="key")
+        client.api_client = SimpleNamespace(
+            list_clans_descs=AsyncMock(return_value=ApiClanDescList(clandesc=[]))
+        )
+
+        result = await client._get_clan_desc(99, "token")
+
+        assert result is None
+        client.api_client.list_clans_descs.assert_awaited_once_with(token="token")
 
     @pytest.mark.asyncio
     async def test_close_socket_and_register_user_handler(self):

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from mezon.constants import ChannelType, TypeMessage
 from mezon.models import (
@@ -81,7 +81,7 @@ class User:
         self,
         content: ChannelMessageContent,
         code: int = TypeMessage.CHAT,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
+        attachments: list[ApiMessageAttachment] | None = None,
     ) -> ChannelMessageAck:
         if not self.dm_channel_id:
             dm_channel = await self.create_dm_channel()

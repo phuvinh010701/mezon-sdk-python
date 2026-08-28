@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import json
-from typing import Any, Optional
+from typing import Any
 
 from mezon.models import (
     ApiMessageAttachment,
@@ -126,11 +126,11 @@ class ChannelMessageBuilder:
     @staticmethod
     def _set_optional_fields(
         message: realtime_pb2.ChannelMessageSend,
-        anonymous_message: Optional[bool] = None,
-        mention_everyone: Optional[bool] = None,
-        avatar: Optional[str] = None,
-        code: Optional[int] = None,
-        topic_id: Optional[int] = None,
+        anonymous_message: bool | None = None,
+        mention_everyone: bool | None = None,
+        avatar: str | None = None,
+        code: int | None = None,
+        topic_id: int | None = None,
     ) -> None:
         """
         Set optional fields on the channel message.
@@ -162,14 +162,14 @@ class ChannelMessageBuilder:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        references: Optional[list[ApiMessageRef]] = None,
-        anonymous_message: Optional[bool] = None,
-        mention_everyone: Optional[bool] = None,
-        avatar: Optional[str] = None,
-        code: Optional[int] = None,
-        topic_id: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        references: list[ApiMessageRef] | None = None,
+        anonymous_message: bool | None = None,
+        mention_everyone: bool | None = None,
+        avatar: str | None = None,
+        code: int | None = None,
+        topic_id: int | None = None,
     ) -> realtime_pb2.ChannelMessageSend:
         """
         Build a complete ChannelMessageSend protobuf message.
@@ -233,15 +233,15 @@ class EphemeralMessageBuilder:
         mode: int,
         is_public: bool,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        references: Optional[list[ApiMessageRef]] = None,
-        anonymous_message: Optional[bool] = None,
-        mention_everyone: Optional[bool] = None,
-        avatar: Optional[str] = None,
-        code: Optional[int] = None,
-        topic_id: Optional[int] = None,
-        message_id: Optional[int] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        references: list[ApiMessageRef] | None = None,
+        anonymous_message: bool | None = None,
+        mention_everyone: bool | None = None,
+        avatar: str | None = None,
+        code: int | None = None,
+        topic_id: int | None = None,
+        message_id: int | None = None,
     ) -> realtime_pb2.EphemeralMessageSend:
         """
         Build a complete EphemeralMessageSend protobuf message.
@@ -277,9 +277,9 @@ class ChannelMessageUpdateBuilder:
     @staticmethod
     def _set_optional_fields(
         message: realtime_pb2.ChannelMessageUpdate,
-        hide_editted: Optional[bool] = None,
-        topic_id: Optional[int] = None,
-        is_update_msg_topic: Optional[bool] = None,
+        hide_editted: bool | None = None,
+        topic_id: int | None = None,
+        is_update_msg_topic: bool | None = None,
     ) -> None:
         """
         Set optional fields on the channel message update.
@@ -307,11 +307,11 @@ class ChannelMessageUpdateBuilder:
         is_public: bool,
         message_id: int,
         content: Any,
-        mentions: Optional[list[ApiMessageMention]] = None,
-        attachments: Optional[list[ApiMessageAttachment]] = None,
-        hide_editted: Optional[bool] = None,
-        topic_id: Optional[int] = None,
-        is_update_msg_topic: Optional[bool] = None,
+        mentions: list[ApiMessageMention] | None = None,
+        attachments: list[ApiMessageAttachment] | None = None,
+        hide_editted: bool | None = None,
+        topic_id: int | None = None,
+        is_update_msg_topic: bool | None = None,
     ) -> realtime_pb2.ChannelMessageUpdate:
         """
         Build a complete ChannelMessageUpdate protobuf message.
